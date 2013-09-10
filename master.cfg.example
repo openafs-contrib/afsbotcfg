@@ -3,6 +3,8 @@
 # to put slave passwords outside of the master.cfg
 #
 
+from afsbotcfg import slave
+reload(slave)
 from afsbotcfg.slave import OpenAFSBuildSlave
 
 c = BuildmasterConfig = {}
