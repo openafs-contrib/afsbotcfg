@@ -1,0 +1,3 @@
+#!/bin/bash
+cd $HOME/buildbot/master
+$HOME/bin/buildbot start $HOME/buildbot/master

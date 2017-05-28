@@ -1,0 +1,164 @@
+#!/usr/bin/perl
+
+use HTTP::Request;
+use LWP::UserAgent;
+use LWP::Simple;
+use JSON;
+use URI::Escape;
+use Date::Parse;
+use POSIX qw(strftime);
+use File::Basename;
+use Data::Dumper;
+
+use warnings;
+use strict qw(vars);
+
+my $xsrf="";
+my $json = new JSON;
+#$json->utf8;
+# escape any non-ascii characters
+$json->ascii;
+
+my $buildbot_uid = '1000085';
+my $base_query_string="status:open project:openafs -age:5d -label:VRIF+1";
+my $sort_key="z";
+my $time_updated;
+my $date;
+
+my $obj = getCommits($base_query_string);
+my $change;
+
+foreach $change ( @{$obj} ) {
+    if ($change->{'number'}) {
+        printDetail( $change->{'number'} );
+    }
+}
+
+sub doRPC {
+  my ($service, $method, $params) = @_;
+
+  my $req = HTTP::Request->new(POST => 'http://gerrit.openafs.org/gerrit/rpc/'.$service);
+  $req->header("Content-Type" => 'application/json; charset=utf-8');
+  $req->header(Accept => 'application/json');
+  $req->content('{"version":"1.1","method":"'.$method.'","params":'.$params.',"xsrfKey":"'.$xsrf.'"}');
+  my $res = LWP::UserAgent->new->request($req);
+
+  my $obj = $json->decode($res->content);
+
+  if (!$xsrf && $obj->{error} && $obj->{xsrfKey}) {
+    $xsrf = $obj->{xsrfKey};
+    return doRPC($service, $method, $params);
+  }
+
+  return $obj;
+}
+
+sub printDetail {
+    my $id = shift;
+    $obj = doRPC('ChangeDetailService', 'changeDetail','[{"id":' . $id . '}]');
+    my $patchset = $obj->{"result"}->{'currentDetail'}->{'patchSet'}->{'id'}->{'patchSetId'};
+    my $approval;
+    my $approval_entry;
+    foreach $approval (@{$obj->{"result"}->{'approvals'}}) {
+        foreach $approval_entry (@{$approval->{'approvals'}}) {
+            my $approval_patchset = $approval_entry->{'key'}->{'patchSetId'}->{'patchSetId'};
+            next if ( $patchset ne $approval_patchset );
+
+            my $approval_account_id = $approval_entry->{'key'}->{'accountId'}->{'id'};
+            next if ( $approval_account_id ne $buildbot_uid );
+
+            my $approval_category = $approval_entry->{'key'}->{'categoryId'}->{'id'};
+
+            # skip this change if buildbot has already reviewed the latest
+            # patchset
+            return if ( $approval_category eq 'VRIF' );
+        }
+    }
+    
+    print '{"type":"patchset-created","change":{';
+    #print "\n";
+    print '"project":"' . $obj->{"result"}->{'change'}->{'dest'}->{'projectName'}->{'name'} . '",';
+    #print "\n";
+    
+    print '"branch":';
+    print '"' . basename $obj->{"result"}->{'change'}->{'dest'}->{'branchName'} . '",';
+    #print "\n";
+    
+    print '"id":';
+    print '"' . $obj->{"result"}->{'change'}->{'changeKey'}->{'id'} . '",';
+    #print "\n";
+    
+    print '"number":';
+    print '"' . $obj->{"result"}->{'change'}->{'changeId'}->{'id'} . '",';
+    #print "\n";
+    
+    print '"subject":';
+    print '"' . $obj->{"result"}->{'change'}->{'subject'} . '",';
+    #print "\n";
+    
+    print '"owner":{';
+    print '"name":';
+    print '"' . $obj->{"result"}->{'currentDetail'}->{'info'}->{'committer'}->{'name'} . '",';
+    print '"email":';
+    print '"' . $obj->{"result"}->{'currentDetail'}->{'info'}->{'committer'}->{'email'} . '"';
+    print "},";
+    #print "\n";
+    
+    print '"url":';
+    print '"http://gerrit.openafs.org/' . $obj->{"result"}->{'change'}->{'changeId'}->{'id'} . '"';
+    print "},";
+    #print "\n";
+    
+    print '"patchSet":{';
+    print '"number":';
+    print '"' . $obj->{"result"}->{'currentDetail'}->{'patchSet'}->{'id'}->{'patchSetId'} . '",';
+    print '"revision":';
+    print '"' . $obj->{"result"}->{'currentDetail'}->{'patchSet'}->{'revision'}->{'id'} . '"';
+    print ',';
+    print '"ref":';
+    print '"refs/changes/';
+    printf '%2.2d' , int($obj->{"result"}->{'change'}->{'changeId'}->{'id'})%100;
+    print '/' . $obj->{"result"}->{'change'}->{'changeId'}->{'id'};
+    print '/' . $obj->{"result"}->{'currentDetail'}->{'patchSet'}->{'id'}->{'patchSetId'} . '"';
+    print '}';
+    print '}';
+    print "\r\n";
+    return;
+}
+
+
+sub getCommits {
+    my $json = new JSON;
+    #$json->utf8;
+    # escape non-ascii characters
+    $json->ascii;
+    my $sort_key;
+    my $url;
+    my @commits=();
+    my @incr_commits=();
+    my $meta;
+    my $row_count = 1;
+    my $res;
+    my $query_string;
+    my $base_query_string=shift;
+    
+    while ($row_count != 0 ) {
+        $query_string=$base_query_string;
+        if ($sort_key) {
+            $query_string.=" resume_sortkey:$sort_key";
+        }
+        my $escaped_query = uri_escape($query_string);
+        $url="http://gerrit.openafs.org/query?q=$escaped_query&format=JSON";
+        $res = get($url);
+        @incr_commits = $json->incr_parse($res);
+        $meta = pop @incr_commits;
+        $row_count = $meta->{"rowCount"} || 0;
+        
+        push @commits, @incr_commits;
+        
+        if ( $row_count ) {
+            $sort_key=$incr_commits[-1]->{'sortKey'}
+        }
+    }
+    return \@commits;
+}

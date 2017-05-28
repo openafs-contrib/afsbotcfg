@@ -1,0 +1,30 @@
+#!/bin/bash
+touch /tmp/gerrit-all.log
+echo "$*" >> /tmp/gerrit-all.log
+
+case "$1" in
+  stream-events)
+      shopt -s nullglob
+      for file in $HOME/fake-gerrit-events/change.*
+        do
+        cat $file
+	#rm $file
+        sleep 5
+      done
+       # comment out the following line to disable live gerrit
+       ssh -t gerrit-prod gerrit stream-events
+       #sleep 300
+      ;;
+
+  approve)
+      touch /tmp/gerrit-approve.log
+      date >> /tmp/gerrit-approve.log
+      echo "$*" >> /tmp/gerrit-approve.log
+      echo "$@" >> /tmp/gerrit-approve.log
+      ssh gerrit-prod gerrit "$@" 
+      ;;
+
+  *)
+      ssh gerrit-prod gerrit "$@" 
+      ;;
+esac
