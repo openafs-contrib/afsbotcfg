@@ -1,0 +1,4 @@
+#!/bin/bash
+LOG=/tmp/gerrit-strace.log
+[ -f $LOG ] && rm -f $LOG > /dev/null
+strace -f -o $LOG $HOME/bin/gerrit-real $*

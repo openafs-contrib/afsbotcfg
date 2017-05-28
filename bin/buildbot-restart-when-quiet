@@ -1,0 +1,9 @@
+#!/bin/bash
+# restart buildbot if the $HOME/need-restart flag is present and buildbot is quiet
+if [ -f $HOME/need-restart ] ; then
+  #echo file present
+  wget -q -O - http://buildbot.openafs.org:8010/waterfall | grep -q building && exit
+  cd $HOME
+  $HOME/bin/buildbot restart $HOME/buildbot/master
+  rm $HOME/need-restart
+fi
