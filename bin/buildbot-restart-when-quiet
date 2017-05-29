@@ -4,6 +4,6 @@ if [ -f $HOME/need-restart ] ; then
   #echo file present
   wget -q -O - http://buildbot.openafs.org:8010/waterfall | grep -q building && exit
   cd $HOME
-  $HOME/bin/buildbot restart $HOME/buildbot/master
+  $HOME/bin/buildbot restart $HOME/buildbot8/master
   rm $HOME/need-restart
 fi
