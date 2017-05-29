@@ -6,7 +6,7 @@ case "$1" in
   stream-events)
       shopt -s nullglob
 ## disable missed changes until proprties are fixed
-       for file in $HOME/fake-gerrit-events/change.*
+       for file in $HOME/buildbot9/fake-gerrit-events/change.*
          do
          cat $file
  	#rm $file
