@@ -1,0 +1,8 @@
+# m h  dom mon dow   command
+@reboot $HOME/bin/start-buildbot
+
+45 23 * * 0 $HOME/bin/restart-buildbot > /dev/null 2>&1
+
+10 * * * * $HOME/bin/get-missed-changes > /dev/null
+
+*/5 * * * * $HOME/bin/buildbot-restart-when-quiet
