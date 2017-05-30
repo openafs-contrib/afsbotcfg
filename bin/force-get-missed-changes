@@ -1,19 +1,15 @@
 #!/bin/bash
 # grab any missed changes from gerrit
 
+mkdir -p $HOME/buildbot9/fake-gerrit-events
 cd $HOME/buildbot9/fake-gerrit-events/
 
 # remove the old changes
 find . -type f -name "change.*" | xargs -r rm
 
-# quit if buildbot is still building
-#wget -q -O - http://buildbot.openafs.org:8010/waterfall | grep -q building && exit
-
-
 # buildbot seems to handle the changes better when there is one change per file
 $HOME/bin/fake-unverified-stream | split -l1 - change.
 
 # restart the gerrit stream connection to read the new changes
-#[ -f $HOME/fake-gerrit-events/change.aa ] && pgrep -l -f "ssh gerrit-prod gerrit stream-events"
 [ -f $HOME/buildbot9/fake-gerrit-events/change.aa ] && pkill -f "ssh gerrit-prod gerrit stream-events"
 
