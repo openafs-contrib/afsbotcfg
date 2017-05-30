@@ -11,7 +11,7 @@ def getMailAddresses(name):
                 line = line.strip()
                 if line and not line.startswith('#'):
                     addrs.append(line)
-    except:
-        pass
+    except Exception:
+        addrs = []
     return addrs
 
