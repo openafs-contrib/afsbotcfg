@@ -1,3 +1,3 @@
 #!/bin/bash
-cd $HOME/buildbot9/master
-$HOME/bin/buildbot start $HOME/buildbot9/master
+. $HOME/buildbot9/venv/bin/activate
+buildbot start $HOME/buildbot9/master
