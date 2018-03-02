@@ -13,8 +13,8 @@ class OpenAFSBuildSlave(BuildSlave):
                 return password
         raise ValueError("Missing password entry in file '%s' for slave '%s'" % (filename, name))
 
-    def __init__(self, name, **kwargs):
+    def __init__(self, name, max_builds=2,**kwargs):
         password = self.get_password(name)
-        BuildSlave.__init__(self, name, password, **kwargs)
+        BuildSlave.__init__(self, name, password, max_builds=max_builds, **kwargs)
 
 
