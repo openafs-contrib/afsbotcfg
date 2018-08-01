@@ -5,11 +5,11 @@ MASTER=$(HOME)/buildbot13/master
 help:
 	@echo "make <target> [<target>...]"
 	@echo "targets:"
-	@echo "  start          start the buildmaster"
-	@echo "  stop           stop the buildmaster"
-	@echo "  restart        restart the buildmaster"
-	@echo "  checkconfig    test the config file validity"
-	@echo "  reconfig       reload the config file in the running buildmaster"
+	@echo "  start     start the buildmaster"
+	@echo "  stop      stop the buildmaster"
+	@echo "  restart   restart the buildmaster"
+	@echo "  check     check the master.cfg file"
+	@echo "  reload    reload the running buildmaster"
 
 start:
 	$(BUILDBOT) start $(MASTER)
@@ -25,3 +25,7 @@ checkconfig:
 
 reconfig:
 	$(BUILDBOT) reconfig $(MASTER)
+
+# Aliases
+check: checkconfig
+reload: reconfig
