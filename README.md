@@ -25,17 +25,17 @@ Create a Python virtual environment:
     mkdir buildbot13
     cd buildbot13
     python3 -m venv venv
+    source venv/bin/activate
 
 Install buildbot and it's dependencies:
 
-    source venv/bin/activate
     pip install --upgrade pip
     pip install 'buildbot[bundle]'
-    deactivate
 
 Create the buildbot master instance:
 
-    venv/bin/buildbot create-master master
+    buildbot create-master master
+    deactivate
 
 Download the buildbot master configuration:
 
@@ -43,7 +43,6 @@ Download the buildbot master configuration:
     cd afsbotcfg
     git checkout buildbot-13x
     cd ..
-    ln -s afsbotcfg/Makefile
 
 Create a symlink to the master.cfg file in the master's base directory.
 
@@ -55,9 +54,7 @@ Create the `passwords` file in the master's base directory. The `passwords`
 file should contain one worker name and password per line, separated by a space
 character. This file not stored in git.
 
-    cd master
-    echo "example-worker pass" >>passwords
-    cd ..
+    echo "example-worker pass" >>master/passwords
 
 Check the buildbot master configuration with the command:
 
@@ -77,10 +74,6 @@ Adding buildbot workers
 
 todo
 
-Changing the master configuration
----------------------------------
-
-todo
 
 
 [1]: http://buildbot.openafs.org:8011
