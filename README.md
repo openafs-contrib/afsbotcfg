@@ -50,11 +50,26 @@ Create a symlink to the master.cfg file in the master's base directory.
     ln -s ../afsbotcfg/master.cfg
     cd ..
 
-Create the `passwords` file in the master's base directory. The `passwords`
-file should contain one worker name and password per line, separated by a space
-character. This file not stored in git.
+Create `settings.ini` file in the master base directory which contains
+settings we do not track with git. The settings file contains three
+sections:
 
-    echo "example-worker pass" >>master/passwords
+* local - settings specific to the host
+* admins - list of user emails and passwords for authentication
+* workers - list of worker names and passwords
+
+Example:
+
+    cat master/settings.ini
+    [local]
+    buildbotURL = http://buildbot.openafs.org:8011
+    
+    [admins]
+    tycobb@yoyodyne.com = password
+    
+    [workers]
+    example-worker1 = secret1
+    example-worker2 = secret2
 
 Check the buildbot master configuration with the command:
 
