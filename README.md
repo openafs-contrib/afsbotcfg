@@ -4,11 +4,11 @@ OpenAFS Buildbot Master Configuration
 This is the [buildbot master][1] configuration for [OpenAFS][2]. This
 configuration is compatible with buildbot version 1.3.
 
-**Note: We are transitioning from the obsolete buildbot version 0.8 to the
-current supported version 1.3. This will allow buildbot version 1.x workers to
-connect to the buildbot master, as well as existing 0.8 version build slaves.
-The old master will continue to run during this transition period. New workers
-should be configured to use port 9986 to connect to the new master.**
+**Note: We are transitioning from the deprecated buildbot version 0.8 to the
+currently supported version 1.x. This will allow modern buildbot workers (as
+well as old, existing buildbot slaves) to connect to the buildbot master.  The
+old master instance will continue to run during this transition period. New
+workers should be configured to use port 9986 to connect to the new master.**
 
 Buildbot master setup
 ---------------------
