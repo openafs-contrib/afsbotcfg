@@ -15,7 +15,8 @@ Buildbot master installation
 
 The following instructions describe how to use `pip` to install the buildbot
 master in a Python virtual environment.  With sudo/root access, install Python3
-and the development packages for it on the system to host the buildbot master.
+and the development packages for it.
+
 Ensure TCP ports 9986 and 8011 are open. (These are the ports used during the
 transition.) Create a `buildbot` user on the system.  The remaining steps to
 not require sudo access and should be run as the `buildbot` user.
