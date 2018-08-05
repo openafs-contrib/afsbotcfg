@@ -10,8 +10,8 @@ well as old, existing buildbot slaves) to connect to the buildbot master.  The
 old master instance will continue to run during this transition period. New
 workers should be configured to use port 9986 to connect to the new master.**
 
-Buildbot master setup
----------------------
+Buildbot master installation
+----------------------------
 
 The following instructions describe how to use `pip` to install the buildbot
 master in a Python virtual environment.  With sudo/root access, install Python3
@@ -46,8 +46,8 @@ The virtual environment can now be deactivated:
 
     $ deactivate
 
-Configuration setup
--------------------
+Master configuration
+--------------------
 
 Download the buildbot master configuration:
 
@@ -60,12 +60,12 @@ Create the `Makefile` and deploy the buildbot `master.cfg` file:
     $ python configure.py
     $ make install
 
-Settings file
--------------
+Master settings
+---------------
 
 Create a file called `settings.ini` in the `master` directory. This file stores
 information we do not track with git, such as the build worker passwords.  The
-`settings.ini` file has the following sections:
+`settings.ini` file is an ini-formatted file with the following sections:
 
 * local - settings specific to the local environment
 * admins - the list of user emails and passwords for authenticated access
