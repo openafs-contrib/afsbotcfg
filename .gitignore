@@ -1,4 +1,2 @@
-passwords
 *.pyc
-venv/
-master/
+Makefile

@@ -1,15 +1,22 @@
 
-BUILDBOT=$(HOME)/buildbot13/venv/bin/buildbot
-MASTER=$(HOME)/buildbot13/master
+TOPDIR=@TOPDIR@
+BUILDBOT=@BUILDBOT@
+MASTER=@MASTER@
 
 help:
 	@echo "make <target> [<target>...]"
 	@echo "targets:"
+	@echo "  install   install the master.cfg"
 	@echo "  start     start the buildmaster"
 	@echo "  stop      stop the buildmaster"
 	@echo "  restart   restart the buildmaster"
 	@echo "  check     check the master.cfg file"
 	@echo "  reload    reload the running buildmaster"
+
+$(MASTER)/master.cfg:
+	cd $(MASTER) && ln -s $(TOPDIR)/master.cfg master.cfg
+
+install: $(MASTER)/master.cfg
 
 start:
 	$(BUILDBOT) start $(MASTER)

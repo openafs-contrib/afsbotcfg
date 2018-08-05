@@ -20,47 +20,52 @@ Ensure TCP ports 9986 and 8011 are open. (These are the ports used during the
 transition.) Create a `buildbot` user on the system.  The remaining steps to
 not require sudo access and should be run as the `buildbot` user.
 
+Optionaly create a project level directory, for example:
+
+    $ mkdir openafs-buildbot
+    $ cd openafs-buildbot
+
 Create a Python virtual environment:
 
-    mkdir buildbot13
-    cd buildbot13
-    python3 -m venv venv
-    source venv/bin/activate
+    $ python3 -m venv venv
+
+Activate the virtual envirnoment for the installation:
+
+    $ source venv/bin/activate
 
 Install buildbot and it's dependencies:
 
-    pip install --upgrade pip
-    pip install 'buildbot[bundle]'
+    $ pip install --upgrade pip
+    $ pip install 'buildbot[bundle]'
 
 Create the buildbot master instance:
 
-    buildbot create-master master
-    deactivate
+    $ buildbot create-master master
+
+The virtual environment can now be deactivated:
+
+    $ deactivate
 
 Configuration setup
 -------------------
 
 Download the buildbot master configuration:
 
-    git clone https://github.com/openafs-contrib/afsbotcfg.git
-    cd afsbotcfg
-    git checkout buildbot-13x
-    cd ..
+    $ git clone https://github.com/openafs-contrib/afsbotcfg.git
+    $ cd afsbotcfg
+    $ git checkout buildbot-13x
 
-Create a symlink to the `Makefile` as a convenience to start and stop the
-buildbot master.
+Create the `Makefile` and deploy the buildbot `master.cfg` file:
 
-    ln -s afsbotcfg/Makefile
+    $ python configure.py
+    $ make install
 
-Create a symlink to the `master.cfg` file in the master's base directory.
+Settings file
+-------------
 
-    cd master
-    ln -s ../afsbotcfg/master.cfg
-    cd ..
-
-Create a file called `settings.ini` in the master's base directory to store
-info which is not tracked with git. The `settings.ini` file has the following
-sections:
+Create a file called `settings.ini` in the `master` directory. This file stores
+information we do not track with git, such as the build worker passwords.  The
+`settings.ini` file has the following sections:
 
 * local - settings specific to the local environment
 * admins - the list of user emails and passwords for authenticated access
@@ -68,7 +73,7 @@ sections:
 
 Example:
 
-    cat master/settings.ini
+    $ cat master/settings.ini
     [local]
     buildbotURL = http://buildbot.openafs.org:8011/
     
@@ -84,15 +89,15 @@ Starting the master
 
 Check the buildbot master configuration with the command:
 
-    make check
+    $ make check
 
 Start the buildbot master with the command:
 
-    make start
+    $ make start
 
 Stop the buildbot master with the command:
 
-    make stop
+    $ make stop
 
 [1]: http://buildbot.openafs.org:8011
 [2]: https://openafs.org
