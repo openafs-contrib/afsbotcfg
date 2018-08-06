@@ -54,7 +54,6 @@ Download the buildbot master configuration:
 
     $ git clone https://github.com/openafs-contrib/afsbotcfg.git
     $ cd afsbotcfg
-    $ git checkout buildbot-13x
 
 Create the `Makefile` and deploy the buildbot `master.cfg` file:
 
