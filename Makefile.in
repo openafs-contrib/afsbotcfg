@@ -1,7 +1,7 @@
 
 TOPDIR=@TOPDIR@
-BUILDBOT=@BUILDBOT@
-MASTER=@MASTER@
+BUILDBOT=$(TOPDIR)/venv/bin/buildbot
+MASTER=$(TOPDIR)/master
 
 help:
 	@echo "make <target> [<target>...]"
@@ -14,7 +14,7 @@ help:
 	@echo "  reload    reload the running buildmaster"
 
 $(MASTER)/master.cfg:
-	cd $(MASTER) && ln -s $(TOPDIR)/master.cfg master.cfg
+	cd $(MASTER) && ln -s $(TOPDIR)/afsbotcfg/master.cfg master.cfg
 
 install: $(MASTER)/master.cfg
 
