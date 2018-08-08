@@ -16,7 +16,10 @@ help:
 $(MASTER)/master.cfg:
 	cd $(MASTER) && ln -s $(TOPDIR)/afsbotcfg/master.cfg master.cfg
 
-install: $(MASTER)/master.cfg
+$(MASTER)/settings.ini:
+	test -f $(MASTER)/settings.ini || cp $(TOPDIR)/afsbotcfg/sample.ini $(MASTER)/settings.ini
+
+install: $(MASTER)/master.cfg $(MASTER)/settings.ini
 
 start:
 	$(BUILDBOT) start $(MASTER)
@@ -27,12 +30,8 @@ stop:
 restart:
 	$(BUILDBOT) restart $(MASTER)
 
-checkconfig:
+check: install
 	$(BUILDBOT) checkconfig $(MASTER)
 
-reconfig:
+reload:
 	$(BUILDBOT) reconfig $(MASTER)
-
-# Aliases
-check: checkconfig
-reload: reconfig

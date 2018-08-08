@@ -55,7 +55,8 @@ Download the buildbot master configuration:
     $ git clone https://github.com/openafs-contrib/afsbotcfg.git
     $ cd afsbotcfg
 
-Create the `Makefile` and deploy the buildbot `master.cfg` file:
+Create the `Makefile` and deploy the buildbot `master.cfg` and
+sample `settings.ini` file:
 
     $ python configure.py
     $ make install
@@ -68,9 +69,9 @@ Make a link to the makefile in the top level directory:
 Master settings
 ---------------
 
-Create a file called `settings.ini` in the `master` directory. This file stores
+Edit the `settings.ini` file in the `master` directory. This file stores
 information we do not track with git, such as the buildbot worker passwords.
-The `settings.ini` file is an ini-formatted file with the following sections:
+The `settings.ini` file is an INI-style file with the following sections:
 
 * local - settings specific to the local environment
 * admins - the list of user emails and passwords for authenticated access
