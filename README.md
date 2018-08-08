@@ -69,8 +69,8 @@ Master settings
 ---------------
 
 Create a file called `settings.ini` in the `master` directory. This file stores
-information we do not track with git, such as the build worker passwords.  The
-`settings.ini` file is an ini-formatted file with the following sections:
+information we do not track with git, such as the buildbot worker passwords.
+The `settings.ini` file is an ini-formatted file with the following sections:
 
 * local - settings specific to the local environment
 * admins - the list of user emails and passwords for authenticated access
@@ -94,9 +94,10 @@ Gerrit account
 
 The buildbot master needs an account on the [OpenAFS Gerrit][3] to listen for
 Gerrit events and to report verified changes on successful builds.  The name of
-the account is `buildbot`. Place the ssh keys for the Gerrit account in the
-buildbot masters `.ssh` directory under the buildbot home directory. The key
-file name should match the ones defined in the `master.cfg` file.
+the account is `buildbot`. Place the ssh keys for the buildbot's Gerrit account
+in the `.ssh` directory under the home directory of the local account running
+the buildbot master. The key file name should match the ones defined in the
+`master.cfg` file.
 
 Starting the master
 -------------------
