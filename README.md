@@ -84,6 +84,15 @@ Example:
     example-worker1 = secret1
     example-worker2 = secret2
 
+Gerrit account
+--------------
+
+The buildbot master needs an account on the [OpenAFS Gerrit][3] to listen for
+Gerrit events and to report verified changes on successful builds.  The name of
+the account is `buildbot`. Place the ssh keys for the Gerrit account in the
+buildbot masters `.ssh` directory under the buildbot home directory. The key
+file name should match the ones defined in the `master.cfg` file.
+
 Starting the master
 -------------------
 
@@ -101,3 +110,4 @@ Stop the buildbot master with the command:
 
 [1]: http://buildbot.openafs.org:8011
 [2]: https://openafs.org
+[3]: https://gerrit.openafs.org/
