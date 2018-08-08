@@ -60,6 +60,11 @@ Create the `Makefile` and deploy the buildbot `master.cfg` file:
     $ python configure.py
     $ make install
 
+Make a link to the makefile in the top level directory:
+
+    $ cd ..
+    $ ln -s afsbotcfg/Makefile
+
 Master settings
 ---------------
 
