@@ -21,7 +21,7 @@ Ensure TCP ports 9986 and 8011 are open. (These are the ports used during the
 transition.) Create a `buildbot` user on the system.  The remaining steps to
 not require sudo access and should be run as the `buildbot` user.
 
-Optionaly create a project level directory, for example:
+Optionally create a project level directory, for example:
 
     $ mkdir openafs-buildbot
     $ cd openafs-buildbot
@@ -30,7 +30,7 @@ Create a Python virtual environment:
 
     $ python3 -m venv venv
 
-Activate the virtual envirnoment for the installation:
+Activate the virtual environment for the installation:
 
     $ source venv/bin/activate
 
