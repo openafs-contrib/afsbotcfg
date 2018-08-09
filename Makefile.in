@@ -35,3 +35,6 @@ check: install
 
 reload:
 	$(BUILDBOT) reconfig $(MASTER)
+
+lint:
+	(echo "basedir = 'dummy'"; cat $(TOPDIR)/afsbotcfg/master.cfg) | pyflakes3
