@@ -21,7 +21,7 @@ $(MASTER)/settings.ini:
 
 install: $(MASTER)/master.cfg $(MASTER)/settings.ini
 
-start:
+start: check
 	$(BUILDBOT) start $(MASTER)
 
 stop:
@@ -30,7 +30,7 @@ stop:
 restart:
 	$(BUILDBOT) restart $(MASTER)
 
-check: install
+check: install lint
 	$(BUILDBOT) checkconfig $(MASTER)
 
 reload:
