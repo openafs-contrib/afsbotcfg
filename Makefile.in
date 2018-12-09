@@ -1,6 +1,7 @@
 
 TOPDIR=@TOPDIR@
 BUILDBOT=$(TOPDIR)/venv/bin/buildbot
+PYFLAKES=$(TOPDIR)/venv/bin/pyflakes
 MASTER=$(TOPDIR)/master
 
 help:
@@ -37,4 +38,4 @@ reload:
 	$(BUILDBOT) reconfig $(MASTER)
 
 lint:
-	(echo "basedir = 'dummy'"; cat $(TOPDIR)/afsbotcfg/master.cfg) | pyflakes3
+	(echo "basedir = 'dummy'"; cat $(TOPDIR)/afsbotcfg/master.cfg) | $(PYFLAKES)
