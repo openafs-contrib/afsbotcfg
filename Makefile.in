@@ -28,13 +28,13 @@ start: check
 stop:
 	$(BUILDBOT) stop $(MASTER)
 
-restart:
+restart: check
 	$(BUILDBOT) restart $(MASTER)
 
 check: install lint
 	$(BUILDBOT) checkconfig $(MASTER)
 
-reload:
+reload: check
 	$(BUILDBOT) reconfig $(MASTER)
 
 lint:
