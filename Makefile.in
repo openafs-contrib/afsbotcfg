@@ -12,7 +12,6 @@ help:
 	@echo "  stop      stop the buildmaster"
 	@echo "  restart   restart the buildmaster"
 	@echo "  check     check the master.cfg file"
-	@echo "  reload    reload the running buildmaster"
 
 $(MASTER)/master.cfg:
 	cd $(MASTER) && ln -s $(TOPDIR)/afsbotcfg/master.cfg master.cfg
@@ -33,9 +32,6 @@ restart: check
 
 check: install lint
 	$(BUILDBOT) checkconfig $(MASTER)
-
-reload: check
-	$(BUILDBOT) reconfig $(MASTER)
 
 lint:
 	(echo "basedir = 'dummy'"; cat $(TOPDIR)/afsbotcfg/master.cfg) | $(PYFLAKES)
