@@ -110,6 +110,6 @@ Stop the buildbot master with the command:
 
     $ make stop
 
-[1]: http://buildbot.openafs.org:8010
+[1]: https://buildbot.openafs.org/
 [2]: https://openafs.org
 [3]: https://gerrit.openafs.org/
