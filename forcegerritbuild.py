@@ -84,7 +84,7 @@ class ForceGerritBuild(schedulers.ForceScheduler):
             (out, err, status) = result
 
             if status != 0:
-                log.msg("gerrit status error:", status)
+                log.msg("forcegerritrebuild: gerrit status error: %d %s" % (status, err))
                 raise ValidationError("Error response from Gerrit %s" % (self.gerrit_server,))
             try:
                 out = out.strip()
@@ -149,7 +149,7 @@ class ForceGerritBuild(schedulers.ForceScheduler):
 
             gerritinfo = yield self.gerrit.query(UI_issue)
 
-            if gerritinfo is None or gerritinfo['number'] != UI_issue:
+            if gerritinfo is None or str(gerritinfo['number']) != str(UI_issue):
                 raise ValidationError("Unable to retrieve gerrit issue %d" % (UI_issue))
 
             # Get the requested patchset
@@ -162,7 +162,7 @@ class ForceGerritBuild(schedulers.ForceScheduler):
                 patchset = None
                 UI_patchset = int(UI_patchset)
                 for ps in gerritinfo['patchSets']:
-                    if ps['number'] == UI_patchset:
+                    if str(ps['number']) == str(UI_patchset):
                         patchset = ps
 
                 if patchset is None:
@@ -176,10 +176,12 @@ class ForceGerritBuild(schedulers.ForceScheduler):
 
             # Make sure there are some workers available to build this branch
             if branch not in self.branchbuilders:
+                log.msg("forcegerritbuild: branch %s does not have any configured builders" % (branch, ))
                 raise ValidationError("Branch %s does not have any configured builders" % (branch,))
 
             builderNames = self.branchbuilders[branch]
             if not builderNames:
+                log.msg("forcegerritbuild: empty builders for branch: %s" (branch,))
                 raise ValidationError("Empty builders for branch %s" % (branch,))
 
             # Set the properties neede by GerritStatusPush reporter
@@ -206,7 +208,8 @@ class ForceGerritBuild(schedulers.ForceScheduler):
                 'project': project
             }
         ]
-
+        log.msg("forcegerritbuild: rebuilding branch[%s] revision[%s] project[%s] event.change.id[%s]" %
+                (patchset['ref'], patchset['revision'], project, changeid))
         # everything is set and validated, we can create our source stamp, and
         # buildrequest
         res = yield self.addBuildsetForSourceStampsWithDefaults(
