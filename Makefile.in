@@ -19,7 +19,10 @@ $(MASTER)/master.cfg:
 $(MASTER)/settings.ini:
 	test -f $(MASTER)/settings.ini || cp $(TOPDIR)/afsbotcfg/sample.ini $(MASTER)/settings.ini
 
-install: $(MASTER)/master.cfg $(MASTER)/settings.ini
+$(MASTER)/forcegerritbuild.py:
+	cd $(MASTER) && ln -s $(TOPDIR)/afsbotcfg/forcegerritbuild.py forcegerritbuild.py
+
+install: $(MASTER)/master.cfg $(MASTER)/settings.ini $(MASTER)/forcegerritbuild.py
 
 start: check
 	$(BUILDBOT) start $(MASTER)
