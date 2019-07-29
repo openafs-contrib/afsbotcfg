@@ -100,7 +100,7 @@ class ForceGerritBuild(schedulers.ForceScheduler):
             return dataresult
 
     def __init__(self, name, gerritserver=None, gerritport=29418, username=None, identity_file=None,
-                 branchbuilders=None, **kwargs):
+                 gerriturl=None, branchbuilders=None, **kwargs):
 
         builderNames = set()
         for _ in branchbuilders.values():
@@ -113,6 +113,8 @@ class ForceGerritBuild(schedulers.ForceScheduler):
                                   gerritport=gerritport,
                                   username=username,
                                   identity_file=identity_file)
+
+        self.gerrit_url = gerriturl
 
         super().__init__(name, builderNames, **kwargs)
 
@@ -188,6 +190,14 @@ class ForceGerritBuild(schedulers.ForceScheduler):
             properties.setProperty("event.change.id", changeid, "GerritForceBuild")
             properties.setProperty("event.change.project", project, "GerritForceBuild")
             properties.setProperty("event.patchSet.revision", patchset['revision'], "GerritForceBuild")
+
+            if self.gerrit_url:
+                url = self.gerrit_url % {
+                    "project": project,
+                    "changenumber": str(gerritinfo['number']),
+                    "patchsetnumber": str(patchset['number'])
+                }
+                properties.setProperty("event.change.url", url, "GerritForceBuild" )
 
         except Exception as e:
             collector.setError(str(e))
