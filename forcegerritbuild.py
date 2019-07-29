@@ -75,11 +75,11 @@ class ForceGerritBuild(schedulers.ForceScheduler):
             ] + list(args)
 
         @defer.inlineCallbacks
-        def query(self, gerritissue):
+        def query(self, changenumber):
             """
                 Run gerrit query and return the data result
             """
-            cmd = self._gerritCmd("query --format json --patch-sets limit:1 change:%s" % (gerritissue,))
+            cmd = self._gerritCmd("query --format json --patch-sets limit:1 change:%s" % (changenumber,))
             result = yield getProcessOutputAndValue(cmd[0], cmd[1:])
             (out, err, status) = result
 
@@ -146,17 +146,17 @@ class ForceGerritBuild(schedulers.ForceScheduler):
 
         try:
             # Retrieve the gerrit change
-            collector.setFieldName("gerritissue")
-            UI_issue = int(properties.getProperty("gerritissue"))
+            collector.setFieldName("changenumber")
+            UI_changenum = str(properties.getProperty("changenumber"))
 
-            gerritinfo = yield self.gerrit.query(UI_issue)
+            gerritinfo = yield self.gerrit.query(UI_changenum)
 
-            if gerritinfo is None or str(gerritinfo['number']) != str(UI_issue):
-                raise ValidationError("Unable to retrieve gerrit issue %d" % (UI_issue))
+            if gerritinfo is None or str(gerritinfo['number']) != UI_changenum:
+                raise ValidationError("Unable to retrieve gerrit issue %s" % (UI_changenum,))
 
             # Get the requested patchset
-            collector.setFieldName("gerritpatchset")
-            UI_patchset = properties.getProperty("gerritpatchset")
+            collector.setFieldName("patchsetnumber")
+            UI_patchset = properties.getProperty("patchsetnumber")
             patchsets = gerritinfo['patchSets']
             patchset = max(patchsets, key=lambda item: item['number'])
 
@@ -164,14 +164,14 @@ class ForceGerritBuild(schedulers.ForceScheduler):
                 patchset = None
                 UI_patchset = int(UI_patchset)
                 for ps in gerritinfo['patchSets']:
-                    if str(ps['number']) == str(UI_patchset):
+                    if int(ps['number']) == UI_patchset:
                         patchset = ps
 
                 if patchset is None:
                     raise ValidationError("Invalid patchset '%d'" % (UI_patchset,))
 
             # Prepare the values needed for the GerritStatusPush reporter
-            collector.setFieldName("gerritissue")
+            collector.setFieldName("changenumber")
             branch = gerritinfo['branch']
             changeid = gerritinfo['id']
             project = gerritinfo['project']
@@ -187,9 +187,10 @@ class ForceGerritBuild(schedulers.ForceScheduler):
                 raise ValidationError("Empty builders for branch %s" % (branch,))
 
             # Set the properties neede by GerritStatusPush reporter
-            properties.setProperty("event.change.id", changeid, "GerritForceBuild")
-            properties.setProperty("event.change.project", project, "GerritForceBuild")
-            properties.setProperty("event.patchSet.revision", patchset['revision'], "GerritForceBuild")
+            properties.setProperty("event.change.id", changeid, "ForceGerritBuild")
+            properties.setProperty("event.patchSet.number", str(patchset['number']), "ForceGerritBuild")
+            properties.setProperty("event.change.project", project, "ForceGerritBuild")
+            properties.setProperty("event.patchSet.revision", patchset['revision'], "ForceGerritBuild")
 
             if self.gerrit_url:
                 url = self.gerrit_url % {
@@ -204,8 +205,8 @@ class ForceGerritBuild(schedulers.ForceScheduler):
 
         collector.maybeRaiseCollectedErrors()
 
-        properties.setProperty("reason", reason, "GerritForceBuild")
-        properties.setProperty("owner", owner, "GerritForceBuild")
+        properties.setProperty("reason", reason, "ForceGerritBuild")
+        properties.setProperty("owner", owner, "ForceGerritBuild")
 
         reason = self.reasonString % {'owner': owner, 'reason': reason}
 
