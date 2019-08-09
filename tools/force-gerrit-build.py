@@ -55,7 +55,11 @@ def main():
     rsp = session.post('https://buildbot.openafs.org/api/v2/forceschedulers/ForceGerritBuild', json=payload)
     print(rsp)
     print(rsp.text)
-    return rsp.status_code == 200
+    if rsp.status_code == 200:
+        code = 0
+    else:
+        code = 1
+    return code
 
 if __name__ == '__main__':
     sys.exit(main())
