@@ -1,11 +1,14 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 
 import argparse
 import getpass
 import os
 import sys
 import requests
-from configparser import ConfigParser
+try:
+    from configparser import ConfigParser
+except ImportError:
+    from ConfigParser import ConfigParser
 
 def die(msg):
     sys.stderr.write('%s\n' % msg)
@@ -14,12 +17,16 @@ def die(msg):
 def main():
     config = ConfigParser()
     config.read([os.path.expanduser('~/.buildbotrc')])
+    try:
+        login = dict(config.items('login'))
+    except:
+        login = {}
 
     parser = argparse.ArgumentParser(
         description='Force Gerrit Builds',
         epilog='Default values are read from the ~/.buildbotrc file, if it exists.')
-    parser.add_argument('-u', '--username', metavar='<username>', default=config.get('login','username',fallback=None))
-    parser.add_argument('-p', '--password', metavar='<password>', default=config.get('login','password',fallback=None))
+    parser.add_argument('-u', '--username', metavar='<username>', default=login.get('username',None))
+    parser.add_argument('-p', '--password', metavar='<password>', default=login.get('password',None))
     parser.add_argument('number', type=int)
     args = parser.parse_args()
 
@@ -55,13 +62,10 @@ def main():
     print('Login ok')
 
     rsp = session.post('https://buildbot.openafs.org/api/v2/forceschedulers/ForceGerritBuild', json=payload)
-    print(rsp)
-    print(rsp.text)
-    if rsp.status_code == 200:
-        code = 0
-    else:
-        code = 1
-    return code
+    if rsp.status_code != 200:
+        print('Post failed', rsp.text)
+        return 1
+    print('Verfication builds for gerrit %d requested.' % args.number)
 
 if __name__ == '__main__':
     sys.exit(main())
