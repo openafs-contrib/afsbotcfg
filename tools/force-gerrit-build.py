@@ -1,9 +1,10 @@
 #!/usr/bin/python3
 
-import requests
-import sys
-import os
 import argparse
+import getpass
+import os
+import sys
+import requests
 from configparser import ConfigParser
 
 def die(msg):
@@ -21,10 +22,11 @@ def main():
     parser.add_argument('-p', '--password', metavar='<password>', default=config.get('login','password',fallback=None))
     parser.add_argument('number', type=int)
     args = parser.parse_args()
+
     if not args.username:
-        die('No username specified.')
+        args.username = getpass.getuser()
     if not args.password:
-        die('No password specified.')
+        args.password = getpass.getpass()
 
     payload = {
       'id': 1,
