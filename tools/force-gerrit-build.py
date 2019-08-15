@@ -28,6 +28,7 @@ def main():
     parser.add_argument('-u', '--username', metavar='<username>', default=login.get('username',None))
     parser.add_argument('-p', '--password', metavar='<password>', default=login.get('password',None))
     parser.add_argument('number', type=int)
+    parser.add_argument('patchset', type=int, nargs='?')
     args = parser.parse_args()
 
     if not args.username:
@@ -47,8 +48,8 @@ def main():
         'project': 'test',
         'repository': '',
         'revision': '',
-        'changenumber': '%d' % args.number,
-        'patchsetnumber': ''
+        'changenumber': str(args.number),
+        'patchsetnumber': str(args.patchset) if args.patchset else '',
       }
     }
 
