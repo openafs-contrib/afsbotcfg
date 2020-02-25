@@ -1,4 +1,36 @@
 #!/usr/bin/python
+#
+# Manually schedule builds of gerrits by number.
+#
+# This tool can be used to trigger gerrit verification builds by gerrit number.
+# This can be handy when retrying a build because a worker was down. By
+# default, the buildbot master will schedule the most recent patchset to be
+# built. You may specify an older patchset number if for some reason you want
+# to build an older patchset.
+#
+# Setup
+# -----
+#
+# 1. Install required packages:
+#
+#    $ pip install -r requirements.txt
+#
+# 2. Copy this script to a location in your PATH, for example:
+#
+#    $ cp bb-verify-gerrit.py ~/.local/bin
+#
+# 3. Optionally, put your buildbot credentials in the ~/.buildbotrc file.
+#    bb-verify-gerrit.py will prompt for your credentials otherwise.
+#
+#      [login]
+#      username = tycobb@yoyodyne.com
+#      password = secret
+#
+# Examples
+# --------
+#
+#    $ bb-verify-gerrit.py 12345
+#
 
 import argparse
 import getpass
@@ -23,7 +55,7 @@ def main():
         login = {}
 
     parser = argparse.ArgumentParser(
-        description='Force Gerrit Builds',
+        description='Schedule Gerrit Verification',
         epilog='Default values are read from the ~/.buildbotrc file, if it exists.')
     parser.add_argument('-u', '--username', metavar='<username>', default=login.get('username',None))
     parser.add_argument('-p', '--password', metavar='<password>', default=login.get('password',None))
