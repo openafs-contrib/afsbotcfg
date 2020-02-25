@@ -17,10 +17,10 @@
 #
 # 2. Copy this script to a location in your PATH, for example:
 #
-#    $ cp force-gerrit-build.py ~/.local/bin
+#    $ cp bb-verify-gerrit.py ~/.local/bin
 #
 # 3. Optionally, put your buildbot credentials in the ~/.buildbotrc file.
-#    force-gerrit-build.py will prompt for your credentials otherwise.
+#    bb-verify-gerrit.py will prompt for your credentials otherwise.
 #
 #      [login]
 #      username = tycobb@yoyodyne.com
@@ -29,7 +29,7 @@
 # Examples
 # --------
 #
-#    $ force-gerrit-build.py 12345
+#    $ bb-verify-gerrit.py 12345
 #
 
 import argparse
@@ -55,7 +55,7 @@ def main():
         login = {}
 
     parser = argparse.ArgumentParser(
-        description='Force Gerrit Builds',
+        description='Schedule Gerrit Verification',
         epilog='Default values are read from the ~/.buildbotrc file, if it exists.')
     parser.add_argument('-u', '--username', metavar='<username>', default=login.get('username',None))
     parser.add_argument('-p', '--password', metavar='<password>', default=login.get('password',None))
