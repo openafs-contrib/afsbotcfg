@@ -127,7 +127,10 @@ def sendmail(subject, text):
     msg['Subject'] = subject
     msg['Date'] = formatdate()
     msg['Message-ID'] = make_msgid()
-    msg.set_content(text)
+    if 'epilog' in c:
+        msg.set_content(text + "\n\n" + c['epilog'])
+    else:
+        msg.set_content(text)
 
     context = ssl.create_default_context()
     with smtplib.SMTP_SSL(c['server'], c['port'], context=context) as server:
