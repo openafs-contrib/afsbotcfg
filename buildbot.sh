@@ -42,7 +42,9 @@ case "$1" in
         $BOS stop localhost buildbot -localauth
         ;;
     restart)
-        $BOS restart localhost buildbot -localauth
+        $BOS stop localhost buildbot -localauth
+        sleep 5
+        $BOS start localhost buildbot -localauth
         ;;
     status)
         $BOS status localhost -localauth
