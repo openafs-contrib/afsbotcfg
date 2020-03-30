@@ -42,7 +42,7 @@ WORKERS = (
     'macos10-14-x86_64',
     'macos10-15-x86_64',
     'opensuse12-x86_64',
-    'opensuse13-arm',
+    #'opensuse13-arm',
     'opensuse-tumbleweed-i386',
     'opensuse-tumbleweed-x86_64',
     'sol11sparc',
