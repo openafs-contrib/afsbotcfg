@@ -47,6 +47,7 @@ WORKERS = (
     'opensuse-tumbleweed-i386',
     'opensuse-tumbleweed-x86_64',
     'sol11sparc',
+    'solaris114_x86_1',
     'sun510_x86',
     'sun511_x86',
     'ubuntu1610-x86_64',
