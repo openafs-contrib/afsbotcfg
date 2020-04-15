@@ -52,7 +52,6 @@ WORKERS = (
     'sun511_x86',
     'ubuntu1610-x86_64',
     'ubuntu1804-amd64',
-    'win7-amd64',
     'wins2019-amd64',
 )
 
