@@ -35,6 +35,7 @@ WORKERS = (
     'fedora29-x86_64',
     'fedora30-x86_64',
     'fedora31-x86_64',
+    'fedora32-x86_64',
     'gentoo-amd64',
     'gentoo-gcc-amd64',
     'linux-rc-x86_64',
