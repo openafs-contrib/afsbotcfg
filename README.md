@@ -12,21 +12,17 @@ master in a Python virtual environment.  With sudo/root access, install Python3
 and the development packages for it.
 
 Ensure TCP ports 9989 and 8010 are open. Create a `buildbot` user on the
-system.  The remaining steps to not require sudo access and should be run as
+system.  The remaining steps do not require sudo access and should be run as
 the `buildbot` user.
-
-Optionally create a project level directory, for example:
-
-    $ mkdir openafs-buildbot
-    $ cd openafs-buildbot
 
 Create a Python virtual environment:
 
-    $ python3 -m venv venv
+    $ mkdir -p .venv
+    $ python3 -m venv .venv/buildbot-<yyyymmdd>
 
 Activate the virtual environment for the installation:
 
-    $ source venv/bin/activate
+    $ source .venv/buildbot-<yyyymmdd>/bin/activate
 
 Install buildbot and it's dependencies:
 
