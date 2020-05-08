@@ -20,51 +20,24 @@ try:
 except ImportError:
     from ConfigParser import ConfigParser
 
-WORKERS = (
-    'centos73-x86_64',
-    'centos7-arm64',
-    'debian87-x86_64',
-    'debian9-amd64',
-    'fedora22-x86_64',
-    'fedora23-x86_64',
-    'fedora24-x86_64',
-    'fedora25-x86_64',
-    'fedora26-x86_64',
-    'fedora27-x86_64',
-    'fedora28-x86_64',
-    'fedora29-x86_64',
-    'fedora30-x86_64',
-    'fedora31-x86_64',
-    'fedora32-x86_64',
-    'gentoo-amd64',
-    'gentoo-gcc-amd64',
-    'linux-rc-x86_64',
-    'macos10-13-x86_64',
-    'macos10-14-x86_64',
-    'macos10-15-x86_64',
-    'opensuse12-x86_64',
-    #'opensuse13-arm',
-    'opensuse15-arm64',
-    'opensuse-tumbleweed-i386',
-    'opensuse-tumbleweed-x86_64',
-    'sol11sparc',
-    'solaris114_x86_1',
-    'sun510_x86',
-    'sun511_x86',
-    'ubuntu1610-x86_64',
-    'ubuntu1804-amd64',
-    'wins2019-amd64',
-)
-
 class RollCallError(Exception):
     pass
 
-def roll_call():
-    """Retreive connection status of workers.
+def worker_roster():
+    """Read the list of known workers from the buildbot master config."""
+    parser = ConfigParser()
+    if not parser.read([os.path.expanduser('~/.buildbotrc')]):
+        raise RollCallError('Unable to read .buildbotrc')
+    option = parser.get('rollcall', 'workers')
+    workers = option.split()
+    return workers
+
+def roll_call(roster):
+    """Retrieve connection status of workers.
 
     Returns an dictionary of workers by name. The values include the connection
     status and worker admin info.  Raises exceptions if the workers info cannot
-    be retreive, an entry is missing, or an unexcepted entry is found.
+    be retrieve, an entry is missing, or an unexpected entry is found.
     """
     session = requests.Session()
     rsp = session.get('https://buildbot.openafs.org/api/v2/workers')
@@ -87,7 +60,7 @@ def roll_call():
         host = host.replace('\n', ' ').replace(':', ' ').strip()
 
         # Verify we know about this worker if it is online.
-        if name not in WORKERS:
+        if name not in roster:
             if status == 'online':
                 raise RollCallError('Unknown worker: %s' % name)
             else:
@@ -96,7 +69,7 @@ def roll_call():
         workers[name] = {'name':name, 'status':status, 'admin':admin, 'host':host}
 
     # Verify we did not miss any.
-    for name in WORKERS:
+    for name in roster:
         if not name in workers:
             raise RollCallError('No information for worker: %s' % name)
 
@@ -146,7 +119,8 @@ def main():
     parser.add_argument('-m', '--mail', action='store_true', help='Send email')
     args = parser.parse_args()
     try:
-        workers = roll_call()
+        roster = worker_roster()
+        workers = roll_call(roster)
         text = as_text(workers, all_=args.all)
         if text:
             sys.stdout.write('%s\n' % text)
