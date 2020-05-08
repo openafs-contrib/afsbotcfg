@@ -17,12 +17,12 @@ the `buildbot` user.
 
 Create a Python virtual environment:
 
-    $ mkdir -p .venv
-    $ python3 -m venv .venv/buildbot-<yyyymmdd>
+    $ mkdir -p ~/.venv
+    $ python3 -m venv ~/.venv/buildbot-<yyyymmdd>
 
 Activate the virtual environment for the installation:
 
-    $ source .venv/buildbot-<yyyymmdd>/bin/activate
+    $ source ~/.venv/buildbot-<yyyymmdd>/bin/activate
 
 Install buildbot and it's dependencies:
 
