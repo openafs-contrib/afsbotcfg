@@ -1,7 +1,8 @@
 
 TOPDIR=@TOPDIR@
-BUILDBOT=$(TOPDIR)/venv/bin/buildbot
-PYFLAKES=$(TOPDIR)/venv/bin/pyflakes
+BIN=$(HOME)/.venv/buildbot/bin
+BUILDBOT=$(BIN)/buildbot
+PYFLAKES=$(BIN)/pyflakes
 MASTER=$(TOPDIR)/master
 
 help:
