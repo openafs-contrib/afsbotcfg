@@ -13,14 +13,17 @@ help:
 	@echo "  restart   restart the buildmaster"
 	@echo "  check     check the master.cfg file"
 
-$(MASTER)/master.cfg:
-	cd $(MASTER) && ln -s $(TOPDIR)/afsbotcfg/master.cfg master.cfg
+$(MASTER)/master.cfg: $(TOPDIR)/afsbotcfg/master.cfg
+	mkdir -p $(MASTER)
+	ln -s $(TOPDIR)/afsbotcfg/master.cfg $(MASTER)/master.cfg
 
 $(MASTER)/settings.ini:
+	mkdir -p $(MASTER)
 	test -f $(MASTER)/settings.ini || cp $(TOPDIR)/afsbotcfg/sample.ini $(MASTER)/settings.ini
 
 $(MASTER)/forcegerritbuild.py:
-	cd $(MASTER) && ln -s $(TOPDIR)/afsbotcfg/forcegerritbuild.py forcegerritbuild.py
+	mkdir -p $(MASTER)
+	ln -s $(TOPDIR)/afsbotcfg/forcegerritbuild.py $(MASTER)/forcegerritbuild.py
 
 install: $(MASTER)/master.cfg $(MASTER)/settings.ini $(MASTER)/forcegerritbuild.py
 
