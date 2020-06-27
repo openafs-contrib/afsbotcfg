@@ -93,7 +93,7 @@ def sendmail(subject, text):
         c = dict(parser.items('email'))
     except KeyError:
         raise RollCallError('Missing email section in .buildbotrc')
-    for name in ('server', 'port', 'userid', 'password', 'from', 'to'):
+    for name in ('server', 'from', 'to'):
         if not name in c:
             raise RollCallError('Missing email %s option in .buildbotrc' % name)
 
@@ -108,10 +108,17 @@ def sendmail(subject, text):
     else:
         msg.set_content(text)
 
-    context = ssl.create_default_context()
-    with smtplib.SMTP_SSL(c['server'], c['port'], context=context) as server:
-        server.login(c['userid'], c['password'])
-        server.send_message(msg)
+    if c['server'] == 'local':
+        with smtplib.SMTP('localhost') as server:
+            server.send_message(msg)
+    else:
+        for name in ('port', 'userid', 'password'):
+            if not name in c:
+                raise RollCallError('Missing email %s option in .buildbotrc' % name)
+        context = ssl.create_default_context()
+        with smtplib.SMTP_SSL(c['server'], c['port'], context=context) as server:
+            server.login(c['userid'], c['password'])
+            server.send_message(msg)
 
 def main():
     parser = argparse.ArgumentParser(description='Take worker attendance')
