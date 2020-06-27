@@ -124,15 +124,19 @@ def main():
     parser = argparse.ArgumentParser(description='Take worker attendance')
     parser.add_argument('-a', '--all', action='store_true', help='Show all workers')
     parser.add_argument('-m', '--mail', action='store_true', help='Send email')
+    parser.add_argument('-q', '--quiet', action='store_true', help='Quiet mode')
     args = parser.parse_args()
     try:
         roster = worker_roster()
         workers = roll_call(roster)
         text = as_text(workers, all_=args.all)
         if text:
-            sys.stdout.write('%s\n' % text)
             if args.mail:
+                if not args.quiet:
+                    sys.stdout.write('Sending Mail:\n %s\n' % text)
                 sendmail('Buildbot roll call', text)
+            elif not args.quiet:
+                sys.stdout.write('%s\n' % text)
     except RollCallError as e:
         text = 'Error: %s\n' % e
         sys.stderr.write(text)
