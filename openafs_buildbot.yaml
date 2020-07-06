@@ -1,0 +1,321 @@
+---
+#------------------------------------------------------------------------------------
+# Master
+#
+- name: "OpenAFS upstream buildbot master"
+  hosts: openafs_buildbot_masters
+  tags:
+    - community
+    - master
+  tasks:
+    - name: "Install buildbot master README"
+      copy:
+        src: "README.master"
+        dest: "{{ ansible_user_dir }}/README"
+
+    - name: "Install ssh keys for gerrit event streaming"
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ ansible_user_dir }}/.ssh/{{ item.src | basename }}"
+        mode: "{{ item.mode }}"
+        decrypt: "{{ item.decrypt }}"
+      loop:
+        - src: "gerrit"
+          mode: "0600"
+          decrypt: yes
+        - src: "gerrit.pub"
+          mode: "0644"
+          decrypt: no
+
+    - name: "Add gerrit.openafs.org entry to known_hosts"
+      known_hosts:
+        name: "[gerrit.openafs.org]:29418"
+        key: "{{ lookup('file', 'gerrit.hostkey') }}"
+      # Workaround idempotency bug on old host.
+      when: not (buildbot_master_install | default('yes') | bool)
+
+    - name: "Get ssh client version"
+      command: ssh -V
+      check_mode: no
+      changed_when: false
+      register: ssh_version
+
+    - name: "Trace ssh_version"
+      debug:
+        var: ssh_version
+        verbosity: 1
+
+    - name: "Permit ssh dsa keys"
+      lineinfile:
+        state: present
+        path: "{{ ansible_user_dir }}/.ssh/config"
+        line: "PubkeyAcceptedKeyTypes=+ssh-dss"
+        create: yes
+        mode: "0600"
+      when: ssh_version.stderr.split(',')[0] is version('OpenSSH_7', 'ge')
+
+    - name: "Install buildbot master"
+      import_role:
+        name: buildbot_master
+      vars:
+        buildbot_master_config_files:
+          - src: "master.cfg"
+            decrypt: no
+          - src: "forcegerritbuild.py"
+            decrypt: no
+          - src: "passwords.ini"
+            decrypt: yes
+        buildbot_master_config_templates:
+          - src: "settings.ini"
+            decrypt: no
+
+#------------------------------------------------------------------------------------
+#  Workers
+#
+- name: "SNA contributed buildbot workers for OpenAFS"
+  hosts: openafs_buildbot_workers
+  tags:
+    - community
+    - worker
+  vars:
+    buildbot_worker_password: >-
+      {{ lookup('ini', buildbot_worker_name + ' section=workers file=passwords.ini') }}
+  pre_tasks:
+    - name: "Variable checks"
+      assert:
+        that:
+          - buildbot_master_host is defined
+          - buildbot_master_port is defined
+          - buildbot_project is defined
+          - buildbot_worker_name is defined
+          - buildbot_worker_admin is defined
+          - buildbot_worker_password | length > 0
+  roles:
+    - openafs_devel
+    - buildbot_worker
+
+#------------------------------------------------------------------------------------
+# Virt-run hypervisors
+#
+- name: "OpenAFS builbot hypervisors"
+  hosts: hypervisors
+  tasks:
+    - name: "Create buildbot user"
+      become: yes
+      user:
+        state: present
+        name: buildbot
+        groups: libvirt,kvm
+        append: yes
+
+    - name: "Distribute buildbot public ssh key"
+      become: yes
+      authorized_key:
+        state: present
+        user: buildbot
+        key: "{{ lookup('file', 'sshkeys/buildbot.pub') }}"
+
+#------------------------------------------------------------------------------------
+#  virt-run builders
+#
+#  The virt-run builders clone a virtual machine image to do each build, and then
+#  remove the image after the build is complete.
+#
+#  Use virt_run_template.yaml to setup the template image to be cloned on each build.
+#
+- name: "OpenAFS buildbot virt-run workers"
+  hosts: openafs_buildbot_virt_run_workers
+  tags:
+    - community
+    - worker
+  vars:
+    buildbot_worker_password: >-
+      {{ lookup('ini', buildbot_worker_name + ' section=workers file=passwords.ini') }}
+  tasks:
+    - name: "Variable checks"
+      assert:
+        that:
+          - ansible_os_family in ["Debian"]
+          - buildbot_master_host is defined
+          - buildbot_master_port is defined
+          - buildbot_project is defined
+          - buildbot_worker_name is defined
+          - buildbot_worker_admin is defined
+          - buildbot_worker_password | length > 0
+
+    - name: "Create buildbot user"
+      become: yes
+      user:
+        name: buildbot
+        group: buildbot
+        shell: /bin/bash
+
+    - name: "Create buildbot .ssh directory"
+      become: yes
+      file:
+        state: directory
+        path: "/home/buildbot/.ssh"
+        owner: buildbot
+        group: buildbot
+        mode: "0700"
+
+    - name: "Install buildbot ssh keys for libvirtd access"
+      become: yes
+      copy:
+        src: "{{ item.src }}"
+        dest: "/home/buildbot/.ssh/{{ item.src | basename }}"
+        decrypt: "{{ item.decrypt }}"
+        owner: buildbot
+        group: buildbot
+        mode: "{{ item.mode }}"
+      loop:
+        - src: sshkeys/buildbot
+          mode: "0600"
+          decrypt: yes
+        - src: sshkeys/buildbot.pub
+          mode: "0644"
+          decrypt: no
+
+    - name: "Install buildbot ssh config for libvirtd access"
+      become: yes
+      template:
+        src: ssh_config.j2
+        dest: "/home/buildbot/.ssh/config"
+        owner: buildbot
+        group: buildbot
+        mode: "0600"
+
+    - name: "Install buildbot worker"
+      import_role:
+        name: buildbot_worker
+
+    - name: "Debian: Install packages"
+      become: yes
+      apt:
+        state: present
+        name:
+          - make
+          - git
+          - libvirt-clients
+          - virtinst
+          - python-libvirt
+      when: ansible_os_family == "Debian"
+
+    - name: "Create libvirt config directory"
+      become: yes
+      file:
+        state: directory
+        path: /home/buildbot/.config/libvirt
+        owner: buildbot
+        group: buildbot
+        mode: "0755"
+
+    - name: "Configure libvirt default uri"
+      become: yes
+      copy:
+        content: |
+            uri_default = "qemu+ssh://{{ libvirt_host }}/system"
+        dest: /home/buildbot/.config/libvirt/libvirt.conf
+        owner: buildbot
+        group: buildbot
+        mode: "0644"
+      when: libvirt_host is defined
+
+    - name: "Download virt-utils"
+      git:
+        repo: "https://github.com/meffie/virt-utils.git"
+        dest: "{{ ansible_user_dir }}/virt-utils"
+        version: virt-run
+
+    - name: "Install virt-utils"
+      become: yes
+      command:
+        cmd: make install
+        chdir: "{{ ansible_user_dir }}/virt-utils"
+        creates: "/usr/local/bin/virt-run"
+
+    - name: "Install virt-run build scripts"
+      become: yes
+      copy:
+        remote_src: yes
+        src: "{{ ansible_user_dir }}/virt-utils/examples/{{ item }}"
+        dest: "/usr/local/bin/{{ item }}"
+        owner: root
+        group: root
+        mode: "0755"
+      with_items:
+        - virt-run-build.sh
+        - virt-run-test.sh
+
+    - name: "Configure virt-run"
+      become: yes
+      lineinfile:
+        path: "/usr/local/bin/virt-run"
+        regexp: "^export LIBVIRT_DEFAULT_URI="
+        line: 'export LIBVIRT_DEFAULT_URI="qemu+ssh://{{ libvirt_host }}/system"'
+      when: libvirt_host is defined
+
+    - name: "Configure virt-run-build base prefix"
+      become: yes
+      lineinfile:
+        path: "/usr/local/bin/virt-run-build.sh"
+        regexp: '^    --base-prefix "zz-" \\'
+        line: '    --base-prefix "{{ virt_run_base_prefix }}" \'
+      when: virt_run_base_prefix is defined
+
+    - name: "Configure virt-run-build base"
+      become: yes
+      lineinfile:
+        path: "/usr/local/bin/virt-run-build.sh"
+        regexp: "^opt_base="
+        line: 'opt_base="{{ virt_run_base }}"'
+      when: virt_run_base is defined
+
+    - name: "Install README file"
+      become: yes
+      template:
+        src: README.virt-run.j2
+        dest: /home/buildbot/README
+        owner: buildbot
+        group: buildbot
+        mode: "0644"
+
+#------------------------------------------------------------------------------------
+#  Worker roll call cron job.
+#
+#  The cron job periodically checks the workers configured in the master password.ini
+#  file are online, and sends mail otherwise.
+#
+- name: "OpenAFS buildbot worker roll call"
+  hosts: openafs_buildbot_monitors
+  tags:
+    - community
+    - cron
+  tasks:
+    - name: "Install buildbot roll call script"
+      become: yes
+      copy:
+        src: "bb-roll-call.py"
+        dest: "/usr/local/bin/bb-roll-call.py"
+        owner: root
+        group: root
+        mode: "0755"
+      tags:
+        - root
+
+    - name: "Install buildbot roll call config"
+      template:
+        src: buildbotrc.j2
+        dest: "{{ ansible_user_dir }}/.buildbotrc"
+
+    - name: "Add buildbot roll call cron job"
+      become: yes
+      cron:
+        name: "openafs buildbot roll call"
+        minute: "5"
+        hour: "5"
+        user: "{{ ansible_user_id }}"
+        cron_file: "local-buildbot-roll-call"
+        job: "/usr/local/bin/bb-roll-call.py --mail --quiet"
+      tags:
+        - root
