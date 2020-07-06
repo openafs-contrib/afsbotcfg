@@ -1,0 +1,24 @@
+---
+# Legacy init.d settings file.
+- name: "Ubuntu-20: Install buildbot worker settings"
+  become: yes
+  template:
+    src: buildbot-worker.debian.j2
+    dest: /etc/default/buildbot-worker
+    owner: root
+    group: root
+    mode: 0644
+  tags: root
+
+# Note: The debian unit file is parameterized with the project name.
+- name: "Ubuntu-20: Set service name"
+  set_fact:
+    buildbot_worker_service: buildbot-worker@{{ buildbot_project }}
+
+- name: "Ubuntu-20: Start buildbot worker service"
+  become: yes
+  systemd:
+    name: "{{ buildbot_worker_service }}"
+    enabled: yes
+    state: started
+  tags: root

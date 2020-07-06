@@ -1,0 +1,9 @@
+---
+- name: "Reload buildbot master configuration"
+  listen: "reload buildbot master"
+  debug:
+    msg: "systemctl reload buildbot"
+
+#  command:
+#    cmd: "{{ buildbot_bin }} reconfig {{ buildbot_master_basedir }}"
+#  when: not buildbot_master_start_results.changed

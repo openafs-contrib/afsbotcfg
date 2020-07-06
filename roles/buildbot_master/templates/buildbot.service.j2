@@ -1,0 +1,18 @@
+[Unit]
+Description=BuildBot master service
+
+[Service]
+Type=simple
+User={{ buildbot_master_user }}
+Group={{ buildbot_master_group }}
+WorkingDirectory={{ buildbot_master_basedir }}
+RestartSec=10s
+Restart=on-failure
+ExecStart={{ buildbot_bin }} start --nodaemon {{ buildbot_master_basedir }}
+ExecStartPost=/usr/bin/sh -c "echo $MAINPID > {{ buildbot_master_basedir }}/twistd.pid"
+ExecStop={{ buildbot_bin }} stop --clean {{ buildbot_master_basedir }}
+ExecStopPost=/usr/bin/rm -f {{ buildbot_master_basedir }}/twisted.pid
+ExecReload={{ buildbot_bin }} reconfig {{ buildbot_master_basedir }}
+
+[Install]
+WantedBy=multi-user.target

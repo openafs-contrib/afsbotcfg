@@ -1,0 +1,25 @@
+---
+- name: "CentOS-8: Install buildbot worker systemd unit file"
+  become: yes
+  vars:
+    buildbot_worker_bin: /usr/bin/buildbot-worker
+  template:
+    src: buildbot-worker.service.j2
+    dest: /etc/systemd/system/buildbot-worker.service
+    owner: root
+    group: root
+    mode: 0644
+  tags: root
+
+- name: "CentOS-8: Set service name"
+  set_fact:
+    buildbot_worker_service: buildbot-worker
+
+- name: "CentOS-8: Start buildbot worker service"
+  become: yes
+  systemd:
+    name: "{{ buildbot_worker_service }}"
+    daemon_reload: yes
+    enabled: yes
+    state: started
+  tags: root

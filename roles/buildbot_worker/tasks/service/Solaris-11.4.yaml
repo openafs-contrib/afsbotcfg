@@ -1,0 +1,24 @@
+---
+- name: "Solaris 11.4: Upload SMF manifest"
+  become: yes
+  vars:
+    buildbot_worker_bin: /usr/bin/buildbot-worker
+  template:
+    src: buildbot-worker.xml.j2
+    dest: /root/buildbot-worker.xml
+    owner: root
+    group: root
+    mode: 0644
+  register: buildbot_worker_manifest
+  tags: root
+
+- name: "Solaris 11.4: Set service name"
+  set_fact:
+    buildbot_worker_service: buildbot-worker
+
+# This also enables and starts the smf service.
+- name: "Solaris 11.4: Import SMF manifest"
+  become: yes
+  command: svccfg import /root/buildbot-worker.xml
+  when: buildbot_worker_manifest.changed
+  tags: root

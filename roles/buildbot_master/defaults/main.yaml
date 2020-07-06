@@ -1,0 +1,8 @@
+---
+buildbot_bin: "{{ ansible_user_dir }}/.local/bin/buildbot"
+buildbot_master_user: "{{ ansible_user_id }}"
+buildbot_master_group: "{{ ansible_user_gid }}"
+buildbot_master_basedir: "{{ ansible_user_dir }}/master/{{ buildbot_project }}"
+buildbot_master_python: "/usr/bin/python3"
+buildbot_master_venv: "{{ ansible_user_dir }}/.venv/buildbot"
+buildbot_master_restart: no

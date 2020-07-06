@@ -1,0 +1,7 @@
+---
+- name: "Restart service"
+  become: yes
+  service:
+    name: "{{ buildbot_worker_service }}"
+    state: restarted
+  tags: root

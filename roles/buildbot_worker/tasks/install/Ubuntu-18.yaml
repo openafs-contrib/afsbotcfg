@@ -1,0 +1,7 @@
+---
+- name: "Ubuntu-18: Install buildbot worker"
+  become: yes
+  apt:
+    state: present
+    name: python3-buildbot-worker
+  tags: root
