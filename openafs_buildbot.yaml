@@ -72,7 +72,7 @@
 #------------------------------------------------------------------------------------
 #  Workers
 #
-- name: "SNA contributed buildbot workers for OpenAFS"
+- name: "Contributed buildbot workers for OpenAFS"
   hosts: openafs_buildbot_workers
   tags:
     - community
@@ -97,7 +97,7 @@
 #------------------------------------------------------------------------------------
 # Virt-run hypervisors
 #
-- name: "OpenAFS builbot hypervisors"
+- name: "OpenAFS buildbot hypervisors"
   hosts: hypervisors
   tasks:
     - name: "Create buildbot user"
