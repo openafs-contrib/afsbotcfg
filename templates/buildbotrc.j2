@@ -1,0 +1,14 @@
+[rollcall]
+workers =
+{% for worker in query('ini_keys', 'section=workers file=passwords.ini') %}
+  {{ worker }}
+{% endfor %}
+
+[email]
+server = secure.emailsrvr.com
+port = 465
+userid = mmeffie@sinenomine.net
+password = {{ lookup('password', '~/.ansible/passwords/secure.emailsrvr.com' | expanduser) }}
+from = mmeffie@sinenomine.net
+to = mmeffie@sinenomine.net,mbarbosa@sinenomine.net,cwills@sinenomine.net
+epilog = Sent from {{ ansible_hostname }}

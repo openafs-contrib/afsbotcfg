@@ -1,0 +1,18 @@
+# OpenAFS Buildbot Master
+
+This is the home of the OpenAFS buildbot master.
+
+## Buildbot master bug workaround
+
+This installation includes a one-line patch to the buildbot master to
+workaround a known bug in the gerrit integration code.
+
+    https://github.com/buildbot/buildbot/issues/5190
+    https://github.com/buildbot/buildbot/pull/5219/commits
+
+## Installation
+
+This buildbot master has been installed and is updated via Ansible.
+
+Until a systemd unit file is installed, the master process is started and
+stopped manually with the '.local/bin/buildbot' command.
