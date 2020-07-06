@@ -1,8 +1,8 @@
-OpenAFS Buildbot Master Configuration
-=====================================
+OpenAFS Buildbot Master Configuration and Playbooks
+===================================================
 
-This is the [buildbot master][1] configuration for [OpenAFS][2]. This
-configuration is compatible with buildbot version 1.x.
+This is the [buildbot master][1] configuration and Ansible playbooks
+for [OpenAFS][2].
 
 Buildbot master installation
 ----------------------------
