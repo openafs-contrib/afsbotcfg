@@ -1,7 +1,8 @@
 # {{ ansible_managed }}
 
-[local]
-buildbotURL = {{ buildbot_master_url }}
+[www]
+buildbotURL = {{ buildbot_master_url | d('https://buildbot.openafs.org') }}
+port = {{ buildbot_www_port | d('8010') }}
 
 [mail]
 to =
