@@ -46,7 +46,7 @@ Download the buildbot master configuration:
     $ cd afsbotcfg
 
 Create the `Makefile` and deploy the buildbot `master.cfg` and
-sample `settings.ini` file:
+sample `passwords.ini` file:
 
     $ python configure.py
     $ make install
@@ -55,31 +55,6 @@ Make a link to the makefile in the top level directory:
 
     $ cd ..
     $ ln -s afsbotcfg/Makefile
-
-Master settings
----------------
-
-Edit the `settings.ini` file in the `master` directory. This file stores
-information we do not track with git, such as the buildbot worker passwords.
-The `settings.ini` file is an INI-style file with the following sections:
-
-* local - settings specific to the local environment
-* admins - the list of user emails and passwords for authenticated access
-* email - emails for notifications
-* workers - the list of worker names and passwords
-
-Example:
-
-    $ cat master/settings.ini
-    [local]
-    buildbotURL = http://buildbot.openafs.org:8010/
-    
-    [admins]
-    tycobb@yoyodyne.com = password
-    
-    [workers]
-    example-worker-1 = secret1
-    example-worker-2 = secret2
 
 Gerrit account
 --------------

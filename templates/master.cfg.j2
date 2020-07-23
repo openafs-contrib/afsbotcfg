@@ -23,10 +23,6 @@ BRANCHES = ['master', 'openafs-stable-1_8_x', 'openafs-stable-1_6_x']
 
 ####### LOCAL SETTINGS
 
-settings_ini = os.path.expanduser(os.path.join(basedir, 'settings.ini'))
-settings = configparser.ConfigParser()
-settings.read([settings_ini])
-
 passwords_ini = os.path.expanduser(os.path.join(basedir, 'passwords.ini'))
 passwords = configparser.ConfigParser()
 passwords.read([passwords_ini])
@@ -519,7 +515,13 @@ c['services'] = [
         builders=['linux-rc-x86_64'],
         mode=['failing', 'passing'],
         sendToInterestedUsers=False,
-        extraRecipients=settings.get('mail', 'to', fallback='').split(),
+{% if buildbot_mail_to is defined %}
+        extraRecipients=[
+{% for addr in buildbot_mail_to.split(',') %}
+            '{{ addr }}',
+{% endfor %}
+        ],
+{% endif %}
         messageFormatter=reporters.MessageFormatter(
             template=openafs_templates.body,
         ),
@@ -530,7 +532,7 @@ c['services'] = [
 
 c['title'] = 'OpenAFS Buildbot'
 c['titleURL'] = 'https://www.openafs.org/'
-c['buildbotURL'] = settings.get('www', 'buildbotURL', fallback='https://buildbot.openafs.org/')
+c['buildbotURL'] = '{{ buildbot_master_url | d("https://buildbot.openafs.org") }}'
 
 auth = util.UserPasswordAuth(passwords.items('admins'))
 authz = util.Authz(
@@ -543,7 +545,7 @@ authz = util.Authz(
 )
 
 c['www'] = {
-    'port': int(settings.get('www', 'port', fallback=8010)),
+    'port': {{ buildbot_www_port | d(8010) }},
     'auth': auth,
     'authz': authz,
     'plugins': {

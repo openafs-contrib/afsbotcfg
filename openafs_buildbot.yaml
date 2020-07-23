@@ -68,8 +68,6 @@
         buildbot_master_config_templates:
           - src: "master.cfg"
             decrypt: no
-          - src: "settings.ini"
-            decrypt: no
 
 #------------------------------------------------------------------------------------
 #  Workers
