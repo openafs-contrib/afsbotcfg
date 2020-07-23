@@ -59,8 +59,6 @@
         name: buildbot_master
       vars:
         buildbot_master_config_files:
-          - src: "master.cfg"
-            decrypt: no
           - src: "forcegerritbuild.py"
             decrypt: no
           - src: "openafs_templates.py"
@@ -68,6 +66,8 @@
           - src: "passwords.ini"
             decrypt: yes
         buildbot_master_config_templates:
+          - src: "master.cfg"
+            decrypt: no
           - src: "settings.ini"
             decrypt: no
 
