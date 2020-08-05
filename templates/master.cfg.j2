@@ -61,6 +61,40 @@ c['change_source'] = [
 def scheduler_is_gerrit(step):
     return step.getProperty('scheduler').startswith('gerrit')
 
+class BuildTests(steps.Compile):
+    name='build tests'
+    command = 'cd tests && make all'
+
+class TapObserver(util.LogLineObserver):
+    passed = 0
+    failed = 0
+
+    def outLineReceived(self, line):
+        if line.startswith('ok'):
+            self.passed += 1
+        if line.startswith('not ok'):
+            self.failed += 1
+
+class RunTests(steps.ShellCommand):
+    name = 'run tests'
+    command = 'cd tests && cat TESTS | while read t; do echo "# Test $t"; MAKECHECK=1 ./libwrap ../lib ./runtests -o $t; done'
+
+    def __init__(self, *args, **kwargs):
+        steps.ShellCommand.__init__(self, *args, **kwargs)
+        self.tap = TapObserver()
+        self.addLogObserver('stdio', self.tap)
+
+    def evaluateCommand(self, cmd):
+        if cmd.didFail():
+            return util.FAILURE
+        if self.tap.failed != 0:
+            return util.FAILURE
+        return util.SUCCESS
+
+    def createSummary(self, log):
+        summary = 'passed %d\nfailed %d\n' % (self.tap.passed, self.tap.failed)
+        self.addCompleteLog('summary', summary)
+
 class Make(util.BuildFactory):
     def __init__(self, checking=None, debug=None, kmod=None, sysname=None,
                  transarc=None, pam=None, with_=None, cf=None, make=None, test=False):
@@ -131,14 +165,8 @@ class Make(util.BuildFactory):
         self.addStep(steps.Compile(command=make))
 
         if test:
-            self.addStep(
-                steps.Compile(
-                    name = 'test',
-                    warnOnFailure = 1,
-                    description = ['testing'],
-                    descriptionDone = ['test'],
-                    command = ['make', 'check']))
-
+            self.addStep(BuildTests())
+            self.addStep(RunTests())
 
 class VirtRunBuild(util.BuildFactory):
     def __init__(self, linux='rc', test=True):
