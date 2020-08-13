@@ -61,6 +61,13 @@ c['change_source'] = [
 def scheduler_is_gerrit(step):
     return step.getProperty('scheduler').startswith('gerrit')
 
+class RunTests(steps.Compile):
+    name = 'test'
+    warnOnFailure = 1
+    description = ['testing']
+    descriptionDone = ['test']
+    command = ['make', 'check']
+
 class BuildTests(steps.Compile):
     name='build tests'
     command = 'cd tests && make all'
@@ -75,7 +82,7 @@ class TapObserver(util.LogLineObserver):
         if line.startswith('not ok'):
             self.failed += 1
 
-class RunTests(steps.ShellCommand):
+class VerboseRunTests(steps.ShellCommand):
     name = 'run tests'
     command = 'cd tests && cat TESTS | while read t; do echo "# Test $t"; MAKECHECK=1 ./libwrap ../lib ./runtests -o $t; done'
 
@@ -97,7 +104,7 @@ class RunTests(steps.ShellCommand):
 
 class Make(util.BuildFactory):
     def __init__(self, checking=None, debug=None, kmod=None, sysname=None,
-                 transarc=None, pam=None, with_=None, cf=None, make=None, test=False):
+                 transarc=None, pam=None, with_=None, cf=None, make=None, test=False, test_verbose=True):
         util.BuildFactory.__init__(self)
         timeout = 3600
         sleep = 120
@@ -165,8 +172,11 @@ class Make(util.BuildFactory):
         self.addStep(steps.Compile(command=make))
 
         if test:
-            self.addStep(BuildTests())
-            self.addStep(RunTests())
+            if test_verbose:
+                self.addStep(BuildTests())
+                self.addStep(VerboseRunTests())
+            else:
+                self.addStep(RunTests())
 
 class VirtRunBuild(util.BuildFactory):
     def __init__(self, linux='rc', test=True):
@@ -291,13 +301,12 @@ add_builder('fedora27-x86_64', gerrit=True,  nightly=True,       factory=Make(km
 add_builder('fedora28-x86_64', gerrit=False, nightly=True, factory=Make(checking=True))
 add_builder('fedora29-x86_64', gerrit=False, nightly=True, env=env_fedora, factory=Make(checking=True))
 add_builder('fedora30-x86_64', gerrit=False, nightly=True, env=env_fedora, factory=Make(checking=True))
-add_builder('fedora30-x86_64-warnings', gerrit=False, nightly=True, worker='fedora30-x86_64', factory=Make(checking=False))
 add_builder('fedora31-x86_64', gerrit=['master', 'openafs-stable-1_8_x'], nightly=True, env=env_fedora, factory=Make(checking=True))
 add_builder('fedora32-x86_64', gerrit=False, nightly=True, env=env_fedora, factory=Make(checking=True))
 
 # Gentoo
-add_builder('gentoo-amd64', gerrit=False, nightly=True, factory=Make(checking=True, test=True))
-add_builder('gentoo-gcc-amd64', gerrit=False, nightly=True, factory=Make(checking=True, test=True))
+add_builder('gentoo-amd64', gerrit=False, nightly=['master', 'openafs-stable-1_8_x'], factory=Make(checking=True, test=True))
+add_builder('gentoo-gcc-amd64', gerrit=False, nightly=['master', 'openafs-stable-1_8_x'], factory=Make(checking=True, test=True))
 
 # IRIX
 #add_builder('irix', gerrit=None, nightly=True, worker='sgi_irix_65-64bit', env=env_irix,
@@ -346,9 +355,10 @@ add_builder('solaris114_x86', gerrit=True, nightly=True, worker='solaris114-x86-
 
 # Ubuntu
 add_builder('ubuntu1610-x86_64', gerrit=False, nightly=['master', 'openafs-stable-1_8_x'])
-add_builder('ubuntu1804-amd64', gerrit=True, nightly=True, factory=Make(checking=True, test=True))
+add_builder('ubuntu1804-amd64', gerrit=['master', 'openafs-stable-1_8_x'], nightly=['master', 'openafs-stable-1_8_x'],
+                                factory=Make(checking=True, test=True, test_verbose=True))
 add_builder('ubuntu2004-amd64', gerrit=['master', 'openafs-stable-1_8_x'], nightly=['master', 'openafs-stable-1_8_x'],
-                                factory=Make(checking=True, test=True))
+                                factory=Make(checking=True, test=True, test_verbose=True))
 
 # Windows
 add_builder('wins2019_amd64_free',
