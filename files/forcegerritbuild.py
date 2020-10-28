@@ -158,7 +158,7 @@ class ForceGerritBuild(schedulers.ForceScheduler):
             collector.setFieldName("patchsetnumber")
             UI_patchset = properties.getProperty("patchsetnumber")
             patchsets = gerritinfo['patchSets']
-            patchset = max(patchsets, key=lambda item: item['number'])
+            patchset = str(max(patchsets, key=lambda item: int(item['number'])))
 
             if UI_patchset is not None and UI_patchset != '':
                 patchset = None
