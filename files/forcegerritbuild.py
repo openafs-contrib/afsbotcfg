@@ -158,13 +158,13 @@ class ForceGerritBuild(schedulers.ForceScheduler):
             collector.setFieldName("patchsetnumber")
             UI_patchset = properties.getProperty("patchsetnumber")
             patchsets = gerritinfo['patchSets']
-            patchset = str(max(patchsets, key=lambda item: int(item['number'])))
+            patchset = max(patchsets, key=lambda item: int(item['number']))
 
             if UI_patchset is not None and UI_patchset != '':
                 patchset = None
                 UI_patchset = int(UI_patchset)
                 for ps in gerritinfo['patchSets']:
-                    if int(ps['number']) == UI_patchset:
+                    if ps['number'] == UI_patchset:
                         patchset = ps
 
                 if patchset is None:
@@ -219,8 +219,8 @@ class ForceGerritBuild(schedulers.ForceScheduler):
                 'project': project
             }
         ]
-        log.msg("forcegerritbuild: rebuilding branch[%s] revision[%s] project[%s] event.change.id[%s]" %
-                (patchset['ref'], patchset['revision'], project, changeid))
+        log.msg("forcegerritbuild: rebuilding branch[%s] revision[%s] project[%s] event.change.id[%s] patchset[%d]" %
+                (patchset['ref'], patchset['revision'], project, changeid, patchset['number']))
         # everything is set and validated, we can create our source stamp, and
         # buildrequest
         res = yield self.addBuildsetForSourceStampsWithDefaults(
