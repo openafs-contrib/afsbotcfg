@@ -90,6 +90,8 @@
           - buildbot_worker_name is defined
           - buildbot_worker_admin is defined
           - buildbot_worker_password | length > 0
+  collections:
+    - openafs_contrib.openafs
   roles:
     - openafs_devel
     - buildbot_worker
