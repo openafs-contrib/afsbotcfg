@@ -1,4 +1,6 @@
-# Email templates for nightly linux-rc builders.
+#
+#  Template to generate email notifications.
+#
 body = '''\
 The buildbot has detected a {{ status_detected }} on builder {{ buildername }} while building {{ (build['properties'].get('branch', ['unknown']))[0] }}
 
@@ -12,4 +14,3 @@ Full details are available at:
 The OpenAFS Buildbot,
 {{ buildbot_url }}
 '''
-

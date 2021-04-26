@@ -1,0 +1,95 @@
+OpenAFS Buildbot
+================
+
+This is the home of the OpenAFS Buildbot coordinator.
+
+This buildbot is Ansible managed.  Do not make local changes, they will be
+lost on the next Ansible play.  For more information see:
+
+   https://wiki.openafs.org/devel/buildbotmasternotes/
+
+
+Manually starting the buildbot
+------------------------------
+
+The `buildbotctl` helper script is provided to start and stop the buildbot.
+The buildbot runs as a regular user, so root access not required to start or
+stop the buildbot.
+
+To start the buildbot:
+
+    $ buildbotctl start
+
+To cleanly stop the buildbot:
+
+    $ buildbotctl stop
+
+    Note: The buildbotctl stop command will prevent new builds from starting,
+          then wait for up to 10 minutes for running builds to be completed.
+          Builds not completed within the 10 minutes grace time will be cancelled,
+          and retried the next time the buildbot is started.
+
+To check the status of the buildbot:
+
+    $ buildbotctl status
+
+To restart the buildbot:
+
+    $ buildbotctl restart
+
+To reload the buildbot configuration in a running buildbot:
+
+    WARNING: Reloading the configuration has cause the gerrit event
+             listener process to fail. Use with caution.
+
+    $ buildbotctl reload
+
+
+Cron jobs
+---------
+
+Two cron jobs are running to keep the buildbot running. These
+cron jobs are managed by Ansible.
+
+* On reboot: Start the buildbot on system reboot.
+* Hourly: Start the buildbot if not running.
+
+
+Files
+-----
+
+The buildbot files are located in {{ buildbot_master_basedir }}.
+
+Configuration:
+
+    master.cfg            The main buildbot configuration file.
+    passwords.ini         User and worker passwords (encrypted in the playbooks)
+    email_templates.py    Custom format templates for mail notifications.
+    forcegerritbuild.py   Custom buildbot plugin to support forced gerrit verifications
+
+Logs:
+
+    twistd.log            Buildbot log
+
+
+Gerrit listener ssh keys
+-------------------------
+
+This buildbot uses the gerrit event listener to receive events from gerrit.
+The gerrit listener connects to gerrit.openafs.org via ssh.  SSH keys are
+installed in .ssh to provide listener credentials.
+
+Files:
+
+    .ssh/gerrit           Gerrit listener identity file
+    .ssh/gerrit.pub       Gerrit listener public key
+
+
+Gerrit listener bug fix
+-----------------------
+
+This installation includes a one-line patch to the buildbot master to
+workaround a known bug in the gerrit integration code.
+
+    https://github.com/buildbot/buildbot/issues/5190
+    https://github.com/buildbot/buildbot/pull/5219/commits

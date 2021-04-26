@@ -1,2 +1,0 @@
----
-buildbot_worker_basedir: /var/lib/buildbot/workers/{{ buildbot_project }}

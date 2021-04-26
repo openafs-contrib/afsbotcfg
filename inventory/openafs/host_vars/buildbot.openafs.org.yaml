@@ -1,0 +1,16 @@
+---
+# ansible_host: openafs.mit.edu
+ansible_user: buildbot
+buildbot_project: openafs
+buildbot_master_have_sudo: no
+buildbot_master_install: no
+buildbot_master_basedir: "/home/buildbot/buildbot/master"
+buildbot_master_url: "https://buildbot.openafs.org/"
+buildbot_master_www_port: 8010
+buildbot_master_gerrit_ident: gerrit
+buildbot_master_gerrit_hostkey: gerrit.hostkey
+buildbot_master_config_files:
+  - master.cfg
+  - forcegerritbuild.py
+  - email_templates.py
+  - passwords.ini

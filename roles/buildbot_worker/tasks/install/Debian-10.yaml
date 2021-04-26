@@ -1,7 +1,0 @@
----
-- name: "Debian-10: Install buildbot worker"
-  become: yes
-  apt:
-    state: present
-    name: buildbot-worker
-  tags: root

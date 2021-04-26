@@ -1,5 +1,0 @@
-buildbot ALL= NOPASSWD: /usr/bin/systemctl status buildbot,\
-                        /usr/bin/systemctl start buildbot,\
-                        /usr/bin/systemctl stop buildbot,\
-                        /usr/bin/systemctl reload buildbot,\
-                        /urs/bin/systemctl restart buildbot

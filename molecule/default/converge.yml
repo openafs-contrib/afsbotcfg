@@ -1,0 +1,20 @@
+---
+- import_playbook: ../../openafs_buildbot.yaml
+
+- name: Deploy test workers
+  hosts: openafs_buildbot_workers
+  collections:
+    - openafs_contrib.openafs
+    - openafs_contrib.buildbot
+  tasks:
+
+    - set_fact:
+        buildbot_master_host: "{{ hostvars['test-master'].ansible_host }}"
+        buildbot_master_port: 9989
+        buildbot_worker_password: "{{ lookup('ini', '{{ buildbot_worker_name }} section=workers file={{ passwords_ini }}') }}"
+
+    - import_role:
+        name: openafs_devel
+
+    - import_role:
+        name: buildbot_worker
