@@ -1,7 +1,7 @@
 OpenAFS Buildbot Configuration
 ==============================
 
-Ansible playbook to manage the [OpenAFS][1] [Buildbot][2].
+Ansible playbook to deploy and manage the [OpenAFS][1] [Buildbot][2].
 
 See [wiki.openafs.org][3] for setup and usage instructions.
 
