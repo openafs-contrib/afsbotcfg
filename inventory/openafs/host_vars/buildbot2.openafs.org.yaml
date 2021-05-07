@@ -8,8 +8,6 @@ buildbot_master_sqlalchemy_version: '==1.3.17'
 buildbot_master_buildbot_version: '==2.8.2'
 buildbot_master_python: "/opt/rh/rh-python36/root/usr/bin/python3.6"
 buildbot_master_basedir: "/home/buildbot/master/openafs"
-buildbot_master_url: "https://buildbot.openafs.org/"
-buildbot_master_www_port: 8011
 buildbot_master_gerrit_ident: gerrit
 buildbot_master_gerrit_hostkey: gerrit.hostkey
 buildbot_master_config_files:
@@ -19,5 +17,8 @@ buildbot_master_config_files:
   - "{{ playbook_dir }}/files/email_templates.py"
   - "{{ playbook_dir }}/files/passwords.ini"
 
+afsbotcfg_title: 'The (new) OpenAFS Buildbot Master'
+afsbotcfg_url: "https://buildbot.openafs.org/"
+afsbotcfg_www_port: 8011
 afsbotcfg_limit_gerrit_builds:
   - centos8-amd64

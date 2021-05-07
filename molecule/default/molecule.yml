@@ -37,6 +37,12 @@ provisioner:
           - ${MOLECULE_PROJECT_DIRECTORY}/files/email_templates.py
           - ${MOLECULE_PROJECT_DIRECTORY}/files/passwords.ini
     host_vars:
+      test-master:
+        afsbotcfg_title: 'Test'
+        afsbotcfg_url: "http://localhost/"
+        afsbotcfg_www_port: 8011
+        afsbotcfg_limit_gerrit_builds:
+          - centos8-amd64
       test-bot01:
         buildbot_worker_name: debian10-amd64
         buildbot_worker_admin: "tycobb@yoyodyne.com"
