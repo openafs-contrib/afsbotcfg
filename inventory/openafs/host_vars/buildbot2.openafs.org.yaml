@@ -18,3 +18,6 @@ buildbot_master_config_files:
   - "{{ playbook_dir }}/files/forcegerritbuild.py"
   - "{{ playbook_dir }}/files/email_templates.py"
   - "{{ playbook_dir }}/files/passwords.ini"
+
+afsbotcfg_limit_gerrit_builds:
+  - centos8-amd64
