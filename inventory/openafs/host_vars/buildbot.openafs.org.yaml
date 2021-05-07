@@ -10,7 +10,8 @@ buildbot_master_www_port: 8010
 buildbot_master_gerrit_ident: gerrit
 buildbot_master_gerrit_hostkey: gerrit.hostkey
 buildbot_master_config_files:
-  - master.cfg
-  - forcegerritbuild.py
-  - email_templates.py
-  - passwords.ini
+  - "{{ playbook_dir }}/files/master.cfg"
+  - "{{ playbook_dir }}/files/settings.py"
+  - "{{ playbook_dir }}/files/forcegerritbuild.py"
+  - "{{ playbook_dir }}/files/email_templates.py"
+  - "{{ playbook_dir }}/files/passwords.ini"

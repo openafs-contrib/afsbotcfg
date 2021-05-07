@@ -1,3 +1,4 @@
+{% raw %}
 #
 #  Template to generate email notifications.
 #
@@ -14,3 +15,4 @@ Full details are available at:
 The OpenAFS Buildbot,
 {{ buildbot_url }}
 '''
+{% endraw %}

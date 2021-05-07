@@ -32,6 +32,7 @@ provisioner:
         buildbot_master_buildbot_version: '==2.8.2'
         buildbot_master_config_files:
           - ${MOLECULE_PROJECT_DIRECTORY}/files/master.cfg
+          - ${MOLECULE_PROJECT_DIRECTORY}/files/settings.py
           - ${MOLECULE_PROJECT_DIRECTORY}/files/forcegerritbuild.py
           - ${MOLECULE_PROJECT_DIRECTORY}/files/email_templates.py
           - ${MOLECULE_PROJECT_DIRECTORY}/files/passwords.ini

@@ -1,3 +1,4 @@
+{% raw %}
 # Copyright (c) 2019 Sine Nomine Associates
 #
 # This file copies/extends portions of Buildbot forcescheduler.
@@ -231,3 +232,4 @@ class ForceGerritBuild(schedulers.ForceScheduler):
         )
 
         return res
+{% endraw %}
