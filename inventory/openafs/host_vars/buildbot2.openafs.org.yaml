@@ -20,5 +20,5 @@ buildbot_master_config_files:
 afsbotcfg_title: 'The (new) OpenAFS Buildbot Master'
 afsbotcfg_url: "https://buildbot.openafs.org/"
 afsbotcfg_www_port: 8011
-afsbotcfg_limit_gerrit_builds:
+afsbotcfg_limit_gerrit_builders:
   - centos8-amd64
