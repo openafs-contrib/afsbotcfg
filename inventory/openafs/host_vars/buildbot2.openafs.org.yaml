@@ -22,4 +22,4 @@ afsbotcfg_url: ""
 afsbotcfg_www_port: 8011
 afsbotcfg_build_delay: 900
 afsbotcfg_limit_gerrit_builders:
-  - centos8-amd64
+  - none
