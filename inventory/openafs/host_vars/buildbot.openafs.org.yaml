@@ -16,10 +16,7 @@ buildbot_master_config_files:
   - "{{ playbook_dir }}/files/forcegerritbuild.py"
   - "{{ playbook_dir }}/files/email_templates.py"
   - "{{ playbook_dir }}/files/passwords.ini"
-
-afsbotcfg_title: "The (new) OpenAFS Buildbot Master"
+afsbotcfg_title: "The OpenAFS Buildbot Coordinator"
 afsbotcfg_url: "https://buildbot.openafs.org/"
 afsbotcfg_www_port: 8011
 afsbotcfg_build_delay: 120
-afsbotcfg_limit_gerrit_builders:
-  - none
