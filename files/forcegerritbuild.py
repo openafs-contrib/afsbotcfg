@@ -184,7 +184,7 @@ class ForceGerritBuild(schedulers.ForceScheduler):
 
             builderNames = self.branchbuilders[branch]
             if not builderNames:
-                log.msg("forcegerritbuild: empty builders for branch: %s" (branch,))
+                log.msg("forcegerritbuild: empty builders for branch: %s" % (branch,))
                 raise ValidationError("Empty builders for branch %s" % (branch,))
 
             # Set the properties neede by GerritStatusPush reporter
