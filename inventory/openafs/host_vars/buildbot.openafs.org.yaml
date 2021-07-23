@@ -18,6 +18,6 @@ buildbot_master_config_files:
   - "{{ playbook_dir }}/files/passwords.ini"
 afsbotcfg_title: "The OpenAFS Buildbot Coordinator"
 afsbotcfg_url: "https://buildbot.openafs.org/"
-afsbotcfg_repo: "https://gerrit.openafs.org/openafs.git"
+afsbotcfg_repo: "https://gerrit.openafs.org/openafs"
 afsbotcfg_www_port: 8011
 afsbotcfg_build_delay: 120
