@@ -1,16 +1,18 @@
 ---
-- name: Prepare master test instance
-  hosts: openafs_buildbot_masters
+- name: Prepare test instances
+  hosts: all
   tasks:
     - name: Turn off firewall
       become: yes
       systemd:
         state: stopped
         name: firewalld
+      when: ansible_os_family == 'RedHat'
 
     - name: Lookup master url
       set_fact:
-        afsbotcfg_url: "http://{{ ansible_default_ipv4['address'] }}:{{ afsbotcfg_www_port }}/"
+        afsbotcfg_url: "http://{{ hostvars['test-master']['ansible_default_ipv4']['address'] }}:{{ afsbotcfg_www_port }}/"
+      when: afsbotcfg_www_port is defined
 
 - import_playbook: ../../openafs_buildbot.yaml
 
@@ -21,9 +23,19 @@
     - openafs_contrib.buildbot
   tasks:
     - set_fact:
-        buildbot_master_host: "{{ hostvars['test-master'].ansible_host }}"
+        buildbot_master_host: "{{ hostvars['test-master']['ansible_default_ipv4']['address'] }}"
         buildbot_master_port: 9989
         buildbot_worker_password: "{{ lookup('ini', '{{ buildbot_worker_name }} section=workers file={{ passwords_ini }}') }}"
+
+    - name: Disable selinux
+      become: yes
+      selinux:
+        policy: targeted
+        state: permissive
+      when:
+        - ansible_selinux is defined
+        - ansible_selinux.status is defined
+        - ansible_selinux.status == 'enabled'
 
     - import_role:
         name: openafs_devel

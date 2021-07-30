@@ -12,6 +12,14 @@ platforms:
     box: generic/debian10
     groups:
       - openafs_buildbot_workers
+  - name: test-bot02
+    box: generic/centos7
+    groups:
+      - openafs_buildbot_workers
+  - name: test-bot03
+    box: generic/centos8
+    groups:
+      - openafs_buildbot_workers
 provisioner:
   name: ansible
   env:
@@ -36,6 +44,8 @@ provisioner:
           - ${MOLECULE_PROJECT_DIRECTORY}/files/forcegerritbuild.py
           - ${MOLECULE_PROJECT_DIRECTORY}/files/email_templates.py
           - ${MOLECULE_PROJECT_DIRECTORY}/files/passwords.ini
+      openafs_buildbot_workers:
+        buildbot_worker_admin: "tycobb@yoyodyne.com"
     host_vars:
       test-master:
         # Note: afsbotcfg_url (buildbotURL) is set in the converge playbook.
@@ -44,6 +54,9 @@ provisioner:
         afsbotcfg_repo: "https://gerrit.openafs.org/openafs.git"
       test-bot01:
         buildbot_worker_name: debian10-amd64
-        buildbot_worker_admin: "tycobb@yoyodyne.com"
+      test-bot02:
+        buildbot_worker_name: centos73-x86_64
+      test-bot03:
+        buildbot_worker_name: centos8-amd64
 verifier:
   name: ansible
