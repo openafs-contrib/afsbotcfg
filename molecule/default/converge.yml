@@ -1,4 +1,17 @@
 ---
+- name: Prepare master test instance
+  hosts: openafs_buildbot_masters
+  tasks:
+    - name: Turn off firewall
+      become: yes
+      systemd:
+        state: stopped
+        name: firewalld
+
+    - name: Lookup master url
+      set_fact:
+        afsbotcfg_url: "http://{{ ansible_default_ipv4['address'] }}:{{ afsbotcfg_www_port }}/"
+
 - import_playbook: ../../openafs_buildbot.yaml
 
 - name: Deploy test workers
@@ -7,7 +20,6 @@
     - openafs_contrib.openafs
     - openafs_contrib.buildbot
   tasks:
-
     - set_fact:
         buildbot_master_host: "{{ hostvars['test-master'].ansible_host }}"
         buildbot_master_port: 9989
@@ -18,3 +30,9 @@
 
     - import_role:
         name: buildbot_worker
+
+- name: Show url
+  hosts: openafs_buildbot_masters
+  tasks:
+    - debug:
+        msg: "Test master URL is {{ afsbotcfg_url }}"

@@ -38,11 +38,9 @@ provisioner:
           - ${MOLECULE_PROJECT_DIRECTORY}/files/passwords.ini
     host_vars:
       test-master:
+        # Note: afsbotcfg_url (buildbotURL) is set in the converge playbook.
         afsbotcfg_title: 'Test'
-        afsbotcfg_url: "http://localhost/"
         afsbotcfg_www_port: 8011
-        afsbotcfg_limit_gerrit_builds:
-          - centos8-amd64
         afsbotcfg_repo: "https://gerrit.openafs.org/openafs.git"
       test-bot01:
         buildbot_worker_name: debian10-amd64
