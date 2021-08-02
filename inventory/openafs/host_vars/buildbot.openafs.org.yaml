@@ -20,4 +20,4 @@ afsbotcfg_title: "The OpenAFS Buildbot Coordinator"
 afsbotcfg_url: "https://buildbot.openafs.org/"
 afsbotcfg_repo: "https://gerrit.openafs.org/openafs.git"
 afsbotcfg_www_port: 8011
-afsbotcfg_build_delay: 120
+afsbotcfg_build_delay: 30
