@@ -1,5 +1,8 @@
 .PHONY: help init vault collections lint test clean distclean
 
+MOLECULE_DRIVER ?= vagrant
+MOLECULE_DESTROY ?= always
+
 help:
 	@echo "usage: make <target>"
 	@echo ""
@@ -11,6 +14,10 @@ help:
 	@echo "  test         to run molecule test"
 	@echo "  clean        to remove generated files"
 	@echo "  distclean    to remove generated files and virtual environment"
+	@echo ""
+	@echo "environment:"
+	@echo "  MOLECULE_DRIVER=<driver-name>"
+	@echo "..MOLECULE_DESTROY='always' | 'never'"
 
 .envrc:
 	echo export ANSIBLE_INVENTORY=inventory/openafs/hosts.ini >.envrc
@@ -40,7 +47,7 @@ lint:
 	ansible-lint
 
 test:
-	molecule test
+	molecule test --driver-name $(MOLECULE_DRIVER) --destroy $(MOLECULE_DESTROY)
 
 clean:
 

@@ -2,7 +2,7 @@
 dependency:
   name: galaxy
 driver:
-  name: virtup
+  name: vagrant
 platforms:
   - name: test-master
     box: generic/centos7
