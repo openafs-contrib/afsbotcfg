@@ -12,17 +12,3 @@
         src: README.j2
         dest: README
         mode: "0644"
-
-    - name: "Log snapshot."
-      command:
-        cmd: "cp twistd.log twistd-snapshot.log"
-        chdir: "{{ buildbot_master_basedir }}"
-      check_mode: no
-      changed_when: false
-      when: buildbot_master_download_log | d('no') | bool
-
-    - name: "Download log."
-      fetch:
-        src: "{{ buildbot_master_basedir }}/twistd-snapshot.log"
-        dest: logs
-      when: buildbot_master_download_log | d('no') | bool
