@@ -1,8 +1,7 @@
 ---
 dependency:
   name: galaxy
-driver:
-  name: vagrant
+# Driver settings are in .config/molecule/config.yml
 platforms:
   - name: test-master
     box: generic/centos7

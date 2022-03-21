@@ -1,6 +1,5 @@
 .PHONY: help init vault collections lint test clean distclean
 
-MOLECULE_DRIVER ?= vagrant
 MOLECULE_DESTROY ?= always
 
 help:
@@ -33,7 +32,13 @@ help:
 	.venv/bin/pip install molecule molecule-vagrant molecule-virtup
 	echo "test -f .envrc && source .envrc" >> .venv/bin/activate
 
-init: .envrc .venv/bin/activate
+.config/molecule/config.yml:
+	@echo Creating default molecule base configuration.
+	mkdir -p .config/molecule
+	echo "driver:" > .config/molecule/config.yml
+	echo "  name: vagrant" >> .config/molecule/config.yml
+
+init: .envrc .venv/bin/activate .config/molecule/config.yml
 
 vault:
 	scp buildbot.openafs.org:.vault-afsbotcfg .vault-afsbotcfg
@@ -47,7 +52,7 @@ lint:
 	ansible-lint
 
 test:
-	molecule test --driver-name $(MOLECULE_DRIVER) --destroy $(MOLECULE_DESTROY)
+	molecule test --destroy $(MOLECULE_DESTROY)
 
 clean:
 
