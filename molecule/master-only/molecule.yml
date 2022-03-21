@@ -1,0 +1,44 @@
+---
+dependency:
+  name: galaxy
+# Driver settings are in .config/molecule/config.yml
+platforms:
+  - name: test-master
+    box: generic/centos7
+    groups:
+      - openafs_buildbot_masters
+provisioner:
+  name: ansible
+  env:
+    ANSIBLE_VERBOSITY: 0
+    ANSIBLE_STDOUT_CALLBACK: yaml
+  inventory:
+    group_vars:
+      all:
+        buildbot_project: openafs
+        passwords_ini: ${MOLECULE_PROJECT_DIRECTORY}/files/passwords.ini
+        ansible_shell_allow_world_readable_temp: true
+      openafs_buildbot_masters:
+        buildbot_master_gerrit_ident: ${MOLECULE_PROJECT_DIRECTORY}/files/gerrit
+        buildbot_master_gerrit_hostkey: ${MOLECULE_PROJECT_DIRECTORY}/files/gerrit.hostkey
+        buildbot_master_install: yes
+        buildbot_master_have_sudo: yes
+        buildbot_master_sqlalchemy_version: '==1.3.17'
+        buildbot_master_buildbot_version: '==2.8.2'
+        buildbot_master_config_files:
+          - ${MOLECULE_PROJECT_DIRECTORY}/files/master.cfg
+          - ${MOLECULE_PROJECT_DIRECTORY}/files/settings.py
+          - ${MOLECULE_PROJECT_DIRECTORY}/files/forcegerritbuild.py
+          - ${MOLECULE_PROJECT_DIRECTORY}/files/email_templates.py
+          - ${MOLECULE_PROJECT_DIRECTORY}/files/passwords.ini
+      openafs_buildbot_workers:
+        buildbot_worker_admin: "tycobb@yoyodyne.com"
+    host_vars:
+      test-master:
+        # Note: afsbotcfg_url (buildbotURL) is set in the converge playbook.
+        afsbotcfg_title: 'Test'
+        afsbotcfg_www_port: 8011
+        afsbotcfg_build_delay: 30
+        afsbotcfg_repo: "https://gerrit.openafs.org/openafs.git"
+verifier:
+  name: ansible

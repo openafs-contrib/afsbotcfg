@@ -1,0 +1,23 @@
+---
+- name: Prepare test instances
+  hosts: all
+  tasks:
+    - name: Turn off firewall
+      become: yes
+      systemd:
+        state: stopped
+        name: firewalld
+      when: ansible_os_family == 'RedHat'
+
+    - name: Lookup master url
+      set_fact:
+        afsbotcfg_url: "http://{{ hostvars['test-master']['ansible_default_ipv4']['address'] }}:{{ afsbotcfg_www_port }}/"
+      when: afsbotcfg_www_port is defined
+
+- import_playbook: ../../openafs_buildbot.yaml
+
+- name: Show url
+  hosts: openafs_buildbot_masters
+  tasks:
+    - debug:
+        msg: "Test master URL is {{ afsbotcfg_url }}"
