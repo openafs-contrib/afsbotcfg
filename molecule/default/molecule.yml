@@ -15,10 +15,6 @@ platforms:
     box: generic/centos7
     groups:
       - openafs_buildbot_workers
-  - name: test-bot03
-    box: generic/centos8
-    groups:
-      - openafs_buildbot_workers
 provisioner:
   name: ansible
   env:
@@ -56,7 +52,5 @@ provisioner:
         buildbot_worker_name: debian10-amd64
       test-bot02:
         buildbot_worker_name: centos73-x86_64
-      test-bot03:
-        buildbot_worker_name: centos8-amd64
 verifier:
   name: ansible
