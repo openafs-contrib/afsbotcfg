@@ -3,7 +3,6 @@
 ansible_user: buildbot
 buildbot_project: openafs
 buildbot_master_have_sudo: no
-buildbot_master_install: no
 buildbot_master_sqlalchemy_version: '==1.3.17'
 buildbot_master_buildbot_version: '==2.8.2'
 buildbot_master_python: "/opt/rh/rh-python36/root/usr/bin/python3.6"
