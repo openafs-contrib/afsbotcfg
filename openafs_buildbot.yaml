@@ -12,3 +12,21 @@
         src: README.j2
         dest: README
         mode: "0644"
+
+  post_tasks:
+    - name: "Query buildbot status."
+      command:
+        cmd: .local/bin/buildbotctl status
+      changed_when: false
+      register: results_buildbotctl_status
+
+    - name: "Query buildbot version."
+      command:
+        cmd: .local/bin/buildbot --version
+      changed_when: false
+      register: results_buildbot_version
+
+    - debug:
+        msg: |
+          {{ results_buildbotctl_status.stdout }}
+          {{ results_buildbot_version.stdout }}
