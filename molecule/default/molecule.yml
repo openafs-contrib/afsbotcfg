@@ -23,6 +23,7 @@ provisioner:
   inventory:
     group_vars:
       all:
+        buildbot_test : true
         buildbot_project: openafs
         passwords_ini: ${MOLECULE_PROJECT_DIRECTORY}/files/passwords.ini
         ansible_shell_allow_world_readable_temp: true
