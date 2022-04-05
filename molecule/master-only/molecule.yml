@@ -45,5 +45,11 @@ provisioner:
         afsbotcfg_gerrit_ssh_port: 29418
         afsbotcfg_gerrit_user: "${GERRIT_USER:-buildbot}"
         afsbotcfg_gerrit_ident: "{{ buildbot_master_gerrit_ident | basename }}"
+        afsbotcfg_email_from: "buildbot@openafs.MIT.EDU"
+        afsbotcfg_notify_list:
+          - "builders":
+              - "linux-rc-x86_64"
+            "recipients":
+              - "root@localhost.localdomain"
 verifier:
   name: ansible
