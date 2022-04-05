@@ -26,3 +26,11 @@ afsbotcfg_gerrit_server: "gerrit.openafs.org"
 afsbotcfg_gerrit_ssh_port: 29418
 afsbotcfg_gerrit_user: "buildbot"
 afsbotcfg_gerrit_ident: gerrit
+afsbotcfg_email_from: "buildbot@openafs.MIT.EDU"
+afsbotcfg_notify_list:
+  - "builders":
+      - "linux-rc-x86_64"
+    "recipients":
+      - "mmeffie@sinenomine.net"
+      - "mvitale@sinenomine.net"
+      - "stephan_weisand@desy.de"
