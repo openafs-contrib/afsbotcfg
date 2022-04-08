@@ -43,8 +43,13 @@
     - import_role:
         name: buildbot_worker
 
-- name: Show url
+- name: Finish up master setup
   hosts: openafs_buildbot_masters
   tasks:
+    - name: Ensure known_hosts contains key for the gerrit server
+      known_hosts:
+        key: "{{ lookup('pipe', 'ssh-keyscan -trsa -p {{ afsbotcfg_gerrit_ssh_port }} {{ afsbotcfg_gerrit_server }}') }}"
+        name: "[{{ afsbotcfg_gerrit_server }}]:{{ afsbotcfg_gerrit_ssh_port }}"
+        state: present
     - debug:
         msg: "Test master URL is {{ afsbotcfg_url }}"
