@@ -43,6 +43,10 @@
     - import_role:
         name: buildbot_worker
 
+    - name: Disable certificate checking
+      become: yes
+      shell: "sudo -u buildbot git --global http.sslVerify=false"
+
 - name: Finish up master setup
   hosts: openafs_buildbot_masters
   tasks:
