@@ -17,6 +17,12 @@ buildbot_master_config_files:
 afsbotcfg_title: "OpenAFS Buildbot"
 afsbotcfg_summary_title: "The OpenAFS Buildbot Coordinator"
 afsbotcfg_url: "https://buildbot.openafs.org/"
+afsbotcfg_gerrit_url: "https://gerrit.openafs.org"
 afsbotcfg_repo: "git://gerrit.openafs.org/openafs.git"
 afsbotcfg_www_port: 8011
 afsbotcfg_build_delay: 30
+
+afsbotcfg_gerrit_server: "gerrit.openafs.org"
+afsbotcfg_gerrit_ssh_port: 29418
+afsbotcfg_gerrit_user: "buildbot"
+afsbotcfg_gerrit_ident: gerrit
