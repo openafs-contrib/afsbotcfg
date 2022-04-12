@@ -28,7 +28,7 @@ provisioner:
         passwords_ini: ${MOLECULE_PROJECT_DIRECTORY}/files/passwords.ini
         ansible_shell_allow_world_readable_temp: true
       openafs_buildbot_masters:
-        buildbot_master_gerrit_ident: ${MOLECULE_PROJECT_DIRECTORY}/files/gerrit
+        buildbot_master_gerrit_ident: "{{ lookup('env', 'GERRIT_IDENT') or '${MOLECULE_PROJECT_DIRECTORY}/files/gerrit' }}"
         buildbot_master_gerrit_hostkey: ${MOLECULE_PROJECT_DIRECTORY}/files/gerrit.hostkey
         buildbot_master_have_sudo: yes
         buildbot_master_sqlalchemy_version: '==1.4.28'
@@ -47,7 +47,12 @@ provisioner:
         afsbotcfg_summary_title: "Test - OpenAFS Buildbot Coordinator"
         afsbotcfg_www_port: 8011
         afsbotcfg_build_delay: 30
-        afsbotcfg_repo: "https://gerrit.openafs.org/openafs.git"
+        afsbotcfg_gerrit_url: "${GERRIT_URL-:https//gerrit.openafs.org}"
+        afsbotcfg_repo: "${GERRIT_REPO:-git://gerrit.openafs.org/openafs.git}"
+        afsbotcfg_gerrit_server: "${GERRIT_SERVER:-gerrit.openafs.org}"
+        afsbotcfg_gerrit_ssh_port: 29418
+        afsbotcfg_gerrit_user: "${GERRIT_USER:-buildbot}"
+        afsbotcfg_gerrit_ident: "{{ buildbot_master_gerrit_ident | basename }}"
       test-bot01:
         buildbot_worker_name: debian10-amd64
       test-bot02:
