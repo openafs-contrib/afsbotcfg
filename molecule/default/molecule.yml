@@ -45,6 +45,7 @@ provisioner:
       test-master:
         # Note: afsbotcfg_url (buildbotURL) is set in the converge playbook.
         afsbotcfg_title: 'Test'
+        afsbotcfg_summary_title: "Test - OpenAFS Buildbot Coordinator"
         afsbotcfg_www_port: 8011
         afsbotcfg_build_delay: 30
         afsbotcfg_repo: "https://gerrit.openafs.org/openafs.git"

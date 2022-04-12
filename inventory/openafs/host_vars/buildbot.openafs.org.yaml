@@ -15,7 +15,8 @@ buildbot_master_config_files:
   - "{{ playbook_dir }}/files/forcegerritbuild.py"
   - "{{ playbook_dir }}/files/email_templates.py"
   - "{{ playbook_dir }}/files/passwords.ini"
-afsbotcfg_title: "The OpenAFS Buildbot Coordinator"
+afsbotcfg_title: "OpenAFS Buildbot"
+afsbotcfg_summary_title: "The OpenAFS Buildbot Coordinator"
 afsbotcfg_url: "https://buildbot.openafs.org/"
 afsbotcfg_repo: "git://gerrit.openafs.org/openafs.git"
 afsbotcfg_www_port: 8011
