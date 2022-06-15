@@ -45,7 +45,11 @@
 
     - name: Disable certificate checking
       become: yes
-      shell: "sudo -u buildbot git --global http.sslVerify=false"
+      become_user: buildbot
+      git_config:
+         scope: global
+         name: http.sslVerify
+         value: false
 
 - name: Finish up master setup
   hosts: openafs_buildbot_masters
