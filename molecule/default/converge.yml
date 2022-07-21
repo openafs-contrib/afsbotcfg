@@ -11,42 +11,19 @@
 
 - name: Deploy test workers
   hosts: openafs_buildbot_workers
-  collections:
-    - openafs_contrib.openafs
-    - openafs_contrib.buildbot
+  vars:
+    buildbot_master_host: "{{ hostvars['test-master']['ansible_default_ipv4']['address'] }}"
+    buildbot_master_port: 9989
+    buildbot_worker_password: "{{ lookup('ini', '{{ buildbot_worker_name }} section=workers file={{ passwords_ini }}') }}"
   tasks:
-    - set_fact:
-        buildbot_master_host: "{{ hostvars['test-master']['ansible_default_ipv4']['address'] }}"
-        buildbot_master_port: 9989
-        buildbot_worker_password: "{{ lookup('ini', '{{ buildbot_worker_name }} section=workers file={{ passwords_ini }}') }}"
-
-    - name: Disable selinux
-      become: yes
-      selinux:
-        policy: targeted
-        state: permissive
-      when:
-        - ansible_selinux is defined
-        - ansible_selinux.status is defined
-        - ansible_selinux.status == 'enabled'
+    - import_role:
+        name: openafs_contrib.openafs.openafs_devel
 
     - import_role:
-        name: openafs_devel
+        name: openafs_contrib.buildbot.buildbot_worker
 
-    - import_role:
-        name: buildbot_worker
-
-    - name: Disable certificate checking
-      become: yes
-      shell: "sudo -u buildbot git --global http.sslVerify=false"
-
-- name: Finish up master setup
+- name: Show master url.
   hosts: openafs_buildbot_masters
   tasks:
-    - name: Ensure known_hosts contains key for the gerrit server
-      known_hosts:
-        key: "{{ lookup('pipe', 'ssh-keyscan -trsa -p {{ afsbotcfg_gerrit_ssh_port }} {{ afsbotcfg_gerrit_server }}') }}"
-        name: "[{{ afsbotcfg_gerrit_server }}]:{{ afsbotcfg_gerrit_ssh_port }}"
-        state: present
     - debug:
         msg: "Test master URL is {{ afsbotcfg_url }}"

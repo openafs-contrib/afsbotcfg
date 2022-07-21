@@ -23,3 +23,13 @@
           - python3-setuptools
           - python3-virtualenv
       when: ansible_pkg_mgr == 'yum'
+
+    - name: Disable selinux
+      become: yes
+      selinux:
+        policy: targeted
+        state: permissive
+      when:
+        - ansible_selinux is defined
+        - ansible_selinux.status is defined
+        - ansible_selinux.status == 'enabled'
