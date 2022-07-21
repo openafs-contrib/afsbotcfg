@@ -21,7 +21,7 @@ provisioner:
         ansible_shell_allow_world_readable_temp: true
       openafs_buildbot_masters:
         buildbot_master_gerrit_ident: "{{ lookup('env', 'GERRIT_IDENT') or '${MOLECULE_PROJECT_DIRECTORY}/files/gerrit' }}"
-        buildbot_master_have_sudo: yes
+        buildbot_master_have_sudo: no
         buildbot_master_sqlalchemy_version: '==1.4.28'
         buildbot_master_buildbot_version: '==3.5.0'
         buildbot_master_config_files:
