@@ -5,14 +5,17 @@ dependency:
 platforms:
   - name: test-master
     box: generic/centos7
+    proxmox_template_name: centos7
     groups:
       - openafs_buildbot_masters
   - name: test-bot01
     box: generic/debian10
+    proxmox_template_name: debian10
     groups:
       - openafs_buildbot_workers
   - name: test-bot02
     box: generic/centos7
+    proxmox_template_name: centos7
     groups:
       - openafs_buildbot_workers
 provisioner:
