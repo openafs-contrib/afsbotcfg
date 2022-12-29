@@ -9,7 +9,7 @@ buildbot_master_python: "/opt/rh/rh-python36/root/usr/bin/python3.6"
 buildbot_master_basedir: "/home/buildbot/master/openafs"
 buildbot_master_gerrit_ident: gerrit
 buildbot_master_gerrit_hostkey: gerrit.hostkey
-buildbot_master_config_files:
+buildbot_master_config_templates:
   - "{{ playbook_dir }}/files/master.cfg"
   - "{{ playbook_dir }}/files/forcegerritbuild.py"
   - "{{ playbook_dir }}/files/email_templates.py"
