@@ -11,6 +11,9 @@
       vars:
         _path: "../../inventory/openafs/group_vars/openafs_buildbot_masters"
         _master: "{{ lookup('file', _path + '/master.yml') | from_yaml }}"
+        # TODO: Pass the vault key to ansible-lint.
+        #_admin_passwords: "{{ lookup('file', _path + '/admin_passwords.yml') | from_yaml }}"
+        #_worker_passwords: "{{ lookup('file', _path + '/worker_passwords.yml') | from_yaml }}"
         _admin_passwords: {}
         _worker_passwords: {}
       ansible.builtin.set_fact:
@@ -45,3 +48,9 @@
 
 - name: "Run buildbot playbook."
   import_playbook: "../../openafs_buildbot.yaml"
+
+- name: "Show buildbot master."
+  hosts: openafs_buildbot_masters
+  tasks:
+    - ansible.builtin.debug:
+        msg: "Test buildbot URL is {{ afsbotcfg_project.url }}"

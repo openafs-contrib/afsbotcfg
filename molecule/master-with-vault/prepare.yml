@@ -9,17 +9,35 @@
   tasks:
     - name: Turn off firewall
       become: yes
-      systemd:
+      ansible.builtin.systemd:
         state: stopped
         name: firewalld
       when: ansible_os_family == 'RedHat'
 
+    - name: Install epel-release
+      become: yes
+      ansible.builtin.yum:
+        state: present
+        name:
+          - epel-release
+      when: ansible_pkg_mgr == 'yum'
+
     - name: Install required packages
       become: yes
-      yum:
+      ansible.builtin.yum:
         state: present
         name:
           - python-setuptools
           - python3-setuptools
           - python3-virtualenv
+          - net-tools
       when: ansible_pkg_mgr == 'yum'
+
+    - name: Disable selinux
+      become: yes
+      ansible.posix.selinux:
+        policy: targeted
+        state: permissive
+      when:
+        - ansible_selinux.status is defined
+        - ansible_selinux.status == 'enabled'

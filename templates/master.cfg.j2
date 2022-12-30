@@ -1,882 +1,178 @@
-{% raw %}
-# -*- python -*-
-# ex: set filetype=python:
+#
+# {{ ansible_managed }}
+#
+# OpenAFS Buildbot Master Configuration
+#
 
-import os
-import configparser
 import datetime
+
 from buildbot.plugins import changes
 from buildbot.plugins import reporters
-from buildbot.reporters.generators.build import BuildStatusGenerator
-from buildbot.reporters.generators.worker import WorkerMissingGenerator
 from buildbot.plugins import schedulers
-from buildbot.plugins import steps
 from buildbot.plugins import util
 from buildbot.plugins import worker
-
-import email_templates
-import forcegerritbuild
-
-class WorkerAdmins:
-# Mapper of worker to admins
-    def __init__(self):
-        self.workertable = {}
-    def add_admin(self, admin, workerlist):
-        for worker in workerlist:
-            self.workertable[worker] = admin
-    def get_admin(self,worker):
-        try:
-            return self.workertable[worker]
-        except KeyError:
-            return None
-
-{% endraw %}
-class Settings:
-    pass
-settings = Settings()
-settings.title = '{{ afsbotcfg_title }}'                 # Title for buildbot banner
-settings.summary_title = '{{ afsbotcfg_summary_title }}' # Title used in gerrit summary
-settings.repo = '{{ afsbotcfg_repo }}'                   # Gerrit repo
-settings.buildbotURL = '{{ afsbotcfg_url }}'             # URL to buildbot
-settings.www_port = {{ afsbotcfg_www_port }}             # Buildbot port
-settings.build_delay = {{ afsbotcfg_build_delay }}       # Time to delay start of builds
-settings.gerrit_url = '{{ afsbotcfg_gerrit_url }}'       # URL to gerrit
-settings.gerrit_server = '{{ afsbotcfg_gerrit_server }}' # Gerrit server
-settings.gerrit_ssh_port = {{ afsbotcfg_gerrit_ssh_port }} # SSH port used for gerrit
-settings.gerrit_user = '{{ afsbotcfg_gerrit_user }}'     # User to use on gerrit
-settings.gerrit_ident = '{{ afsbotcfg_gerrit_ident }}'   # filename of ssh private key
-
-# Build notifications
-settings.email_from = '{{ afsbotcfg_email_from }}'       # Email "from" for build notifications
-settings.build_notify_list = {{ afsbotcfg_notify_list | to_json }} # List of builders/and who to notify
-{% raw %}
-
-BuildmasterConfig = c = {}
-
-####### REPOSITORY INFO
-
-REPO = settings.repo
-
-DEV = 'master'
-STABLE = 'openafs-stable-1_8_x'
-OLDSTABLE = 'openafs-stable-1_6_x'
-
-ALL = [DEV, STABLE, OLDSTABLE]
-BRANCHES = ALL
-
-####### LOCAL SETTINGS
-
-passwords_ini = os.path.expanduser(os.path.join(basedir, 'passwords.ini'))
-passwords = configparser.ConfigParser()
-passwords.read([passwords_ini])
-
-####### FEATURES
-
-c['buildbotNetUsageData'] = None # Disable phone-home feature.
-
-####### WORKERS
-
-c['protocols'] = {'pb': {'port': 9989}}
-
-workeradmins = WorkerAdmins()
-workeradmins.add_admin("mmeffie@sinenomine.net",
-                       ["centos6-amd64",
-                        "centos7-arm64",
-                        "centos73-x86_64",
-                        "centos8-amd64",
-                        "debian87-x86_64",
-                        "debian9-amd64",
-                        "debian10-amd64",
-                        "debian11-amd64",
-                        "opensuse15-x86_64",
-                        "sol11sparc",
-                        "solaris114-x86-2",
-                        "sun510_x86",
-                        "ubuntu1610-x86_64",
-                        "ubuntu1804-amd64",
-                        "ubuntu2004-amd64"])
-workeradmins.add_admin("mmeffie@sinenomine.net",
-                       ["fedora20-x86_64",
-                        "fedora21-x86_64",
-                        "fedora22-x86_64",
-                        "fedora23-x86_64",
-                        "fedora24-x86_64",
-                        "fedora25-x86_64",
-                        "fedora26-x86_64",
-                        "fedora27-x86_64",
-                        "fedora28-x86_64",
-                        "fedora29-x86_64",
-                        "fedora30-x86_64",
-                        "fedora31-x86_64",
-                        "fedora32-x86_64",
-                        "fedora33-x86_64",
-                        "fedora34-x86_64",
-                        "fedora35-x86_64"])
-
-workeradmins.add_admin("mbarbosa@sinenomine.net",
-                       ["macos10-15-x86_64",
-                        "macos11-x86_64",
-                        "macos12-x86_64"])
-
-workeradmins.add_admin("cwills@sinenomine.net",
-                       ["gentoo-gcc-amd64",
-                        "gentoo-amd64"])
-workeradmins.add_admin("mansaxel@besserwisser.org",
-                       ["freebsd12-amd64"])
-workeradmins.add_admin("asedeno@mit.edu",
-                       ["wins2019-amd64"])
-workeradmins.add_admin("Ben Huntsman <ben@huntsmans.net>",
-                       ["aix61-rs"])
-{% endraw %}
-{% if buildbot_test is defined %}
-# Don't spam admins when testing
-workeradmins = WorkerAdmins()
-workeradmins.add_admin("root@localhost",
-                       ["centos73-x86_64",
-                        "debian10-amd64"])
-{% endif %}
-{% raw %}
-c['workers'] = []
-for name, password in passwords.items('workers'):
-    c['workers'].append(worker.Worker(name, password,
-                                      notify_on_missing=workeradmins.get_admin(name)))
-
-####### CHANGESOURCES
-
-c['change_source'] = [
-    changes.GerritChangeSource(
-        gerritserver=settings.gerrit_server,
-        gerritport=settings.gerrit_ssh_port,
-        username=settings.gerrit_user,
-        identity_file=os.path.expanduser('~/.ssh/%s' % settings.gerrit_ident),
-        debug=False,
-    ),
-]
-
-####### BUILD FACTORIES
-
-gerrit_lock = util.MasterLock("gerrit")
-gerrit_lock_count = 1  # Max number of concurrent checkouts.
-
-def scheduler_is_gerrit(step):
-    return step.getProperty('scheduler').startswith('gerrit')
-
-class RunTests(steps.Compile):
-    name = 'test'
-    warnOnFailure = 1
-    description = ['testing']
-    descriptionDone = ['test']
-    command = ['make', 'check']
-
-class BuildTests(steps.Compile):
-    name='build tests'
-    command = 'cd tests && make all'
-
-class TapObserver(util.LogLineObserver):
-    passed = 0
-    failed = 0
-
-    def outLineReceived(self, line):
-        if line.startswith('ok'):
-            self.passed += 1
-        if line.startswith('not ok'):
-            self.failed += 1
-
-class VerboseRunTests(steps.ShellCommand):
-    name = 'run tests'
-    command = 'cd tests && cat TESTS | while read t; do echo "# Test $t"; MAKECHECK=1 ./libwrap ../lib ./runtests -o $t; done'
-
-    def __init__(self, *args, **kwargs):
-        steps.ShellCommand.__init__(self, *args, **kwargs)
-        self.tap = TapObserver()
-        self.addLogObserver('stdio', self.tap)
-
-    def evaluateCommand(self, cmd):
-        if cmd.didFail():
-            return util.FAILURE
-        if self.tap.failed != 0:
-            return util.FAILURE
-        return util.SUCCESS
-
-    def createSummary(self, log):
-        summary = 'passed %d\nfailed %d\n' % (self.tap.passed, self.tap.failed)
-        self.addCompleteLog('summary', summary)
-
-
-class BuildDoc(steps.Compile):
-    def __init__(self, doc, *args, **kwargs):
-        kwargs['command'] = ['make']
-        kwargs['workdir'] = 'build/doc/xml/%s' % doc
-        kwargs['name'] = 'generate %s' % doc
-        steps.Compile.__init__(self, *args, **kwargs)
-
-
-class Make(util.BuildFactory):
-    def __init__(self, checking=None, debug=None, kmod=None, sysname=None,
-                 transarc=None, pam=None, with_=None, cf=None, make=None,
-                 build=True, doc=False, test=False, test_verbose=False):
-        util.BuildFactory.__init__(self)
-        timeout = 3600
-
-        self.addStep(steps.ShellCommand(
-            name='sleep', command=['sleep', settings.build_delay], doStepIf=scheduler_is_gerrit))
-
-        self.addStep(steps.Gerrit(
-            repourl=REPO, mode='full', method='fresh', retryFetch=True, timeout=timeout,
-            locks=[gerrit_lock.access('counting', gerrit_lock_count)]))
-
-        self.addStep(steps.ShellCommand(
-            name='git show', command=['git', 'log', '-n', '1', '--stat']))
-
-        self.addStep(steps.ShellCommand(
-            name='git gc', command=['git', 'gc', '--auto']))
-
-        self.addStep(steps.ShellCommand(
-            name='regen.sh', command=['/bin/sh', 'regen.sh']))
-
-        if cf is None:
-            cf = [
-                '--enable-supergroups',
-                '--enable-namei-fileserver',
-                '--enable-pthreaded-ubik',
-                '--enable-pthreaded-bos',
-            ]
-        if checking is not None:
-            if checking:
-                cf.append('--enable-checking')
-            else:
-                cf.append('--disable-checking')
-        if debug is not None:
-            if debug:
-                cf.extend(['--enable-debug', '--enable-debug-kernel'])
-            else:
-                cf.extend(['--disable-debug', '--disable-debug-kernel'])
-        if transarc is not None:
-            if transarc:
-                cf.append('--enable-transarc-paths')
-            else:
-                cf.append('--disable-transarc-paths')
-        if pam is not None:
-            if pam:
-                cf.append('--enable-pam')
-            else:
-                cf.append('--disable-pam')
-        if kmod is not None:
-            if kmod:
-                cf.append('--enable-kernel-module')
-            else:
-                cf.append('--disable-kernel-module')
-        if sysname:
-            cf.append('--with-afs-sysname=%s' % (sysname,))
-        if with_ is not None:
-            for n,v in with_.items():
-                cf.append('--with-%s=%s' % (n,v))
-
-        self.addStep(
-            steps.Configure(
-                command=['./configure'] + cf,
-                logfiles={'config.log': 'config.log'}))
-
-        if build:
-            if make is None:
-                make = ['make', '-j', '4', 'all']
-            self.addStep(steps.Compile(command=make))
-
-        if doc:
-            self.addStep(steps.Compile(command=['make', 'config'], name='make config'))
-            self.addStep(BuildDoc('AdminGuide'))
-            self.addStep(BuildDoc('AdminRef'))
-            self.addStep(BuildDoc('QuickStartUnix'))
-            self.addStep(BuildDoc('UserGuide'))
-
-        if test:
-            if test_verbose:
-                self.addStep(BuildTests())
-                self.addStep(VerboseRunTests())
-            else:
-                self.addStep(RunTests())
-
-
-def extract_spec_sources(rc, stdout, stderr):
-    props= {}
-    lines = stdout.splitlines()
-    props['afsvers'] = lines[0]
-    for line in lines[1:]:
-        if line.startswith('Source') and ':' in line:
-            source, value = line.split(':', 1)
-            name = value.replace('%{afsvers}', props['afsvers'])
-            props[source] = os.path.basename(name.strip())
-    return props
-
-
-class BuildRPMs(util.BuildFactory):
-    def __init__(self):
-        util.BuildFactory.__init__(self)
-        timeout = 3600
-
-        self.addStep(steps.ShellCommand(
-            name='sleep', command=['sleep', settings.build_delay], doStepIf=scheduler_is_gerrit))
-
-        self.addStep(steps.Gerrit(
-            repourl=REPO, mode='full', method='fresh', retryFetch=True, timeout=timeout,
-            locks=[gerrit_lock.access('counting', gerrit_lock_count)]))
-
-        self.addStep(steps.ShellCommand(
-            name='git show', command=['git', 'log', '-n', '1', '--stat']))
-
-        self.addStep(steps.ShellCommand(
-            name='git gc', command=['git', 'gc', '--auto']))
-
-        self.addStep(steps.ShellCommand(
-            name='Create source distribution tarballs',
-            command=['build-tools/make-release', '--dir=packages', 'HEAD']))
-
-        self.addStep(steps.FileDownload(
-            name='Download make-rpm-workspace script',
-            mastersrc='make-rpm-workspace.sh',
-            workerdest='packages/make-rpm-workspace.sh',
-            mode=0o755))
-
-        self.addStep(steps.ShellCommand(
-            name='Create rpmbuild directory',
-            command=['packages/make-rpm-workspace.sh']))
-
-        self.addStep(steps.RpmBuild(
-            specfile='packages/rpmbuild/SPECS/openafs.spec',
-            topdir='`pwd`/packages/rpmbuild',
-            builddir='`pwd`/packages/rpmbuild/BUILD',
-            rpmdir='`pwd`/packages/rpmbuild/RPMS',
-            sourcedir='`pwd`/packages/rpmbuild/SOURCES',
-            srcrpmdir='`pwd`/packages/rpmbuild/SRPMS'))
-
-        self.addStep(steps.FileDownload(
-            name='Download unpack-dkms-rpm script',
-            mastersrc='unpack-dkms-rpm.sh',
-            workerdest='packages/unpack-dkms-rpm.sh',
-            mode=0o755))
-
-        self.addStep(steps.ShellCommand(
-            name='Unpack dkms-openafs rpm',
-            command=['packages/unpack-dkms-rpm.sh']))
-
-        self.addStep(steps.Configure(
-            command=['./configure', '--with-linux-kernel-packaging'],
-            workdir='build/packages/dkms/usr/src/openafs',
-            logfiles={'config.log': 'config.log'}))
-
-        self.addStep(steps.Compile(
-            command=['make', '-j', '4', 'V=0'],
-            workdir='build/packages/dkms/usr/src/openafs'))
-
-
-class VirtRunBuild(util.BuildFactory):
-    def __init__(self, linux='rc', test=True):
-        util.BuildFactory.__init__(self)
-        build = [
-            'virt-run-build.sh',
-            '--branch', util.Property('branch', default='master'),
-            '--linux', linux,
-        ]
-        if test:
-            build.append('--smoke-test')
-        self.addStep(steps.ShellCommand(name='virt-run-build', command=build))
-
-class WinBuild(util.BuildFactory):
-    def __init__(self, arch, variant):
-        util.BuildFactory.__init__(self)
-        timeout = 3600
-
-        self.addStep(steps.ShellCommand(
-            name='sleep', command=['ping', '-n', settings.build_delay, 'localhost'], doStepIf=scheduler_is_gerrit))
-
-        self.addStep(steps.Gerrit(
-            repourl=REPO, mode='full', method='fresh', retryFetch=True, timeout=timeout,
-            locks=[gerrit_lock.access('counting', gerrit_lock_count)]))
-
-        self.addStep(steps.ShellCommand(
-            name='git show', command=['git', 'log', '-n', '1', '--stat']))
-
-        self.addStep(steps.ShellCommand(
-            name='git gc', command=['git', 'gc', '--auto']))
-
-        self.addStep(steps.ShellCommand(
-            name='build-openafs', command=['build-openafs.cmd', arch, variant]))
-
-
-####### BUILDERS
-
-c['builders'] = []
-_builders = {} # for schedulers
-
-def verify_branches(branches, default=None):
-    if not default:
-        default = BRANCHES
-    if not branches:
-        branches = []
-    elif branches is True:
-        branches = default
-    elif isinstance(branches, str):
-        branches = [branches]
-    for branch in branches:
-        if not branch in BRANCHES:
-            raise ValueError('Unknown branch name: %s' % branch)
-    return branches
-
-def add_builder(name, factory=None, worker=None, workers=None,
-                gerrit=False, nightly=False, **kwargs):
-    if name is None:
-        raise ValueError('builder requires a name')
-    if name in _builders:
-        raise ValueError('builder "%s" already defined' % (name))
-    if factory is None:
-        factory = Make()
-    if worker is None:
-        worker = name # default to the builder name
-    if workers is None:
-        workers = [worker] # default is one worker
-    gerrit = verify_branches(gerrit, ['master', 'openafs-stable-1_8_x', 'openafs-stable-1_6_x'])
-    nightly = verify_branches(nightly, ['master', 'openafs-stable-1_8_x'])
-
-    # Warn about workers missing in the passwords.ini file.
-    # Allow the configuration to load without them, which
-    # is helpful for testing.
-    workernames = set(passwords.options('workers'))
-    missing = list(set(workers) - workernames)
-    available = list(set(workers) & workernames)
-    if missing:
-        for m in missing:
-            print('WARNING: Worker "%s" is missing in passwords.ini' % m)
-    if not available:
-        print('WARNING: No workers for builder "%s"' % name)
-        return
-
-    # Save branch and worker names for adding schedulers below.
-    _builders[name] = dict(workers=workers, gerrit=gerrit, nightly=nightly)
-
-    c['builders'].append(util.BuilderConfig(
-        name=name,
-        workernames=workers,
-        factory=factory,
-        canStartBuild=util.enforceChosenWorker, # for force build
-        **kwargs)
-    )
-
-def add_gerrit_dev(name, worker=None, **kwargs):
-    if worker is None:
-        worker = name
-    add_builder('gerrit-dev-' + name, worker=worker, gerrit=[DEV], **kwargs)
-
-def add_gerrit_stable(name, worker=None, **kwargs):
-    if worker is None:
-        worker = name
-    add_builder('gerrit-stable-' + name, worker=worker, gerrit=[STABLE], **kwargs)
-
-def add_gerrit_oldstable(name, worker=None, **kwargs):
-    if worker is None:
-        worker = name
-    add_builder('gerrit-oldstable-' + name, worker=worker, gerrit=[OLDSTABLE], **kwargs)
-
-def add_nightly_dev(name, worker=None, **kwargs):
-    if worker is None:
-        worker = name
-    add_builder('nightly-dev-' + name, worker=worker, nightly=[DEV], **kwargs)
-
-def add_nightly_stable(name, worker=None, **kwargs):
-    if worker is None:
-        worker = name
-    add_builder('nightly-stable-' + name, worker=worker, nightly=[STABLE], **kwargs)
-
-def add_parked_builder(name, worker=None, **kwargs):
-    if worker is None:
-        worker = name
-    add_builder('parked-' + name, worker=worker, **kwargs)
-
-# Environments
-env_suse = {'CFLAGS': '-Wno-error=format-truncation'}
-env_fedora = {
-    'CFLAGS': ' '.join([
-        '-Wno-error=format-truncation',
-        '-Wno-error=format-overflow',
-        '-Wno-error=restrict',
-        '-Wno-error=array-bounds',
-        '-Wno-error=implicit-function-declaration',
-    ]),
-}
-env_freebsd = {
-    'MKAFS_OSTYPE': 'FBSD',
-}
-
-#----------------------------------------------------------------------------
-# Gerrit Triggered Builders: master branch
-#
-add_gerrit_dev('aix61-rs', factory=Make(make=['make', 'all']))
-add_gerrit_dev('alma9-amd64')
-add_gerrit_dev('alma9-amd64-rpm', factory=BuildRPMs())
-add_gerrit_dev('centos6-amd64')
-add_gerrit_dev('centos73-x86_64')
-add_gerrit_dev('centos8-amd64')
-add_gerrit_dev('debian8-amd64', worker='debian87-x86_64')
-add_gerrit_dev('debian9-amd64', factory=Make(checking=True))
-add_gerrit_dev('debian10-amd64', factory=Make(checking=True))
-add_gerrit_dev('debian11-amd64', factory=Make(checking=True))
-add_gerrit_dev('freebsd12-amd64', env=env_freebsd, factory=Make(sysname='amd64_fbsd_122'))
-add_gerrit_dev('fedora33-x86_64', env=env_fedora, factory=Make(checking=True))
-add_gerrit_dev('fedora34-x86_64', env=env_fedora, factory=Make(checking=False))
-add_gerrit_dev('fedora35-x86_64', env=env_fedora, factory=Make(checking=False))
-add_gerrit_dev('gentoo-amd64', factory=Make(checking=True, test=True))
-add_gerrit_dev('gentoo-gcc-amd64', factory=Make(checking=True, test=True))
-add_gerrit_dev('macos10-15-x86_64', factory=Make(transarc=True, pam=False, make=['make', 'dest']))
-add_gerrit_dev('macos11-x86_64', factory=Make(transarc=True, pam=False, make=['make', 'dest']))
-add_gerrit_dev('macos12-x86_64', factory=Make(transarc=True, pam=False, make=['make', 'dest']))
-add_gerrit_dev('opensuse15-x86_64', factory=Make(with_={'linux-kernel-build': '/usr/src/linux-obj/x86_64/default'}))
-add_gerrit_dev('solaris10_x86', worker='sun510_x86', factory=Make(transarc=True, make=['make', 'dest']))
-add_gerrit_dev('solaris114_x86', worker='solaris114-x86-2')
-add_gerrit_dev('ubuntu1610-x86_64')
-add_gerrit_dev('ubuntu1804-amd64', factory=Make(checking=True, test=True))
-add_gerrit_dev('ubuntu2004-amd64', factory=Make(checking=True, test=True))
-#add_gerrit_dev('ubuntu2004-amd64-doc', worker='ubuntu2004-amd64', factory=Make(build=False, kmod=False, doc=True, test=False))
-add_gerrit_dev('wins2019_amd64_free', worker='wins2019-amd64', factory=WinBuild('amd64', 'free'))
-#add_gerrit_dev('wins2019_x86_checked', worker='wins2019-amd64', factory=WinBuild('x86', 'checked'))
-
-#----------------------------------------------------------------------------
-# Gerrit Triggered Builders: stable branch
-#
-add_gerrit_stable('alma9-amd64')
-add_gerrit_stable('centos6-amd64')
-add_gerrit_stable('centos73-x86_64')
-add_gerrit_stable('centos8-amd64')
-add_gerrit_stable('debian9-amd64', factory=Make(checking=True))
-add_gerrit_stable('debian10-amd64', factory=Make(checking=True))
-add_gerrit_stable('debian11-amd64', factory=Make(checking=True))
-add_gerrit_stable('freebsd12-amd64', env=env_freebsd, factory=Make(sysname='amd64_fbsd_122'))
-add_gerrit_stable('fedora32-x86_64', env=env_fedora, factory=Make(checking=True))
-add_gerrit_stable('macos10-15-x86_64', factory=Make(transarc=True, pam=False, make=['make', 'dest']))
-add_gerrit_stable('opensuse15-x86_64', factory=Make(with_={'linux-kernel-build': '/usr/src/linux-obj/x86_64/default'}))
-add_gerrit_stable('solaris10_x86', worker='sun510_x86', factory=Make(transarc=True, make=['make', 'dest']))
-add_gerrit_stable('solaris114_x86', worker='solaris114-x86-2')
-add_gerrit_stable('ubuntu1804-amd64', factory=Make(checking=True, test=True))
-add_gerrit_stable('ubuntu2004-amd64', factory=Make(checking=True, test=True))
-add_gerrit_stable('wins2019_amd64_free', worker='wins2019-amd64', factory=WinBuild('amd64', 'free'))
-add_gerrit_stable('wins2019_x86_checked', worker='wins2019-amd64', factory=WinBuild('x86', 'checked'))
-
-#----------------------------------------------------------------------------
-# Gerrit Triggered Builders: old-stable branch
-#
-add_gerrit_oldstable('centos73-x86_64')
-add_gerrit_oldstable('centos8-amd64')
-add_gerrit_oldstable('debian9-amd64', factory=Make(checking=True))
-add_gerrit_oldstable('debian10-amd64', factory=Make(checking=True))
-add_gerrit_oldstable('fedora32-x86_64', env=env_fedora, factory=Make(checking=True))
-add_gerrit_oldstable('solaris10_x86', worker='sun510_x86', factory=Make(transarc=True, make=['make', 'dest']))
-add_gerrit_oldstable('solaris114_x86', worker='solaris114-x86-2')
-add_gerrit_oldstable('ubuntu1804-amd64', factory=Make(checking=True, test=True))
-add_gerrit_oldstable('ubuntu2004-amd64', factory=Make(checking=True, test=True))
-
-#----------------------------------------------------------------------------
-# Nightly Builders
-
-add_nightly_dev('sol11sparc')
-add_nightly_dev('centos7-arm64')
-add_nightly_dev('wins2019_amd64_checked', worker='wins2019-amd64', factory=WinBuild('amd64', 'checked'))
-add_nightly_dev('wins2019_x86_free', worker='wins2019-amd64', factory=WinBuild('x86', 'free'))
-
-#----------------------------------------------------------------------------
-# Parked Workers
-#
-# These builders are configured to allow old workers to connect to avoid
-# filling the buildbot log with connection errors, but currently are not
-# configured to do gerrit or nightly builds, usually because they are EOL.
-#
-add_parked_builder('fedora21-x86_64')
-add_parked_builder('fedora22-x86_64', factory=Make(kmod=False, sysname='amd64_linux26'))
-add_parked_builder('fedora23-x86_64', factory=Make(kmod=False, sysname='amd64_linux26'))
-add_parked_builder('fedora24-x86_64', factory=Make(kmod=False, sysname='amd64_linux26'))
-add_parked_builder('fedora25-x86_64', factory=Make(kmod=False, sysname='amd64_linux26'))
-add_parked_builder('fedora26-x86_64', factory=Make(kmod=False, sysname='amd64_linux26'))
-add_parked_builder('fedora27-x86_64', factory=Make(kmod=False, sysname='amd64_linux26'))
-add_parked_builder('fedora28-x86_64', factory=Make(checking=True))
-add_parked_builder('fedora29-x86_64', env=env_fedora, factory=Make(checking=True))
-add_parked_builder('fedora30-x86_64', env=env_fedora, factory=Make(checking=True))
-add_parked_builder('fedora31-x86_64', env=env_fedora, factory=Make(checking=True))
-add_parked_builder('freebsd13-amd64', env=env_freebsd, factory=Make(sysname='amd64_fbsd_130'))
-
-####### SCHEDULERS
-
-c['schedulers'] = []
-
-def scheduled(scheduler, branch):
-    """Builder names assigned to given branch above."""
-    builders = []
-    for name,info in _builders.items():
-        if branch in info[scheduler]:
-            builders.append(name)
-    return builders
-
-def add_gerrit_scheduler(branch):
-    if not branch in BRANCHES:
-        raise ValueError('Unknown branch name: %s' % branch)
-    c['schedulers'].append(schedulers.SingleBranchScheduler(
-        name='gerrit-' + branch,
-        change_filter=util.GerritChangeFilter(
-            project='openafs',
-            branch=branch,
-            eventtype="patchset-created"
-        ),
-        treeStableTimer=None, # Schedule immediately to build all changes.
-        builderNames=scheduled('gerrit', branch),
-    ))
-
-def add_nightly_scheduler(branch, hour, minute):
-    if not branch in BRANCHES:
-        raise ValueError('Unknown branch name: %s' % branch)
-    c['schedulers'].append(schedulers.Nightly(
-        name='nightly-' + branch,
-        codebases={'':{'repository':REPO, 'branch':branch}},
-        builderNames=scheduled('nightly', branch),
-        hour=hour, minute=minute,
-    ))
-
-def add_force_scheduler(builder):
-    workers = _builders[builder]['workers']
-    c['schedulers'].append(schedulers.ForceScheduler(
-        name='force-'+builder,
-        buttonName='Force build',
-        label='Force build '+builder,
-        builderNames=[builder],
-        reason=util.StringParameter(
-            name='reason',
-            label='Reason:',
-            default='force build',
-            required=True,
-            size=80,
-        ),
-        codebases=[
-            util.CodebaseParameter(
-                '',
-                label='Repository',
-                # Generate just the branch entry in the form, but revision,
-                # repository, and project are needed by buildbot scheduling
-                # system so we need to pass an empty value ("") for those.
-                # Note: branch value may be a gerrit change id branch.
-                branch=util.StringParameter(
-                    name='branch',
-                    label='Branch:',
-                    default='master',
-                    required=True,
-                    size=80,
-                ),
-                revision=util.FixedParameter(name="revision", default=""),
-                repository=util.FixedParameter(name="repository", default=""),
-                project=util.FixedParameter(name="project", default=""),
-            ),
-        ],
-        properties=[
-            util.WorkerChoiceParameter(
-                label='Worker:',
-                default=workers[0],
-                choices=workers,
-            ),
-        ],
-    ))
-
-
-add_gerrit_scheduler('master')
-add_gerrit_scheduler('openafs-stable-1_8_x')
-add_gerrit_scheduler('openafs-stable-1_6_x')
-add_nightly_scheduler('master', 0, 0)
-add_nightly_scheduler('openafs-stable-1_8_x', 1, 0)
-add_nightly_scheduler('openafs-stable-1_6_x', 2, 0)
-for builder in _builders:
-    add_force_scheduler(builder)
-
-# Collect the builders by branches
-builders_by_branch  = { _ : scheduled('gerrit', _)
-                       for _ in ('master', 'openafs-stable-1_8_x', 'openafs-stable-1_6_x') }
-
-
-c['schedulers'].append(forcegerritbuild.ForceGerritBuild(
-    gerritserver=settings.gerrit_server,
-    gerritport=settings.gerrit_ssh_port,
-    username=settings.gerrit_user,
-    identity_file=os.path.expanduser('~/.ssh/%s' % settings.gerrit_ident),
-    gerriturl="%s/#/c/%%(changenumber)s/%%(patchsetnumber)s" % settings.gerrit_url,
-    name='ForceGerritBuild',
-    branchbuilders=builders_by_branch,
-    reason=util.StringParameter(
-        name='reason',
-        label='Reason',
-        default='ForceGerritBuild',
-        required=True,
-        size=80),
-    codebases=[
-        util.CodebaseParameter(
-            '',
-            branch=util.FixedParameter(name="branch", default=""),
-            revision=util.FixedParameter(name="revision", default=""),
-            repository=util.FixedParameter(name="repository", default=""),
-            project=util.FixedParameter(name="project", default=""),
-        )
-    ],
-    properties=[
-            util.StringParameter(
-                name="changenumber",
-                label="Gerrit Change#",
-                default="", size=40, regex=r'^\d+$',
-                required=True),
-            util.StringParameter(
-                name="patchsetnumber",
-                label="Gerrit patchset# (defaults to latest)",
-                default="", size=40, regex=r'^(\d*)$'),
-    ]
-))
-
-####### BUILDBOT SERVICES
-
-def gerrit_summary_callback(buildInfoList, results, status, arg):
-
-    def report_build_status(buildlist, finalstatus=None):
-        for info in buildlist:
-            msg = "    Builder %(name)s %(resultText)s (%(text)s)" % info
-            if settings.buildbotURL:
-                link = info.get('url', None)
-                if link:
-                    msg += " - " + link
-            if finalstatus:
-                msg += "\n       Final build status %(resultText)s" % finalstatus[info['name']]
-            msg += "."
-            yield msg
-
-    msgs = [settings.summary_title, settings.buildbotURL]
-
-    # sort buildinfo by builder and completed build time
-    # we want to get the final result of any particular builder
-    # in case there was a retry that ended up with a successful build
-    buildInfoList.sort(key=lambda buildinfo:
-        (buildinfo['name'], buildinfo['build']['complete_at']))
-
-    builderFinalStatus = dict()
-    for buildInfo in buildInfoList:
-        builderFinalStatus[buildInfo['name']] = buildInfo
-
-    # Possible results: SUCCESS WARNINGS FAILURE SKIPPED EXCEPTION RETRY CANCELLED
-    successfulBuilds = [fstatus for fstatus in builderFinalStatus.values()
-                            if fstatus['result'] == util.SUCCESS]
-    failedBuilds = [fstatus for fstatus in builderFinalStatus.values()
-                        if fstatus['result'] != util.SUCCESS]
-
-    # typically retries or interrupted builds
-    restartedBuilds = [buildinfo for buildinfo in buildInfoList
-                        if buildinfo not in successfulBuilds and
-                           buildinfo not in failedBuilds]
-
-    msgs.append("Final Build Status (failed %d succeeded %d):" %
-                (len(failedBuilds), len(successfulBuilds)))
-
-    if len(failedBuilds) > 0:
-        msgs.append("\n Failed Builds:")
-        msgs.extend(report_build_status(failedBuilds))
-
-    if len(successfulBuilds) > 0:
-        msgs.append("\n Successful Builds:")
-        msgs.extend(report_build_status(successfulBuilds))
-
-    if len(restartedBuilds) > 0:
-        msgs.append("\n Restarted Builds:")
-        msgs.extend(report_build_status(restartedBuilds, finalstatus=builderFinalStatus))
-
-    message = '\n\n'.join(msgs)
-
-    if len(successfulBuilds) != 0 and len(failedBuilds) == 0:
-        verified = 1
-    else:
-        verified = 0
-
-    return dict(message=message,
-                labels={'Verified': verified})
-
-c['services'] = []
-c['services'].append(reporters.GerritStatusPush(
-        server=settings.gerrit_server,
-        username=settings.gerrit_user,
-        port=settings.gerrit_ssh_port,
-        identity_file=os.path.expanduser('~/.ssh/%s' % settings.gerrit_ident),
-        summaryCB=gerrit_summary_callback,
-))
-c['services'].append(reporters.MailNotifier(
-        fromaddr=settings.email_from,
-        generators=[
-            WorkerMissingGenerator(workers="all")
-        ]
-    ))
-for notify in settings.build_notify_list:
-    c['services'].append(reporters.MailNotifier(
-        fromaddr=settings.email_from,
-        generators=[
-            BuildStatusGenerator(
-                builders=notify['builders'],
-                mode=['failing', 'passing'],
-                message_formatter=reporters.MessageFormatter(
-                    template=email_templates.body)
-                )
-        ],
-        sendToInterestedUsers=False,
-        extraRecipients=notify['recipients']
-    ))
-
-####### WEB UI
-
-c['title'] = settings.title
-c['titleURL'] = settings.buildbotURL
-c['buildbotURL'] = settings.buildbotURL
-
-auth = util.UserPasswordAuth(passwords.items('admins'))
-authz = util.Authz(
-    allowRules=[
-        util.AnyControlEndpointMatcher(role='admins'),
-    ],
-    roleMatchers=[
-        util.RolesFromEmails(admins=passwords.options('admins'))
-    ],
-)
-
-c['www'] = {
-    'port': settings.www_port,
-    'auth': auth,
-    'authz': authz,
-    'plugins': {
-        'waterfall_view': {},
-        'console_view': {},
-        'grid_view': {},
+from buildbot.reporters.generators.worker import WorkerMissingGenerator
+
+import afsbotcfg.factory
+import afsbotcfg.gerrit
+import afsbotcfg.master
+import afsbotcfg.schedulers
+
+BuildmasterConfig = {
+    'title': '{{ afsbotcfg_project.title }}',
+    'titleURL':  '{{ afsbotcfg_project.url }}',
+    'buildbotURL': '{{ afsbotcfg_project.url }}',
+    'buildbotNetUsageData': None,
+    'db': {
+        'db_url': '{{ afsbotcfg_project.db_url }}',
     },
+    'configurators': [
+        util.JanitorConfigurator(
+            logHorizon=datetime.timedelta(weeks={{ afsbotcfg_project.janitor.log_horizon }}),
+            dayOfWeek={{ afsbotcfg_project.janitor.day_of_week }},
+            hour={{ afsbotcfg_project.janitor.hour }}),
+    ],
+    'www': {
+        'port': {{ afsbotcfg_project.www_port }},
+        'auth': util.UserPasswordAuth([
+{% for admin in afsbotcfg_admin_passwords %}
+            ('{{ admin[0] }}', '{{ admin[1] }}'),
+{% endfor %}
+        ]),
+        'authz': util.Authz(
+            allowRules=[util.AnyControlEndpointMatcher(role='admins')],
+            roleMatchers=[
+                util.RolesFromEmails(admins=[
+{% for admin in afsbotcfg_admin_passwords %}
+                    '{{ admin[0] }}',
+{% endfor %}
+                ])]),
+        'plugins': {
+            'waterfall_view': {},
+            'console_view': {},
+            'grid_view': {},
+        },
+    },
+    'change_source': [
+{% if afsbotcfg_gerrit is defined %}
+        changes.GerritChangeSource(
+            gerritserver='{{ afsbotcfg_gerrit.server }}',
+            gerritport={{ afsbotcfg_gerrit.ssh_port }},
+            username='{{ afsbotcfg_gerrit.user }}',
+            identity_file='{{ afsbotcfg_master_home }}/.ssh/{{ afsbotcfg_gerrit.ident | basename }}',
+            debug=False),
+{% endif %}
+    ],
+    'services': [
+{% if afsbotcfg_gerrit is defined %}
+        reporters.GerritStatusPush(
+            server='{{ afsbotcfg_gerrit.server }}',
+            username='{{ afsbotcfg_gerrit.user }}',
+            port={{ afsbotcfg_gerrit.ssh_port }},
+            identity_file='{{ afsbotcfg_master_home }}/.ssh/{{ afsbotcfg_gerrit.ident | basename }}',
+            summaryCB=afsbotcfg.gerrit.summaryCB,
+            summaryArg=('{{ afsbotcfg_project.summary_title }}', '{{ afsbotcfg_project.url }}'),
+        ),
+{% endif %}
+        reporters.MailNotifier(
+            fromaddr='{{ afsbotcfg_project.email_from }}',
+            generators=[WorkerMissingGenerator(workers='all')],
+        ),
+    ],
+    'protocols': {
+        'pb': {
+            'port': {{ afsbotcfg_project.pb_port | d(9989) }},
+        }
+    },
+    'workers': [
+{% set default_password = afsbotcfg_worker_passwords.get('__default__', '') %}
+{% for name in afsbotcfg_workers %}
+{%   set properties = afsbotcfg_workers[name] %}
+{%   set password = afsbotcfg_worker_passwords.get(name, default_password) %}
+{%   if properties.notify | d('') != '' %}
+        worker.Worker('{{ name }}', '{{ password }}', notify_on_missing='{{ properties.notify }}'),
+{%   else %}
+        worker.Worker('{{ name }}', '{{ password }}'),
+{%   endif %}
+{% endfor %}
+    ],
+    'builders': [
+{% for builder in afsbotcfg_builders %}
+        util.BuilderConfig(
+            name='{{ builder.name }}',
+            workernames=['{{builder.worker}}'],
+            canStartBuild=util.enforceChosenWorker,
+{%   if builder.factory.env is defined %}
+            env={
+{%     for key, value in builder.factory.env.items() %}
+              '{{ key }}': '{{ value }}',
+{%     endfor %}
+            },
+{%   endif %}
+            factory=afsbotcfg.factory.{{ builder.factory.name | d('UnixBuild') }}(
+{%   if afsbotcfg_project.repo is defined %}
+                repo='{{ afsbotcfg_project.repo }}',
+{%   endif %}
+{%   if builder.scheduler == 'gerrit' %}
+                start_delay={{ afsbotcfg_project.start_delay }},
+{%   endif %}
+{%   if builder.factory.args is defined %}
+{%     for key, value in builder.factory.args.items() %}
+                {{ key }}='{{ value }}',
+{%     endfor %}
+{%   endif %}
+            ),
+        ),
+{% endfor %}
+    ],
+    'schedulers': [
+        # Gerrit schedulers.
+{% for branch in afsbotcfg_project.branches | d({'dev': 'master'}) %}
+        schedulers.SingleBranchScheduler(
+            name='gerrit-{{ branch }}',
+            change_filter=util.GerritChangeFilter(
+                project='{{ afsbotcfg_project.name }}',
+                branch='{{ afsbotcfg_project.branches[branch] }}',
+                eventtype='patchset-created',
+            ),
+            treeStableTimer=None,  # Schedule immediately to avoid dropping changes.
+            builderNames=[
+{%   for builder in afsbotcfg_builders %}
+{%     if builder.scheduler == 'gerrit' and builder.branch == branch %}
+                '{{ builder.name }}',
+{%     endif %}
+{%   endfor %}
+            ],
+        ),
+{% endfor %}
+{% if afsbotcfg_gerrit is defined %}
+        # Gerrit force scheduler.
+        afsbotcfg.schedulers.GerritForceScheduler(
+            name='force-gerrit',
+            gerritserver='{{ afsbotcfg_gerrit.server }}',
+            gerritport={{ afsbotcfg_gerrit.ssh_port }},
+            username='{{ afsbotcfg_gerrit.user }}',
+            identity_file='{{ afsbotcfg_master_home }}/.ssh/{{ afsbotcfg_gerrit.ident | basename }}',
+            gerriturl='{{ afsbotcfg_gerrit.url }}/#/c/%%(changenumber)s/%%(patchsetnumber)s',
+            branchbuilders={
+{%   for branch in afsbotcfg_project.branches | d({'dev': 'master'}) %}
+                '{{ afsbotcfg_project.branches[branch] }}': [
+{%     for builder in afsbotcfg_builders %}
+{%       if builder.scheduler == 'gerrit' and builder.branch == branch %}
+                    '{{ builder.name }}',
+{%       endif %}
+{%     endfor %}
+                ],
+{%   endfor %}
+            }),
+{% endif %}
+
+        # Force schedulers.
+{% for builder in afsbotcfg_builders %}
+        afsbotcfg.schedulers.Force('{{ builder.name }}', '{{ builder.worker }}'),
+{% endfor %}
+    ],
 }
 
-####### DATA HORIZON
-
-c['configurators'] = [
-    # Delete all logs older than one month every Sunday at noon.
-    util.JanitorConfigurator(
-        logHorizon=datetime.timedelta(weeks=4),
-        hour=12,
-        dayOfWeek=6
-    ),
-]
-
-####### DB URL
-
-c['db'] = {'db_url' : 'sqlite:///state.sqlite'}
-
-####### PID FILE
-
-# Create a pid file in a tmp or run directory.  This is a workaround for the
-# twistd.pid file, which is not placed in a run directory, so can be stale
-# after a reboot.  The BUILDBOT_PIDFILE env var is used to conditionally create
-# the buildbot pid file to avoid creating a false pid file when running
-# buildbot checkconfig. Example start command:
-#
-#    BUILDBOT_PIDFILE=/tmp/mybuildbot.pid buildbot start master/mybuildbot
-#
-pidfile = os.environ.get('BUILDBOT_PIDFILE', None)
-if pidfile:
-    with open(pidfile, 'w') as f:
-        f.write('%d\n' % os.getpid())
-{% endraw %}
+# Work-around stale twisted.pid files.
+afsbotcfg.master.write_pid()

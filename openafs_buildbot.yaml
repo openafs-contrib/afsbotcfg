@@ -1,32 +1,194 @@
 ---
 - name: Manage OpenAFS buildbot master
   hosts: openafs_buildbot_masters
-  collections:
-    - openafs_contrib.buildbot
   tasks:
-    - import_role:
-        name: buildbot_master
+
+    # Setup role variable default values.
+    - ansible.builtin.set_fact:
+        afsbotcfg_master_home: "{{ ansible_user_dir }}"
+      when: afsbotcfg_master_home is undefined
+    - ansible.builtin.set_fact:
+        afsbotcfg_master_basedir: "{{ afsbotcfg_master_home }}/master/{{ afsbotcfg_project.name | d('openafs') }}"
+      when: afsbotcfg_master_basedir is undefined
+    - ansible.builtin.set_fact:
+        afsbotcfg_master_venv: "{{ afsbotcfg_master_home }}/.venv/buildbot"
+      when: afsbotcfg_master_venv is undefined
+    - ansible.builtin.set_fact:
+        afsbotcfg_master_python: "/usr/bin/python3"
+      when: afsbotcfg_master_python is undefined
+
+    #--------------------------------------------------------------------------
+    # Install the ssh keys for gerrit integration.
+    #
+    # Install the ssh keys required for gerrit event streaming and be sure
+    # we have a host key to connect to gerrit without a prompt.
+    #
+    # The existing gerrit ssh key is a very old and weak key type. This requires
+    # requires an ssh configuration setting to allow this weak key type.
+    #--------------------------------------------------------------------------
+    - name:  "Install the ssh keys for gerrit integration."
+      when: afsbotcfg_gerrit is defined
+      block:
+        - name: "Ensure the .ssh directory exists."
+          ansible.builtin.file:
+            state: directory
+            path: "{{ afsbotcfg_master_home }}/.ssh"
+            mode: "0700"
+
+        - name: "Ensure the ssh keys for gerrit are present."
+          ansible.builtin.copy:
+            src: "{{ afsbotcfg_gerrit.keysdir | d('files/ssh') }}/{{ item.src }}"
+            dest: "{{ afsbotcfg_master_home }}/.ssh/{{ item.src | basename }}"
+            mode: "{{ item.mode }}"
+          loop:
+            - src: "{{ afsbotcfg_gerrit.ident | d('gerrit') }}"
+              mode: "0600"
+            - src: "{{ afsbotcfg_gerrit.ident | d('gerrit') }}.pub"
+              mode: "0644"
+
+        - name: "Ensure the known_hosts file contains the gerrit server host key."
+          vars:
+            _hostkey_file: "{{ afsbotcfg_gerrit.keysdir | d('files/ssh') }}/{{ afsbotcfg_gerrit.hostkey | d('gerrit.hostkey') }}"
+            _server: "{{ afsbotcfg_gerrit.server | d('gerrit.openafs.org') }}"
+            _port: "{{ afsbotcfg_gerrit.ssh_port | d('29418') }}"
+          ansible.builtin.known_hosts:
+            state: present
+            key: "{{ lookup('file', _hostkey_file) }}"
+            name: "[{{ _server }}]:{{ _port }}"
+
+        - name: "Ensure weak ssh key types are accepted."
+          ansible.builtin.lineinfile:
+            state: present
+            path: ".ssh/config"
+            line: "PubkeyAcceptedKeyTypes=+ssh-dss"
+            create: yes
+            mode: "0600"
+
+    #--------------------------------------------------------------------------
+    # Install our buildbot master extensions.
+    #
+    # Create the buildbot master Python virtualenv and install our afsbotcfg
+    # package in the virtualenv before importing the buildbot master role.
+    #--------------------------------------------------------------------------
+    - name: "Build the afsbotcfg Python package."
+      delegate_to: localhost
+      ansible.builtin.command:
+        cmd: "make build"
+      register: build_results
+      changed_when: "'Built afsbotcfg' in build_results.stdout"
+
+    - name: "Lookup the afsbotcfg package version."
+      vars:
+        _makefile: "{{ lookup('file', 'src/Makefile') }}"
+      ansible.builtin.set_fact:
+        afsbotcfg_version: "{{ (_makefile | regex_search('^VERSION=(.*)', '\\1', multiline=True))[0] }}"
+
+    - ansible.builtin.debug:
+        var: afsbotcfg_version
+
+    - name: "Upload the afsbotcfg package tarball."
+      ansible.builtin.copy:
+        src: "src/dist/afsbotcfg-{{ afsbotcfg_version }}.tar.gz"
+        dest: "/tmp/afsbotcfg-{{ afsbotcfg_version }}.tar.gz"
+        mode: "0644"
+      register: package_upload_results
+
+    - name: "Create the buildbot master Python virtual environment."
+      ansible.builtin.pip:
+        state: latest
+        name:
+          - pip
+          - wheel
+        virtualenv: "{{ afsbotcfg_master_venv }}"
+        virtualenv_command: "{{ afsbotcfg_master_python }} -m venv"
+
+    - name: "Install the afsbotcfg package."
+      ansible.builtin.pip:
+        # Do a forced re-installation in case we changed the code but
+        # did not bother bumping the version.
+        state: forcereinstall
+        name: "file:///tmp/afsbotcfg-{{ afsbotcfg_version }}.tar.gz"
+        virtualenv: "{{ afsbotcfg_master_venv }}"
+        virtualenv_command: "{{ afsbotcfg_master_python }} -m venv"
+      when: package_upload_results.changed
+      notify: "restart buildbot master instance"
+
+    #--------------------------------------------------------------------------
+    # Upload build-scripts.
+    #
+    # These are extra scripts downloaded by the master to workers to
+    # facilitate package builds.
+    #--------------------------------------------------------------------------
+    - name: "Ensure build-scripts directory exists."
+      ansible.builtin.file:
+        state: directory
+        path: "{{ afsbotcfg_master_basedir }}/build-scripts"
+        mode: "0755"
+
+    - name: "Upload build-scripts."
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: "{{ afsbotcfg_master_basedir }}/build-scripts/{{ item | basename }}"
+        mode: "0755"
+      with_fileglob: "files/build-scripts/*"
+      register: upload_results
+
+
+    #--------------------------------------------------------------------------
+    # Install and configure the buildbot master.
+    #--------------------------------------------------------------------------
+    - ansible.builtin.import_role:
+        name: openafs_contrib.buildbot.buildbot_master
+      vars:
+        buildbot_master_home: "{{ afsbotcfg_master_home }}"
+        buildbot_master_basedir: "{{ afsbotcfg_master_basedir }}"
+        buildbot_master_venv: "{{ afsbotcfg_master_venv }}"
+        buildbot_master_python: "{{ afsbotcfg_master_python }}"
+        # We do not have sudo access on the upstream buildbot master.
+        buildbot_master_have_sudo: False
+        buildbot_master_sqlalchemy_version: "{{ afsbotcfg_sqlachemy_version | d('==1.4.28') }}"
+        buildbot_master_buildbot_version: "{{ afsbotcfg_buildbot_version | d('==3.5.0') }}"
+        buildbot_project: "{{ afsbotcfg_project.name | d('openafs') }}"
+        buildbot_master_config_templates:
+          - "{{ playbook_dir }}/templates/master.cfg.j2"
 
     - name: "Update README file."
-      template:
+      ansible.builtin.template:
         src: README.j2
         dest: README
         mode: "0644"
 
+  #--------------------------------------------------------------------------
+  # Show buildbot master status.
+  #--------------------------------------------------------------------------
   post_tasks:
     - name: "Query buildbot status."
-      command:
+      ansible.builtin.command:
         cmd: .local/bin/buildbotctl status
       changed_when: false
       register: results_buildbotctl_status
 
     - name: "Query buildbot version."
-      command:
+      ansible.builtin.command:
         cmd: .local/bin/buildbot --version
       changed_when: false
       register: results_buildbot_version
 
-    - debug:
+    - name: "Query afsbotcfg version."
+      vars:
+        print_version: "import afsbotcfg; print(afsbotcfg.__version__)"
+      ansible.builtin.command:
+        cmd: "{{ afsbotcfg_master_venv }}/bin/python -c '{{ print_version }}'"
+      changed_when: false
+      register: results_afsbotcfg_version
+
+    - name: "Print versions."
+      vars:
+        _buildbot_status: "{{ results_buildbotctl_status.stdout }}"
+        _buildbot_version: "{{ results_buildbot_version.stdout }}"
+        _afsbotcfg_version: "afsbotcfg version: {{ results_afsbotcfg_version.stdout }}"
+      ansible.builtin.debug:
         msg: |
-          {{ results_buildbotctl_status.stdout }}
-          {{ results_buildbot_version.stdout }}
+          {{ _buildbot_status }}
+          {{ _buildbot_version }}
+          {{ _afsbotcfg_version }}

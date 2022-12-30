@@ -1,0 +1,977 @@
+# OpenAFS buildbot master configuration.
+---
+
+afsbotcfg_project:
+  name: "openafs"
+  title: "OpenAFS Buildbot"
+  summary_title: "The OpenAFS Buildbot Coordinator"
+  db_url: "sqlite:///state.sqlite"
+  url: "https://buildbot.openafs.org/"
+  www_port: 8011
+  pb_port: 9989
+  email_from: "buildbot@openafs.MIT.EDU"
+  repo: "git://gerrit.openafs.org/openafs.git"
+  start_delay: 30
+
+  # Long term branch names.
+  branches:
+    dev: "master"
+    stable: "openafs-stable-1_8_x"
+    oldstable: "openafs-stable-1_6_x"
+
+  # Delete build logs older than four weeks on Sunday at 12:00PM (noon).
+  janitor:
+    log_horizon: 4
+    day_of_week: 6
+    hour: 12
+
+afsbotcfg_gerrit:
+  url: "https://gerrit.openafs.org"
+  ident: "gerrit"
+  hostkey: "gerrit.hostkey"
+  user: "buildbot"
+  server: "gerrit.openafs.org"
+  ssh_port: 29418
+
+afsbotcfg_workers:
+  aix61-rs:
+    notify: "Ben Huntsman <ben@huntsmans.net>"
+  alma9-amd64:
+    notify: "mmeffie@sinenomine.net"
+  alma9-amd64-rpm:
+    notify: "mmeffie@sinenomine.net"
+  centos6-amd64:
+    notify: "mmeffie@sinenomine.net"
+  centos73-x86_64:
+    notify: "mmeffie@sinenomine.net"
+  centos7-arm64:
+    notify: "mmeffie@sinenomine.net"
+  centos8-amd64:
+    notify: "mmeffie@sinenomine.net"
+  debian10-amd64:
+    notify: "mmeffie@sinenomine.net"
+  debian11-amd64:
+    notify: "mmeffie@sinenomine.net"
+  debian87-x86_64:
+    notify: "mmeffie@sinenomine.net"
+  debian9-amd64:
+    notify: "mmeffie@sinenomine.net"
+  fedora21-x86_64:
+    notify: "mmeffie@sinenomine.net"
+  fedora22-x86_64:
+    notify: "mmeffie@sinenomine.net"
+  fedora23-x86_64:
+    notify: "mmeffie@sinenomine.net"
+  fedora24-x86_64:
+    notify: "mmeffie@sinenomine.net"
+  fedora25-x86_64:
+    notify: "mmeffie@sinenomine.net"
+  fedora26-x86_64:
+    notify: "mmeffie@sinenomine.net"
+  fedora27-x86_64:
+    notify: "mmeffie@sinenomine.net"
+  fedora28-x86_64:
+    notify: "mmeffie@sinenomine.net"
+  fedora29-x86_64:
+    notify: "mmeffie@sinenomine.net"
+  fedora30-x86_64:
+    notify: "mmeffie@sinenomine.net"
+  fedora31-x86_64:
+    notify: "mmeffie@sinenomine.net"
+  fedora32-x86_64:
+    notify: "mmeffie@sinenomine.net"
+  fedora33-x86_64:
+    notify: "mmeffie@sinenomine.net"
+  fedora34-x86_64:
+    notify: "mmeffie@sinenomine.net"
+  fedora35-x86_64:
+    notify: "mmeffie@sinenomine.net"
+  freebsd11-amd64:
+    notify: "mansaxel@besserwisser.org"
+  freebsd12-amd64:
+    notify: "mansaxel@besserwisser.org"
+  freebsd13-amd64:
+    notify: "mansaxel@besserwisser.org"
+  gentoo-amd64:
+    notify: "cwills@sinenomine.net"
+  gentoo-gcc-amd64:
+    notify: "cwills@sinenomine.net"
+  linux-rc-x86_64:
+    notify: "mmeffie@sinenomine.net"
+  macos10-15-x86_64:
+    notify: "mbarbosa@sinenomine.net"
+  macos11-x86_64:
+    notify: "mbarbosa@sinenomine.net"
+  macos12-x86_64:
+    notify: "mbarbosa@sinenomine.net"
+  opensuse12-x86_64:
+    # notify:
+  opensuse15-x86_64:
+    notify: "mmeffie@sinenomine.net"
+  opensuse-tumbleweed-i386:
+    # notify:
+  opensuse-tumbleweed-x86_64:
+    # notify:
+  sol11sparc:
+    notify: "mmeffie@sinenomine.net"
+  solaris114-x86-2:
+    notify: "mmeffie@sinenomine.net"
+  sun510_x86:
+    notify: "mmeffie@sinenomine.net"
+  ubuntu1610-x86_64:
+    notify: "mmeffie@sinenomine.net"
+  ubuntu1804-amd64:
+    notify: "mmeffie@sinenomine.net"
+  ubuntu2004-amd64:
+    notify: "mmeffie@sinenomine.net"
+  wins2019-amd64:
+    notify: "asedeno@mit.edu"
+
+afsbotcfg_builders:
+  - name: gerrit-dev-aix61-rs
+    scheduler: gerrit
+    branch: dev
+    worker: aix61-rs
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-pthreaded-bos
+        jobs: 1
+
+  - name: gerrit-dev-alma9-amd64
+    scheduler: gerrit
+    branch: dev
+    worker: alma9-amd64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-pthreaded-bos
+
+  - name: gerrit-dev-alma9-amd64-rpm
+    scheduler: gerrit
+    branch: dev
+    worker: alma9-amd64-rpm
+    factory:
+      name: BuildRPMs
+
+  - name: gerrit-dev-centos6-amd64
+    scheduler: gerrit
+    branch: dev
+    worker: centos6-amd64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-pthreaded-bos
+
+  - name: gerrit-dev-centos73-x86_64
+    scheduler: gerrit
+    branch: dev
+    worker: centos73-x86_64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-pthreaded-bos
+
+  - name: gerrit-dev-centos8-amd64
+    scheduler: gerrit
+    branch: dev
+    worker: centos8-amd64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-pthreaded-bos
+
+  - name: gerrit-dev-debian8-amd64
+    scheduler: gerrit
+    branch: dev
+    worker: debian87-x86_64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-pthreaded-bos
+
+  - name: gerrit-dev-debian9-amd64
+    scheduler: gerrit
+    branch: dev
+    worker: debian9-amd64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-warnings --enable-checking --enable-supergroups
+          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+
+  - name: gerrit-dev-debian10-amd64
+    scheduler: gerrit
+    branch: dev
+    worker: debian10-amd64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-warnings --enable-checking --enable-supergroups
+          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+
+  - name: gerrit-dev-debian11-amd64
+    scheduler: gerrit
+    branch: dev
+    worker: debian11-amd64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-warnings --enable-checking --enable-supergroups
+          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+
+  - name: gerrit-dev-freebsd12-amd64
+    scheduler: gerrit
+    branch: dev
+    worker: freebsd12-amd64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --with-afs-sysname=amd64_fbsd_122 --enable-supergroups
+          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+      env:
+        MKAFS_OSTYPE: FBSD
+
+  - name: gerrit-dev-fedora33-x86_64
+    scheduler: gerrit
+    branch: dev
+    worker: fedora33-x86_64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-warnings --enable-checking --enable-supergroups
+          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+      env:
+        CFLAGS: >-
+          -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
+          -Wno-error=array-bounds -Wno-error=implicit-function-declaration
+
+  - name: gerrit-dev-fedora34-x86_64
+    scheduler: gerrit
+    branch: dev
+    worker: fedora34-x86_64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-pthreaded-bos
+      env:
+        CFLAGS: >-
+          -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
+          -Wno-error=array-bounds -Wno-error=implicit-function-declaration
+
+  - name: gerrit-dev-fedora35-x86_64
+    scheduler: gerrit
+    branch: dev
+    worker: fedora35-x86_64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-pthreaded-bos
+      env:
+        CFLAGS: >-
+          -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
+          -Wno-error=array-bounds -Wno-error=implicit-function-declaration
+
+  - name: gerrit-dev-gentoo-amd64
+    scheduler: gerrit
+    branch: dev
+    worker: gentoo-amd64
+    factory:
+      name: UnixBuildAndTest
+      args:
+        configure: >-
+          --enable-warnings --enable-checking
+          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-pthreaded-bos
+
+  - name: gerrit-dev-gentoo-gcc-amd64
+    scheduler: gerrit
+    branch: dev
+    worker: gentoo-gcc-amd64
+    factory:
+      name: UnixBuildAndTest
+      args:
+        configure: >-
+          --enable-warnings --enable-checking --enable-supergroups
+          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+
+  #- name:gerrit-dev-macos10-15-x86_64
+  #  scheduler: gerrit
+  - name: parked-dev-macos10-15-x86_64
+    scheduler: parked
+    branch: dev
+    worker: macos10-15-x86_64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-transarc-paths --disable-pam --enable-supergroups
+          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+        target: dest
+        jobs: 1
+
+  #- name: gerrit-dev-macos11-x86_64
+  #  scheduler: gerrit
+  - name: parked-dev-macos11-x86_64
+    scheduler: parked
+    branch: dev
+    worker: macos11-x86_64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-transarc-paths --disable-pam --enable-supergroups
+          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+        target: dest
+        jobs: 1
+
+  #- name: gerrit-dev-macos12-x86_64
+  #  scheduler: gerrit
+  - name: parked-dev-macos12-x86_64
+    scheduler: parked
+    branch: dev
+    worker: macos12-x86_64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-transarc-paths --disable-pam --enable-supergroups
+          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+        target: dest
+        jobs: 1
+
+  - name: gerrit-dev-opensuse15-x86_64
+    scheduler: gerrit
+    branch: dev
+    worker: opensuse15-x86_64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --with-linux-kernel-build=/usr/src/linux-obj/x86_64/default
+          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+
+  - name: gerrit-dev-solaris10_x86
+    scheduler: gerrit
+    branch: dev
+    worker: sun510_x86
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-transarc-paths --enable-supergroups --enable-namei-fileserver
+          --enable-pthreaded-ubik --enable-pthreaded-bos
+        target: dest
+        jobs: 1
+
+  - name: gerrit-dev-solaris114_x86
+    scheduler: gerrit
+    branch: dev
+    worker: solaris114-x86-2
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-pthreaded-bos
+
+  - name: gerrit-dev-ubuntu1610-x86_64
+    scheduler: gerrit
+    branch: dev
+    worker: ubuntu1610-x86_64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-pthreaded-bos
+
+  - name: gerrit-dev-ubuntu1804-amd64
+    scheduler: gerrit
+    branch: dev
+    worker: ubuntu1804-amd64
+    factory:
+      name: UnixBuildAndTest
+      args:
+        configure: >-
+          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-pthreaded-bos
+
+  - name: gerrit-dev-ubuntu2004-amd64
+    scheduler: gerrit
+    branch: dev
+    worker: ubuntu2004-amd64
+    factory:
+      name: UnixBuildAndTest
+      args:
+        configure: >-
+          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-pthreaded-bos
+
+  #- name: gerrit-dev-wins2019_amd64_free
+  #  scheduler: gerrit
+  - name: parked-dev-wins2019_amd64_free
+    scheduler: parked
+    branch: dev
+    worker: wins2019-amd64
+    label:  wins2019_amd64_free
+    factory:
+      name: WinBuild
+      args:
+        arch: amd64
+        variant: free
+
+  - name: gerrit-stable-alma9-amd64
+    scheduler: gerrit
+    branch: stable
+    worker: alma9-amd64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-pthreaded-bos
+
+  - name: gerrit-stable-centos6-amd64
+    scheduler: gerrit
+    branch: stable
+    worker: centos6-amd64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-pthreaded-bos
+
+  - name: gerrit-stable-centos73-x86_64
+    scheduler: gerrit
+    branch: stable
+    worker: centos73-x86_64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-pthreaded-bos
+
+  - name: gerrit-stable-centos8-amd64
+    scheduler: gerrit
+    branch: stable
+    worker: centos8-amd64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-pthreaded-bos
+
+  - name: gerrit-stable-debian9-amd64
+    scheduler: gerrit
+    branch: stable
+    worker: debian9-amd64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-warnings --enable-checking --enable-supergroups
+          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+
+  - name: gerrit-stable-debian10-amd64
+    scheduler: gerrit
+    branch: stable
+    worker: debian10-amd64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-warnings --enable-checking --enable-supergroups
+          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+
+  - name: gerrit-stable-debian11-amd64
+    scheduler: gerrit
+    branch: stable
+    worker: debian11-amd64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-warnings --enable-checking --enable-supergroups
+          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+
+  - name: gerrit-stable-freebsd12-amd64
+    scheduler: gerrit
+    branch: stable
+    worker: freebsd12-amd64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --with-afs-sysname=amd64_fbsd_122 --enable-supergroups
+          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+      env:
+        MKAFS_OSTYPE: FBSD
+
+  - name: gerrit-stable-fedora32-x86_64
+    scheduler: gerrit
+    branch: stable
+    worker: fedora32-x86_64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-warnings --enable-checking --enable-supergroups
+          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+      env:
+        CFLAGS: >-
+          -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
+          -Wno-error=array-bounds -Wno-error=implicit-function-declaration
+
+  # - name: gerrit-stable-macos10-15-x86_64
+  #  scheduler: gerrit
+  - name: parked-stable-macos10-15-x86_64
+    scheduler: parked
+    branch: stable
+    worker: macos10-15-x86_64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-transarc-paths --disable-pam --enable-supergroups
+          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+        target: dest
+
+  - name: gerrit-stable-opensuse15-x86_64
+    scheduler: gerrit
+    branch: stable
+    worker: opensuse15-x86_64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --with-linux-kernel-build=/usr/src/linux-obj/x86_64/default
+          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-pthreaded-bos
+
+  - name: gerrit-stable-solaris10_x86
+    scheduler: gerrit
+    branch: stable
+    worker: sun510_x86
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-transarc-paths --enable-supergroups --enable-namei-fileserver
+          --enable-pthreaded-ubik --enable-pthreaded-bos
+        target: dest
+
+  - name: gerrit-stable-solaris114_x86
+    scheduler: gerrit
+    branch: stable
+    worker: solaris114-x86-2
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-pthreaded-bos
+
+  - name: gerrit-stable-ubuntu1804-amd64
+    scheduler: gerrit
+    branch: stable
+    worker: ubuntu1804-amd64
+    factory:
+      name: UnixBuildAndTest
+      args:
+        configure: >-
+          --enable-warnings --enable-checking --enable-supergroups
+          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+
+  - name: gerrit-stable-ubuntu2004-amd64
+    scheduler: gerrit
+    branch: stable
+    worker: ubuntu2004-amd64
+    factory:
+      name: UnixBuildAndTest
+      args:
+        configure: >-
+          --enable-warnings --enable-checking --enable-supergroups
+          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+
+  #- name: gerrit-stable-wins2019_amd64_free
+  #  scheduler: gerrit
+  - name: parked-stable-wins2019_amd64_free
+    scheduler: parked
+    branch: stable
+    worker: wins2019-amd64
+    factory:
+      name: WinBuild
+      args:
+        arch: amd64
+        variant: free
+
+  #- name: gerrit-stable-wins2019_x86_checked
+  #  scheduler: gerrit
+  - name: parked-stable-wins2019_x86_checked
+    scheduler: parked
+    branch: stable
+    worker: wins2019-amd64
+    label:  wins2019_x86_checked
+    factory:
+      name: WinBuild
+      args:
+        arch: x86
+        variant: checked
+
+  - name: gerrit-oldstable-centos73-x86_64
+    scheduler: gerrit
+    branch: oldstable
+    worker: centos73-x86_64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-pthreaded-bos
+
+  - name: gerrit-oldstable-centos8-amd64
+    scheduler: gerrit
+    branch: oldstable
+    worker: centos8-amd64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-pthreaded-bos
+
+  - name: gerrit-oldstable-debian9-amd64
+    scheduler: gerrit
+    branch: oldstable
+    worker: debian9-amd64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-warnings --enable-checking --enable-supergroups
+          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+
+  - name: gerrit-oldstable-debian10-amd64
+    scheduler: gerrit
+    branch: oldstable
+    worker: debian10-amd64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-warnings --enable-checking --enable-supergroups
+          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+
+  - name: gerrit-oldstable-fedora32-x86_64
+    scheduler: gerrit
+    branch: oldstable
+    worker: fedora32-x86_64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-warnings --enable-checking --enable-supergroups
+          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+      env:
+        CFLAGS: >-
+          -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
+          -Wno-error=array-bounds -Wno-error=implicit-function-declaration
+
+  - name: gerrit-oldstable-solaris10_x86
+    scheduler: gerrit
+    branch: oldstable
+    worker: sun510_x86
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-transarc-paths --enable-supergroups --enable-namei-fileserver
+          --enable-pthreaded-ubik --enable-pthreaded-bos
+        target: dest
+
+  - name: gerrit-oldstable-solaris114_x86
+    scheduler: gerrit
+    branch: oldstable
+    worker: solaris114-x86-2
+    label:  solaris114_x86
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-pthreaded-bos
+
+  - name: gerrit-oldstable-ubuntu1804-amd64
+    scheduler: gerrit
+    branch: oldstable
+    worker: ubuntu1804-amd64
+    factory:
+      name: UnixBuildAndTest
+      args:
+        configure: >-
+          --enable-warnings --enable-checking --enable-supergroups
+          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+
+  - name: gerrit-oldstable-ubuntu2004-amd64
+    scheduler: gerrit
+    branch: oldstable
+    worker: ubuntu2004-amd64
+    factory:
+      name: UnixBuildAndTest
+      args:
+        configure: >-
+          --enable-warnings --enable-checking --enable-supergroups
+          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+
+  - name: nightly-dev-sol11sparc
+    scheduler: nightly
+    branch: dev
+    worker: sol11sparc
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-pthreaded-bos
+
+  - name: nightly-dev-centos7-arm64
+    scheduler: nightly
+    branch: dev
+    worker: centos7-arm64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-pthreaded-bos
+
+  - name: nightly-dev-wins2019_amd64_checked
+    scheduler: nightly
+    branch: dev
+    worker: wins2019-amd64
+    factory:
+      name: WinBuild
+      args:
+        arch: amd64
+        variant: checked
+
+  - name: nightly-dev-wins2019_x86_free
+    scheduler: nightly
+    branch: dev
+    worker: wins2019-amd64
+    label:  wins2019_x86_free
+    factory:
+      name: WinBuild
+      args:
+        arch: x86
+        variant: free
+
+  - name: parked-dev-fedora21-x86_64
+    scheduler: parked
+    branch: dev
+    worker: fedora21-x86_64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-pthreaded-bos
+      env:
+        CFLAGS: >-
+          -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
+          -Wno-error=array-bounds -Wno-error=implicit-function-declaration
+
+  - name: parked-dev-fedora22-x86_64
+    scheduler: parked
+    branch: dev
+    worker: fedora22-x86_64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --disable-kernel-module --with-afs-sysname=amd64_linux26
+          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-pthreaded-bos
+      env:
+        CFLAGS: >-
+          -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
+          -Wno-error=array-bounds -Wno-error=implicit-function-declaration
+
+  - name: parked-dev-fedora23-x86_64
+    scheduler: parked
+    branch: dev
+    worker: fedora23-x86_64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --disable-kernel-module --with-afs-sysname=amd64_linux26
+          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-pthreaded-bos
+      env:
+        CFLAGS: >-
+          -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
+          -Wno-error=array-bounds -Wno-error=implicit-function-declaration
+
+  - name: parked-dev-fedora24-x86_64
+    scheduler: parked
+    branch: dev
+    worker: fedora24-x86_64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --disable-kernel-module --with-afs-sysname=amd64_linux26
+          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-pthreaded-bos
+      env:
+        CFLAGS: >-
+          -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
+          -Wno-error=array-bounds -Wno-error=implicit-function-declaration
+
+  - name: parked-dev-fedora25-x86_64
+    scheduler: parked
+    branch: dev
+    worker: fedora25-x86_64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --disable-kernel-module --with-afs-sysname=amd64_linux26
+          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-pthreaded-bos
+      env:
+        CFLAGS: >-
+          -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
+          -Wno-error=array-bounds -Wno-error=implicit-function-declaration
+
+  - name: parked-dev-fedora26-x86_64
+    scheduler: parked
+    branch: dev
+    worker: fedora26-x86_64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --disable-kernel-module --with-afs-sysname=amd64_linux26
+          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-pthreaded-bos
+      env:
+        CFLAGS: >-
+          -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
+          -Wno-error=array-bounds -Wno-error=implicit-function-declaration
+
+  - name: parked-dev-fedora27-x86_64
+    scheduler: parked
+    branch: dev
+    worker: fedora27-x86_64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --disable-kernel-module --with-afs-sysname=amd64_linux26
+          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-pthreaded-bos
+      env:
+        CFLAGS: >-
+          -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
+          -Wno-error=array-bounds -Wno-error=implicit-function-declaration
+
+  - name: parked-dev-fedora28-x86_64
+    scheduler: parked
+    branch: dev
+    worker: fedora28-x86_64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-warnings --enable-checking
+          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-pthreaded-bos
+      env:
+        CFLAGS: >-
+          -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
+          -Wno-error=array-bounds -Wno-error=implicit-function-declaration
+
+  - name: parked-dev-fedora29-x86_64
+    scheduler: parked
+    branch: dev
+    worker: fedora29-x86_64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-warnings --enable-checking
+          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-pthreaded-bos
+      env:
+        CFLAGS: >-
+          -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
+          -Wno-error=array-bounds -Wno-error=implicit-function-declaration
+
+  - name: parked-dev-fedora30-x86_64
+    scheduler: parked
+    branch: dev
+    worker: fedora30-x86_64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-warnings --enable-checking
+          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-pthreaded-bos
+      env:
+        CFLAGS: >-
+          -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
+          -Wno-error=array-bounds -Wno-error=implicit-function-declaration
+
+  - name: parked-dev-fedora31-x86_64
+    scheduler: parked
+    branch: dev
+    worker: fedora31-x86_64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-warnings --enable-checking --enable-supergroups
+          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+      env:
+        CFLAGS: >-
+          -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
+          -Wno-error=array-bounds -Wno-error=implicit-function-declaration
+
+  - name: parked-dev-freebsd13-amd64
+    scheduler: parked
+    branch: dev
+    worker: freebsd13-amd64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --with-afs-sysname=amd64_linux26 --enable-supergroups
+          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
