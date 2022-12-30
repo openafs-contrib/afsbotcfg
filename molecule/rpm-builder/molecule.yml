@@ -31,12 +31,12 @@ provisioner:
         buildbot_master_sqlalchemy_version: '==1.4.28'
         buildbot_master_buildbot_version: '==3.5.0'
         buildbot_master_config_templates:
-          - ${MOLECULE_PROJECT_DIRECTORY}/files/master.cfg
-          - ${MOLECULE_PROJECT_DIRECTORY}/files/forcegerritbuild.py
-          - ${MOLECULE_PROJECT_DIRECTORY}/files/email_templates.py
-          - ${MOLECULE_PROJECT_DIRECTORY}/files/passwords.ini
-          - ${MOLECULE_PROJECT_DIRECTORY}/files/make-rpm-workspace.sh
-          - ${MOLECULE_PROJECT_DIRECTORY}/files/unpack-dkms-rpm.sh
+          - ${MOLECULE_PROJECT_DIRECTORY}/templates/master.cfg.j2
+          - ${MOLECULE_PROJECT_DIRECTORY}/templates/forcegerritbuild.py.j2
+          - ${MOLECULE_PROJECT_DIRECTORY}/templates/email_templates.py.j2
+          - ${MOLECULE_PROJECT_DIRECTORY}/templates/passwords.ini.j2
+          - ${MOLECULE_PROJECT_DIRECTORY}/templates/make-rpm-workspace.sh.j2
+          - ${MOLECULE_PROJECT_DIRECTORY}/templates/unpack-dkms-rpm.sh.j2
       openafs_buildbot_workers:
         buildbot_worker_admin: "tycobb@yoyodyne.com"
     host_vars:
