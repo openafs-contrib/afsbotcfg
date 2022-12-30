@@ -1,0 +1,61 @@
+---
+dependency:
+  name: galaxy
+
+platforms:
+  - name: afsbotcfg-master
+    # box: generic/centos7
+    proxmox_template_name: centos7
+    groups:
+      - openafs_buildbot_masters
+
+  - name: afsbotcfg-alma-worker
+    # box: generic/alma9
+    proxmox_template_name: alma9
+    groups:
+      - openafs_buildbot_workers
+
+  - name: afsbotcfg-debian-worker
+    # box: generic/debian11
+    proxmox_template_name: debian11u6
+    groups:
+      - openafs_buildbot_workers
+
+provisioner:
+  name: ansible
+  env:
+    ANSIBLE_VERBOSITY: 0
+    ANSIBLE_STDOUT_CALLBACK: yaml
+  inventory:
+    group_vars:
+      all:
+        merge:
+          afsbotcfg_project:
+            title: "Test"
+            summary_title: "Test Buildbot"
+        _override:
+          afsbotcfg_admin_passwords:
+            - ["admin@example.com", "secret"]
+          afsbotcfg_worker_passwords:
+            alma9-amd64: "secret"
+            debian11-amd64: "secret"
+          afsbotcfg_workers:
+            alma9-amd64:
+              owner: "admin@example.com"
+            debian11-amd64:
+              owner: "admin@example.com"
+          afsbotcfg_builders:
+            - scheduler: "nightly"
+              branch: "dev"
+              worker: "alma9-amd64"
+            - scheduler: "nightly"
+              branch: "dev"
+              worker: "debian11-amd64"
+    host_vars:
+      afsbotcfg-alma-worker:
+        worker_name: "alma9-amd64"
+      afsbotcfg-debian-worker:
+        worker_name: "debian11-amd64"
+
+verifier:
+  name: ansible

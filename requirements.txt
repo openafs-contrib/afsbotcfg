@@ -1,0 +1,6 @@
+ansible
+ansible-lint
+yamllint
+pyflakes
+flake8
+molecule==4.0.1

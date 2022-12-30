@@ -1,4 +1,3 @@
-{% raw %}
 # Copyright (c) 2019 Sine Nomine Associates
 #
 # This file copies/extends portions of Buildbot forcescheduler.
@@ -27,7 +26,53 @@ from buildbot.util import bytes2unicode
 from buildbot.schedulers.forcesched import ValidationErrorCollector
 from buildbot.schedulers.forcesched import ValidationError
 
-class ForceGerritBuild(schedulers.ForceScheduler):
+
+class Force(schedulers.ForceScheduler):
+
+    def __init__(self, builder, worker):
+        super().__init__(
+            name='force-%s' % builder,
+            buttonName='Force build',
+            label='Force build on %s' % builder,
+            builderNames=[builder],
+            reason=util.StringParameter(
+                name='reason',
+                label='Reason:',
+                default='force build',
+                required=True,
+                size=80,
+            ),
+            codebases=[
+                util.CodebaseParameter(
+                    '',
+                    label='Repository',
+                    # Generate just the branch entry in the form, but revision,
+                    # repository, and project are needed by buildbot scheduling
+                    # system so we need to pass an empty value ("") for those.
+                    # Note: branch value may be a gerrit change id branch.
+                    branch=util.StringParameter(
+                        name='branch',
+                        label='Branch:',
+                        default='master',
+                        required=True,
+                        size=80,
+                    ),
+                    revision=util.FixedParameter(name='revision', default=''),
+                    repository=util.FixedParameter(name='repository', default=''),
+                    project=util.FixedParameter(name='project', default=''),
+                ),
+            ],
+            properties=[
+                util.WorkerChoiceParameter(
+                    label='Worker:',
+                    default=worker,
+                    choices=[worker],
+                ),
+            ],
+        )
+
+
+class GerritForceScheduler(schedulers.ForceScheduler):
 
     class LocalValidationErrorCollector(ValidationErrorCollector):
         """
@@ -35,6 +80,7 @@ class ForceGerritBuild(schedulers.ForceScheduler):
         """
         def setFieldName(self, name):
             self.fieldname = name
+
         def setError(self, errormsg):
             if self.fieldname not in self.errors:
                 self.errors[self.fieldname] = errormsg
@@ -50,11 +96,12 @@ class ForceGerritBuild(schedulers.ForceScheduler):
         gerrit_port = None
         gerrit_identity_file = None
 
-        def __init__(self,
-            gerritserver=None,
-            gerritport=29418,
-            username=None,
-            identity_file=None):
+        def __init__(
+                self,
+                gerritserver=None,
+                gerritport=29418,
+                username=None,
+                identity_file=None):
 
             self.gerrit_server = gerritserver
             self.gerrit_port = gerritport
@@ -100,24 +147,56 @@ class ForceGerritBuild(schedulers.ForceScheduler):
                 raise ValidationError("Error processing response from Gerrit: %s" % (e, ))
             return dataresult
 
-    def __init__(self, name, gerritserver=None, gerritport=29418, username=None, identity_file=None,
-                 gerriturl=None, branchbuilders=None, **kwargs):
-
+    def __init__(
+            self,
+            name,
+            gerritserver=None,
+            gerritport=29418,
+            username=None,
+            identity_file=None,
+            gerriturl=None,
+            branchbuilders=None):
         builderNames = set()
-        for _ in branchbuilders.values():
-            builderNames.update(set(_))
+        for names in branchbuilders.values():
+            builderNames.update(set(names))
 
         builderNames = list(builderNames)
 
         self.branchbuilders = branchbuilders
         self.gerrit = self.GerritCMD(gerritserver=gerritserver,
-                                  gerritport=gerritport,
-                                  username=username,
-                                  identity_file=identity_file)
+                                     gerritport=gerritport,
+                                     username=username,
+                                     identity_file=identity_file)
 
         self.gerrit_url = gerriturl
-
-        super().__init__(name, builderNames, **kwargs)
+        super().__init__(
+            name,
+            builderNames,
+            reason=util.StringParameter(
+                name='reason',
+                label='Reason',
+                default='force build',
+                required=True,
+                size=80),
+            codebases=[
+                util.CodebaseParameter(
+                    '',
+                    branch=util.FixedParameter(name='branch', default=''),
+                    revision=util.FixedParameter(name='revision', default=''),
+                    repository=util.FixedParameter(name='repository', default=''),
+                    project=util.FixedParameter(name='project', default=''),
+                )
+            ],
+            properties=[
+                util.StringParameter(
+                    name='changenumber',
+                    label='Gerrit Change#',
+                    default='', size=40, regex=r'^\d+$',
+                    required=True),
+                util.StringParameter(
+                    name='patchsetnumber',
+                    label='Gerrit patchset# (defaults to latest)',
+                    default='', size=40, regex=r'^(\d*)$')])
 
     #  Process the paramters given in the web form
     #    query gerrit for addition information
@@ -199,7 +278,7 @@ class ForceGerritBuild(schedulers.ForceScheduler):
                     "changenumber": str(gerritinfo['number']),
                     "patchsetnumber": str(patchset['number'])
                 }
-                properties.setProperty("event.change.url", url, "GerritForceBuild" )
+                properties.setProperty("event.change.url", url, "GerritForceBuild")
 
         except Exception as e:
             collector.setError(str(e))
@@ -212,14 +291,13 @@ class ForceGerritBuild(schedulers.ForceScheduler):
         reason = self.reasonString % {'owner': owner, 'reason': reason}
 
         # Create the sourcestamps
-        sourcestamps = [ {
-                'codebase': '',
-                'repository': '',
-                'branch': patchset['ref'],
-                'revision': patchset['revision'],
-                'project': project
-            }
-        ]
+        sourcestamps = [{
+            'codebase': '',
+            'repository': '',
+            'branch': patchset['ref'],
+            'revision': patchset['revision'],
+            'project': project
+        }]
         log.msg("forcegerritbuild: rebuilding branch[%s] revision[%s] project[%s] event.change.id[%s] patchset[%s]" %
                 (patchset['ref'], patchset['revision'], project, changeid, str(patchset['number'])))
         # everything is set and validated, we can create our source stamp, and
@@ -232,4 +310,3 @@ class ForceGerritBuild(schedulers.ForceScheduler):
         )
 
         return res
-{% endraw %}

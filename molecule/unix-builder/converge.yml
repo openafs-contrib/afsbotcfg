@@ -1,0 +1,30 @@
+---
+- name: "Setup test variables."
+  import_playbook: "../common/setup_variables.yaml"
+- name: "Run buildbot playbook."
+  import_playbook: "../../openafs_buildbot.yaml"
+
+- name: "Deploy test workers."
+  hosts: openafs_buildbot_workers
+  vars:
+    # Work around ansible tmp dir errors.
+    ansible_shell_allow_world_readable_temp: true
+  tasks:
+    - ansible.builtin.import_role:
+        name: openafs_contrib.openafs.openafs_devel
+
+    - ansible.builtin.import_role:
+        name: openafs_contrib.buildbot.buildbot_worker
+      vars:
+        buildbot_project: "{{ afsbotcfg_project.name | d('openafs') }}"
+        buildbot_master_host: "{{ _afsbotcfg_master_address }}"
+        buildbot_master_port: "{{ afsbotcfg_project.pb_port | d(9989) }}"
+        buildbot_worker_name: "{{ worker_name }}"
+        buildbot_worker_password: "{{ afsbotcfg_worker_passwords[worker_name] }}"
+        buildbot_worker_admin: "{{ afsbotcfg_workers[worker_name].get('owner', '') }}"
+
+- name: "Show buildbot master."
+  hosts: openafs_buildbot_masters
+  tasks:
+    - ansible.builtin.debug:
+        msg: "Test buildbot URL is {{ afsbotcfg_project.url }}"

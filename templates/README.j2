@@ -54,42 +54,33 @@ cron jobs are managed by Ansible.
 * On reboot: Start the buildbot on system reboot.
 * Hourly: Start the buildbot if not running.
 
+Configuration
+-------------
 
-Files
------
+The buildbot master configuration files are located in
+"{{ afsbotcfg_master_basedir }}".
 
-The buildbot files are located in {{ buildbot_master_basedir }}.
+    master.cfg    The buildbot master configuration file
+    twistd.log    Buildbot log
 
-Configuration:
+WARNING: The installed buildbot master.cfg file contains the
+         worker and admin passwords.  Do not copy it.
+         The passwords are projected by ansible-vault in
+         the afsbotcfg project.
 
-    master.cfg            The main buildbot configuration file.
-    passwords.ini         User and worker passwords (encrypted in the playbooks).
-    email_templates.py    Custom format templates for mail notifications.
-    forcegerritbuild.py   Custom buildbot plugin to support forced gerrit verifications.
+Build scripts
+-------------
 
-Logs:
+Extra build scripts are used by some builders. The master will download these
+build scripts to workers and then run them. The build scripts are located in
+"{{ afsbotcfg_master_basedir }}/build-scripts/".
 
-    twistd.log            Buildbot log
+ssh keys
+--------
 
+The buildbot master connects to gerrit.openafs.org via ssh to listen for change
+events to and to vote on changes after completed builds. The ssh key files are
+located in "{{ afsbotcfg_master_home }}/.ssh/".
 
-Gerrit listener ssh keys
--------------------------
-
-This buildbot uses the gerrit event listener to receive events from gerrit.
-The gerrit listener connects to gerrit.openafs.org via ssh.  SSH keys are
-installed in .ssh to provide listener credentials.
-
-Files:
-
-    .ssh/gerrit           Gerrit listener identity file
-    .ssh/gerrit.pub       Gerrit listener public key
-
-
-Gerrit listener bug fix
------------------------
-
-This installation includes a one-line patch to the buildbot master to
-workaround a known bug in the gerrit integration code.
-
-    https://github.com/buildbot/buildbot/issues/5190
-    https://github.com/buildbot/buildbot/pull/5219/commits
+    {{ afsbotcfg_gerrit.ident | d(gerrit) }}       Gerrit ssh private key
+    {{ afsbotcfg_gerrit.ident | d(gerrit) }}.pub   Gerrit ssh public key

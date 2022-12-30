@@ -1,35 +1,32 @@
 .PHONY: help init vault collections lint test clean distclean
 
-MOLECULE_DESTROY ?= always
-
 help:
 	@echo "usage: make <target>"
 	@echo ""
-	@echo "targets:"
-	@echo "  init         to create a Python virtual environment"
-	@echo "  vault        to download vault file (ssh creds required)"
-	@echo "  collections  to install ansible collections"
-	@echo "  lint         to run lint check"
-	@echo "  test         to run molecule test"
-	@echo "  clean        to remove generated files"
-	@echo "  distclean    to remove generated files and virtual environment"
+	@echo "setup targets:"
+	@echo "  setup              to run all setup targets"
+	@echo "  setup-venv         to create the Python virtual environment (optional)"
+	@echo "  setup-vault        to download the vault key file (ssh creds are required)"
+	@echo "  setup-collections  to install the required Ansible collections"
 	@echo ""
-	@echo "environment:"
-	@echo "  MOLECULE_DRIVER=<driver-name>"
-	@echo "..MOLECULE_DESTROY='always' | 'never'"
+	@echo "run targets: (activate the venv first)"
+	@echo "  build              to build the afsbotcfg Python package"
+	@echo "  lint               to run lint check"
+	@echo "  test               to run molecule test"
+	@echo "  run                to run ansible-playbook"
+	@echo ""
+	@echo "cleanup targets:"
+	@echo "  clean              to remove generated files"
+	@echo "  distclean          to remove all generated and downloaded files"
 
 .envrc:
 	echo export ANSIBLE_INVENTORY=inventory/openafs/hosts.ini >.envrc
 	echo export ANSIBLE_VAULT_IDENTITY_LIST=afsbotcfg@.vault-afsbotcfg >>.envrc
 
-.venv/bin/activate: .envrc
+.venv/bin/activate: .envrc requirements.txt
 	test -d .venv || python3 -m venv .venv
-	.venv/bin/pip install -U pip
-	.venv/bin/pip install wheel
-	.venv/bin/pip install SQLAlchemy==1.3.17
-	.venv/bin/pip install buildbot[bundle]==2.8.2
-	.venv/bin/pip install ansible ansible-lint yamllint pyflakes
-	.venv/bin/pip install molecule molecule-vagrant molecule-virtup
+	.venv/bin/pip install -U pip wheel
+	.venv/bin/pip install -r requirements.txt
 	echo "test -f .envrc && source .envrc" >> .venv/bin/activate
 
 .config/molecule/config.yml:
@@ -38,23 +35,34 @@ help:
 	echo "driver:" > .config/molecule/config.yml
 	echo "  name: vagrant" >> .config/molecule/config.yml
 
-init: .envrc .venv/bin/activate .config/molecule/config.yml
+setup: setup-venv setup-vault setup-collections
 
-vault:
+setup-venv: .envrc .venv/bin/activate .config/molecule/config.yml
+
+setup-vault:
 	scp buildbot.openafs.org:.vault-afsbotcfg .vault-afsbotcfg
 
-collections:
-	ansible-galaxy collection install openafs_contrib.buildbot
-	ansible-galaxy collection install openafs_contrib.openafs
+setup-collections:
+	ansible-galaxy collection install --force openafs_contrib.buildbot -p collections
+	ansible-galaxy collection install --force openafs_contrib.openafs -p collections
 
 lint:
+	$(MAKE) -C src lint
 	yamllint openafs_buildbot.yaml
 	ansible-lint
 
 test:
-	molecule test --destroy $(MOLECULE_DESTROY)
+	molecule test
+
+build:
+	$(MAKE) -C src build
+
+run:
+	ansible-playbook openafs_buildbot.yaml
 
 clean:
+	$(MAKE) -C src clean
 
 distclean: clean
+	$(MAKE) -C src distclean
 	rm -rf .envrc .venv .vault-afsbotcfg

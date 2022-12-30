@@ -2,3 +2,6 @@
 !.yamllint
 !.ansible-lint
 __pycache__/
+collections/
+src/afsbotcfg.egg-info/
+src/dist/
