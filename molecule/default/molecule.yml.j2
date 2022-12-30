@@ -1,0 +1,47 @@
+---
+dependency:
+  name: galaxy
+  enabled: yes
+  requirements-file: collections.yml
+
+driver:
+  name: {{ molecule.driver.name }}
+{%- if molecule.driver.options is defined and molecule.driver.options %}
+  options:
+  {%- for name, value in molecule.driver.options.items() %}
+    {{ name }}: {{ value }}
+  {%- endfor %}
+{%- endif %}
+
+platforms:
+  - name: afsbotcfg-master
+{%- for name, value in molecule.platforms.centos7.items() %}
+    {{ name }}: {{ value }}
+{%- endfor %}
+    groups:
+      - openafs_buildbot_masters
+
+provisioner:
+  name: ansible
+  env:
+    ANSIBLE_VERBOSITY: 0
+    ANSIBLE_STDOUT_CALLBACK: yaml
+  inventory:
+    group_vars:
+      openafs_buildbot_masters:
+        afsbotcfg_version: 1.0.3
+        _merge:
+          afsbotcfg_project:
+            title: "Molecule Test"
+            summary_title: "Molecule Test Buildbot"
+          afsbotcfg_gerrit:
+            keysdir: "${MOLECULE_SCENARIO_DIRECTORY}/files/ssh"
+            ident: "test"
+        _override:
+          afsbotcfg_admin_passwords:
+            - ["admin@example.com", "secret"]
+          afsbotcfg_worker_passwords:
+            __default__: "secret"
+
+verifier:
+  name: ansible

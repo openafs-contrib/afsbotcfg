@@ -1,0 +1,45 @@
+---
+- name: Setup test facts
+  # Run on instances so we can share the master variables with workers.
+  hosts: all
+  gather_facts: yes
+  tasks:
+    - name: "Lookup test instance address for test setup."
+      ansible.builtin.set_fact:
+        _afsbotcfg_master_address: "{{ hostvars['afsbotcfg-master'].ansible_default_ipv4.address }}"
+
+    - name: "Use IP address for test buildbot master URL."
+      vars:
+        _port: "{{ afsbotcfg_project.www_port }}"
+        _url: "http://{{ _afsbotcfg_master_address }}:{{ _port }}/"
+      ansible.builtin.set_fact:
+        afsbotcfg_project: "{{ afsbotcfg_project | combine({'url': _url}, recursive=True) }}"
+
+
+- name: "Run buildbot playbook."
+  import_playbook: "../../afsbotcfg.yml"
+
+- name: "Deploy test workers."
+  hosts: openafs_buildbot_workers
+  vars:
+    # Work around ansible tmp dir errors.
+    ansible_shell_allow_world_readable_temp: true
+  tasks:
+    - ansible.builtin.import_role:
+        name: openafs_contrib.openafs.openafs_devel
+
+    - ansible.builtin.import_role:
+        name: openafs_contrib.buildbot.buildbot_worker
+      vars:
+        buildbot_project: "{{ afsbotcfg_project.name | d('openafs') }}"
+        buildbot_master_host: "{{ _afsbotcfg_master_address }}"
+        buildbot_master_port: "{{ afsbotcfg_project.pb_port | d(9989) }}"
+        buildbot_worker_name: "{{ worker_name }}"
+        buildbot_worker_password: "{{ afsbotcfg_worker_passwords[worker_name] }}"
+        buildbot_worker_admin: "{{ afsbotcfg_workers[worker_name].get('notify', '') }}"
+
+- name: "Show buildbot master."
+  hosts: openafs_buildbot_masters
+  tasks:
+    - ansible.builtin.debug:
+        msg: "Test buildbot URL is {{ afsbotcfg_project.url }}"

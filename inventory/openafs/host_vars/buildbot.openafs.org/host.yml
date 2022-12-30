@@ -1,0 +1,5 @@
+---
+# The canonical hostname:
+# ansible_host: openafs-prod-app-1.mit.edu
+ansible_user: buildbot
+afsbotcfg_master_python: "/opt/rh/rh-python36/root/usr/bin/python3.6"

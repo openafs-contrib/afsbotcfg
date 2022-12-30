@@ -2,3 +2,8 @@
 !.yamllint
 !.ansible-lint
 __pycache__/
+collections/
+
+molecule.json
+molecule-requirements.txt
+molecule.yml
