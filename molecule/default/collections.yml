@@ -1,0 +1,7 @@
+---
+collections:
+  - name: openafs_contrib.buildbot
+    version: 1.8.0
+
+  - name: openafs_contrib.openafs
+    version: 1.8.0
