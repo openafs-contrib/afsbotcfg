@@ -43,8 +43,7 @@ setup-vault:
 	scp buildbot.openafs.org:.vault-afsbotcfg .vault-afsbotcfg
 
 setup-collections:
-	ansible-galaxy collection install --force openafs_contrib.buildbot -p collections
-	ansible-galaxy collection install --force openafs_contrib.openafs -p collections
+	ansible-galaxy collection install --force -p collections -r requirements.yml
 
 lint:
 	$(MAKE) -C src lint
