@@ -1,6 +1,6 @@
-ansible
-ansible-lint
-yamllint
-pyflakes
-flake8
+ansible==6.7.0
+ansible-lint==6.10.2
+yamllint==1.29.0
+pyflakes==3.0.1
+flake8==6.0.0
 molecule==4.0.1
