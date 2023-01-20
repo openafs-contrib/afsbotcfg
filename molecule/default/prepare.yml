@@ -14,6 +14,14 @@
         name: firewalld
       when: ansible_os_family == 'RedHat'
 
+    - name: Install epel-release
+      become: yes
+      ansible.builtin.yum:
+        state: present
+        name:
+          - epel-release
+      when: ansible_pkg_mgr == 'yum'
+
     - name: Install required packages
       become: yes
       ansible.builtin.yum:
