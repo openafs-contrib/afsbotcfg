@@ -39,7 +39,7 @@ environment and install Ansible and Molecule packages in it.  The buildbot is
 not installed on the controller, and so buildbot packages are not need on your
 local machine.
 
-    $ make setup
+    $ make setup [AFSBOTCFG_PYTHON=<path-to-python3>]
 
 See [Environment variables](#environment-variables) to specify local
 configuration before running `make setup`.
@@ -97,13 +97,20 @@ See the `molecule.json.sample` for a sample molecule driver configuration file.
 The following environment variables can be used to customize the `Makefile`
 processing.
 
-| Name                          | Description                        | Default value       |
-| ----------------------------- | ---------------------------------- | ------------------- |
-| `AFSBOTCFG_PYTHON`            | Python interpreter path             | `python`            |
-| `AFSBOTCFG_MOLECULE_JSON`     | Molecule driver config file path   | `molecule.json`     |
-| `AFSBOTCFG_MOLECULE_SCENARIO` | `make test`, `make check` scenario | `master-with-vault` |
-| `AFSBOTCFG_MOLECULE_HOST`     | `make login` host                  | `afsbotcfg-master`  |
-| `NO_COLOR`                    | Disable Makefile color output      |                     |
+| Name                          | Description                              | Default value       |
+| ----------------------------- | ------------------------------------ | ------------------- |
+| `AFSBOTCFG_PYTHON`            | `make setup` Python interpreter path | `python`            |
+| `AFSBOTCFG_MOLECULE_JSON`     | Molecule driver config file path     | `molecule.json`     |
+| `AFSBOTCFG_MOLECULE_SCENARIO` | `make test`, `make check` scenario   | `master-with-vault` |
+| `AFSBOTCFG_MOLECULE_HOST`     | `make login` host                    | `afsbotcfg-master`  |
+| `NO_COLOR`                    | Disable Makefile color output        |                     |
+
+The `AFSBOTCFG_PYTHON` variable specifies the path of the local python
+interpreter used by `make setup` to create the project local Python virtualenv.
+This is separate from the Ansible `anisble_python_interpreter` inventory
+variable to set the Python interpreter path used by Ansible on the remote
+nodes.
+
 
 [1]: https://www.openafs.org/
 [2]: https://buildbot.openafs.org/
