@@ -77,7 +77,7 @@ START_COLOR=$(GREEN)
 END_COLOR=\033[0m
 endif
 
-INFO=printf "$(START_COLOR)==> %s <==$(END_COLOR)\n"
+INFO=@printf "$(START_COLOR)==> %s <==$(END_COLOR)\n"
 
 #--------------------------------------------------------------------------------------------------------
 # Setup targets
@@ -87,7 +87,7 @@ setup: $(ACTIVATE) $(AFSBOTCFG_MOLECULE_YML) build
 
 .PHONY: build
 build: $(ACTIVATE)
-	@$(INFO) "Building afsbotcfg python package"
+	$(INFO) "Building afsbotcfg python package"
 	$(ACTIVATED) $(MAKE) -C src build
 
 #--------------------------------------------------------------------------------------------------------
@@ -95,7 +95,7 @@ build: $(ACTIVATE)
 #
 .PHONY: buildbot
 buildbot: $(ACTIVATE) $(VAULT_KEYFILE) collections build
-	@$(INFO) "Running playbook"
+	$(INFO) "Running playbook"
 	$(ACTIVATED) ansible-playbook --inventory=$(INVENTORY) --vault-password-file=$(VAULT_KEYFILE) $(PLAYBOOK)
 
 #--------------------------------------------------------------------------------------------------------
@@ -103,36 +103,36 @@ buildbot: $(ACTIVATE) $(VAULT_KEYFILE) collections build
 #
 .PHONY: lint
 lint: $(ACTIVATE)
-	@$(INFO) "Running lint checks"
+	$(INFO) "Running lint checks"
 	$(ACTIVATED) $(MAKE) -C src lint
 	$(ACTIVATED) yamllint $(YAML_FILES)
 	$(ACTIVATED) ansible-lint $(LINT_OPTIONS)
 
 .PHONY: test
 test: $(ACTIVATE) lint build molecule/$(AFSBOTCFG_MOLECULE_SCENARIO)/molecule.yml
-	@$(INFO) "Running molecule test"
+	$(INFO) "Running molecule test"
 	$(ACTIVATED) molecule test -s $(AFSBOTCFG_MOLECULE_SCENARIO)
 	@rm -f .create  # Cleanup in case 'make check' was run before 'make test'.
 
 .PHONY: check
 check: $(ACTIVATE) .create build
-	@$(INFO) "Running playbook on molecule instance(s)"
+	$(INFO) "Running playbook on molecule instance(s)"
 	$(ACTIVATED) molecule converge -s $(shell cat .create)
 	$(ACTIVATED) molecule verify -s $(shell cat .create)
 
 .PHONY: login
 login: $(ACTIVATE) .create
-	@$(INFO) "Logging into molecule instance"
+	$(INFO) "Logging into molecule instance"
 	$(ACTIVATED) molecule login -s $(shell cat .create) --host $(AFSBOTCFG_MOLECULE_HOST)
 
 .create: $(ACTIVATE) molecule/$(AFSBOTCFG_MOLECULE_SCENARIO)/molecule.yml
-	@$(INFO) "Creating molecule instance(s)"
+	$(INFO) "Creating molecule instance(s)"
 	$(ACTIVATED) molecule create -s $(AFSBOTCFG_MOLECULE_SCENARIO)
 	@echo $(AFSBOTCFG_MOLECULE_SCENARIO) >.create
 
 .PHONY: destroy
 destroy:   # empty
-	@$(INFO) "Destroying molecule instance(s)"
+	$(INFO) "Destroying molecule instance(s)"
 	if test -f .create; then \
 	  $(ACTIVATED) molecule destroy -s $(shell cat .create); \
 	  rm -f .create; \
@@ -141,7 +141,7 @@ destroy:   # empty
 # Try to destroy the instance even if the .create file is gone.
 .PHONY: force_destroy
 force_destroy: $(ACTIVATE) molecule/$(AFSBOTCFG_MOLECULE_SCENARIO)/molecule.yml
-	@$(INFO) "Destroying molecule instance(s)"
+	$(INFO) "Destroying molecule instance(s)"
 	$(ACTIVATED) molecule destroy -s $(AFSBOTCFG_MOLECULE_SCENARIO)
 
 #------------------------------------------------------------------------------
@@ -149,13 +149,13 @@ force_destroy: $(ACTIVATE) molecule/$(AFSBOTCFG_MOLECULE_SCENARIO)/molecule.yml
 #
 .PHONY: clean
 clean: destroy
-	@$(INFO) "Cleanup files"
+	$(INFO) "Cleanup files"
 	$(MAKE) -C src clean
 	rm -f $(AFSBOTCFG_MOLECULE_YML)
 
 .PHONY: reallyclean
 reallyclean: clean
-	@$(INFO) "Cleanup project directory"
+	$(INFO) "Cleanup project directory"
 	$(MAKE) -C src distclean
 	rm -f molecule.json molecule-requirements.txt $(VAULT_KEYFILE)
 	rm -rf .config .venv collections
@@ -164,41 +164,41 @@ reallyclean: clean
 # Dependencies
 #
 $(VAULT_KEYFILE):
-	@$(INFO) "Downloading vault key"
+	$(INFO) "Downloading vault key"
 	scp buildbot.openafs.org:$(VAULT_KEYFILE) $(VAULT_KEYFILE)
 
 collections: $(ACTIVATE) requirements.yml
-	@$(INFO) "Installing required Ansible collections"
+	$(INFO) "Installing required Ansible collections"
 	$(ACTIVATED) ansible-galaxy collection install --force -p collections -r requirements.yml
 	touch collections
 
 $(ACTIVATE): $(PIP) requirements.txt molecule-requirements.txt
-	@$(INFO) "Installing python packages"
+	$(INFO) "Installing python packages"
 	$(PIP) install -U -r requirements.txt
 	$(PIP) install -U -r molecule-requirements.txt
 	touch $(ACTIVATE)
-	@$(INFO) "Run '. $(ACTIVATE)' to activate the Python virtualenv"
+	$(INFO) "Run '. $(ACTIVATE)' to activate the Python virtualenv"
 
 $(PIP): $(VENV)
-	@$(INFO) "Updating pip"
+	$(INFO) "Updating pip"
 	$(PIP) install -U pip
 	touch $(PIP)
 
 $(VENV):
-	@$(INFO) "Creating python virtualenv"
+	$(INFO) "Creating python virtualenv"
 	$(AFSBOTCFG_PYTHON) -m venv .venv
 	touch $(VENV)
 
 molecule-requirements.txt: $(AFSBOTCFG_MOLECULE_JSON)
-	@$(INFO) "Generating molecule driver requirements file"
+	$(INFO) "Generating molecule driver requirements file"
 	$(AFSBOTCFG_PYTHON) -c 'import json; print("\n".join(json.load(open("$<"))["requirements"]))' >$@
 
 ifeq ($(AFSBOTCFG_MOLECULE_JSON), molecule.json)
 # Conditional to support out of tree molecule.json files.
 molecule.json: molecule.json.sample
-	@$(INFO) "Creating molecule.json file"
+	$(INFO) "Creating molecule.json file"
 	cp molecule.json.sample molecule.json
-	@$(INFO) "Please run 'make setup' after making any changes to 'molecule.json'"
+	$(INFO) "Please run 'make setup' after making any changes to 'molecule.json'"
 endif
 
 ifeq ($(AFSBOTCFG_MOLECULE_SCENARIO), master-with-vault)
@@ -208,5 +208,5 @@ test: $(VAULT_KEYFILE)
 endif
 
 %.yml : %.yml.j2 $(ACTIVATE) $(AFSBOTCFG_MOLECULE_JSON) render.py
-	@$(INFO) "Generating molecule file $@"
+	$(INFO) "Generating molecule file $@"
 	$(ACTIVATED) python render.py molecule $(AFSBOTCFG_MOLECULE_JSON) $< $@
