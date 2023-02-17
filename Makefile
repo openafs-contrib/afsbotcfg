@@ -21,10 +21,11 @@ help:
 	@echo "  reallyclean        to remove all non-project files"
 	@echo ""
 	@echo "Environment:"
-	@echo "  AFSBOTCFG_PYTHON                python interpeter path (default: python)"
+	@echo "  AFSBOTCFG_PYTHON                python interpreter path (default: python)"
 	@echo "  AFSBOTCFG_MOLECULE_JSON         molecule driver config (default: molecule.json)"
 	@echo "  AFSBOTCFG_MOLECULE_SCENARIO     make check/test molecule scenario (default: master-with-vault)"
 	@echo "  AFSBOTCFG_MOLECULE_HOST         make login host (default: afsbotcfg-master)"
+	@echo "  NO_COLOR                        disable Makefile color output"
 	@echo ""
 
 #--------------------------------------------------------------------------------------------------------

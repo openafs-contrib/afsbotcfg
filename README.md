@@ -2,8 +2,9 @@
 
 ## Introduction
 
-This repository contains the Ansible playbook, configuration, and customization for
-the [OpenAFS Buildbot Coordinator][2].
+This repository contains the Ansible playbook, configuration, and customization
+for the [OpenAFS Buildbot Coordinator][2]. OpenAFS Buildbot hosting is
+generously provided by MIT.
 
 The `afsbotcfg.yml` playbook updates the buildbot coordinator.  This
 playbook imports the `buildbot_master` role from the OpenAFS [Buildbot
@@ -23,15 +24,57 @@ need a virtualization provider supported by Molecule (such as Vagrant) to run
 the Molecule tests.  SSH to the buildbot nor the vault key are required to
 run the Molecule tests (except for the master-with-vault scenario).
 
+## Prerequisites
+
+* GNU Make
+* Python 3.9+
+* python-virtualenv package
+
 ## Setup
 
 Before running the playbook or the molecule tests, create a Python virtualenv
 and install the required Ansible and Molecule package versions in the
 virtualenv.  The `setup` make target is provided to create the virtual
 environment and install Ansible and Molecule packages in it.  The buildbot is
-not installed on your controller.
+not installed on the controller, and so buildbot packages are not need on your
+local machine.
 
     $ make setup
+
+See [Environment variables](#environment-variables) to specify local
+configuration before running `make setup`.
+See [Molecule driver configuration](#molecule-driver-configuration) to specify
+the virtualization provider used by Molecule to run the local tests.
+
+
+## Running the playbook
+
+Before running the playbook, you should run `make test` to do a local lint
+check and then test run with Molecule.
+
+    $ make test
+
+Run `make buildbot` to run the Ansible playbook to update the buildbot. (This
+requires SSH access to the buildbot server.)
+
+    $ make buildbot
+
+## Development
+
+Ansible Molecule scenarios are provided to run tests locally for testing and
+development.  SSH access to the Buildbot server is not required to run the
+molecule tests. Except for the `master-with-vault` scenario, the vault key is
+not required to run the tests.
+
+Activate the Python virtualenv created by `make setup` and run Molecule as usual.
+
+    $ . .venv/bin/activate
+    (.venv) $ molecule list  # Show available scenarios.
+    (.venv) $ molecule test -s <scenario-name>
+    (.venv) $ deactivate
+    $
+
+## Molecule driver configuration
 
 The molecule scenarios are setup to use Vagrant by default.  If you are using a
 different virtualization provider, update the file `molecule.json` with the
@@ -49,35 +92,18 @@ update your project.
 
 See the `molecule.json.sample` for a sample molecule driver configuration file.
 
-## Running the playbook
+## Environment variables
 
-Before running the playbook, you should run `make test` to do a local test with
-molecule.  (This requires the Ansible vault key by default.)
+The following environment variables can be used to customize the `Makefile`
+processing.
 
-    $ make test
-
-Run `make play` to run the Ansible playbook. This requires SSH access to the
-buildbot server and the Ansible vault key.
-
-    $ make play
-
-
-## Development
-
-Ansible Molecule scenarios are provided to run tests locally for testing and
-development.  SSH access to the Buildbot server is not required to run the
-molecule tests. Except for the `master-with-vault` scenario, the vault key is
-not required to run the tests.
-
-Activate the Python virtualenv and run molecule as usual.
-
-    $ source .venv/bin/activate
-    $ molecule list  # show available scenarios
-    $ molecule create -s <scenario-name>
-    $ molecule converge -s <scenario-name>
-    $ molecule verify -s <scenario-name>
-    $ molecule destroy -s <scenario-name>
-
+| Name                          | Description                        | Default value       |
+| ----------------------------- | ---------------------------------- | ------------------- |
+| `AFSBOTCFG_PYTHON`            | Python interpreter path             | `python`            |
+| `AFSBOTCFG_MOLECULE_JSON`     | Molecule driver config file path   | `molecule.json`     |
+| `AFSBOTCFG_MOLECULE_SCENARIO` | `make test`, `make check` scenario | `master-with-vault` |
+| `AFSBOTCFG_MOLECULE_HOST`     | `make login` host                  | `afsbotcfg-master`  |
+| `NO_COLOR`                    | Disable Makefile color output      |                     |
 
 [1]: https://www.openafs.org/
 [2]: https://buildbot.openafs.org/
