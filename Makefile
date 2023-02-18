@@ -57,19 +57,14 @@ PLAYBOOK=afsbotcfg.yml
 INVENTORY=inventory/openafs/hosts.ini
 VAULT_KEYFILE=.vault-afsbotcfg
 
+ifndef VIRTUAL_ENV
 VENV=.venv
 PIP=$(VENV)/bin/pip
 ACTIVATE=$(VENV)/bin/activate
-ifeq ($(ACTIVATE),)
-ACTIVATED=
-else
 ACTIVATED=. $(ACTIVATE);
 endif
 
-ifdef NO_COLOR
-START_COLOR=
-END_COLOR=
-else
+ifndef NO_COLOR
 RED=\033[0;31m
 GREEN=\033[0;32m
 YELLOW=\033[0;33m
