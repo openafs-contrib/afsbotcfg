@@ -111,6 +111,20 @@ This is separate from the Ansible `anisble_python_interpreter` inventory
 variable to set the Python interpreter path used by Ansible on the remote
 nodes.
 
+**Tip**: Use `direnv` to avoid cluttering your shell profile. `direnv` can also
+create the project local virtualenv and invoke the `make setup` to install
+the required Python packages and generate the other project local files. Example:
+
+    $ cat .envrc
+    export AFSBOTCFG_PYTHON=/usr/bin/python3.9
+    export AFSBOTCFG_MOLECULE_JSON=$HOME/molecule-proxmox.json
+    export AFSBOTCFG_MOLECULE_SCENARIO=master-with-vault
+    export AFSBOTCFG_MOLECULE_HOST=afsbotcfg-master
+
+    # Create the virtualenv and install packages the first time we cd to the project directory.
+    layout python $AFSBOTCFG_PYTHON
+    make setup VENV=$VIRTUAL_ENV PIP=$VIRTUAL_ENV/bin/pip ACTIVATE=$VIRTUAL_ENV/bin/activate
+
 
 [1]: https://www.openafs.org/
 [2]: https://buildbot.openafs.org/

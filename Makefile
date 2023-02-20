@@ -153,7 +153,7 @@ reallyclean: clean
 	$(INFO) "Cleanup project directory"
 	$(MAKE) -C src distclean
 	rm -f molecule.json molecule-requirements.txt $(VAULT_KEYFILE)
-	rm -rf .config .venv collections
+	rm -rf .config .venv collections .direnv
 
 #------------------------------------------------------------------------------
 # Dependencies
