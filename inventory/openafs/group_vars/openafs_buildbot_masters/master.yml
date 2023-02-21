@@ -319,9 +319,9 @@ afsbotcfg_builders:
           --enable-warnings --enable-checking --enable-supergroups
           --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
 
-  #- name:gerrit-dev-macos10-15-x86_64
-  #  scheduler: gerrit
-  - name: parked-dev-macos10-15-x86_64
+  - name: gerrit-dev-macos10-15-x86_64
+    # offline!
+    # scheduler: gerrit
     scheduler: parked
     branch: dev
     worker: macos10-15-x86_64
@@ -334,9 +334,9 @@ afsbotcfg_builders:
         target: dest
         jobs: 1
 
-  #- name: gerrit-dev-macos11-x86_64
-  #  scheduler: gerrit
   - name: parked-dev-macos11-x86_64
+    # offline!
+    # scheduler: gerrit
     scheduler: parked
     branch: dev
     worker: macos11-x86_64
@@ -349,10 +349,8 @@ afsbotcfg_builders:
         target: dest
         jobs: 1
 
-  #- name: gerrit-dev-macos12-x86_64
-  #  scheduler: gerrit
   - name: parked-dev-macos12-x86_64
-    scheduler: parked
+    scheduler: gerrit
     branch: dev
     worker: macos12-x86_64
     factory:
@@ -432,10 +430,8 @@ afsbotcfg_builders:
           --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
           --enable-pthreaded-bos
 
-  #- name: gerrit-dev-wins2019_amd64_free
-  #  scheduler: gerrit
-  - name: parked-dev-wins2019_amd64_free
-    scheduler: parked
+  - name: gerrit-dev-wins2019_amd64_free
+    scheduler: gerrit
     branch: dev
     worker: wins2019-amd64
     label:  wins2019_amd64_free
@@ -621,10 +617,8 @@ afsbotcfg_builders:
           --enable-warnings --enable-checking --enable-supergroups
           --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
 
-  #- name: gerrit-stable-wins2019_amd64_free
-  #  scheduler: gerrit
-  - name: parked-stable-wins2019_amd64_free
-    scheduler: parked
+  - name: gerrit-stable-wins2019_amd64_free
+    scheduler: gerrit
     branch: stable
     worker: wins2019-amd64
     factory:
@@ -633,10 +627,8 @@ afsbotcfg_builders:
         arch: amd64
         variant: free
 
-  #- name: gerrit-stable-wins2019_x86_checked
-  #  scheduler: gerrit
-  - name: parked-stable-wins2019_x86_checked
-    scheduler: parked
+  - name: gerrit-stable-wins2019_x86_checked
+    scheduler: gerrit
     branch: stable
     worker: wins2019-amd64
     label:  wins2019_x86_checked
