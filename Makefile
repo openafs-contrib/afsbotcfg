@@ -25,6 +25,7 @@ help:
 	@echo "  AFSBOTCFG_MOLECULE_JSON         molecule driver config (default: molecule.json)"
 	@echo "  AFSBOTCFG_MOLECULE_SCENARIO     make check/test molecule scenario (default: master-with-vault)"
 	@echo "  AFSBOTCFG_MOLECULE_HOST         make login host (default: afsbotcfg-master)"
+	@echo "  AFSBOTCFG_LOGDIR                ansible play log directory (default: logs)"
 	@echo "  NO_COLOR                        disable Makefile color output"
 	@echo ""
 
@@ -37,6 +38,7 @@ AFSBOTCFG_PYTHON ?= python
 AFSBOTCFG_MOLECULE_JSON ?= molecule.json
 AFSBOTCFG_MOLECULE_SCENARIO ?= master-with-vault
 AFSBOTCFG_MOLECULE_HOST ?= afsbotcfg-master
+AFSBOTCFG_LOGDIR ?= logs
 
 # Generated molecule.yml files.
 AFSBOTCFG_MOLECULE_YML = \
@@ -74,6 +76,12 @@ endif
 
 INFO=@printf "$(START_COLOR)==> %s <==$(END_COLOR)\n"
 
+ifdef AFSBOTCFG_LOGDIR
+LOGFILE=$(AFSBOTCFG_LOGDIR)/buildbot-$(shell date "+%Y%m%dT%H%M").log
+LOG=ANSIBLE_LOG_PATH="$(LOGFILE)"
+LOGINFO=$(INFO) "Wrote $(LOGFILE)"
+endif
+
 #--------------------------------------------------------------------------------------------------------
 # Setup targets
 #
@@ -89,9 +97,10 @@ build: $(ACTIVATE)
 # Run targets
 #
 .PHONY: buildbot
-buildbot: $(ACTIVATE) $(VAULT_KEYFILE) collections build
+buildbot: $(ACTIVATE) $(VAULT_KEYFILE) collections build $(AFSBOTCFG_LOGDIR)
 	$(INFO) "Running playbook"
-	$(ACTIVATED) ansible-playbook --inventory=$(INVENTORY) --vault-password-file=$(VAULT_KEYFILE) $(PLAYBOOK)
+	$(ACTIVATED) $(LOG) ansible-playbook --inventory=$(INVENTORY) --vault-password-file=$(VAULT_KEYFILE) $(PLAYBOOK)
+	$(LOGINFO)
 
 #--------------------------------------------------------------------------------------------------------
 # Test targets
@@ -153,11 +162,14 @@ reallyclean: clean
 	$(INFO) "Cleanup project directory"
 	$(MAKE) -C src distclean
 	rm -f molecule.json molecule-requirements.txt $(VAULT_KEYFILE)
-	rm -rf .config .venv collections .direnv
+	rm -rf .config .venv collections .direnv logs
 
 #------------------------------------------------------------------------------
 # Dependencies
 #
+$(AFSBOTCFG_LOGDIR):
+	mkdir -p $(AFSBOTCFG_LOGDIR)
+
 $(VAULT_KEYFILE):
 	$(INFO) "Downloading vault key"
 	scp buildbot.openafs.org:$(VAULT_KEYFILE) $(VAULT_KEYFILE)

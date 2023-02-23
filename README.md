@@ -103,6 +103,7 @@ processing.
 | `AFSBOTCFG_MOLECULE_JSON`     | Molecule driver config file path     | `molecule.json`     |
 | `AFSBOTCFG_MOLECULE_SCENARIO` | `make test`, `make check` scenario   | `master-with-vault` |
 | `AFSBOTCFG_MOLECULE_HOST`     | `make login` host                    | `afsbotcfg-master`  |
+| `AFSBOTCFG_LOGDIR`            | `make buildbot` log directory        | `logs`              |
 | `NO_COLOR`                    | Disable Makefile color output        |                     |
 
 The `AFSBOTCFG_PYTHON` variable specifies the path of the local python

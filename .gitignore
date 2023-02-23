@@ -3,6 +3,7 @@
 !.ansible-lint
 __pycache__/
 collections/
+logs/
 
 molecule.json
 molecule-requirements.txt
