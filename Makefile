@@ -7,6 +7,7 @@ help:
 	@echo "  build              to build the afsbotcfg Python package"
 	@echo ""
 	@echo "Run targets:"
+	@echo "  ping               to check connectivity to the buildbot"
 	@echo "  buildbot           to run the playbook to create/update the buildbot"
 	@echo ""
 	@echo "Test targets:"
@@ -96,9 +97,14 @@ build: $(ACTIVATE)
 #--------------------------------------------------------------------------------------------------------
 # Run targets
 #
+.PHONY: ping
+ping: $(ACTIVATE)
+	$(INFO) "Pinging buildbot"
+	$(ACTIVATED) ansible --inventory=$(INVENTORY) --vault-password-file=$(VAULT_KEYFILE) all -m ping
+
 .PHONY: buildbot
 buildbot: $(ACTIVATE) $(VAULT_KEYFILE) collections build $(AFSBOTCFG_LOGDIR)
-	$(INFO) "Running playbook"
+	$(INFO) "Running buildbot playbook"
 	$(ACTIVATED) $(LOG) ansible-playbook --inventory=$(INVENTORY) --vault-password-file=$(VAULT_KEYFILE) $(PLAYBOOK)
 	$(LOGINFO)
 

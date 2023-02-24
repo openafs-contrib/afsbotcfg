@@ -49,13 +49,16 @@ the virtualization provider used by Molecule to run the local tests.
 
 ## Running the playbook
 
-Before running the playbook, you should run `make test` to do a local lint
-check and then test run with Molecule.
+If you made any changes, run `make test` to do a local lint check and Molecule
+test before running the playbook.
 
     $ make test
 
-Run `make buildbot` to run the Ansible playbook to update the buildbot. (This
-requires SSH access to the buildbot server.)
+Run `make ping` to check ssh connectivity with the buildbot.
+
+    $ make ping
+
+Run `make buildbot` to run the Ansible playbook.
 
     $ make buildbot
 
@@ -90,7 +93,8 @@ update your project.
     $ make clean
     $ make setup
 
-See the `molecule.json.sample` for a sample molecule driver configuration file.
+See the `molecule.json.sample` for a sample molecule driver configuration file
+for the required keys in your local configuration file.
 
 ## Environment variables
 
@@ -125,6 +129,8 @@ the required Python packages and generate the other project local files. Example
     # Create the virtualenv and install packages the first time we cd to the project directory.
     layout python $AFSBOTCFG_PYTHON
     make setup VENV=$VIRTUAL_ENV PIP=$VIRTUAL_ENV/bin/pip ACTIVATE=$VIRTUAL_ENV/bin/activate
+
+    $ direnv allow
 
 
 [1]: https://www.openafs.org/
