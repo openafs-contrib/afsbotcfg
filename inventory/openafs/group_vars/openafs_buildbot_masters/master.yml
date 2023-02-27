@@ -320,9 +320,7 @@ afsbotcfg_builders:
           --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
 
   - name: gerrit-dev-macos10-15-x86_64
-    # offline!
-    # scheduler: gerrit
-    scheduler: parked
+    scheduler: gerrit
     branch: dev
     worker: macos10-15-x86_64
     factory:
@@ -334,10 +332,8 @@ afsbotcfg_builders:
         target: dest
         jobs: 1
 
-  - name: parked-dev-macos11-x86_64
-    # offline!
-    # scheduler: gerrit
-    scheduler: parked
+  - name: gerrit-dev-macos11-x86_64
+    scheduler: gerrit
     branch: dev
     worker: macos11-x86_64
     factory:
@@ -349,7 +345,7 @@ afsbotcfg_builders:
         target: dest
         jobs: 1
 
-  - name: parked-dev-macos12-x86_64
+  - name: gerrit-dev-macos12-x86_64
     scheduler: gerrit
     branch: dev
     worker: macos12-x86_64
@@ -546,10 +542,8 @@ afsbotcfg_builders:
           -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
           -Wno-error=array-bounds -Wno-error=implicit-function-declaration
 
-  # - name: gerrit-stable-macos10-15-x86_64
-  #  scheduler: gerrit
-  - name: parked-stable-macos10-15-x86_64
-    scheduler: parked
+  - name: gerrit-stable-macos10-15-x86_64
+    scheduler: gerrit
     branch: stable
     worker: macos10-15-x86_64
     factory:
@@ -559,6 +553,33 @@ afsbotcfg_builders:
           --enable-transarc-paths --disable-pam --enable-supergroups
           --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
         target: dest
+        jobs: 1
+
+  - name: gerrit-stable-macos11-x86_64
+    scheduler: gerrit
+    branch: stable
+    worker: macos11-x86_64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-transarc-paths --disable-pam --enable-supergroups
+          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+        target: dest
+        jobs: 1
+
+  - name: gerrit-stable-macos12-x86_64
+    scheduler: gerrit
+    branch: stable
+    worker: macos12-x86_64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-transarc-paths --disable-pam --enable-supergroups
+          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+        target: dest
+        jobs: 1
 
   - name: gerrit-stable-opensuse15-x86_64
     scheduler: gerrit
