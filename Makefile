@@ -7,8 +7,9 @@ help:
 	@echo "  build              to build the afsbotcfg Python package"
 	@echo ""
 	@echo "Run targets:"
-	@echo "  ping               to check connectivity to the buildbot"
-	@echo "  buildbot           to run the playbook to create/update the buildbot"
+	@echo "  buildbot           to run the playbook to create/update the buildbot server"
+	@echo "  ping               to check connectivity to the buildbot server"
+	@echo "  getlog             to download the buildbot server log"
 	@echo ""
 	@echo "Test targets:"
 	@echo "  lint               to run yaml and ansible lint checks"
@@ -35,6 +36,7 @@ help:
 #
 
 # Environment
+AFSBOTCFG_HOST ?= buildbot.openafs.org
 AFSBOTCFG_PYTHON ?= python
 AFSBOTCFG_MOLECULE_JSON ?= molecule.json
 AFSBOTCFG_MOLECULE_SCENARIO ?= master-with-vault
@@ -111,6 +113,11 @@ buildbot: $(PACKAGES) $(VAULT_KEYFILE) collections build $(AFSBOTCFG_LOGDIR)
 	$(ACTIVATED) $(LOG) ansible-playbook --inventory=$(INVENTORY) --vault-password-file=$(VAULT_KEYFILE) $(PLAYBOOK)
 	$(LOGINFO)
 
+.PHONY: getlog
+getlog: $(AFSBOTCFG_LOGDIR)
+	$(INFO) "Downloading buildbot log"
+	scp $(AFSBOTCFG_HOST):master/openafs/twistd.log $(AFSBOTCFG_LOGDIR)/twistd-$(shell date "+%Y%m%dT%H%M").log
+
 #--------------------------------------------------------------------------------------------------------
 # Test targets
 #
@@ -181,7 +188,7 @@ $(AFSBOTCFG_LOGDIR):
 
 $(VAULT_KEYFILE):
 	$(INFO) "Downloading vault key"
-	scp buildbot.openafs.org:$(VAULT_KEYFILE) $(VAULT_KEYFILE)
+	scp $(AFSBOTCFG_HOST):$(VAULT_KEYFILE) $(VAULT_KEYFILE)
 
 collections: $(PACKAGES) requirements.yml
 	$(INFO) "Installing required Ansible collections"
