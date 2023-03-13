@@ -228,6 +228,6 @@ test: $(VAULT_KEYFILE)
 .create: $(VAULT_KEYFILE)
 endif
 
-%.yml : %.yml.j2 $(PACKAGES) $(AFSBOTCFG_MOLECULE_JSON) render.py
+%.yml : %.yml.j2 $(PACKAGES) $(AFSBOTCFG_MOLECULE_JSON)
 	$(INFO) "Generating molecule file $@"
-	$(ACTIVATED) python render.py $(AFSBOTCFG_MOLECULE_JSON) $< $@
+	$(ACTIVATED) jinja2 --format=json --outfile=$@ $< $(AFSBOTCFG_MOLECULE_JSON)

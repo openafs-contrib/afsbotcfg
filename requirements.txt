@@ -4,3 +4,4 @@ yamllint==1.29.0
 pyflakes==3.0.1
 flake8==6.0.0
 molecule==4.0.1
+jinja2-cli==0.8.2
