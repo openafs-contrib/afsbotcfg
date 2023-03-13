@@ -2,23 +2,25 @@
     "requirements": [
         "molecule-vagrant==1.0.0"
     ],
-    "driver": {
-        "name": "vagrant",
-        "options": {
-        }
-    },
-    "platforms": {
-        "centos7": {
-            "box": "generic/centos7"
+    "molecule": {
+        "driver": {
+            "name": "vagrant",
+            "options": {
+            }
         },
-        "alma9": {
-            "box": "generic/alma9"
-        },
-        "debian11": {
-            "box": "generic/debian11"
-        },
-        "ubuntu20": {
-            "box": "generic/ubuntu2004"
+        "platforms": {
+            "centos7": {
+                "box": "generic/centos7"
+            },
+            "alma9": {
+                "box": "generic/alma9"
+            },
+            "debian11": {
+                "box": "generic/debian11"
+            },
+            "ubuntu20": {
+                "box": "generic/ubuntu2004"
+            }
         }
     }
 }

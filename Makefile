@@ -230,4 +230,4 @@ endif
 
 %.yml : %.yml.j2 $(PACKAGES) $(AFSBOTCFG_MOLECULE_JSON) render.py
 	$(INFO) "Generating molecule file $@"
-	$(ACTIVATED) python render.py molecule $(AFSBOTCFG_MOLECULE_JSON) $< $@
+	$(ACTIVATED) python render.py $(AFSBOTCFG_MOLECULE_JSON) $< $@

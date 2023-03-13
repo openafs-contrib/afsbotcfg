@@ -10,13 +10,12 @@ import glob
 import sys
 
 
-key = sys.argv[1]
-data = sys.argv[2]
-template = sys.argv[3]
-output = sys.argv[4]
+data = sys.argv[1]
+template = sys.argv[2]
+output = sys.argv[3]
 
 with open(data) as f:
-    context = {key: json.load(f)}
+    context = json.load(f)
 with open(template) as f:
     jinja_template = jinja2.Template(f.read())
 rendered = jinja_template.render(context)
