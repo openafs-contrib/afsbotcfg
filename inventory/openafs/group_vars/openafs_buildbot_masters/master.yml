@@ -41,6 +41,8 @@ afsbotcfg_workers:
     notify: "Ben Huntsman <ben@huntsmans.net>"
   alma9-amd64:
     notify: "mmeffie@sinenomine.net"
+  alma9-amd64-static:
+    notify: "mmeffie@sinenomine.net"
   alma9-amd64-rpm:
     notify: "mmeffie@sinenomine.net"
   centos6-amd64:
@@ -153,6 +155,17 @@ afsbotcfg_builders:
         configure: >-
           --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
           --enable-pthreaded-bos
+
+  - name: gerrit-dev-alma9-static
+    scheduler: gerrit
+    branch: dev
+    worker: alma9-amd64-static
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-pthreaded-bos --disable-shared
 
   - name: gerrit-dev-alma9-amd64-rpm
     scheduler: gerrit
