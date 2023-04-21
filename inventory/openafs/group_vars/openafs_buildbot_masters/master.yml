@@ -461,6 +461,18 @@ afsbotcfg_builders:
           --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
           --enable-pthreaded-bos
 
+  - name: gerrit-stable-aix61-rs
+    scheduler: gerrit
+    branch: stable
+    worker: aix61-rs
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-pthreaded-bos
+        jobs: 1
+
   - name: gerrit-stable-centos6-amd64
     scheduler: gerrit
     branch: stable
