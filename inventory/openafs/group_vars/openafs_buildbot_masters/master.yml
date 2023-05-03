@@ -39,6 +39,7 @@ afsbotcfg_gerrit:
 afsbotcfg_workers:
   aix61-rs:
     notify: "Ben Huntsman <ben@huntsmans.net>"
+    enabled: False
   alma9-amd64:
     notify: "mmeffie@sinenomine.net"
   alma9-amd64-static:
