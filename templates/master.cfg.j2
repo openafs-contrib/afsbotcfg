@@ -98,31 +98,34 @@ BuildmasterConfig = {
     ],
     'builders': [
 {% for builder in afsbotcfg_builders %}
+{%   set worker = afsbotcfg_workers[builder.worker] %}
+{%   if worker.enabled | d('yes') | bool %}
         util.BuilderConfig(
             name='{{ builder.name }}',
             workernames=['{{builder.worker}}'],
             canStartBuild=util.enforceChosenWorker,
-{%   if builder.factory.env is defined %}
+{%     if builder.factory.env is defined %}
             env={
-{%     for key, value in builder.factory.env.items() %}
+{%       for key, value in builder.factory.env.items() %}
               '{{ key }}': '{{ value }}',
-{%     endfor %}
+{%       endfor %}
             },
-{%   endif %}
+{%     endif %}
             factory=afsbotcfg.factory.{{ builder.factory.name | d('UnixBuild') }}(
-{%   if afsbotcfg_project.repo is defined %}
+{%     if afsbotcfg_project.repo is defined %}
                 repo='{{ afsbotcfg_project.repo }}',
-{%   endif %}
-{%   if builder.scheduler == 'gerrit' %}
+{%     endif %}
+{%     if builder.scheduler == 'gerrit' %}
                 start_delay={{ afsbotcfg_project.start_delay }},
-{%   endif %}
-{%   if builder.factory.args is defined %}
-{%     for key, value in builder.factory.args.items() %}
+{%     endif %}
+{%     if builder.factory.args is defined %}
+{%       for key, value in builder.factory.args.items() %}
                 {{ key }}='{{ value }}',
-{%     endfor %}
-{%   endif %}
+{%       endfor %}
+{%     endif %}
             ),
         ),
+{%   endif %}
 {% endfor %}
     ],
     'schedulers': [
@@ -138,8 +141,11 @@ BuildmasterConfig = {
             treeStableTimer=None,  # Schedule immediately to avoid dropping changes.
             builderNames=[
 {%   for builder in afsbotcfg_builders %}
-{%     if builder.scheduler == 'gerrit' and builder.branch == branch %}
+{%     set worker = afsbotcfg_workers[builder.worker] %}
+{%     if worker.enabled | d('yes') | bool %}
+{%       if builder.scheduler == 'gerrit' and builder.branch == branch %}
                 '{{ builder.name }}',
+{%       endif %}
 {%     endif %}
 {%   endfor %}
             ],
@@ -158,8 +164,11 @@ BuildmasterConfig = {
 {%   for branch in afsbotcfg_project.branches | d({'dev': 'master'}) %}
                 '{{ afsbotcfg_project.branches[branch] }}': [
 {%     for builder in afsbotcfg_builders %}
-{%       if builder.scheduler == 'gerrit' and builder.branch == branch %}
+{%       set worker = afsbotcfg_workers[builder.worker] %}
+{%       if worker.enabled | d('yes') | bool %}
+{%         if builder.scheduler == 'gerrit' and builder.branch == branch %}
                     '{{ builder.name }}',
+{%         endif %}
 {%       endif %}
 {%     endfor %}
                 ],
@@ -169,7 +178,10 @@ BuildmasterConfig = {
 
         # Force schedulers.
 {% for builder in afsbotcfg_builders %}
+{%   set worker = afsbotcfg_workers[builder.worker] %}
+{%   if worker.enabled | d('yes') | bool %}
         afsbotcfg.schedulers.Force('{{ builder.name }}', '{{ builder.worker }}'),
+{%   endif %}
 {% endfor %}
     ],
 }
