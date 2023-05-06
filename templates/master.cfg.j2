@@ -17,6 +17,7 @@ import afsbotcfg.factory
 import afsbotcfg.gerrit
 import afsbotcfg.master
 import afsbotcfg.schedulers
+import afsbotcfg.watchedworker
 
 BuildmasterConfig = {
     'title': '{{ afsbotcfg_project.title }}',
@@ -89,10 +90,14 @@ BuildmasterConfig = {
 {% for name in afsbotcfg_workers %}
 {%   set properties = afsbotcfg_workers[name] %}
 {%   set password = afsbotcfg_worker_passwords.get(name, default_password) %}
+{%   set stallfail = properties.get('stallfail', False) %}
 {%   if properties.notify | d('') != '' %}
-        worker.Worker('{{ name }}', '{{ password }}', notify_on_missing='{{ properties.notify }}'),
+        afsbotcfg.watchedworker.WatchedWorker('{{ name }}', '{{ password }}',
+            notify_on_missing='{{ properties.notify }}',
+            stall_fail={{ stallfail }}),
 {%   else %}
-        worker.Worker('{{ name }}', '{{ password }}'),
+        afsbotcfg.watchedworker.WatchedWorker('{{ name }}', '{{ password }}',
+            stall_fail={{ stallfail }}),
 {%   endif %}
 {% endfor %}
     ],
