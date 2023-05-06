@@ -41,22 +41,36 @@ def summaryCB(buildInfoList, results, status, arg):
     builderFinalStatus = dict()
     for buildInfo in buildInfoList:
         builderFinalStatus[buildInfo['name']] = buildInfo
+        # Fix up the final status
+        if buildInfo['result'] == util.CANCELLED:
+            if buildInfo['text'] == 'build failed due to worker timeout':
+                builderFinalStatus[buildInfo['name']]['result'] = util.FAILURE
+                builderFinalStatus[buildInfo['name']]['resultText'] = "cancelled"
+            elif buildInfo['text'] == 'build skipped due to worker timeout':
+                builderFinalStatus[buildInfo['name']]['result'] = util.SKIPPED
+                builderFinalStatus[buildInfo['name']]['resultText'] = "cancelled"
 
     # Possible results: SUCCESS WARNINGS FAILURE SKIPPED EXCEPTION RETRY CANCELLED
     successfulBuilds = [
         fstatus for fstatus in builderFinalStatus.values() if fstatus['result'] == util.SUCCESS
     ]
     failedBuilds = [
-        fstatus for fstatus in builderFinalStatus.values() if fstatus['result'] != util.SUCCESS
+        fstatus for fstatus in builderFinalStatus.values() if fstatus['result'] != util.SUCCESS and
+                                                              fstatus['result'] != util.SKIPPED
+    ]
+    skippedBuilds = [
+            fstatus for fstatus in builderFinalStatus.values() if fstatus['result'] == util.SKIPPED
     ]
 
     # typically retries or interrupted builds
     restartedBuilds = [
-        buildinfo for buildinfo in buildInfoList if buildinfo not in successfulBuilds and buildinfo not in failedBuilds
+        buildinfo for buildinfo in buildInfoList if buildinfo not in successfulBuilds and
+                                                    buildinfo not in failedBuilds and
+                                                    buildinfo not in skippedBuilds
     ]
 
-    msgs.append("Final Build Status (failed %d succeeded %d):" %
-                (len(failedBuilds), len(successfulBuilds)))
+    msgs.append("Final Build Status (failed %d succeeded %d skipped %d):" %
+                (len(failedBuilds), len(successfulBuilds), len(skippedBuilds)))
 
     if len(failedBuilds) > 0:
         msgs.append("\n Failed Builds:")
@@ -69,6 +83,10 @@ def summaryCB(buildInfoList, results, status, arg):
     if len(restartedBuilds) > 0:
         msgs.append("\n Restarted Builds:")
         msgs.extend(report_build_status(restartedBuilds, finalstatus=builderFinalStatus))
+
+    if len(skippedBuilds) > 0:
+        msgs.append("\n Skipped Builds:")
+        msgs.extend(report_build_status(skippedBuilds))
 
     message = '\n\n'.join(msgs)
 
