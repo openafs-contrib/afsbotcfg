@@ -40,6 +40,9 @@ afsbotcfg_workers:
   aix61-rs:
     notify: "Ben Huntsman <ben@huntsmans.net>"
     enabled: True
+  aix71-rs:
+    notify: "Ben Huntsman <ben@huntsmans.net>"
+    enabled: True
   alma9-amd64:
     notify: "mmeffie@sinenomine.net"
   alma9-amd64-static:
@@ -832,6 +835,26 @@ afsbotcfg_builders:
       args:
         arch: x86
         variant: free
+
+  - name: nightly-dev-aix71-rs
+    scheduler: nightly
+    branch: dev
+    worker: aix71-rs
+    factory:
+      name: UnixBuild
+      args:
+        configure: --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+        jobs: 1
+
+  - name: nightly-stable-aix71-rs
+    scheduler: nightly
+    branch: stable
+    worker: aix71-rs
+    factory:
+      name: UnixBuild
+      args:
+        configure: --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+        jobs: 1
 
   - name: parked-dev-fedora21-x86_64
     scheduler: parked
