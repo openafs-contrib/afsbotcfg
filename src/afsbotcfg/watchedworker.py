@@ -15,8 +15,6 @@
 
 from twisted.internet import defer
 from buildbot.worker import AbstractLatentWorker
-from buildbot.data import resultspec
-from buildbot.process.results import EXCEPTION
 from buildbot.process.results import CANCELLED
 from twisted.python import log
 import time
