@@ -19,6 +19,7 @@ from buildbot.process.results import CANCELLED
 from twisted.python import log
 import time
 
+
 class WatchedWorker(AbstractLatentWorker):
     """
         Worker class that cancels builds if a worker times out
@@ -36,13 +37,15 @@ class WatchedWorker(AbstractLatentWorker):
         to failed, otherwise the stall will be reported as skipped
 
     """
+
     start_missing_on_startup = True
+
     def __init__(self, name, password, missing_timeout=900,
                  stall_timeout=300, stall_fail=False, **kwargs):
         self.triedstart = 0
         self.timedout = False
         self.missing_email_sent = False
-        self.stall_timeout=stall_timeout
+        self.stall_timeout = stall_timeout
         self.stall_fail = stall_fail
         new_kwargs = dict(**kwargs)
         new_kwargs.pop("stall_timeout", None)

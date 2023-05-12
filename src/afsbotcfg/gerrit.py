@@ -16,6 +16,7 @@
 
 from buildbot.plugins import util
 
+
 class afsChangeFilter(util.GerritChangeFilter):
     # Extend the ChangeFilter to include a property check
     # to ignore builds if there were no code changes
@@ -25,6 +26,7 @@ class afsChangeFilter(util.GerritChangeFilter):
         self.checks.update(self.createChecks(
                             (None, r"(?!NO_CODE_CHANGE)", None,
                              "prop:event.patchSet.kind")))
+
 
 def summaryCB(buildInfoList, results, status, arg):
 
@@ -64,18 +66,18 @@ def summaryCB(buildInfoList, results, status, arg):
         fstatus for fstatus in builderFinalStatus.values() if fstatus['result'] == util.SUCCESS
     ]
     failedBuilds = [
-        fstatus for fstatus in builderFinalStatus.values() if fstatus['result'] != util.SUCCESS and
-                                                              fstatus['result'] != util.SKIPPED
+        fstatus for fstatus in builderFinalStatus.values() if fstatus['result'] != util.SUCCESS
+        and fstatus['result'] != util.SKIPPED
     ]
     skippedBuilds = [
-            fstatus for fstatus in builderFinalStatus.values() if fstatus['result'] == util.SKIPPED
+        fstatus for fstatus in builderFinalStatus.values() if fstatus['result'] == util.SKIPPED
     ]
 
     # typically retries or interrupted builds
     restartedBuilds = [
-        buildinfo for buildinfo in buildInfoList if buildinfo not in successfulBuilds and
-                                                    buildinfo not in failedBuilds and
-                                                    buildinfo not in skippedBuilds
+        buildinfo for buildinfo in buildInfoList if buildinfo not in successfulBuilds
+        and buildinfo not in failedBuilds
+        and buildinfo not in skippedBuilds
     ]
 
     msgs.append("Final Build Status (failed %d succeeded %d skipped %d):" %
