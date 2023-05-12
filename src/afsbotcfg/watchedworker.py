@@ -30,23 +30,23 @@ class WatchedWorker(AbstractLatentWorker):
                             notify_on_missing=workeradmins.get_admin(name)),
                             missing_timeout=900,
                             stall_timeout=300,
-                            stall_fail=False)
+                            critical=True)
 
-    missing_timeout is the initial timeout period (in seconds)
-    stall_timeout is the subsequent timeout period (in seconds)
-    stall_fail is True | False.  If True, the vote will be set
-    to failed, otherwise the stall will be reported as skipped
+    missing_timeout is the initial timeout period (in seconds) stall_timeout is
+    the subsequent timeout period (in seconds) critical is True | False.  If
+    True, the vote will be set to failed if a stall is detected, otherwise the
+    vote will be skipped.
     """
 
     start_missing_on_startup = True
 
     def __init__(self, name, password, missing_timeout=900,
-                 stall_timeout=300, stall_fail=False, **kwargs):
+                 stall_timeout=300, critical=True, **kwargs):
         self.triedstart = 0
         self.timedout = False
         self.missing_email_sent = False
         self.stall_timeout = stall_timeout
-        self.stall_fail = stall_fail
+        self.critical = critical
         new_kwargs = dict(**kwargs)
         new_kwargs.pop("stall_timeout", None)
         new_kwargs.pop("missing_timeout", None)
@@ -91,7 +91,7 @@ class WatchedWorker(AbstractLatentWorker):
         for wfb in self.workerforbuilders.values():
             for build in wfb.builder.building:
                 log.err("build cancelled because worker timeout")
-                if self.stall_fail is True:
+                if self.critical:
                     yield build.buildFinished(["build", "failed due to worker timeout"], CANCELLED)
                 else:
                     yield build.buildFinished(["build", "skipped due to worker timeout"], CANCELLED)

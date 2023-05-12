@@ -93,7 +93,7 @@ BuildmasterConfig = {
         afsbotcfg.watchedworker.WatchedWorker(
             '{{ name }}', '{{ password }}',
             notify_on_missing={% if properties.notify is defined %}'{{ properties.notify }}'{% else %}None{% endif %},
-            stall_fail={{ properties.stallfail | d('no') | bool }}),
+            critical={{ properties.critical | d('yes') | bool }}),
 {% endfor %}
     ],
     'builders': [
