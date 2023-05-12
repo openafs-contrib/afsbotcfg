@@ -90,15 +90,10 @@ BuildmasterConfig = {
 {% for name in afsbotcfg_workers %}
 {%   set properties = afsbotcfg_workers[name] %}
 {%   set password = afsbotcfg_worker_passwords.get(name, default_password) %}
-{%   set stallfail = properties.get('stallfail', False) %}
-{%   if properties.notify | d('') != '' %}
-        afsbotcfg.watchedworker.WatchedWorker('{{ name }}', '{{ password }}',
-            notify_on_missing='{{ properties.notify }}',
-            stall_fail={{ stallfail }}),
-{%   else %}
-        afsbotcfg.watchedworker.WatchedWorker('{{ name }}', '{{ password }}',
-            stall_fail={{ stallfail }}),
-{%   endif %}
+        afsbotcfg.watchedworker.WatchedWorker(
+            '{{ name }}', '{{ password }}',
+            notify_on_missing={% if properties.notify is defined %}'{{ properties.notify }}'{% else %}None{% endif %},
+            stall_fail={{ properties.stallfail | d('no') | bool }}),
 {% endfor %}
     ],
     'builders': [
