@@ -10,6 +10,9 @@ SOURCE=\
   afsbotcfg/schedulers.py \
   afsbotcfg/steps.py
 
+# Default flake8 ignore list.
+FLAKE8_IGNORE = E121,E123,E126,E226,E24,E704,W503,W504
+
 help:
 	@echo "usage: make <target>"
 	@echo ""
@@ -22,7 +25,7 @@ help:
 
 lint:
 	pyflakes afsbotcfg/*.py
-	flake8 --ignore=E501 afsbotcfg/*.py
+	flake8 --ignore=E501,$(FLAKE8_IGNORE) afsbotcfg/*.py
 
 test: lint
 
