@@ -22,20 +22,20 @@ import time
 
 class WatchedWorker(AbstractLatentWorker):
     """
-        Worker class that cancels builds if a worker times out
+    Worker class that cancels builds if a worker times out.
 
-        To enable for a worker
-            c['workers'].append(afsbotcfg.watchedworker.WatchedWorker(name, password,
-                              notify_on_missing=workeradmins.get_admin(name)),
-                              missing_timeout=900,
-                              stall_timeout=300,
-                              stall_fail=False)
+    To enable for a worker
 
-        missing_timeout is the initial timeout period (in seconds)
-        stall_timeout is the subsequent timeout period (in seconds)
-        stall_fail is True | False.  If True, the vote will be set
-        to failed, otherwise the stall will be reported as skipped
+        c['workers'].append(afsbotcfg.watchedworker.WatchedWorker(name, password,
+                            notify_on_missing=workeradmins.get_admin(name)),
+                            missing_timeout=900,
+                            stall_timeout=300,
+                            stall_fail=False)
 
+    missing_timeout is the initial timeout period (in seconds)
+    stall_timeout is the subsequent timeout period (in seconds)
+    stall_fail is True | False.  If True, the vote will be set
+    to failed, otherwise the stall will be reported as skipped
     """
 
     start_missing_on_startup = True
@@ -58,7 +58,7 @@ class WatchedWorker(AbstractLatentWorker):
     @defer.inlineCallbacks
     def start_instance(self, build):
         """
-            Creating new worker instance
+        Creating new worker instance
         """
         self.timedout = False
         self.triedstart += 1
@@ -67,7 +67,7 @@ class WatchedWorker(AbstractLatentWorker):
 
     def stop_instance(self, fast=False):
         """
-            Shutting down a worker instance
+        Shutting down a worker instance
         """
         self.stopMissingTimer()
         self.timedout = False
@@ -77,7 +77,7 @@ class WatchedWorker(AbstractLatentWorker):
     @defer.inlineCallbacks
     def _cancelbuilds(self):
         """
-            Mark any active builds on this worker as cancelled
+        Mark any active builds on this worker as cancelled
         """
         if not self.timedout and self.triedstart <= 2:
             return
@@ -102,19 +102,18 @@ class WatchedWorker(AbstractLatentWorker):
 
     def buildStarted(self, wfb):
         """
-            When a build starts, start the watchdog
+        When a build starts, start the watchdog
         """
         self.startMissingTimer()
         return super().buildStarted(wfb)
 
     def messageReceivedFromWorker(self):
         """
-            Any response from the worker cancels the timeout
+        Any response from the worker cancels the timeout
 
-            If we want cancel a build when a step within a worker has
-            "stopped" or gotten hung up, we can change this around to keep
-            the watchdog timer going and just have a flag here that is reset.
-
+        If we want cancel a build when a step within a worker has
+        "stopped" or gotten hung up, we can change this around to keep
+        the watchdog timer going and just have a flag here that is reset.
         """
         self.stopMissingTimer()
         self.timedout = False
@@ -123,11 +122,11 @@ class WatchedWorker(AbstractLatentWorker):
 
     def _missing_timer_fired(self):
         """
-            Timeout fired .. cancel any active builds for this worker.
+        Timeout fired .. cancel any active builds for this worker.
 
-            If we want to cancel a build when a step within a builder has
-            "stopped" or gotten hung up, we can change this around to watch
-            for a flag set in messageReceivedFromWorker
+        If we want to cancel a build when a step within a builder has
+        "stopped" or gotten hung up, we can change this around to watch
+        for a flag set in messageReceivedFromWorker
         """
         self.missing_timer = None
         self.timedout = True

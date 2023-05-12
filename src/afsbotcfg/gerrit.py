@@ -18,8 +18,10 @@ from buildbot.plugins import util
 
 
 class afsChangeFilter(util.GerritChangeFilter):
-    # Extend the ChangeFilter to include a property check
-    # to ignore builds if there were no code changes
+    """
+    Extend the ChangeFilter to include a property check
+    to ignore builds if there were no code changes
+    """
 
     def __init__(self, **kw):
         super().__init__(**kw)
