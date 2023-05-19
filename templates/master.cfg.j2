@@ -133,7 +133,7 @@ BuildmasterConfig = {
 {% for branch in afsbotcfg_project.branches | d({'dev': 'master'}) %}
         schedulers.SingleBranchScheduler(
             name='gerrit-{{ branch }}',
-            change_filter=afsbotcfg.gerrit.afsChangeFilter(
+            change_filter=util.GerritChangeFilter(
                 project='{{ afsbotcfg_project.name }}',
                 branch='{{ afsbotcfg_project.branches[branch] }}',
                 eventtype='patchset-created',

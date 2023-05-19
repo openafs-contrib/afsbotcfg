@@ -17,19 +17,6 @@
 from buildbot.plugins import util
 
 
-class afsChangeFilter(util.GerritChangeFilter):
-    """
-    Extend the ChangeFilter to include a property check
-    to ignore builds if there were no code changes
-    """
-
-    def __init__(self, **kw):
-        super().__init__(**kw)
-        self.checks.update(self.createChecks(
-                            (None, r"(?!NO_CODE_CHANGE)", None,
-                             "prop:event.patchSet.kind")))
-
-
 def summaryCB(buildInfoList, results, status, arg):
 
     def report_build_status(buildlist, finalstatus=None):
