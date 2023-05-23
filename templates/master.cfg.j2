@@ -65,6 +65,7 @@ BuildmasterConfig = {
 {% endif %}
     ],
     'services': [
+{% if afsbotcfg_project.title != 'Molecule Test' %}
 {% if afsbotcfg_gerrit is defined %}
         reporters.GerritStatusPush(
             server='{{ afsbotcfg_gerrit.server }}',
@@ -79,6 +80,7 @@ BuildmasterConfig = {
             fromaddr='{{ afsbotcfg_project.email_from }}',
             generators=[WorkerMissingGenerator(workers='all')],
         ),
+{% endif %}
     ],
     'protocols': {
         'pb': {
