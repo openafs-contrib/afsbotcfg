@@ -4,6 +4,10 @@
 # OpenAFS Buildbot Master Configuration
 #
 
+{% macro builder_name(b) -%}
+{{ b.scheduler }}-{{ b.branch }}-{{ b.os }}-{{ b.cc }}-{{ b.arch }}{% if b.flavor is defined %}-{{ b.flavor }}{% endif %}
+{%- endmacro %}
+
 import datetime
 
 from buildbot.plugins import changes
@@ -103,7 +107,7 @@ BuildmasterConfig = {
 {%   set worker = afsbotcfg_workers[builder.worker] %}
 {%   if worker.enabled | d('yes') | bool %}
         util.BuilderConfig(
-            name='{{ builder.name }}',
+            name='{{ builder_name(builder) }}',
             workernames=['{{builder.worker}}'],
             canStartBuild=util.enforceChosenWorker,
 {%     if builder.factory.env is defined %}
@@ -143,7 +147,7 @@ BuildmasterConfig = {
 {%     set worker = afsbotcfg_workers[builder.worker] %}
 {%     if worker.enabled | d('yes') | bool %}
 {%       if builder.scheduler == 'nightly' and builder.branch == branch %}
-                '{{ builder.name }}',
+                '{{ builder_name(builder) }}',
 {%       endif %}
 {%     endif %}
 {%   endfor %}
@@ -168,7 +172,7 @@ BuildmasterConfig = {
 {%     set worker = afsbotcfg_workers[builder.worker] %}
 {%     if worker.enabled | d('yes') | bool %}
 {%       if builder.scheduler == 'gerrit' and builder.branch == branch %}
-                '{{ builder.name }}',
+                '{{ builder_name(builder) }}',
 {%       endif %}
 {%     endif %}
 {%   endfor %}
@@ -191,7 +195,7 @@ BuildmasterConfig = {
 {%       set worker = afsbotcfg_workers[builder.worker] %}
 {%       if worker.enabled | d('yes') | bool %}
 {%         if builder.scheduler == 'gerrit' and builder.branch == branch %}
-                    '{{ builder.name }}',
+                    '{{ builder_name(builder) }}',
 {%         endif %}
 {%       endif %}
 {%     endfor %}
@@ -204,7 +208,7 @@ BuildmasterConfig = {
 {% for builder in afsbotcfg_builders %}
 {%   set worker = afsbotcfg_workers[builder.worker] %}
 {%   if worker.enabled | d('yes') | bool %}
-        afsbotcfg.schedulers.Force('{{ builder.name }}', '{{ builder.worker }}'),
+        afsbotcfg.schedulers.Force('{{ builder_name(builder) }}', '{{ builder.worker }}'),
 {%   endif %}
 {% endfor %}
     ],

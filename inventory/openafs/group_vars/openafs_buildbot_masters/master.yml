@@ -146,9 +146,11 @@ afsbotcfg_workers:
     notify: "asedeno@mit.edu"
 
 afsbotcfg_builders:
-  - name: gerrit-dev-aix61-rs
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: dev
+    os: aix61
+    cc: xlc
+    arch: rs
     worker: aix61-rs
     factory:
       name: UnixBuild
@@ -158,9 +160,11 @@ afsbotcfg_builders:
           --enable-pthreaded-bos
         jobs: 1
 
-  - name: gerrit-dev-alma9-amd64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: dev
+    os: alma9
+    cc: gcc
+    arch: amd64
     worker: alma9-amd64
     factory:
       name: UnixBuild
@@ -169,9 +173,12 @@ afsbotcfg_builders:
           --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
           --enable-pthreaded-bos
 
-  - name: gerrit-dev-alma9-static
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: dev
+    os: alma9
+    cc: gcc
+    arch: amd64
+    flavor: static
     worker: alma9-amd64-static
     factory:
       name: UnixBuild
@@ -180,16 +187,21 @@ afsbotcfg_builders:
           --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
           --enable-pthreaded-bos --disable-shared
 
-  - name: gerrit-dev-alma9-amd64-rpm
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: dev
+    os: alma9
+    cc: gcc
+    arch: amd64
+    flavor: rpm
     worker: alma9-amd64-rpm
     factory:
       name: BuildRPMs
 
-  - name: gerrit-dev-centos6-amd64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: dev
+    os: centos6
+    cc: gcc
+    arch: amd64
     worker: centos6-amd64
     factory:
       name: UnixBuild
@@ -198,9 +210,11 @@ afsbotcfg_builders:
           --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
           --enable-pthreaded-bos
 
-  - name: gerrit-dev-centos73-x86_64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: dev
+    os: centos73
+    cc: gcc
+    arch: x86_64
     worker: centos73-x86_64
     factory:
       name: UnixBuild
@@ -209,9 +223,11 @@ afsbotcfg_builders:
           --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
           --enable-pthreaded-bos
 
-  - name: gerrit-dev-centos8-amd64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: dev
+    os: centos8
+    cc: gcc
+    arch: amd64
     worker: centos8-amd64
     factory:
       name: UnixBuild
@@ -220,9 +236,11 @@ afsbotcfg_builders:
           --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
           --enable-pthreaded-bos
 
-  - name: gerrit-dev-debian8-amd64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: dev
+    os: debian8
+    cc: gcc
+    arch: amd64
     worker: debian87-x86_64
     factory:
       name: UnixBuild
@@ -231,9 +249,11 @@ afsbotcfg_builders:
           --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
           --enable-pthreaded-bos
 
-  - name: gerrit-dev-debian9-amd64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: dev
+    os: debian9
+    cc: gcc
+    arch: amd64
     worker: debian9-amd64
     factory:
       name: UnixBuild
@@ -242,9 +262,11 @@ afsbotcfg_builders:
           --enable-warnings --enable-checking --enable-supergroups
           --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
 
-  - name: gerrit-dev-debian10-amd64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: dev
+    os: debian10
+    cc: gcc
+    arch: amd64
     worker: debian10-amd64
     factory:
       name: UnixBuild
@@ -253,9 +275,11 @@ afsbotcfg_builders:
           --enable-warnings --enable-checking --enable-supergroups
           --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
 
-  - name: gerrit-dev-debian11-amd64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: dev
+    os: debian11
+    cc: gcc
+    arch: amd64
     worker: debian11-amd64
     factory:
       name: UnixBuild
@@ -264,9 +288,11 @@ afsbotcfg_builders:
           --enable-warnings --enable-checking --enable-supergroups
           --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
 
-  - name: gerrit-dev-freebsd12-amd64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: dev
+    os: freebsd12
+    cc: gcc
+    arch: amd64
     worker: freebsd12-amd64
     factory:
       name: UnixBuild
@@ -277,9 +303,11 @@ afsbotcfg_builders:
       env:
         MKAFS_OSTYPE: FBSD
 
-  - name: gerrit-dev-fedora33-x86_64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: dev
+    os: fedora33
+    cc: gcc
+    arch: x86_64
     worker: fedora33-x86_64
     factory:
       name: UnixBuild
@@ -292,9 +320,11 @@ afsbotcfg_builders:
           -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
           -Wno-error=array-bounds -Wno-error=implicit-function-declaration
 
-  - name: parked-dev-fedora34-x86_64
-    scheduler: parked
+  - scheduler: parked
     branch: dev
+    os: fedora34
+    cc: gcc
+    arch: x86_64
     worker: fedora34-x86_64
     factory:
       name: UnixBuild
@@ -307,9 +337,11 @@ afsbotcfg_builders:
           -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
           -Wno-error=array-bounds -Wno-error=implicit-function-declaration
 
-  - name: gerrit-dev-fedora35-x86_64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: dev
+    os: fedora35
+    cc: gcc
+    arch: x86_64
     worker: fedora35-x86_64
     factory:
       name: UnixBuild
@@ -322,9 +354,11 @@ afsbotcfg_builders:
           -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
           -Wno-error=array-bounds -Wno-error=implicit-function-declaration
 
-  - name: gerrit-dev-gentoo-amd64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: dev
+    os: gentoo
+    cc: clang
+    arch: amd64
     worker: gentoo-amd64
     factory:
       name: UnixBuildAndTest
@@ -334,9 +368,11 @@ afsbotcfg_builders:
           --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
           --enable-pthreaded-bos
 
-  - name: gerrit-dev-gentoo-gcc-amd64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: dev
+    os: gentoo-gcc
+    cc: gcc
+    arch: amd64
     worker: gentoo-gcc-amd64
     factory:
       name: UnixBuildAndTest
@@ -345,9 +381,11 @@ afsbotcfg_builders:
           --enable-warnings --enable-checking --enable-supergroups
           --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
 
-  - name: gerrit-dev-macos10-15-x86_64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: dev
+    os: macos10-15
+    cc: xcode
+    arch: x86_64
     worker: macos10-15-x86_64
     factory:
       name: UnixBuild
@@ -358,9 +396,11 @@ afsbotcfg_builders:
         target: dest
         jobs: 1
 
-  - name: gerrit-dev-macos11-x86_64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: dev
+    os: macos11
+    cc: xcode
+    arch: x86_64
     worker: macos11-x86_64
     factory:
       name: UnixBuild
@@ -371,9 +411,11 @@ afsbotcfg_builders:
         target: dest
         jobs: 1
 
-  - name: gerrit-dev-macos12-x86_64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: dev
+    os: macos12
+    cc: xcode
+    arch: x86_64
     worker: macos12-x86_64
     factory:
       name: UnixBuild
@@ -384,9 +426,11 @@ afsbotcfg_builders:
         target: dest
         jobs: 1
 
-  - name: gerrit-dev-opensuse15-x86_64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: dev
+    os: opensuse15
+    cc: gcc
+    arch: x86_64
     worker: opensuse15-x86_64
     factory:
       name: UnixBuild
@@ -395,9 +439,11 @@ afsbotcfg_builders:
           --with-linux-kernel-build=/usr/src/linux-obj/x86_64/default
           --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
 
-  - name: gerrit-dev-solaris10_x86
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: dev
+    os: solaris10
+    cc: spro
+    arch: x86
     worker: sun510_x86
     factory:
       name: UnixBuild
@@ -408,9 +454,11 @@ afsbotcfg_builders:
         target: dest
         jobs: 1
 
-  - name: gerrit-dev-solaris114_x86
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: dev
+    os: solaris114
+    cc: spro
+    arch: x86
     worker: solaris114-x86-2
     factory:
       name: UnixBuild
@@ -419,9 +467,11 @@ afsbotcfg_builders:
           --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
           --enable-pthreaded-bos
 
-  - name: gerrit-dev-ubuntu1610-x86_64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: dev
+    os: ubuntu1610
+    cc: gcc
+    arch: x86_64
     worker: ubuntu1610-x86_64
     factory:
       name: UnixBuild
@@ -430,9 +480,11 @@ afsbotcfg_builders:
           --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
           --enable-pthreaded-bos
 
-  - name: gerrit-dev-ubuntu1804-amd64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: dev
+    os: ubuntu1804
+    cc: gcc
+    arch: amd64
     worker: ubuntu1804-amd64
     factory:
       name: UnixBuildAndTest
@@ -441,9 +493,11 @@ afsbotcfg_builders:
           --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
           --enable-pthreaded-bos
 
-  - name: gerrit-dev-ubuntu2004-amd64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: dev
+    os: ubuntu2004
+    cc: gcc
+    arch: amd64
     worker: ubuntu2004-amd64
     factory:
       name: UnixBuildAndTest
@@ -452,20 +506,24 @@ afsbotcfg_builders:
           --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
           --enable-pthreaded-bos
 
-  - name: gerrit-dev-wins2019_amd64_free
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: dev
+    os: wins2019
+    cc: msvc
+    arch: amd64
+    flavor: free
     worker: wins2019-amd64
-    label:  wins2019_amd64_free
     factory:
       name: WinBuild
       args:
         arch: amd64
         variant: free
 
-  - name: gerrit-stable-alma9-amd64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: stable
+    os: alma9
+    cc: gcc
+    arch: amd64
     worker: alma9-amd64
     factory:
       name: UnixBuild
@@ -474,9 +532,11 @@ afsbotcfg_builders:
           --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
           --enable-pthreaded-bos
 
-  - name: gerrit-stable-aix61-rs
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: stable
+    os: aix61
+    cc: gcc
+    arch: rs
     worker: aix61-rs
     factory:
       name: UnixBuild
@@ -486,9 +546,11 @@ afsbotcfg_builders:
           --enable-pthreaded-bos
         jobs: 1
 
-  - name: gerrit-stable-centos6-amd64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: stable
+    os: centos6
+    cc: gcc
+    arch: amd64
     worker: centos6-amd64
     factory:
       name: UnixBuild
@@ -497,9 +559,11 @@ afsbotcfg_builders:
           --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
           --enable-pthreaded-bos
 
-  - name: gerrit-stable-centos73-x86_64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: stable
+    os: centos73
+    cc: gcc
+    arch: x86_64
     worker: centos73-x86_64
     factory:
       name: UnixBuild
@@ -508,9 +572,11 @@ afsbotcfg_builders:
           --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
           --enable-pthreaded-bos
 
-  - name: gerrit-stable-centos8-amd64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: stable
+    os: centos8
+    cc: gcc
+    arch: amd64
     worker: centos8-amd64
     factory:
       name: UnixBuild
@@ -519,9 +585,11 @@ afsbotcfg_builders:
           --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
           --enable-pthreaded-bos
 
-  - name: gerrit-stable-debian9-amd64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: stable
+    os: debian9
+    cc: gcc
+    arch: amd64
     worker: debian9-amd64
     factory:
       name: UnixBuild
@@ -530,9 +598,11 @@ afsbotcfg_builders:
           --enable-warnings --enable-checking --enable-supergroups
           --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
 
-  - name: gerrit-stable-debian10-amd64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: stable
+    os: debian10
+    cc: gcc
+    arch: amd64
     worker: debian10-amd64
     factory:
       name: UnixBuild
@@ -541,9 +611,11 @@ afsbotcfg_builders:
           --enable-warnings --enable-checking --enable-supergroups
           --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
 
-  - name: gerrit-stable-debian11-amd64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: stable
+    os: debian11
+    cc: gcc
+    arch: amd64
     worker: debian11-amd64
     factory:
       name: UnixBuild
@@ -552,9 +624,11 @@ afsbotcfg_builders:
           --enable-warnings --enable-checking --enable-supergroups
           --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
 
-  - name: gerrit-stable-freebsd12-amd64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: stable
+    os: freebsd12
+    cc: gcc
+    arch: amd64
     worker: freebsd12-amd64
     factory:
       name: UnixBuild
@@ -565,9 +639,11 @@ afsbotcfg_builders:
       env:
         MKAFS_OSTYPE: FBSD
 
-  - name: gerrit-stable-fedora32-x86_64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: stable
+    os: fedora32
+    cc: gcc
+    arch: x86_64
     worker: fedora32-x86_64
     factory:
       name: UnixBuild
@@ -580,9 +656,11 @@ afsbotcfg_builders:
           -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
           -Wno-error=array-bounds -Wno-error=implicit-function-declaration
 
-  - name: gerrit-stable-macos10-15-x86_64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: stable
+    os: macos10-15
+    cc: gcc
+    arch: x86_64
     worker: macos10-15-x86_64
     factory:
       name: UnixBuild
@@ -593,9 +671,11 @@ afsbotcfg_builders:
         target: dest
         jobs: 1
 
-  - name: gerrit-stable-macos11-x86_64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: stable
+    os: macos11
+    cc: gcc
+    arch: x86_64
     worker: macos11-x86_64
     factory:
       name: UnixBuild
@@ -606,9 +686,11 @@ afsbotcfg_builders:
         target: dest
         jobs: 1
 
-  - name: gerrit-stable-macos12-x86_64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: stable
+    os: macos12
+    cc: gcc
+    arch: x86_64
     worker: macos12-x86_64
     factory:
       name: UnixBuild
@@ -619,9 +701,11 @@ afsbotcfg_builders:
         target: dest
         jobs: 1
 
-  - name: gerrit-stable-opensuse15-x86_64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: stable
+    os: opensuse15
+    cc: gcc
+    arch: x86_64
     worker: opensuse15-x86_64
     factory:
       name: UnixBuild
@@ -631,9 +715,11 @@ afsbotcfg_builders:
           --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
           --enable-pthreaded-bos
 
-  - name: gerrit-stable-solaris10_x86
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: stable
+    os: soalris10
+    cc: gcc
+    arch: x86
     worker: sun510_x86
     factory:
       name: UnixBuild
@@ -643,9 +729,11 @@ afsbotcfg_builders:
           --enable-pthreaded-ubik --enable-pthreaded-bos
         target: dest
 
-  - name: gerrit-stable-solaris114_x86
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: stable
+    os: solaris114
+    cc: gcc
+    arch: x86
     worker: solaris114-x86-2
     factory:
       name: UnixBuild
@@ -654,9 +742,11 @@ afsbotcfg_builders:
           --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
           --enable-pthreaded-bos
 
-  - name: gerrit-stable-ubuntu1804-amd64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: stable
+    os: ubuntu1804
+    cc: gcc
+    arch: amd64
     worker: ubuntu1804-amd64
     factory:
       name: UnixBuildAndTest
@@ -665,9 +755,11 @@ afsbotcfg_builders:
           --enable-warnings --enable-checking --enable-supergroups
           --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
 
-  - name: gerrit-stable-ubuntu2004-amd64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: stable
+    os: ubuntu2004
+    cc: gcc
+    arch: amd64
     worker: ubuntu2004-amd64
     factory:
       name: UnixBuildAndTest
@@ -676,9 +768,12 @@ afsbotcfg_builders:
           --enable-warnings --enable-checking --enable-supergroups
           --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
 
-  - name: gerrit-stable-wins2019_amd64_free
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: stable
+    os: wins2019
+    cc: msvc
+    arch: amd64
+    flavor: free
     worker: wins2019-amd64
     factory:
       name: WinBuild
@@ -686,20 +781,24 @@ afsbotcfg_builders:
         arch: amd64
         variant: free
 
-  - name: gerrit-stable-wins2019_x86_checked
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: stable
+    os: wins2019
+    cc: msvc
+    arch: x86
+    flavor: checked
     worker: wins2019-amd64
-    label:  wins2019_x86_checked
     factory:
       name: WinBuild
       args:
         arch: x86
         variant: checked
 
-  - name: gerrit-oldstable-centos73-x86_64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: oldstable
+    os: centos73
+    cc: gcc
+    arch: x86_64
     worker: centos73-x86_64
     factory:
       name: UnixBuild
@@ -708,9 +807,11 @@ afsbotcfg_builders:
           --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
           --enable-pthreaded-bos
 
-  - name: gerrit-oldstable-centos8-amd64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: oldstable
+    os: centos8
+    cc: gcc
+    arch: amd64
     worker: centos8-amd64
     factory:
       name: UnixBuild
@@ -719,9 +820,11 @@ afsbotcfg_builders:
           --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
           --enable-pthreaded-bos
 
-  - name: gerrit-oldstable-debian9-amd64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: oldstable
+    os: debian9
+    cc: gcc
+    arch: amd64
     worker: debian9-amd64
     factory:
       name: UnixBuild
@@ -730,9 +833,11 @@ afsbotcfg_builders:
           --enable-warnings --enable-checking --enable-supergroups
           --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
 
-  - name: gerrit-oldstable-debian10-amd64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: oldstable
+    os: debian10
+    cc: gcc
+    arch: amd64
     worker: debian10-amd64
     factory:
       name: UnixBuild
@@ -741,9 +846,11 @@ afsbotcfg_builders:
           --enable-warnings --enable-checking --enable-supergroups
           --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
 
-  - name: gerrit-oldstable-fedora32-x86_64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: oldstable
+    os: fedora32
+    cc: gcc
+    arch: x86_64
     worker: fedora32-x86_64
     factory:
       name: UnixBuild
@@ -756,9 +863,11 @@ afsbotcfg_builders:
           -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
           -Wno-error=array-bounds -Wno-error=implicit-function-declaration
 
-  - name: gerrit-oldstable-solaris10_x86
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: oldstable
+    os: solaris10
+    cc: spro
+    arch: x86
     worker: sun510_x86
     factory:
       name: UnixBuild
@@ -768,11 +877,12 @@ afsbotcfg_builders:
           --enable-pthreaded-ubik --enable-pthreaded-bos
         target: dest
 
-  - name: gerrit-oldstable-solaris114_x86
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: oldstable
+    os: solaris114
+    cc: spro
+    arch: x86
     worker: solaris114-x86-2
-    label:  solaris114_x86
     factory:
       name: UnixBuild
       args:
@@ -780,9 +890,11 @@ afsbotcfg_builders:
           --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
           --enable-pthreaded-bos
 
-  - name: gerrit-oldstable-ubuntu1804-amd64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: oldstable
+    os: ubuntu1804
+    cc: gcc
+    arch: amd64
     worker: ubuntu1804-amd64
     factory:
       name: UnixBuildAndTest
@@ -791,9 +903,11 @@ afsbotcfg_builders:
           --enable-warnings --enable-checking --enable-supergroups
           --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
 
-  - name: gerrit-oldstable-ubuntu2004-amd64
-    scheduler: gerrit
+  - scheduler: gerrit
     branch: oldstable
+    os: ubuntu2004
+    cc: gcc
+    arch: amd64
     worker: ubuntu2004-amd64
     factory:
       name: UnixBuildAndTest
@@ -802,9 +916,11 @@ afsbotcfg_builders:
           --enable-warnings --enable-checking --enable-supergroups
           --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
 
-  - name: nightly-dev-debian12-amd64
-    scheduler: nightly
+  - scheduler: nightly
     branch: dev
+    os: debian12
+    cc: gcc
+    arch: amd64
     worker: debian12-amd64
     factory:
       name: UnixBuild
@@ -813,9 +929,11 @@ afsbotcfg_builders:
           --enable-warnings --enable-checking --enable-supergroups
           --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
 
-  - name: nightly-dev-sol11sparc
-    scheduler: nightly
+  - scheduler: nightly
     branch: dev
+    os: solaris11
+    cc: spro
+    arch: sparc
     worker: sol11sparc
     factory:
       name: UnixBuild
@@ -824,9 +942,11 @@ afsbotcfg_builders:
           --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
           --enable-pthreaded-bos
 
-  - name: nightly-dev-centos7-arm64
-    scheduler: nightly
+  - scheduler: nightly
     branch: dev
+    os: centos7
+    cc: gcc
+    arch: arm64
     worker: centos7-arm64
     factory:
       name: UnixBuild
@@ -835,9 +955,12 @@ afsbotcfg_builders:
           --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
           --enable-pthreaded-bos
 
-  - name: nightly-dev-wins2019_amd64_checked
-    scheduler: nightly
+  - scheduler: nightly
     branch: dev
+    os: wins2019
+    cc: msvc
+    arch: amd64
+    flavor: checked
     worker: wins2019-amd64
     factory:
       name: WinBuild
@@ -845,20 +968,24 @@ afsbotcfg_builders:
         arch: amd64
         variant: checked
 
-  - name: nightly-dev-wins2019_x86_free
-    scheduler: nightly
+  - scheduler: nightly
     branch: dev
+    os: wins2019
+    cc: msvc
+    arch: x86
+    flavor: free
     worker: wins2019-amd64
-    label:  wins2019_x86_free
     factory:
       name: WinBuild
       args:
         arch: x86
         variant: free
 
-  - name: nightly-dev-aix71-rs
-    scheduler: nightly
+  - scheduler: nightly
     branch: dev
+    os: aix71
+    cc: xlc
+    arch: rs
     worker: aix71-rs
     factory:
       name: UnixBuild
@@ -866,9 +993,11 @@ afsbotcfg_builders:
         configure: --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
         jobs: 1
 
-  - name: nightly-stable-debian12-amd64
-    scheduler: nightly
+  - scheduler: nightly
     branch: stable
+    os: debian12
+    cc: gcc
+    arch: amd64
     worker: debian12-amd64
     factory:
       name: UnixBuild
@@ -877,9 +1006,11 @@ afsbotcfg_builders:
           --enable-warnings --enable-checking --enable-supergroups
           --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
 
-  - name: nightly-stable-aix71-rs
-    scheduler: nightly
+  - scheduler: nightly
     branch: stable
+    os: aix71
+    cc: xlc
+    arch: rs
     worker: aix71-rs
     factory:
       name: UnixBuild
@@ -887,9 +1018,11 @@ afsbotcfg_builders:
         configure: --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
         jobs: 1
 
-  - name: parked-dev-fedora21-x86_64
-    scheduler: parked
+  - scheduler: parked
     branch: dev
+    os: fedora21
+    cc: gcc
+    arch: x86_64
     worker: fedora21-x86_64
     factory:
       name: UnixBuild
@@ -902,9 +1035,11 @@ afsbotcfg_builders:
           -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
           -Wno-error=array-bounds -Wno-error=implicit-function-declaration
 
-  - name: parked-dev-fedora22-x86_64
-    scheduler: parked
+  - scheduler: parked
     branch: dev
+    os: fedora22
+    cc: gcc
+    arch: x86_64
     worker: fedora22-x86_64
     factory:
       name: UnixBuild
@@ -918,9 +1053,11 @@ afsbotcfg_builders:
           -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
           -Wno-error=array-bounds -Wno-error=implicit-function-declaration
 
-  - name: parked-dev-fedora23-x86_64
-    scheduler: parked
+  - scheduler: parked
     branch: dev
+    os: fedora23
+    cc: gcc
+    arch: x86_64
     worker: fedora23-x86_64
     factory:
       name: UnixBuild
@@ -934,9 +1071,11 @@ afsbotcfg_builders:
           -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
           -Wno-error=array-bounds -Wno-error=implicit-function-declaration
 
-  - name: parked-dev-fedora24-x86_64
-    scheduler: parked
+  - scheduler: parked
     branch: dev
+    os: fedora24
+    cc: gcc
+    arch: x86_64
     worker: fedora24-x86_64
     factory:
       name: UnixBuild
@@ -950,9 +1089,11 @@ afsbotcfg_builders:
           -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
           -Wno-error=array-bounds -Wno-error=implicit-function-declaration
 
-  - name: parked-dev-fedora25-x86_64
-    scheduler: parked
+  - scheduler: parked
     branch: dev
+    os: fedora25
+    cc: gcc
+    arch: x86_64
     worker: fedora25-x86_64
     factory:
       name: UnixBuild
@@ -966,9 +1107,11 @@ afsbotcfg_builders:
           -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
           -Wno-error=array-bounds -Wno-error=implicit-function-declaration
 
-  - name: parked-dev-fedora26-x86_64
-    scheduler: parked
+  - scheduler: parked
     branch: dev
+    os: fedora26
+    cc: gcc
+    arch: x86_64
     worker: fedora26-x86_64
     factory:
       name: UnixBuild
@@ -982,9 +1125,11 @@ afsbotcfg_builders:
           -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
           -Wno-error=array-bounds -Wno-error=implicit-function-declaration
 
-  - name: parked-dev-fedora27-x86_64
-    scheduler: parked
+  - scheduler: parked
     branch: dev
+    os: fedora27
+    cc: gcc
+    arch: x86_64
     worker: fedora27-x86_64
     factory:
       name: UnixBuild
@@ -998,9 +1143,11 @@ afsbotcfg_builders:
           -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
           -Wno-error=array-bounds -Wno-error=implicit-function-declaration
 
-  - name: parked-dev-fedora28-x86_64
-    scheduler: parked
+  - scheduler: parked
     branch: dev
+    os: fedora28
+    cc: gcc
+    arch: x86_64
     worker: fedora28-x86_64
     factory:
       name: UnixBuild
@@ -1014,9 +1161,11 @@ afsbotcfg_builders:
           -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
           -Wno-error=array-bounds -Wno-error=implicit-function-declaration
 
-  - name: parked-dev-fedora29-x86_64
-    scheduler: parked
+  - scheduler: parked
     branch: dev
+    os: fedora29
+    cc: gcc
+    arch: x86_64
     worker: fedora29-x86_64
     factory:
       name: UnixBuild
@@ -1030,9 +1179,11 @@ afsbotcfg_builders:
           -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
           -Wno-error=array-bounds -Wno-error=implicit-function-declaration
 
-  - name: parked-dev-fedora30-x86_64
-    scheduler: parked
+  - scheduler: parked
     branch: dev
+    os: fedora30
+    cc: gcc
+    arch: x86_64
     worker: fedora30-x86_64
     factory:
       name: UnixBuild
@@ -1046,9 +1197,11 @@ afsbotcfg_builders:
           -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
           -Wno-error=array-bounds -Wno-error=implicit-function-declaration
 
-  - name: parked-dev-fedora31-x86_64
-    scheduler: parked
+  - scheduler: parked
     branch: dev
+    os: fedora31
+    cc: gcc
+    arch: x86_64
     worker: fedora31-x86_64
     factory:
       name: UnixBuild
@@ -1061,9 +1214,11 @@ afsbotcfg_builders:
           -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
           -Wno-error=array-bounds -Wno-error=implicit-function-declaration
 
-  - name: parked-dev-freebsd13-amd64
-    scheduler: parked
+  - scheduler: parked
     branch: dev
+    os: freebsd13
+    cc: gcc
+    arch: amd64
     worker: freebsd13-amd64
     factory:
       name: UnixBuild
