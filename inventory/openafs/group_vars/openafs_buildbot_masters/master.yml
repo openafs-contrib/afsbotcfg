@@ -99,6 +99,7 @@ afsbotcfg_workers:
     notify: "mansaxel@besserwisser.org"
   freebsd12-amd64:
     notify: "mansaxel@besserwisser.org"
+    enabled: False
   freebsd13-amd64:
     notify: "mansaxel@besserwisser.org"
   gentoo-amd64:
