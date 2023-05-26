@@ -129,6 +129,28 @@ BuildmasterConfig = {
 {% endfor %}
     ],
     'schedulers': [
+        # Nightly schedulers.
+{% for branch in afsbotcfg_project.branches %}
+{%   set name = afsbotcfg_project.branches[branch] %}
+{%   set hour = afsbotcfg_project.nightly[branch] %}
+        schedulers.Nightly(
+            name='nightly-{{ branch }}',
+            change_filter=util.ChangeFilter(branch='{{ name }}'),
+            builderNames=[
+{%   for builder in afsbotcfg_builders %}
+{%     set worker = afsbotcfg_workers[builder.worker] %}
+{%     if worker.enabled | d('yes') | bool %}
+{%       if builder.scheduler == 'nightly' and builder.branch == branch %}
+                '{{ builder.name }}',
+{%       endif %}
+{%     endif %}
+{%   endfor %}
+            ],
+            hour={{ hour }},
+            minute=20,
+        ),
+{% endfor %}
+
         # Gerrit schedulers.
 {% for branch in afsbotcfg_project.branches | d({'dev': 'master'}) %}
         schedulers.SingleBranchScheduler(
