@@ -63,13 +63,15 @@ afsbotcfg_workers:
     notify: "mmeffie@sinenomine.net"
   centos8-amd64:
     notify: "mmeffie@sinenomine.net"
+  debian87-x86_64:
+    notify: "mmeffie@sinenomine.net"
+  debian9-amd64:
+    notify: "mmeffie@sinenomine.net"
   debian10-amd64:
     notify: "mmeffie@sinenomine.net"
   debian11-amd64:
     notify: "mmeffie@sinenomine.net"
-  debian87-x86_64:
-    notify: "mmeffie@sinenomine.net"
-  debian9-amd64:
+  debian12-amd64:
     notify: "mmeffie@sinenomine.net"
   fedora21-x86_64:
     notify: "mmeffie@sinenomine.net"
@@ -795,6 +797,17 @@ afsbotcfg_builders:
     worker: ubuntu2004-amd64
     factory:
       name: UnixBuildAndTest
+      args:
+        configure: >-
+          --enable-warnings --enable-checking --enable-supergroups
+          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+
+  - name: nightly-dev-debian12-amd64
+    scheduler: nightly
+    branch: dev
+    worker: debian12-amd64
+    factory:
+      name: UnixBuild
       args:
         configure: >-
           --enable-warnings --enable-checking --enable-supergroups
