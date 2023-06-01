@@ -866,6 +866,17 @@ afsbotcfg_builders:
         configure: --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
         jobs: 1
 
+  - name: nightly-stable-debian12-amd64
+    scheduler: nightly
+    branch: stable
+    worker: debian12-amd64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-warnings --enable-checking --enable-supergroups
+          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+
   - name: nightly-stable-aix71-rs
     scheduler: nightly
     branch: stable
