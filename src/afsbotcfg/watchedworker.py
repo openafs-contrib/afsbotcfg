@@ -92,7 +92,7 @@ class WatchedWorker(AbstractLatentWorker):
             for build in wfb.builder.building:
                 log.err("build cancelled because worker timeout")
                 if self.critical:
-                    yield build.buildFinished(["build", "failed due to critical worker timeout"], CANCELLED)
+                    yield build.buildFinished(["build", "failed due to worker timeout"], CANCELLED)
                 else:
                     yield build.buildFinished(["build", "skipped due to worker timeout"], CANCELLED)
 

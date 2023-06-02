@@ -43,7 +43,7 @@ def summaryCB(buildInfoList, results, status, arg):
         builderFinalStatus[buildInfo['name']] = buildInfo
         # Fix up the final status
         if buildInfo['result'] == util.CANCELLED:
-            if buildInfo['text'] == 'build failed due to critical worker timeout':
+            if buildInfo['text'] == 'build failed due to worker timeout':
                 builderFinalStatus[buildInfo['name']]['result'] = util.FAILURE
                 builderFinalStatus[buildInfo['name']]['resultText'] = "cancelled"
             elif buildInfo['text'] == 'build skipped due to worker timeout':
@@ -69,14 +69,8 @@ def summaryCB(buildInfoList, results, status, arg):
         and buildinfo not in skippedBuilds
     ]
 
-    if len(successfulBuilds) != 0 and len(failedBuilds) == 0:
-        verified = 1
-    else:
-        verified = 0
-
-    msgs.append("Final Builder Status %s: Succeeded: %d, Failed: %d, Skipped: %d" %
-                "Passed" if verified = 1 else "Failed",
-                (len(successfulBuilds), len(failedBuilds), len(skippedBuilds)))
+    msgs.append("Final Build Status (failed %d succeeded %d skipped %d):" %
+                (len(failedBuilds), len(successfulBuilds), len(skippedBuilds)))
 
     if len(failedBuilds) > 0:
         msgs.append("\n Failed Builds:")
@@ -95,5 +89,10 @@ def summaryCB(buildInfoList, results, status, arg):
         msgs.extend(report_build_status(skippedBuilds))
 
     message = '\n\n'.join(msgs)
+
+    if len(successfulBuilds) != 0 and len(failedBuilds) == 0:
+        verified = 1
+    else:
+        verified = 0
 
     return dict(message=message, labels={'Verified': verified})
