@@ -2,7 +2,7 @@
 ---
 
 # Python package version
-afsbotcfg_version: 1.2.0
+afsbotcfg_version: 1.2.1
 
 afsbotcfg_project:
   name: "openafs"
