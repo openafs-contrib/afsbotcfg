@@ -132,6 +132,13 @@ the required Python packages and generate the other project local files. Example
 
     $ direnv allow
 
+**Tip**: Add a `pre-commit` git hook to run `make lint`.
+
+    $ echo "#!/bin/sh" > .git/hooks/pre-commit
+    $ echo "make lint >> .git/hooks/pre-commit
+    $ chmod +x ./git/hooks/pre-commit
+
+Use `git commit --no-verify` if you need to skip the lint check for some reason.
 
 [1]: https://www.openafs.org/
 [2]: https://buildbot.openafs.org/
