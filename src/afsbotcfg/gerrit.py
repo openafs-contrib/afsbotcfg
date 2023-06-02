@@ -75,7 +75,7 @@ def summaryCB(buildInfoList, results, status, arg):
         verified = 0
 
     msgs.append("Final Builder Status %s: Succeeded: %d, Failed: %d, Skipped: %d" %
-                "Passed" if verified = 1 else "Failed",
+                "Passed" if verified == 1 else "Failed",
                 (len(successfulBuilds), len(failedBuilds), len(skippedBuilds)))
 
     if len(failedBuilds) > 0:
