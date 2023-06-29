@@ -103,6 +103,12 @@ afsbotcfg_workers:
     notify: "mmeffie@sinenomine.net"
   fedora35-x86_64:
     notify: "mmeffie@sinenomine.net"
+  fedora36-x86_64:
+    notify: "mmeffie@sinenomine.net"
+  fedora37-x86_64:
+    notify: "mmeffie@sinenomine.net"
+  fedora38-x86_64:
+    notify: "mmeffie@sinenomine.net"
   freebsd11-amd64:
     notify: "mansaxel@besserwisser.org"
   freebsd12-amd64:
@@ -343,6 +349,57 @@ afsbotcfg_builders:
     cc: gcc
     arch: x86_64
     worker: fedora35-x86_64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-pthreaded-bos
+      env:
+        CFLAGS: >-
+          -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
+          -Wno-error=array-bounds -Wno-error=implicit-function-declaration
+
+  - scheduler: parked
+    branch: dev
+    os: fedora36
+    cc: gcc
+    arch: x86_64
+    worker: fedora36-x86_64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-pthreaded-bos
+      env:
+        CFLAGS: >-
+          -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
+          -Wno-error=array-bounds -Wno-error=implicit-function-declaration
+
+  - scheduler: parked
+    branch: dev
+    os: fedora37
+    cc: gcc
+    arch: x86_64
+    worker: fedora37-x86_64
+    factory:
+      name: UnixBuild
+      args:
+        configure: >-
+          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-pthreaded-bos
+      env:
+        CFLAGS: >-
+          -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
+          -Wno-error=array-bounds -Wno-error=implicit-function-declaration
+
+  - scheduler: parked
+    branch: dev
+    os: fedora38
+    cc: gcc
+    arch: x86_64
+    worker: fedora38-x86_64
     factory:
       name: UnixBuild
       args:
