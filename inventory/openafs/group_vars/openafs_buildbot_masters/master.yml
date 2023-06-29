@@ -916,7 +916,7 @@ afsbotcfg_builders:
           --enable-warnings --enable-checking --enable-supergroups
           --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
 
-  - scheduler: nightly
+  - scheduler: gerrit
     branch: dev
     os: debian12
     cc: gcc
@@ -993,7 +993,7 @@ afsbotcfg_builders:
         configure: --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
         jobs: 1
 
-  - scheduler: nightly
+  - scheduler: gerrit
     branch: stable
     os: debian12
     cc: gcc
