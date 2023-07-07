@@ -343,7 +343,7 @@ afsbotcfg_builders:
           -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
           -Wno-error=array-bounds -Wno-error=implicit-function-declaration
 
-  - scheduler: gerrit
+  - scheduler: parked
     branch: dev
     os: fedora35
     cc: gcc
