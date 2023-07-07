@@ -155,14 +155,9 @@ destroy:   # empty
 	$(INFO) "Destroying molecule instance(s)"
 	if test -f .create; then \
 	  $(ACTIVATED) molecule destroy -s $(shell cat .create); \
+	  $(ACTIVATED) molecule reset -s $(shell cat .create); \
 	  rm -f .create; \
 	fi
-
-# Try to destroy the instance even if the .create file is gone.
-.PHONY: force_destroy
-force_destroy: $(PACKAGES) molecule/$(AFSBOTCFG_MOLECULE_SCENARIO)/molecule.yml
-	$(INFO) "Destroying molecule instance(s)"
-	$(ACTIVATED) molecule destroy -s $(AFSBOTCFG_MOLECULE_SCENARIO)
 
 #------------------------------------------------------------------------------
 # Cleanup targets
