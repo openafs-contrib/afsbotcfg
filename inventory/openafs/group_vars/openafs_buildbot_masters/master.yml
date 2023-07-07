@@ -73,12 +73,6 @@ afsbotcfg_workers:
     notify: "mmeffie@sinenomine.net"
   debian12-amd64:
     notify: "mmeffie@sinenomine.net"
-  fedora21-x86_64:
-    notify: "mmeffie@sinenomine.net"
-  fedora22-x86_64:
-    notify: "mmeffie@sinenomine.net"
-  fedora23-x86_64:
-    notify: "mmeffie@sinenomine.net"
   fedora24-x86_64:
     notify: "mmeffie@sinenomine.net"
   fedora25-x86_64:
@@ -1108,59 +1102,6 @@ afsbotcfg_builders:
       args:
         configure: --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
         jobs: 1
-
-  - scheduler: parked
-    branch: dev
-    os: fedora21
-    cc: gcc
-    arch: x86_64
-    worker: fedora21-x86_64
-    factory:
-      name: UnixBuild
-      args:
-        configure: >-
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
-          --enable-pthreaded-bos
-      env:
-        CFLAGS: >-
-          -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
-          -Wno-error=array-bounds -Wno-error=implicit-function-declaration
-
-  - scheduler: parked
-    branch: dev
-    os: fedora22
-    cc: gcc
-    arch: x86_64
-    worker: fedora22-x86_64
-    factory:
-      name: UnixBuild
-      args:
-        configure: >-
-          --disable-kernel-module --with-afs-sysname=amd64_linux26
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
-          --enable-pthreaded-bos
-      env:
-        CFLAGS: >-
-          -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
-          -Wno-error=array-bounds -Wno-error=implicit-function-declaration
-
-  - scheduler: parked
-    branch: dev
-    os: fedora23
-    cc: gcc
-    arch: x86_64
-    worker: fedora23-x86_64
-    factory:
-      name: UnixBuild
-      args:
-        configure: >-
-          --disable-kernel-module --with-afs-sysname=amd64_linux26
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
-          --enable-pthreaded-bos
-      env:
-        CFLAGS: >-
-          -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
-          -Wno-error=array-bounds -Wno-error=implicit-function-declaration
 
   - scheduler: parked
     branch: dev
