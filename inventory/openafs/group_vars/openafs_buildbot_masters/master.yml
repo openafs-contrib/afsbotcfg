@@ -117,13 +117,13 @@ afsbotcfg_workers:
   linux-rc-x86_64:
     notify: "mmeffie@sinenomine.net"
   macos10-15-x86_64:
-    enabled: False
+    enabled: True
     notify: "mbarbosa@sinenomine.net"
   macos11-x86_64:
-    enabled: False
+    enabled: True
     notify: "mbarbosa@sinenomine.net"
   macos12-x86_64:
-    enabled: False
+    enabled: True
     notify: "mbarbosa@sinenomine.net"
   opensuse12-x86_64:
     # notify:
