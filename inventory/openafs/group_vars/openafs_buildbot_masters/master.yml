@@ -147,6 +147,7 @@ afsbotcfg_workers:
   ubuntu2004-amd64:
     notify: "mmeffie@sinenomine.net"
   wins2019-amd64:
+    enabled: False
     notify: "asedeno@mit.edu"
 
 afsbotcfg_builders:
