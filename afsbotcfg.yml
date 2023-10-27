@@ -152,8 +152,8 @@
         buildbot_master_python: "{{ afsbotcfg_master_python }}"
         # We do not have sudo access on the upstream buildbot master.
         buildbot_master_have_sudo: False
-        buildbot_master_sqlalchemy_version: "{{ afsbotcfg_sqlachemy_version | d('==1.4.28') }}"
-        buildbot_master_buildbot_version: "{{ afsbotcfg_buildbot_version | d('==3.5.0') }}"
+        buildbot_master_sqlalchemy_version: "{{ afsbotcfg_sqlalchemy_version }}"
+        buildbot_master_buildbot_version: "{{ afsbotcfg_buildbot_version }}"
         buildbot_project: "{{ afsbotcfg_project.name | d('openafs') }}"
         buildbot_master_config_templates:
           - "{{ playbook_dir }}/templates/master.cfg.j2"
