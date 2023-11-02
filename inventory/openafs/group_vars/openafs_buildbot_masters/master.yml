@@ -99,6 +99,7 @@ afsbotcfg_workers:
   fedora35-x86_64:
     notify: "mmeffie@sinenomine.net"
   fedora36-x86_64:
+    enabled: False
     notify: "mmeffie@sinenomine.net"
   fedora37-x86_64:
     notify: "mmeffie@sinenomine.net"
