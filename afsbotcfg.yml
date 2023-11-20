@@ -139,10 +139,39 @@
       with_fileglob: "files/build-scripts/*"
       register: upload_results
 
-
     #--------------------------------------------------------------------------
     # Install and configure the buildbot master.
     #--------------------------------------------------------------------------
+    - name: "Determine if buildbot already installed"
+      ansible.builtin.stat:
+        path: ".local/bin/buildbot"
+      register: buildbot_binary
+    
+    - ansible.builtin.set_fact:
+        current_buildbot_version: "uninstalled"
+      when: not buildbot_binary.stat.exists
+      
+    - name: "Prepare to upgrade buildbot"
+      when: buildbot_binary.stat.exists
+      block:
+        - name: "Query current buildbot version"
+          ansible.builtin.command:
+            cmd: .local/bin/buildbot --version
+          changed_when: false
+          register: results_buildbot_current_version
+
+        - name: "Set current buildbot version"
+          set_fact:
+            current_buildbot_version: "{{ results_buildbot_current_version.stdout_lines | join(' ') | \
+                                          regex_replace('^.*Buildbot version:\\s*(?P<bbversion>[0-9.]+).*$', '==\\g<bbversion>') }}"
+
+        - name: "Stop buildbot if upgrading"
+          ansible.builtin.command:
+            cmd: .local/bin/buildbotctl stop
+          changed_when: false
+          when: afsbotcfg_buildbot_version != current_buildbot_version
+          notify: "restart buildbot master instance"
+
     - ansible.builtin.import_role:
         name: openafs_contrib.buildbot.buildbot_master
       vars:
@@ -187,6 +216,20 @@
         cmd: "{{ afsbotcfg_master_venv }}/bin/python -c '{{ print_version }}'"
       changed_when: false
       register: results_afsbotcfg_version
+
+    - name: "Upgraded buildbot version or updated configuration"
+      vars:
+          _buildbot_org_vers: "Original buildbot version:  {{ current_buildbot_version }}"
+          _buildbot_new_vers: "Requested buildbot version: {{ afsbotcfg_buildbot_version | d('not specified') }}"
+          _afsbotcfg_org_vers: "Original afsbotcfg version:  {{ installed_afsbotcfg_version | d('not installed') }}"
+          _afsbotcfg_new_vers: "Requested afsbotcfg version: {{ afsbotcfg_version }}"
+      ansible.builtin.debug:
+        msg: |
+          {{ _buildbot_org_vers }}
+          {{ _buildbot_new_vers }}
+          {{ _afsbotcfg_org_vers }}
+          {{ _afsbotcfg_new_vers }}
+      when: afsbotcfg_buildbot_version != current_buildbot_version or installed_afsbotcfg_version != afsbotcfg_version
 
     - name: "Print versions."
       vars:
