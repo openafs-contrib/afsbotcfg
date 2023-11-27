@@ -65,11 +65,12 @@ VAULT_KEYFILE=.vault-afsbotcfg
 PACKAGES=.packages
 ifdef VIRTUAL_ENV
 PIP=$(VIRTUAL_ENV)/bin/pip
+ACTIVATED=ANSIBLE_COLLECTIONS_PATH=$(CURDIR)/collections
 else
 VENV=.venv
 PIP=$(VENV)/bin/pip
 ACTIVATE=$(VENV)/bin/activate
-ACTIVATED=. $(ACTIVATE);
+ACTIVATED=. $(ACTIVATE); ANSIBLE_COLLECTIONS_PATH=$(CURDIR)/collections
 endif
 
 ifndef NO_COLOR
