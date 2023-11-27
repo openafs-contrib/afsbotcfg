@@ -88,6 +88,12 @@ LOG=ANSIBLE_LOG_PATH="$(LOGFILE)"
 LOGINFO=$(INFO) "Wrote $(LOGFILE)"
 endif
 
+ifndef ANSIBLE_COLLECTIONS_PATH
+LINT_ANSIBLE_COLLECTIONS_PATH=${PWD}/collections:${HOME}/.ansible/collections:/usr/share/ansible/collections
+else
+LINT_ANSIBLE_COLLECTIONS_PATH=${ANSIBLE_COLLECTIONS_PATH}
+endif
+
 #--------------------------------------------------------------------------------------------------------
 # Setup targets
 #
@@ -122,11 +128,11 @@ getlog: $(AFSBOTCFG_LOGDIR)
 # Test targets
 #
 .PHONY: lint
-lint: $(PACKAGES)
+lint: $(PACKAGES) collections
 	$(INFO) "Running lint checks"
 	$(ACTIVATED) $(MAKE) -C src lint
 	$(ACTIVATED) yamllint $(YAML_FILES)
-	$(ACTIVATED) ansible-lint $(LINT_OPTIONS)
+	$(ACTIVATED) ANSIBLE_COLLECTIONS_PATH="${LINT_ANSIBLE_COLLECTIONS_PATH}" ansible-lint $(LINT_OPTIONS)
 
 .PHONY: test
 test: $(PACKAGES) lint build molecule/$(AFSBOTCFG_MOLECULE_SCENARIO)/molecule.yml
