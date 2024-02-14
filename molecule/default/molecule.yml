@@ -1,23 +1,10 @@
 ---
-dependency:
-  name: galaxy
-  enabled: yes
-  requirements-file: collections.yml
-
 driver:
-  name: {{ molecule.driver.name }}
-{%- if molecule.driver.options is defined and molecule.driver.options %}
-  options:
-  {%- for name, value in molecule.driver.options.items() %}
-    {{ name }}: {{ value }}
-  {%- endfor %}
-{%- endif %}
+  name: vagrant
 
 platforms:
   - name: afsbotcfg-master
-{%- for name, value in molecule.platforms.centos7.items() %}
-    {{ name }}: {{ value }}
-{%- endfor %}
+    box: generic/centos7
     groups:
       - openafs_buildbot_masters
 

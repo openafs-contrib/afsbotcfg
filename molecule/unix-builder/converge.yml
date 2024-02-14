@@ -29,6 +29,9 @@
         name: openafs_contrib.openafs.openafs_devel
 
     - ansible.builtin.import_role:
+        name: openafs_contrib.openafs.openafs_devel_kernel
+
+    - ansible.builtin.import_role:
         name: openafs_contrib.buildbot.buildbot_worker
       vars:
         buildbot_project: "{{ afsbotcfg_project.name | d('openafs') }}"
@@ -36,7 +39,7 @@
         buildbot_master_port: "{{ afsbotcfg_project.pb_port | d(9989) }}"
         buildbot_worker_name: "{{ worker_name }}"
         buildbot_worker_password: "{{ afsbotcfg_worker_passwords[worker_name] }}"
-        buildbot_worker_admin: "{{ afsbotcfg_workers[worker_name].get('notify', '') }}"
+        buildbot_worker_admin: "{{ afsbotcfg_workers[worker_name].notify }}"
 
 - name: "Show buildbot master."
   hosts: openafs_buildbot_masters

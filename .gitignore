@@ -4,7 +4,3 @@
 __pycache__/
 collections/
 logs/
-
-molecule.json
-molecule-requirements.txt
-molecule.yml

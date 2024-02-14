@@ -24,7 +24,6 @@ help:
 	@echo ""
 	@echo "Environment:"
 	@echo "  AFSBOTCFG_PYTHON                python interpreter path (default: python)"
-	@echo "  AFSBOTCFG_MOLECULE_JSON         molecule driver config (default: molecule.json)"
 	@echo "  AFSBOTCFG_MOLECULE_SCENARIO     make check/test molecule scenario (default: master-with-vault)"
 	@echo "  AFSBOTCFG_MOLECULE_HOST         make login host (default: afsbotcfg-master)"
 	@echo "  AFSBOTCFG_LOGDIR                ansible play log directory (default: logs)"
@@ -38,7 +37,6 @@ help:
 # Environment
 AFSBOTCFG_HOST ?= buildbot.openafs.org
 AFSBOTCFG_PYTHON ?= python
-AFSBOTCFG_MOLECULE_JSON ?= molecule.json
 AFSBOTCFG_MOLECULE_SCENARIO ?= master-with-vault
 AFSBOTCFG_MOLECULE_HOST ?= afsbotcfg-master
 AFSBOTCFG_LOGDIR ?= logs
@@ -173,7 +171,6 @@ clean: destroy
 reallyclean: clean
 	$(INFO) "Cleanup project directory"
 	$(MAKE) -C src distclean
-	rm -f molecule.json molecule-requirements.txt $(VAULT_KEYFILE)
 	rm -rf .config .venv collections .direnv logs
 
 #------------------------------------------------------------------------------
@@ -191,9 +188,9 @@ collections: $(PACKAGES) requirements.yml
 	$(ACTIVATED) ansible-galaxy collection install --force -p collections -r requirements.yml
 	touch collections
 
-$(PACKAGES): $(PIP) requirements.txt molecule-requirements.txt
+$(PACKAGES): $(PIP) requirements.txt
 	$(INFO) "Installing python packages"
-	$(PIP) install -U -r requirements.txt -r molecule-requirements.txt
+	$(PIP) install -U -r requirements.txt
 	touch $(PACKAGES)
 
 $(PIP): $(VENV)
@@ -206,24 +203,8 @@ $(VENV):
 	$(AFSBOTCFG_PYTHON) -m venv .venv
 	touch $(VENV)
 
-molecule-requirements.txt: $(AFSBOTCFG_MOLECULE_JSON)
-	$(INFO) "Generating molecule driver requirements file"
-	$(AFSBOTCFG_PYTHON) -c 'import json; print("\n".join(json.load(open("$<"))["requirements"]))' >$@
-
-ifeq ($(AFSBOTCFG_MOLECULE_JSON), molecule.json)
-# Conditional to support out of tree molecule.json files.
-molecule.json: molecule.json.sample
-	$(INFO) "Creating molecule.json file"
-	cp molecule.json.sample molecule.json
-	$(INFO) "Please run 'make setup' after making any changes to 'molecule.json'"
-endif
-
 ifeq ($(AFSBOTCFG_MOLECULE_SCENARIO), master-with-vault)
 # Conditional to support testing without the vault key.
 test: $(VAULT_KEYFILE)
 .create: $(VAULT_KEYFILE)
 endif
-
-%.yml : %.yml.j2 $(PACKAGES) $(AFSBOTCFG_MOLECULE_JSON)
-	$(INFO) "Generating molecule file $@"
-	$(ACTIVATED) jinja2 --format=json --outfile=$@ $< $(AFSBOTCFG_MOLECULE_JSON)
