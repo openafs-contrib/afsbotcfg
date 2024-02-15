@@ -13,7 +13,7 @@ class Checkout(util.BuildFactory):
     gerrit_lock = util.MasterLock("gerrit")
     gerrit_lock_count = 1  # Max number of concurrent checkouts.
 
-    def __init__(self, repo=None, start_delay=0, **kwargs):
+    def __init__(self, repo=None, start_delay=0, workdir='build', **kwargs):
         """
         Checkout source code from gerrit.
         """
@@ -25,6 +25,7 @@ class Checkout(util.BuildFactory):
             self.add_delay_step(start_delay)
 
         self.addStep(steps.Gerrit(
+            workdir=workdir,
             repourl=repo,
             mode='full',
             method='fresh',
@@ -34,10 +35,12 @@ class Checkout(util.BuildFactory):
 
         self.addStep(steps.ShellCommand(
             name='git show',
+            workdir=workdir,
             command=['git', 'log', '-n', '1', '--stat']))
 
         self.addStep(steps.ShellCommand(
             name='git gc',
+            workdir=workdir,
             command=['git', 'gc', '--auto']))
 
     def add_delay_step(self, seconds):
@@ -53,6 +56,18 @@ class UnixBuild(Checkout):
         super().__init__(**kwargs)
         self.addStep(afsbotcfg.steps.RegenStep())
         self.addStep(afsbotcfg.steps.Configure(configure))
+        self.addStep(afsbotcfg.steps.Make(jobs, target))
+
+
+class UnixBuildObjDir(Checkout):
+    """
+    Build step factory to check objdir builds.
+    """
+    def __init__(self, configure=None, jobs=4, target='all', **kwargs):
+        super().__init__(workdir='source', **kwargs)
+        self.addStep(afsbotcfg.steps.RegenStep(workdir='source'))
+        self.addStep(steps.MakeDirectory(dir='build'))
+        self.addStep(afsbotcfg.steps.Configure(configure, sourcedir='../source'))
         self.addStep(afsbotcfg.steps.Make(jobs, target))
 
 

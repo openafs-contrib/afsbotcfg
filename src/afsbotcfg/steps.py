@@ -1,5 +1,6 @@
 
 import shlex
+import os
 
 from buildbot.plugins import steps
 from buildbot.plugins import util
@@ -9,6 +10,9 @@ class RegenStep(steps.ShellCommand):
     name = 'regen.sh'
     command = ['/bin/sh', 'regen.sh']
 
+    def __init__(self, workdir='build'):
+        super().__init__(workdir=workdir)
+
 
 class Configure(steps.Configure):
     name = 'configure'
@@ -16,13 +20,14 @@ class Configure(steps.Configure):
         'config.log': 'config.log',
     }
 
-    def __init__(self, configure=None):
+    def __init__(self, configure=None, sourcedir='.'):
         super().__init__()
+        command = os.path.join(sourcedir, 'configure')
         if configure:
             options = shlex.split(configure)
         else:
             options = []
-        self.command = ['./configure'] + options
+        self.command = [command] + options
 
 
 class Make(steps.Compile):
