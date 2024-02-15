@@ -7,7 +7,7 @@ import afsbotcfg.steps
 
 class Checkout(util.BuildFactory):
     """
-    Build step factory to checkout source code from gerrit git repo.
+    Base class to checkout source code from a git repo.
     """
 
     gerrit_lock = util.MasterLock("gerrit")
@@ -40,6 +40,10 @@ class Checkout(util.BuildFactory):
             name='git gc',
             command=['git', 'gc', '--auto']))
 
+    def add_delay_step(self, seconds):
+        """ Use sleep to delay by default. """
+        self.addStep(steps.ShellCommand(name='sleep', command=['sleep', seconds]))
+
 
 class UnixBuild(Checkout):
     """
@@ -50,9 +54,6 @@ class UnixBuild(Checkout):
         self.addStep(afsbotcfg.steps.RegenStep())
         self.addStep(afsbotcfg.steps.Configure(configure))
         self.addStep(afsbotcfg.steps.Make(jobs, target))
-
-    def add_delay_step(self, seconds):
-        self.addStep(steps.ShellCommand(name='sleep', command=['sleep', seconds]))
 
 
 class UnixBuildAndTest(UnixBuild):
@@ -81,9 +82,6 @@ class UnixBuildDocs(Checkout):
         self.addStep(afsbotcfg.steps.BuildDoc('AdminRef'))
         self.addStep(afsbotcfg.steps.BuildDoc('QuickStartUnix'))
         self.addStep(afsbotcfg.steps.BuildDoc('UserGuide'))
-
-    def add_delay_step(self, seconds):
-        self.addStep(steps.ShellCommand(name='sleep', command=['sleep', seconds]))
 
 
 class WinBuild(Checkout):
@@ -115,9 +113,6 @@ class BuildRPMs(Checkout):
     """
     Build step factory to build OpenAFS RPM packages.
     """
-    def add_delay_step(self, seconds):
-        self.addStep(steps.ShellCommand(name='sleep', command=['sleep', seconds]))
-
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
