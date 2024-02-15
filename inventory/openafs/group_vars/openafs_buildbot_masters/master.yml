@@ -1021,6 +1021,20 @@ afsbotcfg_builders:
           --enable-warnings --enable-checking --enable-supergroups
           --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
 
+  - scheduler: gerrit
+    branch: dev
+    os: debian12
+    cc: gcc
+    arch: amd64
+    flavor: objdir
+    worker: debian12-amd64
+    factory:
+      name: UnixBuildObjDir
+      args:
+        configure: >-
+          --enable-warnings --enable-checking --enable-supergroups
+          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+
   - scheduler: nightly
     branch: dev
     os: solaris11
@@ -1093,6 +1107,20 @@ afsbotcfg_builders:
     worker: debian12-amd64
     factory:
       name: UnixBuild
+      args:
+        configure: >-
+          --enable-warnings --enable-checking --enable-supergroups
+          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+
+  - scheduler: gerrit
+    branch: stable
+    os: debian12
+    cc: gcc
+    arch: amd64
+    flavor: objdir
+    worker: debian12-amd64
+    factory:
+      name: UnixBuildObjDir
       args:
         configure: >-
           --enable-warnings --enable-checking --enable-supergroups
