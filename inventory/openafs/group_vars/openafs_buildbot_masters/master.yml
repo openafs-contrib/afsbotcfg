@@ -1,7 +1,7 @@
 # OpenAFS buildbot master configuration.
 ---
 
-afsbotcfg_version: "1.3.0"
+afsbotcfg_version: "1.4.0"
 afsbotcfg_sqlalchemy_version: "==1.4.28"
 afsbotcfg_buildbot_version: "==3.5.0"
 
@@ -511,6 +511,7 @@ afsbotcfg_builders:
           --enable-pthreaded-ubik --enable-pthreaded-bos
         target: dest
         jobs: 1
+        make: gmake
 
   - scheduler: gerrit
     branch: dev
@@ -524,6 +525,7 @@ afsbotcfg_builders:
         configure: >-
           --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
           --enable-pthreaded-bos
+        make: gmake
 
   - scheduler: gerrit
     branch: dev
@@ -833,6 +835,7 @@ afsbotcfg_builders:
         configure: >-
           --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
           --enable-pthreaded-bos
+        make: gmake
 
   - scheduler: gerrit
     branch: stable
@@ -968,6 +971,7 @@ afsbotcfg_builders:
           --enable-transarc-paths --enable-supergroups --enable-namei-fileserver
           --enable-pthreaded-ubik --enable-pthreaded-bos
         target: dest
+        make: gmake
 
   - scheduler: gerrit
     branch: oldstable
@@ -981,6 +985,7 @@ afsbotcfg_builders:
         configure: >-
           --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
           --enable-pthreaded-bos
+        make: gmake
 
   - scheduler: gerrit
     branch: oldstable
@@ -1047,6 +1052,7 @@ afsbotcfg_builders:
         configure: >-
           --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
           --enable-pthreaded-bos
+        make: gmake
 
   - scheduler: nightly
     branch: dev

@@ -31,9 +31,9 @@ class Configure(steps.Configure):
 
 
 class Make(steps.Compile):
-    def __init__(self, jobs=1, target='all'):
+    def __init__(self, jobs=1, target='all', make='make'):
         super().__init__()
-        self.command = ['make']
+        self.command = [make]
         try:
             jobs = int(jobs)
         except ValueError:
@@ -49,12 +49,18 @@ class RunTestsStep(steps.Compile):
     warnOnFailure = 1
     description = ['testing']
     descriptionDone = ['test']
-    command = ['make', 'check']
+
+    def __init__(self, make='make'):
+        super().__init__()
+        self.command = [make]
 
 
 class BuildTests(steps.Compile):
     name = 'build tests'
-    command = 'cd tests && make all'
+
+    def __init__(self, make='make'):
+        super().__init__()
+        self.command = ['cd tests && ' + make + ' all']
 
 
 class TapObserver(util.LogLineObserver):
@@ -91,8 +97,8 @@ class VerboseRunTestsStep(steps.ShellCommand):
 
 
 class BuildDoc(steps.Compile):
-    def __init__(self, doc, *args, **kwargs):
-        kwargs['command'] = ['make']
+    def __init__(self, doc, make='make', *args, **kwargs):
+        kwargs['command'] = [make]
         kwargs['workdir'] = 'build/doc/xml/%s' % doc
         kwargs['name'] = 'generate %s' % doc
         super().__init__(*args, **kwargs)

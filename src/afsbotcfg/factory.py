@@ -52,51 +52,51 @@ class UnixBuild(Checkout):
     """
     Build step factory to build OpenAFS using the regular configure and make commands.
     """
-    def __init__(self, configure=None, jobs=4, target='all', **kwargs):
+    def __init__(self, configure=None, jobs=4, target='all', make='make', **kwargs):
         super().__init__(**kwargs)
         self.addStep(afsbotcfg.steps.RegenStep())
         self.addStep(afsbotcfg.steps.Configure(configure))
-        self.addStep(afsbotcfg.steps.Make(jobs, target))
+        self.addStep(afsbotcfg.steps.Make(jobs, target, make))
 
 
 class UnixBuildObjDir(Checkout):
     """
     Build step factory to check objdir builds.
     """
-    def __init__(self, configure=None, jobs=4, target='all', **kwargs):
+    def __init__(self, configure=None, jobs=4, target='all', make='make', **kwargs):
         super().__init__(workdir='source', **kwargs)
         self.addStep(afsbotcfg.steps.RegenStep(workdir='source'))
         self.addStep(steps.MakeDirectory(dir='build'))
         self.addStep(afsbotcfg.steps.Configure(configure, sourcedir='../source'))
-        self.addStep(afsbotcfg.steps.Make(jobs, target))
+        self.addStep(afsbotcfg.steps.Make(jobs, target, make))
 
 
 class UnixBuildAndTest(UnixBuild):
     """
     Build step factory to build OpenAFS then run the unit tests.
     """
-    def __init__(self, verbose=True, **kwargs):
+    def __init__(self, verbose=True, make='make', **kwargs):
         """
         Build then run the ctap unit tests.
         """
         super().__init__(**kwargs)
         if verbose:
-            self.addStep(afsbotcfg.steps.BuildTests())
+            self.addStep(afsbotcfg.steps.BuildTests(make=make))
             self.addStep(afsbotcfg.steps.VerboseRunTestsStep())
         else:
             self.addStep(afsbotcfg.steps.RunTestsStep())
 
 
 class UnixBuildDocs(Checkout):
-    def __init__(self, **kwargs):
+    def __init__(self, make='make', **kwargs):
         super().__init__(**kwargs)
         self.addStep(afsbotcfg.steps.RegenStep())
         self.addStep(afsbotcfg.steps.Configure())
-        self.addStep(afsbotcfg.steps.Make(target='config'))
-        self.addStep(afsbotcfg.steps.BuildDoc('AdminGuide'))
-        self.addStep(afsbotcfg.steps.BuildDoc('AdminRef'))
-        self.addStep(afsbotcfg.steps.BuildDoc('QuickStartUnix'))
-        self.addStep(afsbotcfg.steps.BuildDoc('UserGuide'))
+        self.addStep(afsbotcfg.steps.Make(target='config', make=make))
+        self.addStep(afsbotcfg.steps.BuildDoc('AdminGuide', make=make))
+        self.addStep(afsbotcfg.steps.BuildDoc('AdminRef', make=make))
+        self.addStep(afsbotcfg.steps.BuildDoc('QuickStartUnix', make=make))
+        self.addStep(afsbotcfg.steps.BuildDoc('UserGuide', make=make))
 
 
 class WinBuild(Checkout):

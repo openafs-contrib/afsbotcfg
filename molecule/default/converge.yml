@@ -45,3 +45,9 @@
 
 - name: "Run buildbot playbook."
   import_playbook: "../../afsbotcfg.yml"
+
+- name: "Show buildbot master."
+  hosts: openafs_buildbot_masters
+  tasks:
+    - ansible.builtin.debug:
+        msg: "Test buildbot URL is {{ afsbotcfg_project.url }}"
