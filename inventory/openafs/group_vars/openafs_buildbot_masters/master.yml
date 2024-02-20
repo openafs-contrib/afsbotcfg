@@ -221,7 +221,7 @@ afsbotcfg_builders:
     branch: dev
     os: centos73
     cc: gcc
-    arch: x86_64
+    arch: amd64
     worker: centos73-x86_64
     factory:
       name: UnixBuild
@@ -314,7 +314,7 @@ afsbotcfg_builders:
     branch: dev
     os: fedora33
     cc: gcc
-    arch: x86_64
+    arch: amd64
     worker: fedora33-x86_64
     factory:
       name: UnixBuild
@@ -331,7 +331,7 @@ afsbotcfg_builders:
     branch: dev
     os: fedora34
     cc: gcc
-    arch: x86_64
+    arch: amd64
     worker: fedora34-x86_64
     factory:
       name: UnixBuild
@@ -348,7 +348,7 @@ afsbotcfg_builders:
     branch: dev
     os: fedora35
     cc: gcc
-    arch: x86_64
+    arch: amd64
     worker: fedora35-x86_64
     factory:
       name: UnixBuild
@@ -365,7 +365,7 @@ afsbotcfg_builders:
     branch: dev
     os: fedora36
     cc: gcc
-    arch: x86_64
+    arch: amd64
     worker: fedora36-x86_64
     factory:
       name: UnixBuild
@@ -382,7 +382,7 @@ afsbotcfg_builders:
     branch: dev
     os: fedora37
     cc: gcc
-    arch: x86_64
+    arch: amd64
     worker: fedora37-x86_64
     factory:
       name: UnixBuild
@@ -399,7 +399,7 @@ afsbotcfg_builders:
     branch: dev
     os: fedora38
     cc: gcc
-    arch: x86_64
+    arch: amd64
     worker: fedora38-x86_64
     factory:
       name: UnixBuild
@@ -443,7 +443,7 @@ afsbotcfg_builders:
     branch: dev
     os: macos10-15
     cc: xcode
-    arch: x86_64
+    arch: amd64
     worker: macos10-15-x86_64
     factory:
       name: UnixBuild
@@ -458,7 +458,7 @@ afsbotcfg_builders:
     branch: dev
     os: macos11
     cc: xcode
-    arch: x86_64
+    arch: amd64
     worker: macos11-x86_64
     factory:
       name: UnixBuild
@@ -473,7 +473,7 @@ afsbotcfg_builders:
     branch: dev
     os: macos12
     cc: xcode
-    arch: x86_64
+    arch: amd64
     worker: macos12-x86_64
     factory:
       name: UnixBuild
@@ -488,7 +488,7 @@ afsbotcfg_builders:
     branch: dev
     os: opensuse15
     cc: gcc
-    arch: x86_64
+    arch: amd64
     worker: opensuse15-x86_64
     factory:
       name: UnixBuild
@@ -529,7 +529,7 @@ afsbotcfg_builders:
     branch: dev
     os: ubuntu1610
     cc: gcc
-    arch: x86_64
+    arch: amd64
     worker: ubuntu1610-x86_64
     factory:
       name: UnixBuild
@@ -621,7 +621,7 @@ afsbotcfg_builders:
     branch: stable
     os: centos73
     cc: gcc
-    arch: x86_64
+    arch: amd64
     worker: centos73-x86_64
     factory:
       name: UnixBuild
@@ -701,7 +701,7 @@ afsbotcfg_builders:
     branch: stable
     os: fedora36
     cc: gcc
-    arch: x86_64
+    arch: amd64
     worker: fedora36-x86_64
     factory:
       name: UnixBuild
@@ -718,7 +718,7 @@ afsbotcfg_builders:
     branch: stable
     os: fedora37
     cc: gcc
-    arch: x86_64
+    arch: amd64
     worker: fedora37-x86_64
     factory:
       name: UnixBuild
@@ -735,7 +735,7 @@ afsbotcfg_builders:
     branch: stable
     os: fedora38
     cc: gcc
-    arch: x86_64
+    arch: amd64
     worker: fedora38-x86_64
     factory:
       name: UnixBuild
@@ -752,7 +752,7 @@ afsbotcfg_builders:
     branch: stable
     os: macos10-15
     cc: gcc
-    arch: x86_64
+    arch: amd64
     worker: macos10-15-x86_64
     factory:
       name: UnixBuild
@@ -767,7 +767,7 @@ afsbotcfg_builders:
     branch: stable
     os: macos11
     cc: gcc
-    arch: x86_64
+    arch: amd64
     worker: macos11-x86_64
     factory:
       name: UnixBuild
@@ -782,7 +782,7 @@ afsbotcfg_builders:
     branch: stable
     os: macos12
     cc: gcc
-    arch: x86_64
+    arch: amd64
     worker: macos12-x86_64
     factory:
       name: UnixBuild
@@ -797,7 +797,7 @@ afsbotcfg_builders:
     branch: stable
     os: opensuse15
     cc: gcc
-    arch: x86_64
+    arch: amd64
     worker: opensuse15-x86_64
     factory:
       name: UnixBuild
@@ -890,7 +890,7 @@ afsbotcfg_builders:
     branch: oldstable
     os: centos73
     cc: gcc
-    arch: x86_64
+    arch: amd64
     worker: centos73-x86_64
     factory:
       name: UnixBuild
@@ -942,7 +942,7 @@ afsbotcfg_builders:
     branch: oldstable
     os: fedora32
     cc: gcc
-    arch: x86_64
+    arch: amd64
     worker: fedora32-x86_64
     factory:
       name: UnixBuild
@@ -1142,7 +1142,7 @@ afsbotcfg_builders:
     branch: dev
     os: fedora24
     cc: gcc
-    arch: x86_64
+    arch: amd64
     worker: fedora24-x86_64
     factory:
       name: UnixBuild
@@ -1160,7 +1160,7 @@ afsbotcfg_builders:
     branch: dev
     os: fedora25
     cc: gcc
-    arch: x86_64
+    arch: amd64
     worker: fedora25-x86_64
     factory:
       name: UnixBuild
@@ -1178,7 +1178,7 @@ afsbotcfg_builders:
     branch: dev
     os: fedora26
     cc: gcc
-    arch: x86_64
+    arch: amd64
     worker: fedora26-x86_64
     factory:
       name: UnixBuild
@@ -1196,7 +1196,7 @@ afsbotcfg_builders:
     branch: dev
     os: fedora27
     cc: gcc
-    arch: x86_64
+    arch: amd64
     worker: fedora27-x86_64
     factory:
       name: UnixBuild
@@ -1214,7 +1214,7 @@ afsbotcfg_builders:
     branch: dev
     os: fedora28
     cc: gcc
-    arch: x86_64
+    arch: amd64
     worker: fedora28-x86_64
     factory:
       name: UnixBuild
@@ -1232,7 +1232,7 @@ afsbotcfg_builders:
     branch: dev
     os: fedora29
     cc: gcc
-    arch: x86_64
+    arch: amd64
     worker: fedora29-x86_64
     factory:
       name: UnixBuild
@@ -1250,7 +1250,7 @@ afsbotcfg_builders:
     branch: dev
     os: fedora30
     cc: gcc
-    arch: x86_64
+    arch: amd64
     worker: fedora30-x86_64
     factory:
       name: UnixBuild
@@ -1268,7 +1268,7 @@ afsbotcfg_builders:
     branch: dev
     os: fedora31
     cc: gcc
-    arch: x86_64
+    arch: amd64
     worker: fedora31-x86_64
     factory:
       name: UnixBuild
