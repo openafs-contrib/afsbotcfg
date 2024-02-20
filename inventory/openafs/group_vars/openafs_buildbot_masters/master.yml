@@ -428,7 +428,7 @@ afsbotcfg_builders:
 
   - scheduler: gerrit
     branch: dev
-    os: gentoo-gcc
+    os: gentoo
     cc: gcc
     arch: amd64
     worker: gentoo-gcc-amd64
