@@ -84,7 +84,7 @@ class UnixBuildAndTest(UnixBuild):
             self.addStep(afsbotcfg.steps.BuildTests(make=make))
             self.addStep(afsbotcfg.steps.VerboseRunTestsStep())
         else:
-            self.addStep(afsbotcfg.steps.RunTestsStep())
+            self.addStep(afsbotcfg.steps.CheckStep(make=make))
 
 
 class UnixBuildDocs(Checkout):

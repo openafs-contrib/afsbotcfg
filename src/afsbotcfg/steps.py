@@ -44,23 +44,24 @@ class Make(steps.Compile):
         self.command.append(target)
 
 
-class RunTestsStep(steps.Compile):
-    name = 'test'
+class Check(steps.Compile):
+    name = 'check'
     warnOnFailure = 1
     description = ['testing']
-    descriptionDone = ['test']
+    descriptionDone = ['check']
 
     def __init__(self, make='make'):
         super().__init__()
-        self.command = [make]
+        self.command = [make, 'check']
 
 
 class BuildTests(steps.Compile):
     name = 'build tests'
+    workdir = 'build/tests'
 
     def __init__(self, make='make'):
         super().__init__()
-        self.command = ['cd tests && ' + make + ' all']
+        self.command = [make, 'all']
 
 
 class TapObserver(util.LogLineObserver):

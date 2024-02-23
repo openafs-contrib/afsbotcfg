@@ -1,6 +1,6 @@
 
 # afsbotcfg package version
-VERSION=1.4.0
+VERSION=1.4.1
 
 # afsbotcfg package source files
 SOURCE=\
