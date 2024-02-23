@@ -163,8 +163,10 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-namei-fileserver
           --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
         jobs: 1
 
   - scheduler: gerrit
@@ -177,8 +179,10 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-namei-fileserver
           --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
 
   - scheduler: gerrit
     branch: dev
@@ -191,8 +195,11 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
-          --enable-pthreaded-bos --disable-shared
+          --disable-shared
+          --enable-namei-fileserver
+          --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
 
   - scheduler: gerrit
     branch: dev
@@ -214,8 +221,10 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-namei-fileserver
           --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
 
   - scheduler: gerrit
     branch: dev
@@ -227,8 +236,10 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-namei-fileserver
           --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
 
   - scheduler: gerrit
     branch: dev
@@ -240,8 +251,10 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-namei-fileserver
           --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
 
   - scheduler: gerrit
     branch: dev
@@ -253,8 +266,10 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-namei-fileserver
           --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
 
   - scheduler: gerrit
     branch: dev
@@ -266,8 +281,12 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-warnings --enable-checking --enable-supergroups
-          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+          --enable-checking
+          --enable-namei-fileserver
+          --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+          --enable-warnings
 
   - scheduler: gerrit
     branch: dev
@@ -279,8 +298,12 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-warnings --enable-checking --enable-supergroups
-          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+          --enable-checking
+          --enable-namei-fileserver
+          --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+          --enable-warnings
 
   - scheduler: gerrit
     branch: dev
@@ -292,8 +315,12 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-warnings --enable-checking --enable-supergroups
-          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+          --enable-checking
+          --enable-namei-fileserver
+          --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+          --enable-warnings
 
   - scheduler: gerrit
     branch: dev
@@ -305,8 +332,11 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --with-afs-sysname=amd64_fbsd_122 --enable-supergroups
-          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+          --enable-namei-fileserver
+          --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+          --with-afs-sysname=amd64_fbsd_122
       env:
         MKAFS_OSTYPE: FBSD
 
@@ -320,12 +350,19 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-warnings --enable-checking --enable-supergroups
-          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+          --enable-checking
+          --enable-namei-fileserver
+          --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+          --enable-warnings
       env:
         CFLAGS: >-
-          -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
-          -Wno-error=array-bounds -Wno-error=implicit-function-declaration
+          -Wno-error=array-bounds
+          -Wno-error=format-overflow
+          -Wno-error=format-truncation
+          -Wno-error=implicit-function-declaration
+          -Wno-error=restrict
 
   - scheduler: parked
     branch: dev
@@ -337,12 +374,17 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-namei-fileserver
           --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
       env:
         CFLAGS: >-
-          -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
-          -Wno-error=array-bounds -Wno-error=implicit-function-declaration
+          -Wno-error=array-bounds
+          -Wno-error=format-overflow
+          -Wno-error=format-truncation
+          -Wno-error=implicit-function-declaration
+          -Wno-error=restrict
 
   - scheduler: parked
     branch: dev
@@ -354,12 +396,17 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-namei-fileserver
           --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
       env:
         CFLAGS: >-
-          -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
-          -Wno-error=array-bounds -Wno-error=implicit-function-declaration
+          -Wno-error=array-bounds
+          -Wno-error=format-overflow
+          -Wno-error=format-truncation
+          -Wno-error=implicit-function-declaration
+          -Wno-error=restrict
 
   - scheduler: gerrit
     branch: dev
@@ -371,12 +418,17 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-namei-fileserver
           --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
       env:
         CFLAGS: >-
-          -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
-          -Wno-error=array-bounds -Wno-error=implicit-function-declaration
+          -Wno-error=array-bounds
+          -Wno-error=format-overflow
+          -Wno-error=format-truncation
+          -Wno-error=implicit-function-declaration
+          -Wno-error=restrict
 
   - scheduler: gerrit
     branch: dev
@@ -388,12 +440,17 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-namei-fileserver
           --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
       env:
         CFLAGS: >-
-          -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
-          -Wno-error=array-bounds -Wno-error=implicit-function-declaration
+          -Wno-error=array-bounds
+          -Wno-error=format-overflow
+          -Wno-error=format-truncation
+          -Wno-error=implicit-function-declaration
+          -Wno-error=restrict
 
   - scheduler: gerrit
     branch: dev
@@ -405,12 +462,17 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-namei-fileserver
           --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
       env:
         CFLAGS: >-
-          -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
-          -Wno-error=array-bounds -Wno-error=implicit-function-declaration
+          -Wno-error=array-bounds
+          -Wno-error=format-overflow
+          -Wno-error=format-truncation
+          -Wno-error=implicit-function-declaration
+          -Wno-error=restrict
 
   - scheduler: gerrit
     branch: dev
@@ -422,9 +484,12 @@ afsbotcfg_builders:
       name: UnixBuildAndTest
       args:
         configure: >-
-          --enable-warnings --enable-checking
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-checking
+          --enable-namei-fileserver
           --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+          --enable-warnings
 
   - scheduler: gerrit
     branch: dev
@@ -436,8 +501,12 @@ afsbotcfg_builders:
       name: UnixBuildAndTest
       args:
         configure: >-
-          --enable-warnings --enable-checking --enable-supergroups
-          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+          --enable-checking
+          --enable-namei-fileserver
+          --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+          --enable-warnings
 
   - scheduler: gerrit
     branch: dev
@@ -449,8 +518,12 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-transarc-paths --disable-pam --enable-supergroups
-          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+          --disable-pam
+          --enable-namei-fileserver
+          --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+          --enable-transarc-paths
         target: dest
         jobs: 1
 
@@ -464,8 +537,12 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-transarc-paths --disable-pam --enable-supergroups
-          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+          --disable-pam
+          --enable-namei-fileserver
+          --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+          --enable-transarc-paths
         target: dest
         jobs: 1
 
@@ -479,8 +556,12 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-transarc-paths --disable-pam --enable-supergroups
-          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+          --disable-pam
+          --enable-namei-fileserver
+          --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+          --enable-transarc-paths
         target: dest
         jobs: 1
 
@@ -494,8 +575,11 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
+          --enable-namei-fileserver
+          --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
           --with-linux-kernel-build=/usr/src/linux-obj/x86_64/default
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
 
   - scheduler: gerrit
     branch: dev
@@ -507,8 +591,11 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-transarc-paths --enable-supergroups --enable-namei-fileserver
-          --enable-pthreaded-ubik --enable-pthreaded-bos
+          --enable-namei-fileserver
+          --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+          --enable-transarc-paths
         target: dest
         jobs: 1
         make: gmake
@@ -523,8 +610,10 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-namei-fileserver
           --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
         make: gmake
 
   - scheduler: gerrit
@@ -537,8 +626,10 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-namei-fileserver
           --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
 
   - scheduler: gerrit
     branch: dev
@@ -550,8 +641,10 @@ afsbotcfg_builders:
       name: UnixBuildAndTest
       args:
         configure: >-
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-namei-fileserver
           --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
 
   - scheduler: gerrit
     branch: dev
@@ -563,8 +656,10 @@ afsbotcfg_builders:
       name: UnixBuildAndTest
       args:
         configure: >-
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-namei-fileserver
           --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
 
   - scheduler: parked
     branch: dev
@@ -589,8 +684,10 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-namei-fileserver
           --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
 
   - scheduler: gerrit
     branch: stable
@@ -601,10 +698,12 @@ afsbotcfg_builders:
     factory:
       name: UnixBuild
       args:
-        configure: >-
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
-          --enable-pthreaded-bos
         jobs: 1
+        configure: >-
+          --enable-namei-fileserver
+          --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
 
   - scheduler: gerrit
     branch: stable
@@ -616,8 +715,10 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-namei-fileserver
           --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
 
   - scheduler: gerrit
     branch: stable
@@ -629,8 +730,10 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-namei-fileserver
           --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
 
   - scheduler: gerrit
     branch: stable
@@ -642,8 +745,10 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-namei-fileserver
           --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
 
   - scheduler: gerrit
     branch: stable
@@ -655,8 +760,12 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-warnings --enable-checking --enable-supergroups
-          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+          --enable-checking
+          --enable-namei-fileserver
+          --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+          --enable-warnings
 
   - scheduler: gerrit
     branch: stable
@@ -668,8 +777,12 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-warnings --enable-checking --enable-supergroups
-          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+          --enable-checking
+          --enable-namei-fileserver
+          --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+          --enable-warnings
 
   - scheduler: gerrit
     branch: stable
@@ -681,8 +794,12 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-warnings --enable-checking --enable-supergroups
-          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+          --enable-checking
+          --enable-namei-fileserver
+          --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+          --enable-warnings
 
   - scheduler: gerrit
     branch: stable
@@ -694,8 +811,11 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --with-afs-sysname=amd64_fbsd_122 --enable-supergroups
-          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+          --enable-namei-fileserver
+          --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+          --with-afs-sysname=amd64_fbsd_122
       env:
         MKAFS_OSTYPE: FBSD
 
@@ -709,12 +829,17 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-namei-fileserver
           --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
       env:
         CFLAGS: >-
-          -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
-          -Wno-error=array-bounds -Wno-error=implicit-function-declaration
+          -Wno-error=array-bounds
+          -Wno-error=format-overflow
+          -Wno-error=format-truncation
+          -Wno-error=implicit-function-declaration
+          -Wno-error=restrict
 
   - scheduler: gerrit
     branch: stable
@@ -726,12 +851,17 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-namei-fileserver
           --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
       env:
         CFLAGS: >-
-          -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
-          -Wno-error=array-bounds -Wno-error=implicit-function-declaration
+          -Wno-error=array-bounds
+          -Wno-error=format-overflow
+          -Wno-error=format-truncation
+          -Wno-error=implicit-function-declaration
+          -Wno-error=restrict
 
   - scheduler: gerrit
     branch: stable
@@ -743,12 +873,17 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-namei-fileserver
           --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
       env:
         CFLAGS: >-
-          -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
-          -Wno-error=array-bounds -Wno-error=implicit-function-declaration
+          -Wno-error=array-bounds
+          -Wno-error=format-overflow
+          -Wno-error=format-truncation
+          -Wno-error=implicit-function-declaration
+          -Wno-error=restrict
 
   - scheduler: gerrit
     branch: stable
@@ -760,8 +895,12 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-transarc-paths --disable-pam --enable-supergroups
-          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+          --disable-pam
+          --enable-namei-fileserver
+          --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+          --enable-transarc-paths
         target: dest
         jobs: 1
 
@@ -775,8 +914,12 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-transarc-paths --disable-pam --enable-supergroups
-          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+          --disable-pam
+          --enable-namei-fileserver
+          --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+          --enable-transarc-paths
         target: dest
         jobs: 1
 
@@ -790,8 +933,12 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-transarc-paths --disable-pam --enable-supergroups
-          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+          --disable-pam
+          --enable-namei-fileserver
+          --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+          --enable-transarc-paths
         target: dest
         jobs: 1
 
@@ -805,9 +952,11 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --with-linux-kernel-build=/usr/src/linux-obj/x86_64/default
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-namei-fileserver
           --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+          --with-linux-kernel-build=/usr/src/linux-obj/x86_64/default
 
   - scheduler: gerrit
     branch: stable
@@ -819,8 +968,11 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-transarc-paths --enable-supergroups --enable-namei-fileserver
-          --enable-pthreaded-ubik --enable-pthreaded-bos
+          --enable-namei-fileserver
+          --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+          --enable-transarc-paths
         target: dest
 
   - scheduler: gerrit
@@ -833,8 +985,10 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-namei-fileserver
           --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
         make: gmake
 
   - scheduler: gerrit
@@ -847,8 +1001,12 @@ afsbotcfg_builders:
       name: UnixBuildAndTest
       args:
         configure: >-
-          --enable-warnings --enable-checking --enable-supergroups
-          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+          --enable-checking
+          --enable-namei-fileserver
+          --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+          --enable-warnings
 
   - scheduler: gerrit
     branch: stable
@@ -860,8 +1018,12 @@ afsbotcfg_builders:
       name: UnixBuildAndTest
       args:
         configure: >-
-          --enable-warnings --enable-checking --enable-supergroups
-          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+          --enable-checking
+          --enable-namei-fileserver
+          --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+          --enable-warnings
 
   - scheduler: parked
     branch: stable
@@ -899,8 +1061,10 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-namei-fileserver
           --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
 
   - scheduler: gerrit
     branch: oldstable
@@ -912,8 +1076,10 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-namei-fileserver
           --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
 
   - scheduler: gerrit
     branch: oldstable
@@ -925,8 +1091,12 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-warnings --enable-checking --enable-supergroups
-          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+          --enable-checking
+          --enable-namei-fileserver
+          --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+          --enable-warnings
 
   - scheduler: gerrit
     branch: oldstable
@@ -938,8 +1108,12 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-warnings --enable-checking --enable-supergroups
-          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+          --enable-checking
+          --enable-namei-fileserver
+          --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+          --enable-warnings
 
   - scheduler: gerrit
     branch: oldstable
@@ -951,12 +1125,19 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-warnings --enable-checking --enable-supergroups
-          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+          --enable-checking
+          --enable-namei-fileserver
+          --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+          --enable-warnings
       env:
         CFLAGS: >-
-          -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
-          -Wno-error=array-bounds -Wno-error=implicit-function-declaration
+          -Wno-error=array-bounds
+          -Wno-error=format-overflow
+          -Wno-error=format-truncation
+          -Wno-error=implicit-function-declaration
+          -Wno-error=restrict
 
   - scheduler: gerrit
     branch: oldstable
@@ -968,8 +1149,11 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-transarc-paths --enable-supergroups --enable-namei-fileserver
-          --enable-pthreaded-ubik --enable-pthreaded-bos
+          --enable-namei-fileserver
+          --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+          --enable-transarc-paths
         target: dest
         make: gmake
 
@@ -983,8 +1167,10 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-namei-fileserver
           --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
         make: gmake
 
   - scheduler: gerrit
@@ -997,8 +1183,12 @@ afsbotcfg_builders:
       name: UnixBuildAndTest
       args:
         configure: >-
-          --enable-warnings --enable-checking --enable-supergroups
-          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+          --enable-checking
+          --enable-namei-fileserver
+          --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+          --enable-warnings
 
   - scheduler: gerrit
     branch: oldstable
@@ -1010,8 +1200,12 @@ afsbotcfg_builders:
       name: UnixBuildAndTest
       args:
         configure: >-
-          --enable-warnings --enable-checking --enable-supergroups
-          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+          --enable-checking
+          --enable-namei-fileserver
+          --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+          --enable-warnings
 
   - scheduler: gerrit
     branch: dev
@@ -1023,8 +1217,12 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-warnings --enable-checking --enable-supergroups
-          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+          --enable-checking
+          --enable-namei-fileserver
+          --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+          --enable-warnings
 
   - scheduler: gerrit
     branch: dev
@@ -1037,8 +1235,12 @@ afsbotcfg_builders:
       name: UnixBuildObjDir
       args:
         configure: >-
-          --enable-warnings --enable-checking --enable-supergroups
-          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+          --enable-checking
+          --enable-namei-fileserver
+          --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+          --enable-warnings
 
   - scheduler: nightly
     branch: dev
@@ -1050,8 +1252,10 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-namei-fileserver
           --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
         make: gmake
 
   - scheduler: nightly
@@ -1064,8 +1268,10 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-namei-fileserver
           --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
 
 #  - scheduler: nightly
 #    branch: dev
@@ -1102,7 +1308,11 @@ afsbotcfg_builders:
     factory:
       name: UnixBuild
       args:
-        configure: --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+        configure: >-
+          --enable-namei-fileserver
+          --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
         jobs: 1
 
   - scheduler: gerrit
@@ -1115,8 +1325,12 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-warnings --enable-checking --enable-supergroups
-          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+          --enable-checking
+          --enable-namei-fileserver
+          --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+          --enable-warnings
 
   - scheduler: gerrit
     branch: stable
@@ -1129,8 +1343,12 @@ afsbotcfg_builders:
       name: UnixBuildObjDir
       args:
         configure: >-
-          --enable-warnings --enable-checking --enable-supergroups
-          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+          --enable-checking
+          --enable-namei-fileserver
+          --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+          --enable-warnings
 
   - scheduler: nightly
     branch: stable
@@ -1141,7 +1359,11 @@ afsbotcfg_builders:
     factory:
       name: UnixBuild
       args:
-        configure: --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+        configure: >-
+          --enable-namei-fileserver
+          --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
         jobs: 1
 
   - scheduler: parked
@@ -1154,13 +1376,19 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --disable-kernel-module --with-afs-sysname=amd64_linux26
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --disable-kernel-module
+          --enable-namei-fileserver
           --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+          --with-afs-sysname=amd64_linux26
       env:
         CFLAGS: >-
-          -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
-          -Wno-error=array-bounds -Wno-error=implicit-function-declaration
+          -Wno-error=array-bounds
+          -Wno-error=format-overflow
+          -Wno-error=format-truncation
+          -Wno-error=implicit-function-declaration
+          -Wno-error=restrict
 
   - scheduler: parked
     branch: dev
@@ -1172,13 +1400,19 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --disable-kernel-module --with-afs-sysname=amd64_linux26
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --disable-kernel-module
+          --enable-namei-fileserver
           --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+          --with-afs-sysname=amd64_linux26
       env:
         CFLAGS: >-
-          -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
-          -Wno-error=array-bounds -Wno-error=implicit-function-declaration
+          -Wno-error=array-bounds
+          -Wno-error=format-overflow
+          -Wno-error=format-truncation
+          -Wno-error=implicit-function-declaration
+          -Wno-error=restrict
 
   - scheduler: parked
     branch: dev
@@ -1190,13 +1424,19 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --disable-kernel-module --with-afs-sysname=amd64_linux26
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --disable-kernel-module
+          --enable-namei-fileserver
           --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+          --with-afs-sysname=amd64_linux26
       env:
         CFLAGS: >-
-          -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
-          -Wno-error=array-bounds -Wno-error=implicit-function-declaration
+          -Wno-error=array-bounds
+          -Wno-error=format-overflow
+          -Wno-error=format-truncation
+          -Wno-error=implicit-function-declaration
+          -Wno-error=restrict
 
   - scheduler: parked
     branch: dev
@@ -1208,13 +1448,19 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --disable-kernel-module --with-afs-sysname=amd64_linux26
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --disable-kernel-module
+          --enable-namei-fileserver
           --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+          --with-afs-sysname=amd64_linux26
       env:
         CFLAGS: >-
-          -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
-          -Wno-error=array-bounds -Wno-error=implicit-function-declaration
+          -Wno-error=array-bounds
+          -Wno-error=format-overflow
+          -Wno-error=format-truncation
+          -Wno-error=implicit-function-declaration
+          -Wno-error=restrict
 
   - scheduler: parked
     branch: dev
@@ -1226,13 +1472,19 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-warnings --enable-checking
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-checking
+          --enable-namei-fileserver
           --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+          --enable-warnings
       env:
         CFLAGS: >-
-          -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
-          -Wno-error=array-bounds -Wno-error=implicit-function-declaration
+          -Wno-error=array-bounds
+          -Wno-error=format-overflow
+          -Wno-error=format-truncation
+          -Wno-error=implicit-function-declaration
+          -Wno-error=restrict
 
   - scheduler: parked
     branch: dev
@@ -1244,13 +1496,19 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-warnings --enable-checking
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-checking
+          --enable-namei-fileserver
           --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+          --enable-warnings
       env:
         CFLAGS: >-
-          -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
-          -Wno-error=array-bounds -Wno-error=implicit-function-declaration
+          -Wno-error=array-bounds
+          -Wno-error=format-overflow
+          -Wno-error=format-truncation
+          -Wno-error=implicit-function-declaration
+          -Wno-error=restrict
 
   - scheduler: parked
     branch: dev
@@ -1262,13 +1520,19 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-warnings --enable-checking
-          --enable-supergroups --enable-namei-fileserver --enable-pthreaded-ubik
+          --enable-checking
+          --enable-namei-fileserver
           --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+          --enable-warnings
       env:
         CFLAGS: >-
-          -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
-          -Wno-error=array-bounds -Wno-error=implicit-function-declaration
+          -Wno-error=array-bounds
+          -Wno-error=format-overflow
+          -Wno-error=format-truncation
+          -Wno-error=implicit-function-declaration
+          -Wno-error=restrict
 
   - scheduler: parked
     branch: dev
@@ -1280,12 +1544,19 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --enable-warnings --enable-checking --enable-supergroups
-          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+          --enable-checking
+          --enable-namei-fileserver
+          --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+          --enable-warnings
       env:
         CFLAGS: >-
-          -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
-          -Wno-error=array-bounds -Wno-error=implicit-function-declaration
+          -Wno-error=array-bounds
+          -Wno-error=format-overflow
+          -Wno-error=format-truncation
+          -Wno-error=implicit-function-declaration
+          -Wno-error=restrict
 
   - scheduler: parked
     branch: dev
@@ -1297,5 +1568,8 @@ afsbotcfg_builders:
       name: UnixBuild
       args:
         configure: >-
-          --with-afs-sysname=amd64_linux26 --enable-supergroups
-          --enable-namei-fileserver --enable-pthreaded-ubik --enable-pthreaded-bos
+          --enable-namei-fileserver
+          --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+          --with-afs-sysname=amd64_linux26
