@@ -37,7 +37,7 @@ class Make(steps.Compile):
         try:
             jobs = int(jobs)
         except ValueError:
-            jobs = 1
+            jobs = 0
         if jobs > 1:
             self.command.append('-j')
             self.command.append('%d' % jobs)
