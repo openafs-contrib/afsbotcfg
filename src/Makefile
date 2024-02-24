@@ -1,6 +1,6 @@
 
 # afsbotcfg package version
-VERSION=1.4.1
+VERSION=1.4.2
 
 # afsbotcfg package source files
 SOURCE=\
@@ -24,7 +24,7 @@ help:
 	@echo "  distclean  remove dist and generated files"
 
 lint:
-	pyflakes afsbotcfg/*.py
+	pyflakes3 afsbotcfg/*.py
 	flake8 --ignore=E501,$(FLAKE8_IGNORE) afsbotcfg/*.py
 
 test: lint
