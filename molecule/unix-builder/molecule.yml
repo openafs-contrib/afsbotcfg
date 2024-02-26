@@ -1,25 +1,46 @@
 ---
+#driver:
+#  name: vagrant
+
 driver:
-  name: vagrant
+  name: molecule-proxmox
+  options:
+    api_host: morty.oh2.sinenomine.net
+    api_user: root@pam
+    api_password: "${PROXMOX_PASSWORD}"
+    node: morty
+    ssh_user: "${USER}"
+    ssh_identity_file: "/home/mmeffie/.ssh/mmeffie-sna2"
+    sethostname: no
 
 platforms:
   - name: afsbotcfg-master
-    box: generic/centos7
+    #box: generic/centos7
+    template_name: centos7
     groups:
       - openafs_buildbot_masters
 
   - name: afsbotcfg-alma-worker
-    box: generic/alma9
+    #box: generic/alma9
+    template_name: alma9
     groups:
       - openafs_buildbot_workers
 
-  - name: afsbotcfg-debian-worker
-    box: generic/debian11
+  - name: afsbotcfg-debian11-worker
+    #box: generic/debian11
+    template_name: debian11
+    groups:
+      - openafs_buildbot_workers
+
+  - name: afsbotcfg-debian12-worker
+    #box: generic/debian12
+    template_name: debian12
     groups:
       - openafs_buildbot_workers
 
   - name: afsbotcfg-ubuntu-worker
-    box: generic/ubuntu2004
+    #box: generic/ubuntu2004
+    template_name: ubuntu20
     groups:
       - openafs_buildbot_workers
 
@@ -32,15 +53,18 @@ provisioner:
       afsbotcfg-alma-worker:
         worker_name: "alma9-amd64"
         ansible_python_interpreter: "/usr/bin/python3"
-      afsbotcfg-debian-worker:
+      afsbotcfg-debian11-worker:
         worker_name: "debian11-amd64"
+        ansible_python_interpreter: "/usr/bin/python3"
+      afsbotcfg-debian12-worker:
+        worker_name: "debian12-amd64"
         ansible_python_interpreter: "/usr/bin/python3"
       afsbotcfg-ubuntu-worker:
         worker_name: "ubuntu20-amd64"
 
     group_vars:
       all:
-        afsbotcfg_version: "1.4.2"
+        afsbotcfg_version: "${AFSBOTCFG_VERSION}"
         afsbotcfg_sqlalchemy_version: "==1.4.28"
         afsbotcfg_buildbot_version: "==3.5.0"
         afsbotcfg_project:
@@ -52,7 +76,7 @@ provisioner:
           www_port: 8011
           pb_port: 9989
           email_from: "buildbot@openafs.MIT.EDU"
-          repo: "git://gerrit.openafs.org/openafs.git"
+          repo: "${GIT_REPO:-git://gerrit.openafs.org/openafs.git}"
           start_delay: 30
           branches:
             dev: "master"
@@ -73,12 +97,15 @@ provisioner:
         afsbotcfg_worker_passwords:
           alma9-amd64: "secret"
           debian11-amd64: "secret"
+          debian12-amd64: "secret"
           ubuntu20-amd64: "secret"
 
         afsbotcfg_workers:
           alma9-amd64:
             notify: "admin@example.com"
           debian11-amd64:
+            notify: "admin@example.com"
+          debian12-amd64:
             notify: "admin@example.com"
           ubuntu20-amd64:
             notify: "admin@example.com"
@@ -91,7 +118,7 @@ provisioner:
             branch: dev
             worker: alma9-amd64
             factory:
-              name: UnixBuild
+              name: UnixBuildFactory
 
           - scheduler: nightly
             os: debian11
@@ -100,15 +127,43 @@ provisioner:
             branch: dev
             worker: debian11-amd64
             factory:
-              name: UnixBuild
+              name: UnixBuildFactory
               args:
                 configure: >-
-                  --enable-transarc-paths --enable-checking
+                  --enable-checking
+                  --enable-transarc-paths
                 target: dest
               env:
                 CFLAGS: >-
-                  -Wno-error=format-truncation -Wno-error=format-overflow -Wno-error=restrict
-                  -Wno-error=array-bounds -Wno-error=implicit-function-declaration
+                  -Wno-error=array-bounds
+                  -Wno-error=format-overflow
+                  -Wno-error=format-truncation
+                  -Wno-error=implicit-function-declaration
+                  -Wno-error=restrict
+
+          - scheduler: nightly
+            os: debian12
+            cc: gcc
+            arch: amd64
+            flavor: objdir
+            branch: dev
+            worker: debian12-amd64
+            factory:
+              name: UnixBuildFactory
+              args:
+                objdir: True
+                configure: >-
+                  --enable-checking
+                  --enable-kernel-module
+                jobs: 1
+                target: all
+              env:
+                CFLAGS: >-
+                  -Wno-error=array-bounds
+                  -Wno-error=format-overflow
+                  -Wno-error=format-truncation
+                  -Wno-error=implicit-function-declaration
+                  -Wno-error=restrict
 
           - scheduler: nightly
             os: ubuntu20
@@ -117,7 +172,13 @@ provisioner:
             branch: dev
             worker: ubuntu20-amd64
             factory:
-              name: UnixBuildAndTest
+              name: UnixBuildFactory
+              args:
+                test: True
+                docs: True
+                configure: >-
+                  --enable-checking
+                  --disable-kernel-module
 
 verifier:
   name: ansible

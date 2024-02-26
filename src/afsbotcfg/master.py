@@ -1,13 +1,28 @@
+# Copyright (c) 2019 Sine Nomine Associates
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+
+"""Functions to help manage the buildbot master process."""
+
+
 import os
 
 
 def write_pid():
-    """
-    Write the buildbot master PID to a file when $BUILDBOT_PIDFILE is defined.
+    """Write the buildbot master PID to a file when $BUILDBOT_PIDFILE is defined.
 
-    Unfortunately, the twistd.pid file created by the buildbot process is not
-    placed into a run directory, so will be stale after a reboot. So as a
-    workaround, we create this extra pid file when the master.cfg is loaded.
+    Unfortunately the twistd.pid file created by the buildbot process is not
+    placed into a run directory, so will be stale after a reboot. As a
+    workaround, create this extra pid file when the master.cfg is loaded.
 
     The BUILDBOT_PIDFILE environment variable *must not* be set when running
     the `buildbot checkconfig` command, but *must be* set when running the

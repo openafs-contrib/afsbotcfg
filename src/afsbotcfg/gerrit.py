@@ -1,23 +1,36 @@
 # Copyright (c) 2019 Sine Nomine Associates
 #
-# This file copies/extends portions of Buildbot forcescheduler.
-# This software is available at no charge under the terms
-# of the GNU General Public License version 2 (GPLv2) as
-# available from the OSI(Open Software Initiative) website.
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 
-# THE SOFTWARE IS PROVIDED 'AS IS' AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-# WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-# MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
-# ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-# WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
-# ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
-# OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-
+"""Generate build summary report to be posted to Gerrit."""
 
 from buildbot.plugins import util
 
 
 def summaryCB(buildInfoList, results, status, arg):
+    """Generate the build summary report.
+
+    This callback is invoked by the buildbot master after the builders finished
+    to generate a human readable summary and the Gerrit verification (yes or
+    no) for the change.
+
+    Args:
+        buildInfoList:  List of build information.
+        results:        Not used
+        status:         Not used
+        arg:            Report header lines
+
+    Returns:
+        A dict with the messages and the Gerrit verified label.
+    """
 
     def report_build_status(buildlist, finalstatus=None):
         for info in buildlist:

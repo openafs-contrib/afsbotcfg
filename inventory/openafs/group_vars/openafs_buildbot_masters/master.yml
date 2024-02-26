@@ -1,7 +1,7 @@
 # OpenAFS buildbot master configuration.
 ---
 
-afsbotcfg_version: "1.4.2"
+afsbotcfg_version: "1.5.0"
 afsbotcfg_sqlalchemy_version: "==1.4.28"
 afsbotcfg_buildbot_version: "==3.5.0"
 
@@ -160,7 +160,7 @@ afsbotcfg_builders:
     arch: rs
     worker: aix61-rs
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-kernel-module
@@ -177,7 +177,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: alma9-amd64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-kernel-module
@@ -194,7 +194,7 @@ afsbotcfg_builders:
     flavor: static
     worker: alma9-amd64-static
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --disable-shared
@@ -212,7 +212,7 @@ afsbotcfg_builders:
     flavor: rpm
     worker: alma9-amd64-rpm
     factory:
-      name: BuildRPMs
+      name: ELRpmBuildFactory
 
   - scheduler: gerrit
     branch: dev
@@ -221,7 +221,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: centos6-amd64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-kernel-module
@@ -237,7 +237,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: centos73-x86_64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-kernel-module
@@ -253,7 +253,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: centos8-amd64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-kernel-module
@@ -269,7 +269,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: debian87-x86_64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-kernel-module
@@ -285,7 +285,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: debian9-amd64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-checking
@@ -303,7 +303,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: debian10-amd64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-checking
@@ -321,7 +321,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: debian11-amd64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-checking
@@ -339,7 +339,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: freebsd12-amd64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-kernel-module
@@ -358,7 +358,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: fedora33-x86_64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-kernel-module
@@ -383,7 +383,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: fedora34-x86_64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-kernel-module
@@ -406,7 +406,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: fedora35-x86_64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-kernel-module
@@ -429,7 +429,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: fedora36-x86_64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-kernel-module
@@ -452,7 +452,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: fedora37-x86_64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-kernel-module
@@ -475,7 +475,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: fedora38-x86_64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-kernel-module
@@ -498,7 +498,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: gentoo-amd64
     factory:
-      name: UnixBuildAndTest
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-checking
@@ -508,6 +508,7 @@ afsbotcfg_builders:
           --enable-pthreaded-ubik
           --enable-supergroups
           --enable-warnings
+        test: True
 
   - scheduler: gerrit
     branch: dev
@@ -516,7 +517,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: gentoo-gcc-amd64
     factory:
-      name: UnixBuildAndTest
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-checking
@@ -526,6 +527,7 @@ afsbotcfg_builders:
           --enable-pthreaded-ubik
           --enable-supergroups
           --enable-warnings
+        test: True
 
   - scheduler: gerrit
     branch: dev
@@ -534,7 +536,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: macos10-15-x86_64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --disable-pam
@@ -554,7 +556,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: macos11-x86_64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --disable-pam
@@ -574,7 +576,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: macos12-x86_64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --disable-pam
@@ -594,7 +596,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: opensuse15-x86_64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-kernel-module
@@ -611,7 +613,7 @@ afsbotcfg_builders:
     arch: x86
     worker: sun510_x86
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-kernel-module
@@ -631,7 +633,7 @@ afsbotcfg_builders:
     arch: x86
     worker: solaris114-x86-2
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-kernel-module
@@ -648,7 +650,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: ubuntu1610-x86_64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-kernel-module
@@ -664,7 +666,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: ubuntu1804-amd64
     factory:
-      name: UnixBuildAndTest
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-kernel-module
@@ -672,6 +674,7 @@ afsbotcfg_builders:
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
+        test: True
 
   - scheduler: gerrit
     branch: dev
@@ -680,7 +683,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: ubuntu2004-amd64
     factory:
-      name: UnixBuildAndTest
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-kernel-module
@@ -688,6 +691,7 @@ afsbotcfg_builders:
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
+        test: True
 
   - scheduler: parked
     branch: dev
@@ -697,7 +701,7 @@ afsbotcfg_builders:
     flavor: free
     worker: wins2019-amd64
     factory:
-      name: WinBuild
+      name: WindowsBuildFactory
       args:
         arch: amd64
         variant: free
@@ -709,7 +713,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: alma9-amd64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-kernel-module
@@ -725,7 +729,7 @@ afsbotcfg_builders:
     arch: rs
     worker: aix61-rs
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         jobs: 1
         configure: >-
@@ -742,7 +746,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: centos6-amd64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-kernel-module
@@ -758,7 +762,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: centos73-x86_64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-kernel-module
@@ -774,7 +778,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: centos8-amd64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-kernel-module
@@ -790,7 +794,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: debian9-amd64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-checking
@@ -808,7 +812,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: debian10-amd64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-checking
@@ -826,7 +830,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: debian11-amd64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-checking
@@ -844,7 +848,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: freebsd12-amd64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-namei-fileserver
@@ -863,7 +867,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: fedora36-x86_64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-kernel-module
@@ -886,7 +890,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: fedora37-x86_64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-kernel-module
@@ -909,7 +913,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: fedora38-x86_64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-kernel-module
@@ -932,7 +936,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: macos10-15-x86_64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --disable-pam
@@ -952,7 +956,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: macos11-x86_64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --disable-pam
@@ -972,7 +976,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: macos12-x86_64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --disable-pam
@@ -992,7 +996,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: opensuse15-x86_64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-kernel-module
@@ -1009,7 +1013,7 @@ afsbotcfg_builders:
     arch: x86
     worker: sun510_x86
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-kernel-module
@@ -1027,7 +1031,7 @@ afsbotcfg_builders:
     arch: x86
     worker: solaris114-x86-2
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-kernel-module
@@ -1044,7 +1048,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: ubuntu1804-amd64
     factory:
-      name: UnixBuildAndTest
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-checking
@@ -1054,6 +1058,7 @@ afsbotcfg_builders:
           --enable-pthreaded-ubik
           --enable-supergroups
           --enable-warnings
+        test: True
 
   - scheduler: gerrit
     branch: stable
@@ -1062,7 +1067,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: ubuntu2004-amd64
     factory:
-      name: UnixBuildAndTest
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-checking
@@ -1072,6 +1077,7 @@ afsbotcfg_builders:
           --enable-pthreaded-ubik
           --enable-supergroups
           --enable-warnings
+        test: True
 
   - scheduler: parked
     branch: stable
@@ -1081,7 +1087,7 @@ afsbotcfg_builders:
     flavor: free
     worker: wins2019-amd64
     factory:
-      name: WinBuild
+      name: WindowsBuildFactory
       args:
         arch: amd64
         variant: free
@@ -1094,7 +1100,7 @@ afsbotcfg_builders:
     flavor: checked
     worker: wins2019-amd64
     factory:
-      name: WinBuild
+      name: WindowsBuildFactory
       args:
         arch: x86
         variant: checked
@@ -1106,7 +1112,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: centos73-x86_64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-kernel-module
@@ -1122,7 +1128,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: centos8-amd64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-kernel-module
@@ -1138,7 +1144,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: debian9-amd64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-checking
@@ -1156,7 +1162,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: debian10-amd64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-checking
@@ -1174,7 +1180,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: fedora32-x86_64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-checking
@@ -1199,7 +1205,7 @@ afsbotcfg_builders:
     arch: x86
     worker: sun510_x86
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-kernel-module
@@ -1218,7 +1224,7 @@ afsbotcfg_builders:
     arch: x86
     worker: solaris114-x86-2
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-kernel-module
@@ -1235,7 +1241,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: ubuntu1804-amd64
     factory:
-      name: UnixBuildAndTest
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-checking
@@ -1245,6 +1251,7 @@ afsbotcfg_builders:
           --enable-pthreaded-ubik
           --enable-supergroups
           --enable-warnings
+        test: True
 
   - scheduler: gerrit
     branch: oldstable
@@ -1253,7 +1260,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: ubuntu2004-amd64
     factory:
-      name: UnixBuildAndTest
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-checking
@@ -1263,6 +1270,7 @@ afsbotcfg_builders:
           --enable-pthreaded-ubik
           --enable-supergroups
           --enable-warnings
+        test: True
 
   - scheduler: gerrit
     branch: dev
@@ -1271,7 +1279,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: debian12-amd64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-checking
@@ -1290,8 +1298,9 @@ afsbotcfg_builders:
     flavor: objdir
     worker: debian12-amd64
     factory:
-      name: UnixBuildObjDir
+      name: UnixBuildFactory
       args:
+        objdir: True
         configure: >-
           --enable-checking
           --enable-kernel-module
@@ -1308,7 +1317,7 @@ afsbotcfg_builders:
     arch: sparc
     worker: sol11sparc
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-kernel-module
@@ -1325,7 +1334,7 @@ afsbotcfg_builders:
     arch: arm64
     worker: centos7-arm64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-kernel-module
@@ -1342,7 +1351,7 @@ afsbotcfg_builders:
 #    flavor: checked
 #    worker: wins2019-amd64
 #    factory:
-#      name: WinBuild
+#      name: WindowsBuildFactory
 #      args:
 #        arch: amd64
 #        variant: checked
@@ -1355,7 +1364,7 @@ afsbotcfg_builders:
 #    flavor: free
 #    worker: wins2019-amd64
 #    factory:
-#      name: WinBuild
+#      name: WindowsBuildFactory
 #      args:
 #        arch: x86
 #        variant: free
@@ -1367,7 +1376,7 @@ afsbotcfg_builders:
     arch: rs
     worker: aix71-rs
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-kernel-module
@@ -1384,7 +1393,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: debian12-amd64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-checking
@@ -1403,8 +1412,9 @@ afsbotcfg_builders:
     flavor: objdir
     worker: debian12-amd64
     factory:
-      name: UnixBuildObjDir
+      name: UnixBuildFactory
       args:
+        objdir: True
         configure: >-
           --enable-checking
           --enable-kernel-module
@@ -1421,7 +1431,7 @@ afsbotcfg_builders:
     arch: rs
     worker: aix71-rs
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-kernel-module
@@ -1438,7 +1448,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: fedora24-x86_64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --disable-kernel-module
@@ -1462,7 +1472,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: fedora25-x86_64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --disable-kernel-module
@@ -1486,7 +1496,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: fedora26-x86_64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --disable-kernel-module
@@ -1510,7 +1520,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: fedora27-x86_64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --disable-kernel-module
@@ -1534,7 +1544,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: fedora28-x86_64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-checking
@@ -1559,7 +1569,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: fedora29-x86_64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-checking
@@ -1584,7 +1594,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: fedora30-x86_64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-checking
@@ -1609,7 +1619,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: fedora31-x86_64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-checking
@@ -1634,7 +1644,7 @@ afsbotcfg_builders:
     arch: amd64
     worker: freebsd13-amd64
     factory:
-      name: UnixBuild
+      name: UnixBuildFactory
       args:
         configure: >-
           --enable-namei-fileserver

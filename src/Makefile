@@ -1,6 +1,10 @@
 
 # afsbotcfg package version
-VERSION=1.4.2
+ifdef AFSBOTCFG_VERSION
+VERSION=$(AFSBOTCFG_VERSION)
+else
+VERSION=1.5.0
+endif
 
 # afsbotcfg package source files
 SOURCE=\

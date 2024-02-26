@@ -15,7 +15,6 @@
       ansible.builtin.set_fact:
         afsbotcfg_project: "{{ afsbotcfg_project | combine({'url': _url}, recursive=True) }}"
 
-
 - name: "Run buildbot playbook."
   import_playbook: "../../afsbotcfg.yml"
 
