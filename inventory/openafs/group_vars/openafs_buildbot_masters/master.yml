@@ -164,7 +164,6 @@ afsbotcfg_builders:
       args:
         configure: >-
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -181,7 +180,6 @@ afsbotcfg_builders:
       args:
         configure: >-
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -199,7 +197,6 @@ afsbotcfg_builders:
         configure: >-
           --disable-shared
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -225,7 +222,6 @@ afsbotcfg_builders:
       args:
         configure: >-
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -241,7 +237,6 @@ afsbotcfg_builders:
       args:
         configure: >-
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -257,7 +252,6 @@ afsbotcfg_builders:
       args:
         configure: >-
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -273,7 +267,6 @@ afsbotcfg_builders:
       args:
         configure: >-
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -290,7 +283,6 @@ afsbotcfg_builders:
         configure: >-
           --enable-checking
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -308,7 +300,6 @@ afsbotcfg_builders:
         configure: >-
           --enable-checking
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -326,7 +317,6 @@ afsbotcfg_builders:
         configure: >-
           --enable-checking
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -343,7 +333,6 @@ afsbotcfg_builders:
       args:
         configure: >-
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -363,7 +352,6 @@ afsbotcfg_builders:
         configure: >-
           --enable-kernel-module
           --enable-checking
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -387,7 +375,6 @@ afsbotcfg_builders:
       args:
         configure: >-
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -410,7 +397,6 @@ afsbotcfg_builders:
       args:
         configure: >-
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -433,7 +419,6 @@ afsbotcfg_builders:
       args:
         configure: >-
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -456,7 +441,6 @@ afsbotcfg_builders:
       args:
         configure: >-
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -479,7 +463,6 @@ afsbotcfg_builders:
       args:
         configure: >-
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -503,7 +486,6 @@ afsbotcfg_builders:
         configure: >-
           --enable-checking
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -522,7 +504,6 @@ afsbotcfg_builders:
         configure: >-
           --enable-checking
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -541,7 +522,6 @@ afsbotcfg_builders:
         configure: >-
           --disable-pam
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -561,7 +541,6 @@ afsbotcfg_builders:
         configure: >-
           --disable-pam
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -581,7 +560,6 @@ afsbotcfg_builders:
         configure: >-
           --disable-pam
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -600,7 +578,6 @@ afsbotcfg_builders:
       args:
         configure: >-
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -617,7 +594,6 @@ afsbotcfg_builders:
       args:
         configure: >-
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -637,7 +613,6 @@ afsbotcfg_builders:
       args:
         configure: >-
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -654,7 +629,6 @@ afsbotcfg_builders:
       args:
         configure: >-
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -670,7 +644,6 @@ afsbotcfg_builders:
       args:
         configure: >-
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -687,7 +660,6 @@ afsbotcfg_builders:
       args:
         configure: >-
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -717,7 +689,6 @@ afsbotcfg_builders:
       args:
         configure: >-
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -734,7 +705,6 @@ afsbotcfg_builders:
         jobs: 1
         configure: >-
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -750,7 +720,6 @@ afsbotcfg_builders:
       args:
         configure: >-
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -766,7 +735,6 @@ afsbotcfg_builders:
       args:
         configure: >-
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -782,7 +750,6 @@ afsbotcfg_builders:
       args:
         configure: >-
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -799,7 +766,6 @@ afsbotcfg_builders:
         configure: >-
           --enable-checking
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -817,7 +783,6 @@ afsbotcfg_builders:
         configure: >-
           --enable-checking
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -835,7 +800,6 @@ afsbotcfg_builders:
         configure: >-
           --enable-checking
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -851,7 +815,6 @@ afsbotcfg_builders:
       name: UnixBuildFactory
       args:
         configure: >-
-          --enable-namei-fileserver
           --enable-kernel-module
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
@@ -871,7 +834,6 @@ afsbotcfg_builders:
       args:
         configure: >-
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -894,7 +856,6 @@ afsbotcfg_builders:
       args:
         configure: >-
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -917,7 +878,6 @@ afsbotcfg_builders:
       args:
         configure: >-
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -941,7 +901,6 @@ afsbotcfg_builders:
         configure: >-
           --disable-pam
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -961,7 +920,6 @@ afsbotcfg_builders:
         configure: >-
           --disable-pam
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -981,7 +939,6 @@ afsbotcfg_builders:
         configure: >-
           --disable-pam
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -1000,7 +957,6 @@ afsbotcfg_builders:
       args:
         configure: >-
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -1008,7 +964,7 @@ afsbotcfg_builders:
 
   - scheduler: gerrit
     branch: stable
-    os: soalris10
+    os: solaris10
     cc: gcc
     arch: x86
     worker: sun510_x86
@@ -1017,7 +973,6 @@ afsbotcfg_builders:
       args:
         configure: >-
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -1035,7 +990,6 @@ afsbotcfg_builders:
       args:
         configure: >-
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -1053,7 +1007,6 @@ afsbotcfg_builders:
         configure: >-
           --enable-checking
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -1072,7 +1025,6 @@ afsbotcfg_builders:
         configure: >-
           --enable-checking
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -1116,7 +1068,6 @@ afsbotcfg_builders:
       args:
         configure: >-
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -1132,7 +1083,6 @@ afsbotcfg_builders:
       args:
         configure: >-
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -1149,7 +1099,6 @@ afsbotcfg_builders:
         configure: >-
           --enable-checking
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -1167,7 +1116,6 @@ afsbotcfg_builders:
         configure: >-
           --enable-checking
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -1185,7 +1133,6 @@ afsbotcfg_builders:
         configure: >-
           --enable-checking
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -1209,7 +1156,6 @@ afsbotcfg_builders:
       args:
         configure: >-
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -1228,7 +1174,6 @@ afsbotcfg_builders:
       args:
         configure: >-
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -1246,7 +1191,6 @@ afsbotcfg_builders:
         configure: >-
           --enable-checking
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -1265,7 +1209,6 @@ afsbotcfg_builders:
         configure: >-
           --enable-checking
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -1284,7 +1227,6 @@ afsbotcfg_builders:
         configure: >-
           --enable-checking
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -1304,7 +1246,6 @@ afsbotcfg_builders:
         configure: >-
           --enable-checking
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -1321,7 +1262,6 @@ afsbotcfg_builders:
       args:
         configure: >-
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -1338,7 +1278,6 @@ afsbotcfg_builders:
       args:
         configure: >-
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -1380,7 +1319,6 @@ afsbotcfg_builders:
       args:
         configure: >-
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -1398,7 +1336,6 @@ afsbotcfg_builders:
         configure: >-
           --enable-checking
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -1418,7 +1355,6 @@ afsbotcfg_builders:
         configure: >-
           --enable-checking
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -1435,7 +1371,6 @@ afsbotcfg_builders:
       args:
         configure: >-
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -1452,7 +1387,6 @@ afsbotcfg_builders:
       args:
         configure: >-
           --disable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -1476,7 +1410,6 @@ afsbotcfg_builders:
       args:
         configure: >-
           --disable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -1500,7 +1433,6 @@ afsbotcfg_builders:
       args:
         configure: >-
           --disable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -1524,7 +1456,6 @@ afsbotcfg_builders:
       args:
         configure: >-
           --disable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -1549,7 +1480,6 @@ afsbotcfg_builders:
         configure: >-
           --enable-checking
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -1574,7 +1504,6 @@ afsbotcfg_builders:
         configure: >-
           --enable-checking
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -1599,7 +1528,6 @@ afsbotcfg_builders:
         configure: >-
           --enable-checking
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -1624,7 +1552,6 @@ afsbotcfg_builders:
         configure: >-
           --enable-checking
           --enable-kernel-module
-          --enable-namei-fileserver
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
@@ -1647,7 +1574,6 @@ afsbotcfg_builders:
       name: UnixBuildFactory
       args:
         configure: >-
-          --enable-namei-fileserver
           --enable-kernel-module
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
