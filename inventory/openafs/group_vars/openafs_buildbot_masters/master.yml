@@ -64,10 +64,6 @@ afsbotcfg_workers:
     notify: "mmeffie@sinenomine.net"
   centos8-amd64:
     notify: "mmeffie@sinenomine.net"
-  debian87-x86_64:
-    notify: "mmeffie@sinenomine.net"
-  debian9-amd64:
-    notify: "mmeffie@sinenomine.net"
   debian10-amd64:
     notify: "mmeffie@sinenomine.net"
   debian11-amd64:
@@ -253,38 +249,6 @@ afsbotcfg_builders:
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
-
-  - scheduler: parked
-    branch: dev
-    os: debian8
-    cc: gcc
-    arch: amd64
-    worker: debian87-x86_64
-    factory:
-      name: UnixBuildFactory
-      args:
-        configure: >-
-          --enable-kernel-module
-          --enable-pthreaded-bos
-          --enable-pthreaded-ubik
-          --enable-supergroups
-
-  - scheduler: parked
-    branch: dev
-    os: debian9
-    cc: gcc
-    arch: amd64
-    worker: debian9-amd64
-    factory:
-      name: UnixBuildFactory
-      args:
-        configure: >-
-          --enable-checking
-          --enable-kernel-module
-          --enable-pthreaded-bos
-          --enable-pthreaded-ubik
-          --enable-supergroups
-          --enable-warnings
 
   - scheduler: gerrit
     branch: dev
