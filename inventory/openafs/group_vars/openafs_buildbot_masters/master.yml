@@ -1173,6 +1173,8 @@ afsbotcfg_builders:
     factory:
       name: UnixBuildFactory
       args:
+        test: True
+        docs: True
         configure: >-
           --enable-checking
           --enable-kernel-module
