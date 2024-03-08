@@ -25,9 +25,9 @@ afsbotcfg_project:
 
   # Nightly build times.
   nightly:
-    dev: 13
-    stable: 14
-    oldstable: 15
+    dev: 1
+    stable: 2
+    oldstable: 3
 
   # Delete build logs older than four weeks on Sunday at 12:00PM (noon).
   janitor:
