@@ -474,7 +474,7 @@ afsbotcfg_builders:
           --enable-warnings
         test: True
 
-  - scheduler: gerrit
+  - scheduler: parked
     branch: dev
     os: macos10-15
     cc: xcode
@@ -493,7 +493,7 @@ afsbotcfg_builders:
         target: dest
         jobs: 1
 
-  - scheduler: gerrit
+  - scheduler: parked
     branch: dev
     os: macos11
     cc: xcode
@@ -837,44 +837,6 @@ afsbotcfg_builders:
           -Wno-error=format-truncation
           -Wno-error=implicit-function-declaration
           -Wno-error=restrict
-
-  - scheduler: gerrit
-    branch: stable
-    os: macos10-15
-    cc: gcc
-    arch: amd64
-    worker: macos10-15-x86_64
-    factory:
-      name: UnixBuildFactory
-      args:
-        configure: >-
-          --disable-pam
-          --enable-kernel-module
-          --enable-pthreaded-bos
-          --enable-pthreaded-ubik
-          --enable-supergroups
-          --enable-transarc-paths
-        target: dest
-        jobs: 1
-
-  - scheduler: gerrit
-    branch: stable
-    os: macos11
-    cc: gcc
-    arch: amd64
-    worker: macos11-x86_64
-    factory:
-      name: UnixBuildFactory
-      args:
-        configure: >-
-          --disable-pam
-          --enable-kernel-module
-          --enable-pthreaded-bos
-          --enable-pthreaded-ubik
-          --enable-supergroups
-          --enable-transarc-paths
-        target: dest
-        jobs: 1
 
   - scheduler: gerrit
     branch: stable
