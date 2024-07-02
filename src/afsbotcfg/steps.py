@@ -124,7 +124,7 @@ class MakeManPages(steps.ShellSequence):
                 logname='merge-pod',
                 haltOnFailure=True),
             util.ShellArg(
-                command=['/bin/sh', 'generate-man'],
+                command=['./generate-man'],
                 logname='generate-man',
                 haltOnFailure=True),
         ]
