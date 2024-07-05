@@ -26,6 +26,8 @@ help:
 	@echo "  build      create source distribution"
 	@echo "  clean      remove generated files"
 	@echo "  distclean  remove dist and generated files"
+	@echo ""
+	@echo "VERSION=$(VERSION)"
 
 lint:
 	pyflakes3 afsbotcfg/*.py
