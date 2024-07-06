@@ -1228,12 +1228,17 @@ afsbotcfg_builders:
         test: True
         docs: True
         configure: >-
+          --disable-optimize
+          --disable-optimize-kernel
           --enable-checking
+          --enable-debug
+          --enable-debug-kernel
           --enable-kernel-module
           --enable-pthreaded-bos
           --enable-pthreaded-ubik
           --enable-supergroups
           --enable-warnings
+          --with-linux-kernel-packaging
 
   - scheduler: gerrit
     branch: dev
