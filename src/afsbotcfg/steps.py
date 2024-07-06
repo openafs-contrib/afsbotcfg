@@ -81,6 +81,8 @@ class Make(steps.Compile):
             self.command.append('%d' % jobs)
         if pretty:
             self.command.append('V=0')
+        else:
+            self.command.append('V=1')
         self.command.append(target)
 
 

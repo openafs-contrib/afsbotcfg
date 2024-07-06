@@ -104,7 +104,7 @@ class UnixBuildFactory(GerritCheckoutFactory):
                  objdir=False,
                  configure=None,
                  make='make',
-                 pretty=True,
+                 pretty=False,
                  jobs=4,
                  target='all',
                  docs=False,
