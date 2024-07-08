@@ -304,7 +304,7 @@ afsbotcfg_builders:
       env:
         MKAFS_OSTYPE: FBSD
 
-  - scheduler: gerrit
+  - scheduler: parked
     branch: dev
     os: fedora33
     cc: gcc
