@@ -7,5 +7,5 @@ molecule==24.2.0
 molecule-plugins==23.5.3
 pyflakes==3.2.0
 python-vagrant==1.0.0
-setuptools==69.1.0
+setuptools==70.0.0
 yamllint==1.34.0
