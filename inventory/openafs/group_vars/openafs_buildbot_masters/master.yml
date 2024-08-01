@@ -94,6 +94,7 @@ afsbotcfg_workers:
     enabled: False
     notify: "mmeffie@sinenomine.net"
   fedora37-x86_64:
+    enabled: True
     notify: "mmeffie@sinenomine.net"
   fedora38-x86_64:
     notify: "mmeffie@sinenomine.net"
@@ -394,7 +395,7 @@ afsbotcfg_builders:
           -Wno-error=implicit-function-declaration
           -Wno-error=restrict
 
-  - scheduler: gerrit
+  - scheduler: parked
     branch: dev
     os: fedora37
     cc: gcc
@@ -882,7 +883,7 @@ afsbotcfg_builders:
           -Wno-error=implicit-function-declaration
           -Wno-error=restrict
 
-  - scheduler: gerrit
+  - scheduler: parked
     branch: stable
     os: fedora37
     cc: gcc
