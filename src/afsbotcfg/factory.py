@@ -192,9 +192,12 @@ class ELRpmBuildFactory(GerritCheckoutFactory):
     Scripts:
         make-rpm-workspace.sh   Create and populate the rpmbuild/SOURCES.
         unpack-dkms-rpm.sh      Unpack the DKMS package.
+
+    Args:
+        build_dkms_source
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, build_dkms_source=False, **kwargs):
         super().__init__(**kwargs)
 
         self.addStep(steps.ShellCommand(
@@ -219,21 +222,22 @@ class ELRpmBuildFactory(GerritCheckoutFactory):
             sourcedir='`pwd`/packages/rpmbuild/SOURCES',
             srcrpmdir='`pwd`/packages/rpmbuild/SRPMS'))
 
-        self.addStep(steps.FileDownload(
-            name='Download unpack-dkms-rpm script',
-            mastersrc='build-scripts/unpack-dkms-rpm.sh',
-            workerdest='packages/unpack-dkms-rpm.sh',
-            mode=0o755))
+        if build_dkms_source:
+            self.addStep(steps.FileDownload(
+                name='Download unpack-dkms-rpm script',
+                mastersrc='build-scripts/unpack-dkms-rpm.sh',
+                workerdest='packages/unpack-dkms-rpm.sh',
+                mode=0o755))
 
-        self.addStep(steps.ShellCommand(
-            name='Unpack dkms-openafs rpm',
-            command=['packages/unpack-dkms-rpm.sh']))
+            self.addStep(steps.ShellCommand(
+                name='Unpack dkms-openafs rpm',
+                command=['packages/unpack-dkms-rpm.sh']))
 
-        self.addStep(steps.Configure(
-            command=['./configure', '--with-linux-kernel-packaging'],
-            workdir='build/packages/dkms/usr/src/openafs',
-            logfiles={'config.log': 'config.log'}))
+            self.addStep(steps.Configure(
+                command=['./configure', '--with-linux-kernel-packaging'],
+                workdir='build/packages/dkms/usr/src/openafs',
+                logfiles={'config.log': 'config.log'}))
 
-        self.addStep(steps.Compile(
-            command=['make', '-j', '4', 'V=0'],
-            workdir='build/packages/dkms/usr/src/openafs'))
+            self.addStep(steps.Compile(
+                command=['make', '-j', '4', 'V=0'],
+                workdir='build/packages/dkms/usr/src/openafs'))
