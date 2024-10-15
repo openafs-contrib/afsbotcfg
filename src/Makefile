@@ -30,7 +30,7 @@ help:
 	@echo "VERSION=$(VERSION)"
 
 lint:
-	pyflakes3 afsbotcfg/*.py
+	pyflakes afsbotcfg/*.py
 	flake8 --ignore=E501,$(FLAKE8_IGNORE) afsbotcfg/*.py
 
 test: lint
