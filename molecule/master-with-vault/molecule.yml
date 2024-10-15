@@ -4,7 +4,7 @@ driver:
 
 platforms:
   - name: afsbotcfg-master
-    box: generic/centos7
+    box: generic/alma8
     groups:
       - openafs_buildbot_masters
 
