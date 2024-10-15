@@ -16,7 +16,7 @@ provisioner:
   inventory:
     group_vars:
       openafs_buildbot_masters:
-        afsbotcfg_version: "${AFSBOTCFG_VERSION}"
+        afsbotcfg_version: "${AFSBOTCFG_VERSION:-24.10.11}"
         afsbotcfg_sqlalchemy_version: "==1.4.28"
         afsbotcfg_buildbot_version: "==3.5.0"
         _merge:
