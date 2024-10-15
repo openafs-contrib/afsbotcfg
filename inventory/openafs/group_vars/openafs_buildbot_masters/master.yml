@@ -742,6 +742,18 @@ afsbotcfg_builders:
 
   - scheduler: gerrit
     branch: stable
+    os: alma9
+    cc: gcc
+    arch: amd64
+    flavor: rpm
+    worker: alma9-amd64-rpm
+    factory:
+      name: ELRpmBuildFactory
+      args:
+        build_dkms_source: True
+
+  - scheduler: gerrit
+    branch: stable
     os: centos6
     cc: gcc
     arch: amd64
@@ -1279,6 +1291,18 @@ afsbotcfg_builders:
           --enable-pthreaded-ubik
           --enable-supergroups
           --enable-warnings
+
+  - scheduler: nightly
+    branch: dev
+    os: alma9
+    cc: gcc
+    arch: amd64
+    flavor: rpm
+    worker: alma9-amd64-rpm
+    factory:
+      name: ELRpmBuildFactory
+      args:
+        build_dkms_source: True
 
   - scheduler: nightly
     branch: dev
