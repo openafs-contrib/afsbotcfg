@@ -1,0 +1,78 @@
+---
+driver:
+  name: vagrant
+
+platforms:
+  - name: afsbotcfg-master
+    box: generic/alma8
+    groups:
+      - openafs_buildbot_masters
+
+  - name: afsbotcfg-alma-worker
+    box: generic/alma9
+    groups:
+      - openafs_buildbot_workers
+
+provisioner:
+  name: ansible
+  env:
+    ANSIBLE_STDOUT_CALLBACK: yaml
+  inventory:
+    host_vars:
+      afsbotcfg-alma-worker:
+        worker_name: "alma9-amd64"
+        ansible_python_interpreter: "/usr/bin/python3"
+
+    group_vars:
+      all:
+        afsbotcfg_version: "${AFSBOTCFG_VERSION:-24.10.16}"
+        afsbotcfg_sqlalchemy_version: "==1.4.28"
+        afsbotcfg_buildbot_version: "==3.5.0"
+        afsbotcfg_project:
+          name: "openafs"
+          title: "OpenAFS Buildbot"
+          summary_title: "The OpenAFS Buildbot Coordinator"
+          db_url: "sqlite:///state.sqlite"
+          url: "https://buildbot.openafs.org/"
+          www_port: 8011
+          pb_port: 9989
+          email_from: "buildbot@openafs.MIT.EDU"
+          repo: "${GIT_REPO:-git://gerrit.openafs.org/openafs.git}"
+          start_delay: 30
+          branches:
+            dev: "master"
+            stable: "openafs-stable-1_8_x"
+            oldstable: "openafs-stable-1_6_x"
+          janitor:
+            log_horizon: 4
+            day_of_week: 6
+            hour: 12
+          nightly:
+            dev: 13
+            stable: 14
+            oldstable: 15
+
+        afsbotcfg_admin_passwords:
+          - ["admin@example.com", "secret"]
+
+        afsbotcfg_worker_passwords:
+          alma9-amd64: "secret"
+
+        afsbotcfg_workers:
+          alma9-amd64:
+            notify: "admin@example.com"
+
+        afsbotcfg_builders:
+          - scheduler: nightly
+            os: alma9
+            cc: gcc
+            arch: amd64
+            branch: stable
+            worker: alma9-amd64
+            factory:
+              name: ELRpmBuildFactory
+              args:
+                build_dkms_source: True
+
+verifier:
+  name: ansible

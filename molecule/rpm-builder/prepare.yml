@@ -1,0 +1,43 @@
+---
+#
+#  The converge must run all steps as a regular user, since we do not have sudo
+#  access on the buildbot master.  Any preparation which requires root access
+#  should be done in this prepare playbook.
+#
+- name: Prepare test instances
+  hosts: all
+  tasks:
+    - name: Turn off firewall
+      become: yes
+      ansible.builtin.systemd:
+        state: stopped
+        name: firewalld
+      when: ansible_os_family == 'RedHat'
+
+    - name: Install epel-release
+      become: yes
+      ansible.builtin.yum:
+        state: present
+        name:
+          - epel-release
+      when: ansible_pkg_mgr == 'yum'
+
+    - name: Install required packages
+      become: yes
+      ansible.builtin.yum:
+        state: present
+        name:
+          - python-setuptools
+          - python3-setuptools
+          - python3-virtualenv
+          - net-tools
+      when: ansible_pkg_mgr == 'yum'
+
+    - name: Disable selinux
+      become: yes
+      ansible.posix.selinux:
+        policy: targeted
+        state: permissive
+      when:
+        - ansible_selinux.status is defined
+        - ansible_selinux.status == 'enabled'

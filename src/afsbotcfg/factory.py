@@ -200,6 +200,8 @@ class ELRpmBuildFactory(GerritCheckoutFactory):
     def __init__(self, build_dkms_source=False, **kwargs):
         super().__init__(**kwargs)
 
+        self.addStep(steps.MakeDirectory(dir='build/packages'))
+
         self.addStep(steps.ShellCommand(
             name='Create source distribution tarballs',
             command=['build-tools/make-release', '--dir=packages', 'HEAD']))
