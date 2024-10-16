@@ -1,46 +1,30 @@
 ---
-#driver:
-#  name: vagrant
-
 driver:
-  name: molecule-proxmox
-  options:
-    api_host: morty.oh2.sinenomine.net
-    api_user: root@pam
-    api_password: "${PROXMOX_PASSWORD}"
-    node: morty
-    ssh_user: "${USER}"
-    ssh_identity_file: "/home/mmeffie/.ssh/mmeffie-sna2"
-    sethostname: no
+  name: vagrant
 
 platforms:
   - name: afsbotcfg-master
-    #box: generic/alma8
-    template_name: alma8
+    box: generic/alma8
     groups:
       - openafs_buildbot_masters
 
   - name: afsbotcfg-alma-worker
-    #box: generic/alma9
-    template_name: alma9
+    box: generic/alma9
     groups:
       - openafs_buildbot_workers
 
   - name: afsbotcfg-debian11-worker
-    #box: generic/debian11
-    template_name: debian11
+    box: generic/debian11
     groups:
       - openafs_buildbot_workers
 
   - name: afsbotcfg-debian12-worker
-    #box: generic/debian12
-    template_name: debian12
+    box: generic/debian12
     groups:
       - openafs_buildbot_workers
 
   - name: afsbotcfg-ubuntu-worker
-    #box: generic/ubuntu2004
-    template_name: ubuntu20
+    box: generic/ubuntu2004
     groups:
       - openafs_buildbot_workers
 
