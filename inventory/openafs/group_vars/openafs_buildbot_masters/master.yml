@@ -44,112 +44,53 @@ afsbotcfg_gerrit:
   ssh_port: 29418
 
 afsbotcfg_workers:
-  aix61-rs:
-    notify: "Ben Huntsman <ben@huntsmans.net>"
-    enabled: True
-  aix71-rs:
-    notify: "Ben Huntsman <ben@huntsmans.net>"
-    enabled: True
-  alma9-amd64:
-    notify: "mmeffie@sinenomine.net"
-  alma9-amd64-static:
-    notify: "mmeffie@sinenomine.net"
-  alma9-amd64-rpm:
-    notify: "mmeffie@sinenomine.net"
-  centos6-amd64:
-    notify: "mmeffie@sinenomine.net"
-  centos73-x86_64:
-    notify: "mmeffie@sinenomine.net"
-  centos7-arm64:
-    notify: "mmeffie@sinenomine.net"
-  centos8-amd64:
-    notify: "mmeffie@sinenomine.net"
-  debian10-amd64:
-    notify: "mmeffie@sinenomine.net"
-  debian11-amd64:
-    notify: "mmeffie@sinenomine.net"
-  debian12-amd64:
-    notify: "mmeffie@sinenomine.net"
-  fedora26-x86_64:
-    notify: "mmeffie@sinenomine.net"
-  fedora27-x86_64:
-    notify: "mmeffie@sinenomine.net"
-  fedora28-x86_64:
-    notify: "mmeffie@sinenomine.net"
-  fedora29-x86_64:
-    notify: "mmeffie@sinenomine.net"
-  fedora30-x86_64:
-    notify: "mmeffie@sinenomine.net"
-  fedora31-x86_64:
-    notify: "mmeffie@sinenomine.net"
-  fedora32-x86_64:
-    notify: "mmeffie@sinenomine.net"
-  fedora33-x86_64:
-    notify: "mmeffie@sinenomine.net"
-  fedora34-x86_64:
-    notify: "mmeffie@sinenomine.net"
-  fedora35-x86_64:
-    notify: "mmeffie@sinenomine.net"
-  fedora36-x86_64:
-    enabled: False
-    notify: "mmeffie@sinenomine.net"
-  fedora37-x86_64:
-    enabled: True
-    notify: "mmeffie@sinenomine.net"
-  fedora38-x86_64:
-    notify: "mmeffie@sinenomine.net"
-  fedora39-x86_64:
-    notify: "mmeffie@sinenomine.net"
-  fedora40-x86_64:
-    notify: "mmeffie@sinenomine.net"
-  freebsd11-amd64:
-    enabled: True
-    notify: "mansaxel@besserwisser.org"
-  freebsd12-amd64:
-    enabled: True
-    notify: "mansaxel@besserwisser.org"
-  freebsd13-amd64:
-    enabled: True
-    notify: "mansaxel@besserwisser.org"
-  gentoo-amd64:
-    notify: "cwills@sinenomine.net"
-  gentoo-gcc-amd64:
-    notify: "cwills@sinenomine.net"
-  linux-rc-x86_64:
-    notify: "mmeffie@sinenomine.net"
-  macos10-15-x86_64:
-    enabled: True
-    notify: "mbarbosa@sinenomine.net"
-  macos11-x86_64:
-    enabled: True
-    notify: "mbarbosa@sinenomine.net"
-  macos12-x86_64:
-    enabled: True
-    notify: "mbarbosa@sinenomine.net"
-  opensuse12-x86_64:
-    # notify:
-  opensuse15-x86_64:
-    notify: "mmeffie@sinenomine.net"
-  opensuse-tumbleweed-i386:
-    # notify:
-  opensuse-tumbleweed-x86_64:
-    # notify:
-  sol11sparc:
-    notify: "mmeffie@sinenomine.net"
-  solaris114-x86-2:
-    notify: "mmeffie@sinenomine.net"
-  sun510_x86:
-    enabled: False
-    notify: "mmeffie@sinenomine.net"
-  ubuntu1804-amd64:
-    notify: "mmeffie@sinenomine.net"
-  ubuntu2004-amd64:
-    notify: "mmeffie@sinenomine.net"
-  ubuntu2204-amd64:
-    notify: "mmeffie@sinenomine.net"
-  wins2019-amd64:
-    enabled: True
-    notify: "asedeno@mit.edu"
+  aix61-rs:                   {inservice: True,  notify: "ben@huntsmans.net"}
+  aix71-rs:                   {inservice: True,  notify: "ben@huntsmans.net"}
+  alma9-amd64:                {inservice: True,  notify: "mmeffie@sinenomine.net"}
+  alma9-amd64-rpm:            {inservice: True,  notify: "mmeffie@sinenomine.net"}
+  alma9-amd64-static:         {inservice: True,  notify: "mmeffie@sinenomine.net"}
+  centos6-amd64:              {inservice: True,  notify: "mmeffie@sinenomine.net"}
+  centos73-x86_64:            {inservice: True,  notify: "mmeffie@sinenomine.net"}
+  centos7-arm64:              {inservice: True,  notify: "mmeffie@sinenomine.net"}
+  centos8-amd64:              {inservice: True,  notify: "mmeffie@sinenomine.net"}
+  debian10-amd64:             {inservice: True,  notify: "mmeffie@sinenomine.net"}
+  debian11-amd64:             {inservice: True,  notify: "mmeffie@sinenomine.net"}
+  debian12-amd64:             {inservice: True,  notify: "mmeffie@sinenomine.net"}
+  fedora26-x86_64:            {inservice: True,  notify: "mmeffie@sinenomine.net"}
+  fedora27-x86_64:            {inservice: True,  notify: "mmeffie@sinenomine.net"}
+  fedora28-x86_64:            {inservice: True,  notify: "mmeffie@sinenomine.net"}
+  fedora29-x86_64:            {inservice: True,  notify: "mmeffie@sinenomine.net"}
+  fedora30-x86_64:            {inservice: True,  notify: "mmeffie@sinenomine.net"}
+  fedora31-x86_64:            {inservice: True,  notify: "mmeffie@sinenomine.net"}
+  fedora32-x86_64:            {inservice: True,  notify: "mmeffie@sinenomine.net"}
+  fedora33-x86_64:            {inservice: True,  notify: "mmeffie@sinenomine.net"}
+  fedora34-x86_64:            {inservice: True,  notify: "mmeffie@sinenomine.net"}
+  fedora35-x86_64:            {inservice: True,  notify: "mmeffie@sinenomine.net"}
+  fedora36-x86_64:            {inservice: False, notify: "mmeffie@sinenomine.net"}
+  fedora37-x86_64:            {inservice: True,  notify: "mmeffie@sinenomine.net"}
+  fedora38-x86_64:            {inservice: True,  notify: "mmeffie@sinenomine.net"}
+  fedora39-x86_64:            {inservice: True,  notify: "mmeffie@sinenomine.net"}
+  fedora40-x86_64:            {inservice: True,  notify: "mmeffie@sinenomine.net"}
+  freebsd11-amd64:            {inservice: True,  notify: "mansaxel@besserwisser.org"}
+  freebsd12-amd64:            {inservice: True,  notify: "mansaxel@besserwisser.org"}
+  freebsd13-amd64:            {inservice: True,  notify: "mansaxel@besserwisser.org"}
+  gentoo-amd64:               {inservice: True,  notify: "cwills@sinenomine.net"}
+  gentoo-gcc-amd64:           {inservice: True,  notify: "cwills@sinenomine.net"}
+  linux-rc-x86_64:            {inservice: True,  notify: "mmeffie@sinenomine.net"}
+  macos10-15-x86_64:          {inservice: True,  notify: "mbarbosa@sinenomine.net"}
+  macos11-x86_64:             {inservice: True,  notify: "mbarbosa@sinenomine.net"}
+  macos12-x86_64:             {inservice: True,  notify: "mbarbosa@sinenomine.net"}
+  opensuse12-x86_64:          {inservice: True,  notify: "mmeffie@sinenomine.net"}
+  opensuse15-x86_64:          {inservice: True,  notify: "mmeffie@sinenomine.net"}
+  opensuse-tumbleweed-i386:   {inservice: True,  notify: "mmeffie@sinenomine.net"}
+  opensuse-tumbleweed-x86_64: {inservice: True,  notify: "mmeffie@sinenomine.net"}
+  sol11sparc:                 {inservice: True,  notify: "mmeffie@sinenomine.net"}
+  solaris114-x86-2:           {inservice: True,  notify: "mmeffie@sinenomine.net"}
+  sun510_x86:                 {inservice: False, notify: "mmeffie@sinenomine.net"}
+  ubuntu1804-amd64:           {inservice: True,  notify: "mmeffie@sinenomine.net"}
+  ubuntu2004-amd64:           {inservice: True,  notify: "mmeffie@sinenomine.net"}
+  ubuntu2204-amd64:           {inservice: True,  notify: "mmeffie@sinenomine.net"}
+  wins2019-amd64:             {inservice: True,  notify: "asedeno@mit.edu"}
 
 afsbotcfg_builders:
   - scheduler: gerrit
