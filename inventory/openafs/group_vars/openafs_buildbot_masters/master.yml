@@ -45,7 +45,7 @@ afsbotcfg_gerrit:
 
 afsbotcfg_workers:
   aix61-rs:                   {inservice: True,  notify: "ben@huntsmans.net"}
-  aix71-rs:                   {inservice: True,  notify: "ben@huntsmans.net"}
+  aix71-rs:                   {inservice: False,  notify: "ben@huntsmans.net"}
   alma9-amd64:                {inservice: True,  notify: "mmeffie@sinenomine.net"}
   alma9-amd64-rpm:            {inservice: True,  notify: "mmeffie@sinenomine.net"}
   alma9-amd64-static:         {inservice: True,  notify: "mmeffie@sinenomine.net"}
