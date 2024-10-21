@@ -71,9 +71,9 @@ afsbotcfg_workers:
   fedora38-x86_64:            {inservice: True,  notify: "mmeffie@sinenomine.net"}
   fedora39-x86_64:            {inservice: True,  notify: "mmeffie@sinenomine.net"}
   fedora40-x86_64:            {inservice: True,  notify: "mmeffie@sinenomine.net"}
-  freebsd11-amd64:            {inservice: True,  notify: "mansaxel@besserwisser.org"}
-  freebsd12-amd64:            {inservice: True,  notify: "mansaxel@besserwisser.org"}
-  freebsd13-amd64:            {inservice: True,  notify: "mansaxel@besserwisser.org"}
+  freebsd11-amd64:            {inservice: False,  notify: "mansaxel@besserwisser.org"}
+  freebsd12-amd64:            {inservice: False,  notify: "mansaxel@besserwisser.org"}
+  freebsd13-amd64:            {inservice: False,  notify: "mansaxel@besserwisser.org"}
   gentoo-amd64:               {inservice: True,  notify: "cwills@sinenomine.net"}
   gentoo-gcc-amd64:           {inservice: True,  notify: "cwills@sinenomine.net"}
   linux-rc-x86_64:            {inservice: True,  notify: "mmeffie@sinenomine.net"}
