@@ -512,7 +512,7 @@ afsbotcfg_builders:
           --enable-supergroups
           --with-linux-kernel-build=/usr/src/linux-obj/x86_64/default
 
-  - scheduler: parked
+  - scheduler: gerrit
     branch: dev
     os: opensuse156
     cc: gcc
