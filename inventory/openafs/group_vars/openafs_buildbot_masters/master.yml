@@ -84,7 +84,6 @@ afsbotcfg_workers:
   opensuse-tumbleweed-x86_64: {inservice: True,  notify: "mmeffie@sinenomine.net"}
   sol11sparc:                 {inservice: True,  notify: "mmeffie@sinenomine.net"}
   solaris114-x86-2:           {inservice: True,  notify: "mmeffie@sinenomine.net"}
-  sun510_x86:                 {inservice: False, notify: "mmeffie@sinenomine.net"}
   ubuntu1804-amd64:           {inservice: True,  notify: "mmeffie@sinenomine.net"}
   ubuntu2004-amd64:           {inservice: True,  notify: "mmeffie@sinenomine.net"}
   ubuntu2204-amd64:           {inservice: True,  notify: "mmeffie@sinenomine.net"}
@@ -531,25 +530,6 @@ afsbotcfg_builders:
 
   - scheduler: gerrit
     branch: dev
-    os: solaris10
-    cc: spro
-    arch: x86
-    worker: sun510_x86
-    factory:
-      name: UnixBuildFactory
-      args:
-        configure: >-
-          --enable-kernel-module
-          --enable-pthreaded-bos
-          --enable-pthreaded-ubik
-          --enable-supergroups
-          --enable-transarc-paths
-        target: dest
-        jobs: 1
-        make: gmake
-
-  - scheduler: gerrit
-    branch: dev
     os: solaris114
     cc: spro
     arch: x86
@@ -913,23 +893,6 @@ afsbotcfg_builders:
 
   - scheduler: gerrit
     branch: stable
-    os: solaris10
-    cc: gcc
-    arch: x86
-    worker: sun510_x86
-    factory:
-      name: UnixBuildFactory
-      args:
-        configure: >-
-          --enable-kernel-module
-          --enable-pthreaded-bos
-          --enable-pthreaded-ubik
-          --enable-supergroups
-          --enable-transarc-paths
-        target: dest
-
-  - scheduler: gerrit
-    branch: stable
     os: solaris114
     cc: gcc
     arch: x86
@@ -1095,24 +1058,6 @@ afsbotcfg_builders:
           -Wno-error=format-truncation
           -Wno-error=implicit-function-declaration
           -Wno-error=restrict
-
-  - scheduler: gerrit
-    branch: oldstable
-    os: solaris10
-    cc: spro
-    arch: x86
-    worker: sun510_x86
-    factory:
-      name: UnixBuildFactory
-      args:
-        configure: >-
-          --enable-kernel-module
-          --enable-pthreaded-bos
-          --enable-pthreaded-ubik
-          --enable-supergroups
-          --enable-transarc-paths
-        target: dest
-        make: gmake
 
   - scheduler: gerrit
     branch: oldstable
