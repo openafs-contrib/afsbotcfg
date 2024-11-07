@@ -76,7 +76,6 @@ afsbotcfg_workers:
   freebsd13-amd64:            {inservice: False,  notify: "mansaxel@besserwisser.org"}
   gentoo-amd64:               {inservice: True,  notify: "cwills@sinenomine.net"}
   gentoo-gcc-amd64:           {inservice: True,  notify: "cwills@sinenomine.net"}
-  linux-rc-x86_64:            {inservice: True,  notify: "mmeffie@sinenomine.net"}
   macos10-15-x86_64:          {inservice: True,  notify: "mbarbosa@sinenomine.net"}
   macos11-x86_64:             {inservice: True,  notify: "mbarbosa@sinenomine.net"}
   macos12-x86_64:             {inservice: True,  notify: "mbarbosa@sinenomine.net"}
