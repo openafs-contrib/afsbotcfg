@@ -44,6 +44,8 @@ afsbotcfg_gerrit:
   ssh_port: 29418
 
 afsbotcfg_workers:
+  aix61-rs:                   {inservice: True,  notify: "ben@huntsmans.net"}
+  aix71-rs:                   {inservice: False,  notify: "ben@huntsmans.net"}
   alma9-amd64:                {inservice: True,  notify: "mmeffie@sinenomine.net"}
   alma9-amd64-rpm:            {inservice: True,  notify: "mmeffie@sinenomine.net"}
   alma9-amd64-static:         {inservice: True,  notify: "mmeffie@sinenomine.net"}
@@ -87,6 +89,22 @@ afsbotcfg_workers:
   wins2019-amd64:             {inservice: True,  notify: "asedeno@mit.edu"}
 
 afsbotcfg_builders:
+  - scheduler: gerrit
+    branch: dev
+    os: aix61
+    cc: xlc
+    arch: rs
+    worker: aix61-rs
+    factory:
+      name: UnixBuildFactory
+      args:
+        configure: >-
+          --enable-kernel-module
+          --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+        jobs: 1
+
   - scheduler: gerrit
     branch: dev
     os: alma9
@@ -596,6 +614,22 @@ afsbotcfg_builders:
     factory:
       name: UnixBuildFactory
       args:
+        configure: >-
+          --enable-kernel-module
+          --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+
+  - scheduler: gerrit
+    branch: stable
+    os: aix61
+    cc: gcc
+    arch: rs
+    worker: aix61-rs
+    factory:
+      name: UnixBuildFactory
+      args:
+        jobs: 1
         configure: >-
           --enable-kernel-module
           --enable-pthreaded-bos
@@ -1173,6 +1207,22 @@ afsbotcfg_builders:
         arch: x86
         variant: free
 
+  - scheduler: nightly
+    branch: dev
+    os: aix71
+    cc: xlc
+    arch: rs
+    worker: aix71-rs
+    factory:
+      name: UnixBuildFactory
+      args:
+        configure: >-
+          --enable-kernel-module
+          --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+        jobs: 1
+
   - scheduler: gerrit
     branch: stable
     os: debian12
@@ -1208,6 +1258,22 @@ afsbotcfg_builders:
           --enable-pthreaded-ubik
           --enable-supergroups
           --enable-warnings
+
+  - scheduler: nightly
+    branch: stable
+    os: aix71
+    cc: xlc
+    arch: rs
+    worker: aix71-rs
+    factory:
+      name: UnixBuildFactory
+      args:
+        configure: >-
+          --enable-kernel-module
+          --enable-pthreaded-bos
+          --enable-pthreaded-ubik
+          --enable-supergroups
+        jobs: 1
 
   - scheduler: parked
     branch: dev
