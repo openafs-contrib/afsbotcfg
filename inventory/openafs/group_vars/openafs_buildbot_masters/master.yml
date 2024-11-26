@@ -45,7 +45,7 @@ afsbotcfg_gerrit:
 
 afsbotcfg_workers:
   aix61-rs:                   {inservice: True,  notify: "ben@huntsmans.net"}
-  aix71-rs:                   {inservice: False,  notify: "ben@huntsmans.net"}
+  aix73-rs:                   {inservice: True,  notify: "ben@huntsmans.net"}
   alma9-amd64:                {inservice: True,  notify: "mmeffie@sinenomine.net"}
   alma9-amd64-rpm:            {inservice: True,  notify: "mmeffie@sinenomine.net"}
   alma9-amd64-static:         {inservice: True,  notify: "mmeffie@sinenomine.net"}
@@ -1209,10 +1209,10 @@ afsbotcfg_builders:
 
   - scheduler: nightly
     branch: dev
-    os: aix71
+    os: aix73
     cc: xlc
     arch: rs
-    worker: aix71-rs
+    worker: aix73-rs
     factory:
       name: UnixBuildFactory
       args:
@@ -1261,10 +1261,10 @@ afsbotcfg_builders:
 
   - scheduler: nightly
     branch: stable
-    os: aix71
+    os: aix73
     cc: xlc
     arch: rs
-    worker: aix71-rs
+    worker: aix73-rs
     factory:
       name: UnixBuildFactory
       args:
