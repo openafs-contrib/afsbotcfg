@@ -49,15 +49,15 @@ AFSBOTCFG_MOLECULE_YML = \
 
 YAML_FILES=\
   *.yml \
-  inventory/openafs/group_vars/openafs_buildbot_masters/master.yml \
+  inventory/group_vars/openafs_buildbot_masters/master.yml \
   molecule/*/*.yml
 
 LINT_OPTIONS=\
-  --exclude=inventory/openafs/group_vars/openafs_buildbot_masters/worker_passwords.yml \
-  --exclude=inventory/openafs/group_vars/openafs_buildbot_masters/admin_passwords.yml
+  --exclude=inventory/group_vars/openafs_buildbot_masters/worker_passwords.yml \
+  --exclude=inventory/group_vars/openafs_buildbot_masters/admin_passwords.yml
 
 PLAYBOOK=afsbotcfg.yml
-INVENTORY=inventory/openafs/hosts.ini
+INVENTORY=inventory/hosts.ini
 VAULT_KEYFILE=.vault-afsbotcfg
 
 PACKAGES=.packages
