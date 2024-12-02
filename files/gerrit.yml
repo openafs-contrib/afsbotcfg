@@ -1,0 +1,7 @@
+---
+url: "https://gerrit.openafs.org"
+ident: "gerrit"
+hostkey: "gerrit.hostkey"
+user: "buildbot"
+server: "gerrit.openafs.org"
+ssh_port: 29418

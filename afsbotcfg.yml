@@ -186,6 +186,11 @@
         buildbot_project: "{{ afsbotcfg_project.name | d('openafs') }}"
         buildbot_master_config_templates:
           - "{{ playbook_dir }}/templates/master.cfg.j2"
+        # Master configuration
+        afsbotcfg_project: "{{ lookup('file', 'project.yml') | from_yaml }}"
+        afsbotcfg_gerrit: "{{ lookup('file', 'gerrit.yml') | from_yaml }}"
+        afsbotcfg_workers: "{{ lookup('file', 'workers.yml') | from_yaml }}"
+        afsbotcfg_builders: "{{ lookup('file', 'builders.yml') | from_yaml }}"
 
     - name: "Update README file."
       ansible.builtin.template:
