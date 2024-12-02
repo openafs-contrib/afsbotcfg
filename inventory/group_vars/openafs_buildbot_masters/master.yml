@@ -1,10 +1,4 @@
-# OpenAFS buildbot master configuration.
 ---
-
-afsbotcfg_version: "24.10.16"
-afsbotcfg_sqlalchemy_version: "==1.4.28"
-afsbotcfg_buildbot_version: "==3.5.0"
-
 afsbotcfg_project:
   name: "openafs"
   title: "OpenAFS Buildbot"
