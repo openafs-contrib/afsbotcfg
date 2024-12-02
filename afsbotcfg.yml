@@ -191,6 +191,8 @@
         afsbotcfg_gerrit: "{{ lookup('file', 'gerrit.yml') | from_yaml }}"
         afsbotcfg_workers: "{{ lookup('file', 'workers.yml') | from_yaml }}"
         afsbotcfg_builders: "{{ lookup('file', 'builders.yml') | from_yaml }}"
+        afsbotcfg_admin_passwords: "{{ lookup('file', 'admin_passwords.yml') | from_yaml }}"
+        afsbotcfg_worker_passwords: "{{ lookup('file', 'worker_passwords.yml') | from_yaml }}"
 
     - name: "Update README file."
       ansible.builtin.template:
