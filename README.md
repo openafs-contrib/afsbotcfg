@@ -32,7 +32,7 @@ run the Molecule tests (except for the master-with-vault scenario).
 
 ## Setup
 
-Before running the playbook or the molecule tests, create a Python virtualenv
+Before running the playbook, create a Python virtualenv
 and install the required Ansible and Molecule package versions in the
 virtualenv.  The `setup` make target is provided to create the virtual
 environment and install Ansible and Molecule packages in it.  The buildbot is
@@ -43,8 +43,6 @@ local machine.
 
 See [Environment variables](#environment-variables) to specify local
 configuration before running `make setup`.
-See [Molecule driver configuration](#molecule-driver-configuration) to specify
-the virtualization provider used by Molecule to run the local tests.
 
 
 ## Running the playbook
@@ -61,84 +59,6 @@ Run `make ping` to check ssh connectivity with the buildbot.
 Run `make buildbot` to run the Ansible playbook.
 
     $ make buildbot
-
-## Development
-
-Ansible Molecule scenarios are provided to run tests locally for testing and
-development.  SSH access to the Buildbot server is not required to run the
-molecule tests. Except for the `master-with-vault` scenario, the vault key is
-not required to run the tests.
-
-Activate the Python virtualenv created by `make setup` and run Molecule as usual.
-
-    $ . .venv/bin/activate
-    (.venv) $ molecule list  # Show available scenarios.
-    (.venv) $ molecule test -s <scenario-name>
-    (.venv) $ deactivate
-    $
-
-## Molecule driver configuration
-
-The molecule scenarios are setup to use Vagrant by default.  If you are using a
-different virtualization provider, update the file `molecule.json` with the
-required Molecule driver settings and then run `make setup` again to update
-your project directory.
-
-If you already have `molecule.json` file outside your project directory you
-wish to use, set the `AFSBOTCFG_MOLECULE_JSON` environment variable to the path
-of your `molecule.json` file and run `make clean` and the `make setup` to
-update your project.
-
-    $ export AFSBOTCFG_MOLECULE_JSON=$HOME/my-molecule-driver-config.json
-    $ make clean
-    $ make setup
-
-See the `molecule.json.sample` for a sample molecule driver configuration file
-for the required keys in your local configuration file.
-
-## Environment variables
-
-The following environment variables can be used to customize the `Makefile`
-processing.
-
-| Name                          | Description                              | Default value       |
-| ----------------------------- | ------------------------------------ | ------------------- |
-| `AFSBOTCFG_PYTHON`            | `make setup` Python interpreter path | `python`            |
-| `AFSBOTCFG_MOLECULE_JSON`     | Molecule driver config file path     | `molecule.json`     |
-| `AFSBOTCFG_MOLECULE_SCENARIO` | `make test`, `make check` scenario   | `master-with-vault` |
-| `AFSBOTCFG_MOLECULE_HOST`     | `make login` host                    | `afsbotcfg-master`  |
-| `AFSBOTCFG_LOGDIR`            | `make buildbot` log directory        | `logs`              |
-| `NO_COLOR`                    | Disable Makefile color output        |                     |
-
-The `AFSBOTCFG_PYTHON` variable specifies the path of the local python
-interpreter used by `make setup` to create the project local Python virtualenv.
-This is separate from the Ansible `anisble_python_interpreter` inventory
-variable to set the Python interpreter path used by Ansible on the remote
-nodes.
-
-**Tip**: Use `direnv` to avoid cluttering your shell profile. `direnv` can also
-create the project local virtualenv and invoke the `make setup` to install
-the required Python packages and generate the other project local files. Example:
-
-    $ cat .envrc
-    export AFSBOTCFG_PYTHON=/usr/bin/python3.9
-    export AFSBOTCFG_MOLECULE_JSON=$HOME/molecule-proxmox.json
-    export AFSBOTCFG_MOLECULE_SCENARIO=master-with-vault
-    export AFSBOTCFG_MOLECULE_HOST=afsbotcfg-master
-
-    # Create the virtualenv and install packages the first time we cd to the project directory.
-    layout python $AFSBOTCFG_PYTHON
-    make setup VENV=$VIRTUAL_ENV PIP=$VIRTUAL_ENV/bin/pip ACTIVATE=$VIRTUAL_ENV/bin/activate
-
-    $ direnv allow
-
-**Tip**: Add a `pre-commit` git hook to run `make lint`.
-
-    $ echo "#!/bin/sh" > .git/hooks/pre-commit
-    $ echo "make lint >> .git/hooks/pre-commit
-    $ chmod +x ./git/hooks/pre-commit
-
-Use `git commit --no-verify` if you need to skip the lint check for some reason.
 
 [1]: https://www.openafs.org/
 [2]: https://buildbot.openafs.org/
