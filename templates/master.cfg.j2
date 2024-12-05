@@ -100,8 +100,8 @@ BuildmasterConfig = {
     ],
     'builders': [
 {% for builder in afsbotcfg_builders %}
-{%   set worker = afsbotcfg_workers[builder.worker] %}
-{%   if worker.inservice | d('yes') | bool %}
+{%   set worker = afsbotcfg_workers.get(builder.worker) %}
+{%   if worker %}
         util.BuilderConfig(
             name='{{ builder_name(builder) }}',
             workernames=['{{builder.worker}}'],
@@ -140,8 +140,8 @@ BuildmasterConfig = {
             change_filter=util.ChangeFilter(branch='{{ name }}'),
             builderNames=[
 {%   for builder in afsbotcfg_builders %}
-{%     set worker = afsbotcfg_workers[builder.worker] %}
-{%     if worker.inservice | d('yes') | bool %}
+{%     set worker = afsbotcfg_workers.get(builder.worker) %}
+{%     if worker %}
 {%       if builder.scheduler == 'nightly' and builder.branch == branch %}
                 '{{ builder_name(builder) }}',
 {%       endif %}
@@ -165,8 +165,8 @@ BuildmasterConfig = {
             treeStableTimer=None,  # Schedule immediately to avoid dropping changes.
             builderNames=[
 {%   for builder in afsbotcfg_builders %}
-{%     set worker = afsbotcfg_workers[builder.worker] %}
-{%     if worker.inservice | d('yes') | bool %}
+{%     set worker = afsbotcfg_workers.get(builder.worker) %}
+{%     if worker %}
 {%       if builder.scheduler == 'gerrit' and builder.branch == branch %}
                 '{{ builder_name(builder) }}',
 {%       endif %}
@@ -188,8 +188,8 @@ BuildmasterConfig = {
 {%   for branch in afsbotcfg_project.branches | d({'dev': 'master'}) %}
                 '{{ afsbotcfg_project.branches[branch] }}': [
 {%     for builder in afsbotcfg_builders %}
-{%       set worker = afsbotcfg_workers[builder.worker] %}
-{%       if worker.inservice | d('yes') | bool %}
+{%       set worker = afsbotcfg_workers.get(builder.worker) %}
+{%       if worker %}
 {%         if builder.scheduler == 'gerrit' and builder.branch == branch %}
                     '{{ builder_name(builder) }}',
 {%         endif %}
@@ -202,8 +202,8 @@ BuildmasterConfig = {
 
         # Force schedulers.
 {% for builder in afsbotcfg_builders %}
-{%   set worker = afsbotcfg_workers[builder.worker] %}
-{%   if worker.inservice | d('yes') | bool %}
+{%   set worker = afsbotcfg_workers.get(builder.worker) %}
+{%   if worker %}
         afsbotcfg.schedulers.Force('{{ builder_name(builder) }}', '{{ builder.worker }}'),
 {%   endif %}
 {% endfor %}
