@@ -95,11 +95,7 @@ BuildmasterConfig = {
 {% for name in afsbotcfg_workers %}
 {%   set properties = afsbotcfg_workers[name] %}
 {%   set password = afsbotcfg_worker_passwords.get(name, default_password) %}
-{%  if properties.notify is defined %}
         worker.Worker('{{ name }}', '{{ password }}', notify_on_missing='{{ properties.notify }}'),
-{%  else %}
-        worker.Worker('{{ name }}', '{{ password }}'),
-{%  endif %}
 {% endfor %}
     ],
     'builders': [
