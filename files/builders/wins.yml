@@ -1,0 +1,65 @@
+---
+- scheduler: parked
+  branch: dev
+  os: wins2019
+  cc: msvc
+  arch: amd64
+  flavor: free
+  worker: wins2019-amd64
+  factory:
+    name: WindowsBuildFactory
+    args:
+      arch: amd64
+      variant: free
+
+- scheduler: parked
+  branch: stable
+  os: wins2019
+  cc: msvc
+  arch: amd64
+  flavor: free
+  worker: wins2019-amd64
+  factory:
+    name: WindowsBuildFactory
+    args:
+      arch: amd64
+      variant: free
+
+- scheduler: parked
+  branch: stable
+  os: wins2019
+  cc: msvc
+  arch: x86
+  flavor: checked
+  worker: wins2019-amd64
+  factory:
+    name: WindowsBuildFactory
+    args:
+      arch: x86
+      variant: checked
+
+- scheduler: nightly
+  branch: dev
+  os: wins2019
+  cc: msvc
+  arch: amd64
+  flavor: checked
+  worker: wins2019-amd64
+  factory:
+    name: WindowsBuildFactory
+    args:
+      arch: amd64
+      variant: checked
+
+- scheduler: nightly
+  branch: dev
+  os: wins2019
+  cc: msvc
+  arch: x86
+  flavor: free
+  worker: wins2019-amd64
+  factory:
+    name: WindowsBuildFactory
+    args:
+      arch: x86
+      variant: free

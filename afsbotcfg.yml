@@ -172,6 +172,13 @@
           when: afsbotcfg_buildbot_version != current_buildbot_version
           notify: "restart buildbot master instance"
 
+    - name: "Read builder yaml files."
+      vars:
+        _builders: []
+      ansible.builtin.set_fact:
+        _builders: "{{ _builders + (lookup('file', item) | from_yaml) }}"
+      with_fileglob: "builders/*.yml"
+
     - ansible.builtin.import_role:
         name: openafs_contrib.buildbot.buildbot_master
       vars:
@@ -190,7 +197,7 @@
         afsbotcfg_project: "{{ lookup('file', 'project.yml') | from_yaml }}"
         afsbotcfg_gerrit: "{{ lookup('file', 'gerrit.yml') | from_yaml }}"
         afsbotcfg_workers: "{{ lookup('file', 'workers.yml') | from_yaml }}"
-        afsbotcfg_builders: "{{ lookup('file', 'builders.yml') | from_yaml }}"
+        afsbotcfg_builders: "{{ _builders }}"
         afsbotcfg_admin_passwords: "{{ lookup('file', 'admin_passwords.yml') | from_yaml }}"
         afsbotcfg_worker_passwords: "{{ lookup('file', 'worker_passwords.yml') | from_yaml }}"
 

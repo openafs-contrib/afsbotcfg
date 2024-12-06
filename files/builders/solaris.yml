@@ -1,0 +1,52 @@
+---
+- scheduler: nightly
+  branch: dev
+  os: solaris11
+  cc: spro
+  arch: sparc
+  worker: sol11sparc
+  factory:
+    name: UnixBuildFactory
+    args:
+      configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
+        --enable-supergroups
+      make: gmake
+
+- scheduler: gerrit
+  branch: dev
+  os: solaris114
+  cc: spro
+  arch: x86
+  worker: solaris114-x86-2
+  factory:
+    name: UnixBuildFactory
+    args:
+      configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
+        --enable-supergroups
+      make: gmake
+
+- scheduler: gerrit
+  branch: stable
+  os: solaris114
+  cc: gcc
+  arch: x86
+  worker: solaris114-x86-2
+  factory:
+    name: UnixBuildFactory
+    args:
+      configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
+        --enable-supergroups
+      make: gmake
+
+- scheduler: gerrit
+  branch: oldstable
+  os: solaris114
+  cc: spro
+  arch: x86
+  worker: solaris114-x86-2
+  factory:
+    name: UnixBuildFactory
+    args:
+      configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
+        --enable-supergroups
+      make: gmake

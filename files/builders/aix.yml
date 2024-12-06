@@ -1,0 +1,52 @@
+---
+- scheduler: gerrit
+  branch: dev
+  os: aix61
+  cc: xlc
+  arch: rs
+  worker: aix61-rs
+  factory:
+    name: UnixBuildFactory
+    args:
+      configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
+        --enable-supergroups
+      jobs: 1
+
+- scheduler: gerrit
+  branch: stable
+  os: aix61
+  cc: gcc
+  arch: rs
+  worker: aix61-rs
+  factory:
+    name: UnixBuildFactory
+    args:
+      jobs: 1
+      configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
+        --enable-supergroups
+
+- scheduler: nightly
+  branch: dev
+  os: aix73
+  cc: xlc
+  arch: rs
+  worker: aix73-rs
+  factory:
+    name: UnixBuildFactory
+    args:
+      configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
+        --enable-supergroups
+      jobs: 1
+
+- scheduler: nightly
+  branch: stable
+  os: aix73
+  cc: xlc
+  arch: rs
+  worker: aix73-rs
+  factory:
+    name: UnixBuildFactory
+    args:
+      configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
+        --enable-supergroups
+      jobs: 1
