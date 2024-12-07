@@ -1,5 +1,5 @@
 ---
-- scheduler: parked
+- scheduler: nightly
   branch: dev
   os: wins2019
   cc: msvc
@@ -12,7 +12,7 @@
       arch: amd64
       variant: free
 
-- scheduler: parked
+- scheduler: nightly
   branch: stable
   os: wins2019
   cc: msvc
@@ -25,7 +25,7 @@
       arch: amd64
       variant: free
 
-- scheduler: parked
+- scheduler: nightly
   branch: stable
   os: wins2019
   cc: msvc

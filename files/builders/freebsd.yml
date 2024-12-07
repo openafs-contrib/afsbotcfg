@@ -1,5 +1,5 @@
 ---
-- scheduler: parked
+- scheduler: nightly
   branch: dev
   os: freebsd11
   cc: gcc
@@ -13,7 +13,7 @@
     env:
       MKAFS_OSTYPE: FBSD
 
-- scheduler: parked
+- scheduler: nightly
   branch: dev
   os: freebsd12
   cc: gcc
@@ -27,7 +27,7 @@
     env:
       MKAFS_OSTYPE: FBSD
 
-- scheduler: parked
+- scheduler: nightly
   branch: stable
   os: freebsd12
   cc: gcc
@@ -41,7 +41,7 @@
     env:
       MKAFS_OSTYPE: FBSD
 
-- scheduler: parked
+- scheduler: nightly
   branch: dev
   os: freebsd13
   cc: gcc
