@@ -149,7 +149,7 @@
       CFLAGS: -Wno-error=array-bounds -Wno-error=format-overflow -Wno-error=format-truncation
         -Wno-error=implicit-function-declaration -Wno-error=restrict
 
-- scheduler: gerrit
+- scheduler: nightly
   branch: dev
   os: fedora36
   cc: gcc
@@ -164,7 +164,7 @@
       CFLAGS: -Wno-error=array-bounds -Wno-error=format-overflow -Wno-error=format-truncation
         -Wno-error=implicit-function-declaration -Wno-error=restrict
 
-- scheduler: gerrit
+- scheduler: nightly
   branch: stable
   os: fedora36
   cc: gcc

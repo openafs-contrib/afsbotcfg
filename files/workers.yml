@@ -20,7 +20,7 @@ fedora32-x86_64:            {notify: "mmeffie@sinenomine.net"}
 fedora33-x86_64:            {notify: "mmeffie@sinenomine.net"}
 fedora34-x86_64:            {notify: "mmeffie@sinenomine.net"}
 fedora35-x86_64:            {notify: "mmeffie@sinenomine.net"}
-#fedora36-x86_64:            {notify: "mmeffie@sinenomine.net"}
+fedora36-x86_64:            {notify: "mmeffie@sinenomine.net"}
 fedora37-x86_64:            {notify: "mmeffie@sinenomine.net"}
 fedora38-x86_64:            {notify: "mmeffie@sinenomine.net"}
 fedora39-x86_64:            {notify: "mmeffie@sinenomine.net"}
