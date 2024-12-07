@@ -22,6 +22,12 @@ import afsbotcfg.gerrit
 import afsbotcfg.master
 import afsbotcfg.schedulers
 
+{% for builder in afsbotcfg_builders %}
+{%   if not afsbotcfg_workers.get(builder.worker) %}
+print("Warning: Missing worker '{{ builder.worker}}' for builder '{{ builder_name(builder) }}'.")
+{%   endif %}
+{% endfor %}
+
 BuildmasterConfig = {
     'title': '{{ afsbotcfg_project.title }}',
     'titleURL':  '{{ afsbotcfg_project.url }}',
