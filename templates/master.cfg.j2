@@ -23,7 +23,7 @@ import afsbotcfg.master
 import afsbotcfg.schedulers
 
 {% for builder in afsbotcfg_builders %}
-{%   if not afsbotcfg_workers.get(builder.worker) %}
+{%   if builder.worker not in afsbotcfg_workers %}
 print("Warning: Missing worker '{{ builder.worker}}' for builder '{{ builder_name(builder) }}'.")
 {%   endif %}
 {% endfor %}
@@ -98,15 +98,14 @@ BuildmasterConfig = {
     },
     'workers': [
 {% for name in afsbotcfg_workers %}
-{%   set properties = afsbotcfg_workers[name] %}
-{%   set password = afsbotcfg_worker_passwords[name] %}
+{%   set properties = lookup('file', 'workers/' + name + '/properties.yml') | from_yaml %}
+{%   set password = lookup('unvault', 'workers/' + name + '/password.txt') | trim  %}
         worker.Worker('{{ name }}', '{{ password }}', notify_on_missing='{{ properties.notify }}'),
 {% endfor %}
     ],
     'builders': [
 {% for builder in afsbotcfg_builders %}
-{%   set worker = afsbotcfg_workers.get(builder.worker) %}
-{%   if worker %}
+{%   if builder.worker in afsbotcfg_workers %}
         util.BuilderConfig(
             name='{{ builder_name(builder) }}',
             workernames=['{{builder.worker}}'],
@@ -145,11 +144,8 @@ BuildmasterConfig = {
             change_filter=util.ChangeFilter(branch='{{ name }}'),
             builderNames=[
 {%   for builder in afsbotcfg_builders %}
-{%     set worker = afsbotcfg_workers.get(builder.worker) %}
-{%     if worker %}
-{%       if builder.scheduler == 'nightly' and builder.branch == branch %}
+{%     if builder.worker in afsbotcfg_workers and builder.scheduler == 'nightly' and builder.branch == branch %}
                 '{{ builder_name(builder) }}',
-{%       endif %}
 {%     endif %}
 {%   endfor %}
             ],
@@ -170,11 +166,8 @@ BuildmasterConfig = {
             treeStableTimer=None,  # Schedule immediately to avoid dropping changes.
             builderNames=[
 {%   for builder in afsbotcfg_builders %}
-{%     set worker = afsbotcfg_workers.get(builder.worker) %}
-{%     if worker %}
-{%       if builder.scheduler == 'gerrit' and builder.branch == branch %}
+{%     if builder.worker in afsbotcfg_workers and builder.scheduler == 'gerrit' and builder.branch == branch %}
                 '{{ builder_name(builder) }}',
-{%       endif %}
 {%     endif %}
 {%   endfor %}
             ],
@@ -193,11 +186,8 @@ BuildmasterConfig = {
 {%   for branch in afsbotcfg_project.branches | d({'dev': 'master'}) %}
                 '{{ afsbotcfg_project.branches[branch] }}': [
 {%     for builder in afsbotcfg_builders %}
-{%       set worker = afsbotcfg_workers.get(builder.worker) %}
-{%       if worker %}
-{%         if builder.scheduler == 'gerrit' and builder.branch == branch %}
+{%       if builder.worker in afsbotcfg_workers and builder.scheduler == 'gerrit' and builder.branch == branch %}
                     '{{ builder_name(builder) }}',
-{%         endif %}
 {%       endif %}
 {%     endfor %}
                 ],
@@ -207,8 +197,7 @@ BuildmasterConfig = {
 
         # Force schedulers.
 {% for builder in afsbotcfg_builders %}
-{%   set worker = afsbotcfg_workers.get(builder.worker) %}
-{%   if worker %}
+{%   if builder.worker in afsbotcfg_workers %}
         afsbotcfg.schedulers.Force('{{ builder_name(builder) }}', '{{ builder.worker }}'),
 {%   endif %}
 {% endfor %}

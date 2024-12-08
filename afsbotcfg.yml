@@ -1,7 +1,32 @@
 ---
 - name: Manage OpenAFS buildbot master
   hosts: openafs_buildbot_masters
+  gather_facts: true
   tasks:
+
+    - name: "Read worker names."
+      delegate_to: localhost
+      ansible.builtin.command:
+        chdir: "{{ playbook_dir }}/files/workers"
+        cmd: "ls"
+      changed_when: false
+      register: _ls_workers
+
+    - ansible.builtin.set_fact:
+        _workers: "{{ _ls_workers.stdout_lines }}"
+
+    #- debug:
+    #    var: _workers
+
+    - name: "Read builder files."
+      vars:
+        _builders: []
+      ansible.builtin.set_fact:
+        _builders: "{{ _builders + (lookup('file', item) | from_yaml) }}"
+      with_fileglob: "builders/*.yml"
+
+    #- debug:
+    #    var: _builders
 
     # Setup role variable default values.
     - ansible.builtin.set_fact:
@@ -172,12 +197,6 @@
           when: afsbotcfg_buildbot_version != current_buildbot_version
           notify: "restart buildbot master instance"
 
-    - name: "Read builder yaml files."
-      vars:
-        _builders: []
-      ansible.builtin.set_fact:
-        _builders: "{{ _builders + (lookup('file', item) | from_yaml) }}"
-      with_fileglob: "builders/*.yml"
 
     - ansible.builtin.import_role:
         name: openafs_contrib.buildbot.buildbot_master
@@ -196,10 +215,9 @@
         # Master configuration
         afsbotcfg_project: "{{ lookup('file', 'project.yml') | from_yaml }}"
         afsbotcfg_gerrit: "{{ lookup('file', 'gerrit.yml') | from_yaml }}"
-        afsbotcfg_workers: "{{ lookup('file', 'workers.yml') | from_yaml }}"
-        afsbotcfg_builders: "{{ _builders }}"
         afsbotcfg_admin_passwords: "{{ lookup('file', 'admin_passwords.yml') | from_yaml }}"
-        afsbotcfg_worker_passwords: "{{ lookup('file', 'worker_passwords.yml') | from_yaml }}"
+        afsbotcfg_workers: "{{ _workers }}"
+        afsbotcfg_builders: "{{ _builders }}"
 
     - name: "Update README file."
       ansible.builtin.template:
