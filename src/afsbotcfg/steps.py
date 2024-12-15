@@ -72,10 +72,6 @@ class Make(steps.Compile):
         """
         super().__init__(**kwargs)
         self.command = [make]
-        try:
-            jobs = int(jobs)
-        except ValueError:
-            jobs = 0
         if jobs > 1:
             self.command.append('-j')
             self.command.append('%d' % jobs)

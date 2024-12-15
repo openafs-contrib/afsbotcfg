@@ -5,4 +5,4 @@ ansible_user: buildbot
 afsbotcfg_master_python: "/opt/rh/rh-python36/root/usr/bin/python3.6"
 afsbotcfg_sqlalchemy_version: "==1.4.28"
 afsbotcfg_buildbot_version: "==3.5.0"
-afsbotcfg_version: "24.10.16"
+afsbotcfg_version: "24.11.15"

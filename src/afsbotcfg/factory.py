@@ -37,6 +37,10 @@ from buildbot.plugins import util
 from afsbotcfg.steps import Regen, Configure, Make, MakeDocs, MakeManPages, Test
 
 
+def str2bool(s):
+    return s.lower() in ["1", "yes", "true"]
+
+
 class GerritCheckoutFactory(util.BuildFactory):
     """Base class build factory.
 
@@ -101,14 +105,14 @@ class UnixBuildFactory(GerritCheckoutFactory):
     DOCS = ('AdminGuide', 'AdminRef', 'QuickStartUnix', 'UserGuide')
 
     def __init__(self,
-                 objdir=False,
+                 objdir='false',
                  configure=None,
                  make='make',
-                 pretty=False,
-                 jobs=4,
+                 pretty='false',
+                 jobs='4',
                  target='all',
-                 docs=False,
-                 test=False,
+                 docs='false',
+                 test='false',
                  **kwargs):
         """Create a UnixBuildFactory instance.
 
@@ -116,12 +120,21 @@ class UnixBuildFactory(GerritCheckoutFactory):
             objdir:       Build in separate directory when true (boolean)
             configure:    configure options (string)
             make:         make command (string)
-            pretty:       Pretty make output (boolean)
-            jobs:         Number of make jobs (int)
+            pretty:       Pretty make output (boolean string)
+            jobs:         Number of make jobs (int string)
             target:       The top level makefile target (string)
-            docs:         Also render the docs when true (boolean)
-            test:         Also run the TAP unit tests when true (boolean)
+            docs:         Also render the docs when true (boolean string)
+            test:         Also run the TAP unit tests when true (boolean string)
         """
+        objdir = str2bool(objdir)
+        pretty = str2bool(pretty)
+        docs = str2bool(docs)
+        test = str2bool(test)
+        try:
+            jobs = int(jobs)
+        except ValueError:
+            jobs = 0
+
         # Use separate source and build directories in objdir mode.
         if objdir:
             checkoutdir = 'source'
