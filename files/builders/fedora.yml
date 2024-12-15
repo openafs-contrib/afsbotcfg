@@ -298,3 +298,17 @@
     env:
       CFLAGS: -Wno-error=array-bounds -Wno-error=format-overflow -Wno-error=format-truncation
         -Wno-error=implicit-function-declaration -Wno-error=restrict
+
+- scheduler: nightly
+  branch: dev
+  os: fedora40
+  cc: gcc
+  arch: amd64
+  worker: fedora40-x86_64
+  factory:
+    name: UnixBuildFactory
+    args:
+      test: false
+      docs: false
+      configure: --enable-warnings --enable-checking --enable-kernel-module
+        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
