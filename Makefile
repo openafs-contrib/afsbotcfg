@@ -165,13 +165,14 @@ destroy:   # empty
 clean: destroy
 	$(INFO) "Cleanup files"
 	$(MAKE) -C src clean
+	rm logs/*
 	rm -f $(AFSBOTCFG_MOLECULE_YML) $(PACKAGES)
 
 .PHONY: reallyclean
 reallyclean: clean
 	$(INFO) "Cleanup project directory"
 	$(MAKE) -C src distclean
-	rm -rf .config .venv collections .direnv logs
+	rm -rf .config .venv collections .direnv
 
 #------------------------------------------------------------------------------
 # Dependencies
