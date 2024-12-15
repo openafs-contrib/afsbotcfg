@@ -119,6 +119,7 @@
       docs: true
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+        --with-docbook2pdf=dblatex --with-xslt-processor=xsltproc
 
 - scheduler: nightly
   branch: dev
@@ -133,6 +134,7 @@
       docs: true
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+        --with-docbook2pdf=dblatex --with-xslt-processor=xsltproc
 
 - scheduler: nightly
   branch: dev
@@ -147,6 +149,7 @@
       docs: true
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+        --with-docbook2pdf=dblatex --with-xslt-processor=xsltproc
 
 - scheduler: nightly
   branch: dev
@@ -161,3 +164,4 @@
       docs: true
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+        --with-docbook2pdf=dblatex --with-xslt-processor=xsltproc
