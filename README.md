@@ -29,6 +29,7 @@ run the Molecule tests (except for the master-with-vault scenario).
 * GNU Make
 * Python 3.9+
 * python-virtualenv package
+* Ansible Collection `openafs_contrib.buildbot`
 
 ## Setup
 
