@@ -6,3 +6,11 @@ afsbotcfg_master_python: "/opt/rh/rh-python36/root/usr/bin/python3.6"
 afsbotcfg_sqlalchemy_version: "==1.4.28"
 afsbotcfg_buildbot_version: "==3.5.0"
 afsbotcfg_version: "24.11.15"
+
+afsbotcfg_gerrit:
+  url: "https://gerrit.openafs.org"
+  ident: "gerrit"
+  hostkey: "gerrit.hostkey"
+  user: "buildbot"
+  server: "gerrit.openafs.org"
+  ssh_port: 29418

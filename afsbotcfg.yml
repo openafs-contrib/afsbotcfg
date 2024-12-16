@@ -62,7 +62,7 @@
 
         - name: "Ensure the ssh keys for gerrit are present."
           ansible.builtin.copy:
-            src: "{{ afsbotcfg_gerrit.keysdir | d('files/ssh') }}/{{ item.src }}"
+            src: "{{ afsbotcfg_gerrit.keysdir | d('keys') }}/{{ item.src }}"
             dest: "{{ afsbotcfg_master_home }}/.ssh/{{ item.src | basename }}"
             mode: "{{ item.mode }}"
           loop:
@@ -73,7 +73,7 @@
 
         - name: "Ensure the known_hosts file contains the gerrit server host key."
           vars:
-            _hostkey_file: "{{ afsbotcfg_gerrit.keysdir | d('files/ssh') }}/{{ afsbotcfg_gerrit.hostkey | d('gerrit.hostkey') }}"
+            _hostkey_file: "{{ afsbotcfg_gerrit.keysdir | d('keys') }}/{{ afsbotcfg_gerrit.hostkey | d('gerrit.hostkey') }}"
             _server: "{{ afsbotcfg_gerrit.server | d('gerrit.openafs.org') }}"
             _port: "{{ afsbotcfg_gerrit.ssh_port | d('29418') }}"
           ansible.builtin.known_hosts:
@@ -161,7 +161,7 @@
         src: "{{ item }}"
         dest: "{{ afsbotcfg_master_basedir }}/build-scripts/{{ item | basename }}"
         mode: "0755"
-      with_fileglob: "files/scripts/*"
+      with_fileglob: "scripts/*"
       register: upload_results
 
     #--------------------------------------------------------------------------
@@ -214,7 +214,6 @@
           - "{{ playbook_dir }}/templates/master.cfg.j2"
         # Master configuration
         afsbotcfg_project: "{{ lookup('file', 'project.yml') | from_yaml }}"
-        afsbotcfg_gerrit: "{{ lookup('file', 'gerrit.yml') | from_yaml }}"
         afsbotcfg_admin_passwords: "{{ lookup('file', 'admin_passwords.yml') | from_yaml }}"
         afsbotcfg_workers: "{{ _workers }}"
         afsbotcfg_builders: "{{ _builders }}"
