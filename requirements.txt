@@ -1,6 +1,6 @@
 ansible==9.2.0
 ansible-compat==4.1.11
-ansible-core==2.16.3
+ansible-core==2.17.7
 ansible-lint==24.2.0
 flake8==7.0.0
 pyflakes==3.2.0
