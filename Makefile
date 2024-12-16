@@ -11,21 +11,12 @@ help:
 	@echo "  ping               to check connectivity to the buildbot server"
 	@echo "  getlog             to download the buildbot server log"
 	@echo ""
-	@echo "Test targets:"
-	@echo "  lint               to run yaml and ansible lint checks"
-	@echo "  test               to run molecule test"
-	@echo "  check              to run molecule create, converge, verify"
-	@echo "  login              to run molecule login"
-	@echo "  destroy            to run molecule destroy"
-	@echo ""
 	@echo "Cleanup targets:"
-	@echo "  clean              to destroy the molecule instance and remove generated files"
+	@echo "  clean              to remove generated files"
 	@echo "  reallyclean        to remove all non-project files"
 	@echo ""
 	@echo "Environment:"
 	@echo "  AFSBOTCFG_PYTHON                python interpreter path (default: python)"
-	@echo "  AFSBOTCFG_MOLECULE_SCENARIO     make check/test molecule scenario (default: master-with-vault)"
-	@echo "  AFSBOTCFG_MOLECULE_HOST         make login host (default: afsbotcfg-master)"
 	@echo "  AFSBOTCFG_LOGDIR                ansible play log directory (default: logs)"
 	@echo "  NO_COLOR                        disable Makefile color output"
 	@echo ""
@@ -37,20 +28,11 @@ help:
 # Environment
 AFSBOTCFG_HOST ?= buildbot.openafs.org
 AFSBOTCFG_PYTHON ?= python
-AFSBOTCFG_MOLECULE_SCENARIO ?= master-with-vault
-AFSBOTCFG_MOLECULE_HOST ?= afsbotcfg-master
 AFSBOTCFG_LOGDIR ?= logs
-
-# Generated molecule.yml files.
-AFSBOTCFG_MOLECULE_YML = \
-  molecule/default/molecule.yml \
-  molecule/master-with-vault/molecule.yml \
-  molecule/unix-builder/molecule.yml
 
 YAML_FILES=\
   *.yml \
-  inventory/group_vars/openafs_buildbot_masters/master.yml \
-  molecule/*/*.yml
+  inventory/group_vars/openafs_buildbot_masters/master.yml
 
 LINT_OPTIONS=\
   --exclude=inventory/group_vars/openafs_buildbot_masters/worker_passwords.yml \
@@ -91,7 +73,7 @@ endif
 # Setup targets
 #
 .PHONY: setup
-setup: $(PACKAGES) $(AFSBOTCFG_MOLECULE_YML) build
+setup: $(PACKAGES) build collections
 
 .PHONY: build
 build: $(PACKAGES)
@@ -117,56 +99,14 @@ getlog: $(AFSBOTCFG_LOGDIR)
 	$(INFO) "Downloading buildbot log"
 	scp $(AFSBOTCFG_HOST):master/openafs/twistd.log $(AFSBOTCFG_LOGDIR)/twistd-$(shell date "+%Y%m%dT%H%M").log
 
-#--------------------------------------------------------------------------------------------------------
-# Test targets
-#
-.PHONY: lint
-lint: $(PACKAGES)
-	$(INFO) "Running lint checks"
-	$(ACTIVATED) $(MAKE) -C src lint
-	$(ACTIVATED) yamllint $(YAML_FILES)
-	$(ACTIVATED) ansible-lint $(LINT_OPTIONS)
-
-.PHONY: test
-test: $(PACKAGES) lint build molecule/$(AFSBOTCFG_MOLECULE_SCENARIO)/molecule.yml
-	$(INFO) "Running molecule test"
-	$(ACTIVATED) molecule test -s $(AFSBOTCFG_MOLECULE_SCENARIO)
-	@rm -f .create  # Cleanup in case 'make check' was run before 'make test'.
-
-.PHONY: check
-check: $(PACKAGES) .create build
-	$(INFO) "Running playbook on molecule instance(s)"
-	$(ACTIVATED) molecule converge -s $(shell cat .create)
-	$(ACTIVATED) molecule verify -s $(shell cat .create)
-
-.PHONY: login
-login: $(PACKAGES) .create
-	$(INFO) "Logging into molecule instance"
-	$(ACTIVATED) molecule login -s $(shell cat .create) --host $(AFSBOTCFG_MOLECULE_HOST)
-
-.create: $(PACKAGES) molecule/$(AFSBOTCFG_MOLECULE_SCENARIO)/molecule.yml
-	$(INFO) "Creating molecule instance(s)"
-	$(ACTIVATED) molecule create -s $(AFSBOTCFG_MOLECULE_SCENARIO)
-	@echo $(AFSBOTCFG_MOLECULE_SCENARIO) >.create
-
-.PHONY: destroy
-destroy:   # empty
-	$(INFO) "Destroying molecule instance(s)"
-	if test -f .create; then \
-	  $(ACTIVATED) molecule destroy -s $(shell cat .create); \
-	  $(ACTIVATED) molecule reset -s $(shell cat .create); \
-	  rm -f .create; \
-	fi
-
 #------------------------------------------------------------------------------
 # Cleanup targets
 #
 .PHONY: clean
-clean: destroy
+clean:
 	$(INFO) "Cleanup files"
 	$(MAKE) -C src clean
 	rm logs/*
-	rm -f $(AFSBOTCFG_MOLECULE_YML) $(PACKAGES)
 
 .PHONY: reallyclean
 reallyclean: clean
@@ -203,9 +143,3 @@ $(VENV):
 	$(INFO) "Creating python virtualenv"
 	$(AFSBOTCFG_PYTHON) -m venv .venv
 	touch $(VENV)
-
-ifeq ($(AFSBOTCFG_MOLECULE_SCENARIO), master-with-vault)
-# Conditional to support testing without the vault key.
-test: $(VAULT_KEYFILE)
-.create: $(VAULT_KEYFILE)
-endif
