@@ -278,11 +278,10 @@
   factory:
     name: UnixBuildFactory
     args:
-      configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
-        --enable-supergroups
-    env:
-      CFLAGS: -Wno-error=array-bounds -Wno-error=format-overflow -Wno-error=format-truncation
-        -Wno-error=implicit-function-declaration -Wno-error=restrict
+      test: false
+      docs: false
+      configure: --enable-warnings --enable-checking --enable-kernel-module
+        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
 - scheduler: gerrit
   branch: stable
@@ -293,11 +292,10 @@
   factory:
     name: UnixBuildFactory
     args:
-      configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
-        --enable-supergroups
-    env:
-      CFLAGS: -Wno-error=array-bounds -Wno-error=format-overflow -Wno-error=format-truncation
-        -Wno-error=implicit-function-declaration -Wno-error=restrict
+      test: false
+      docs: false
+      configure: --enable-warnings --enable-checking --enable-kernel-module
+        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
 - scheduler: nightly
   branch: dev
