@@ -161,7 +161,7 @@
         src: "{{ item }}"
         dest: "{{ afsbotcfg_master_basedir }}/build-scripts/{{ item | basename }}"
         mode: "0755"
-      with_fileglob: "files/build-scripts/*"
+      with_fileglob: "files/scripts/*"
       register: upload_results
 
     #--------------------------------------------------------------------------
