@@ -8,9 +8,9 @@
   factory:
     name: UnixBuildFactory
     args:
+      jobs: 1
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
-      jobs: 1
 
 - scheduler: gerrit
   branch: stable
@@ -30,23 +30,45 @@
   os: aix73
   cc: xlc
   arch: rs
+  flavor: nocheck
   worker: aix73-rs
   factory:
     name: UnixBuildFactory
     args:
+      jobs: 1
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
-      jobs: 1
+    env:
+      PATH: /opt/IBM/xlC/16.1.0/bin:/usr/bin:/etc:/usr/sbin:/usr/ucb:/usr/bin/X11:/sbin:/opt/freeware/bin
 
 - scheduler: nightly
-  branch: stable
+  branch: dev
   os: aix73
-  cc: xlc
+  cc: openxlc
   arch: rs
+  flavor: nocheck
   worker: aix73-rs
   factory:
     name: UnixBuildFactory
     args:
+      jobs: 1
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
+    env:
+      PATH: /opt/IBM/openxlc/17.1.3/bin:/usr/bin:/etc:/usr/sbin:/usr/ucb:/usr/bin/X11:/sbin:/opt/freeware/bin
+
+- scheduler: nightly
+  branch: dev
+  os: aix73
+  cc: openxlc
+  arch: rs
+  flavor: check
+  worker: aix73-rs
+  factory:
+    name: UnixBuildFactory
+    args:
       jobs: 1
+      configure: --enable-warnings --enable-checking --enable-kernel-module
+        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+    env:
+      PATH: /opt/IBM/openxlc/17.1.3/bin:/usr/bin:/etc:/usr/sbin:/usr/ucb:/usr/bin/X11:/sbin:/opt/freeware/bin
