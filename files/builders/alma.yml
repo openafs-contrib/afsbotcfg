@@ -87,7 +87,10 @@
   os: alma8
   cc: gcc
   arch: amd64
-  worker: alma8-amd64-2
+  workers:
+    - alma8-amd64-2
+    - alma8-amd64-3
+    - alma8-amd64-4
   factory:
     name: UnixBuildFactory
     args:
@@ -103,7 +106,10 @@
   os: alma9
   cc: gcc
   arch: amd64
-  worker: alma9-amd64-2
+  workers:
+    - alma9-amd64-2
+    - alma9-amd64-3
+    - alma9-amd64-4
   factory:
     name: UnixBuildFactory
     args:
