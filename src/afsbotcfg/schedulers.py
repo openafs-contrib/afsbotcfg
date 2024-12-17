@@ -28,7 +28,7 @@ from buildbot.schedulers.forcesched import ValidationError
 
 class Force(schedulers.ForceScheduler):
 
-    def __init__(self, builder, worker):
+    def __init__(self, builder, workers):
         super().__init__(
             name='force-%s' % builder,
             buttonName='Force build',
@@ -64,8 +64,8 @@ class Force(schedulers.ForceScheduler):
             properties=[
                 util.WorkerChoiceParameter(
                     label='Worker:',
-                    default=worker,
-                    choices=[worker],
+                    default=workers[0],
+                    choices=workers,
                 ),
             ],
         )

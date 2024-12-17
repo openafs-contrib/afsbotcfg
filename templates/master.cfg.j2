@@ -101,7 +101,15 @@ BuildmasterConfig = {
 {% for builder in afsbotcfg_builders %}
         util.BuilderConfig(
             name='{{ builder_name(builder) }}',
+{%   if builder.workers is defined %}
+            workernames=[
+{%     for worker in builder.workers %}
+                '{{worker}}',
+{%     endfor %}
+            ],
+{%   else %}
             workernames=['{{builder.worker}}'],
+{%   endif %}
             canStartBuild=util.enforceChosenWorker,
 {%     if builder.factory.env is defined %}
             env={
@@ -189,7 +197,15 @@ BuildmasterConfig = {
 
         # Force schedulers.
 {% for builder in afsbotcfg_builders %}
-        afsbotcfg.schedulers.Force('{{ builder_name(builder) }}', '{{ builder.worker }}'),
+{%   if builder.workers is defined %}
+        afsbotcfg.schedulers.Force('{{ builder_name(builder) }}', [
+{%     for worker in builder.workers %}
+            '{{ worker }}',
+{%     endfor %}
+        ]),
+{%   else %}
+        afsbotcfg.schedulers.Force('{{ builder_name(builder) }}', ['{{ builder.worker }}']),
+{%   endif %}
 {% endfor %}
     ],
 }
