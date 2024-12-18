@@ -1,15 +1,18 @@
 ---
 - scheduler: gerrit
   branch: dev
-  os: alma9
+  os: alma8
   cc: gcc
   arch: amd64
-  worker: alma9-amd64
+  workers:
+    - alma8-amd64-2
+    - alma8-amd64-3
+    - alma8-amd64-4
   factory:
     name: UnixBuildFactory
     args:
       jobs: 4
-      test: false
+      test: true
       docs: false
       configure: --enable-warnings --enable-checking
         --enable-kernel-module --with-linux-kernel-packaging
@@ -17,70 +20,35 @@
 
 - scheduler: gerrit
   branch: dev
-  os: alma9
-  cc: gcc
-  arch: amd64
-  flavor: static
-  worker: alma9-amd64-static
-  factory:
-    name: UnixBuildFactory
-    args:
-      jobs: 4
-      test: false
-      docs: false
-      configure: --disable-shared --enable-warnings --enable-checking
-        --enable-kernel-module --with-linux-kernel-packaging
-        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
-
-- scheduler: gerrit
-  branch: dev
-  os: alma9
+  os: alma8
   cc: gcc
   arch: amd64
   flavor: rpm
-  worker: alma9-amd64-rpm
+  workers:
+    - alma8-amd64-2
+    - alma8-amd64-3
+    - alma8-amd64-4
   factory:
     name: ELRpmBuildFactory
 
 - scheduler: gerrit
   branch: stable
-  os: alma9
+  os: alma8
   cc: gcc
   arch: amd64
-  worker: alma9-amd64
+  workers:
+    - alma8-amd64-2
+    - alma8-amd64-3
+    - alma8-amd64-4
   factory:
     name: UnixBuildFactory
     args:
       jobs: 4
-      test: false
+      test: true
       docs: false
       configure: --enable-warnings --enable-checking
         --enable-kernel-module --with-linux-kernel-packaging
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
-
-- scheduler: gerrit
-  branch: stable
-  os: alma9
-  cc: gcc
-  arch: amd64
-  flavor: rpm
-  worker: alma9-amd64-rpm
-  factory:
-    name: ELRpmBuildFactory
-    args:
-      build_dkms_source: true
-
-- scheduler: nightly
-  branch: dev
-  os: alma9
-  cc: gcc
-  arch: amd64
-  flavor: rpm
-  worker: alma9-amd64-rpm
-  factory:
-    name: ELRpmBuildFactory
-    args:
-      build_dkms_source: true
 
 - scheduler: nightly
   branch: dev
@@ -100,6 +68,105 @@
       configure: --enable-warnings --enable-checking
         --enable-kernel-module --with-linux-kernel-packaging
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+
+- scheduler: gerrit
+  branch: dev
+  os: alma9
+  cc: gcc
+  arch: amd64
+  workers:
+    - alma9-amd64-2
+    - alma9-amd64-3
+    - alma9-amd64-4
+  factory:
+    name: UnixBuildFactory
+    args:
+      jobs: 4
+      test: true
+      docs: false
+      configure: --enable-warnings --enable-checking
+        --enable-kernel-module --with-linux-kernel-packaging
+        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+
+- scheduler: gerrit
+  branch: dev
+  os: alma9
+  cc: gcc
+  arch: amd64
+  flavor: disable_shared
+  workers:
+    - alma9-amd64-2
+    - alma9-amd64-3
+    - alma9-amd64-4
+  factory:
+    name: UnixBuildFactory
+    args:
+      jobs: 4
+      test: false
+      docs: false
+      configure: --disable-shared --enable-warnings --enable-checking
+        --enable-kernel-module --with-linux-kernel-packaging
+        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+
+- scheduler: gerrit
+  branch: dev
+  os: alma9
+  cc: gcc
+  arch: amd64
+  flavor: rpm
+  workers:
+    - alma9-amd64-2
+    - alma9-amd64-3
+    - alma9-amd64-4
+  factory:
+    name: ELRpmBuildFactory
+
+- scheduler: gerrit
+  branch: stable
+  os: alma9
+  cc: gcc
+  arch: amd64
+  workers:
+    - alma9-amd64-2
+    - alma9-amd64-3
+    - alma9-amd64-4
+  factory:
+    name: UnixBuildFactory
+    args:
+      jobs: 4
+      test: true
+      docs: false
+      configure: --enable-warnings --enable-checking
+        --enable-kernel-module --with-linux-kernel-packaging
+        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+
+- scheduler: gerrit
+  branch: stable
+  os: alma9
+  cc: gcc
+  arch: amd64
+  flavor: rpm
+  workers:
+    - alma9-amd64-2
+    - alma9-amd64-3
+    - alma9-amd64-4
+  factory:
+    name: ELRpmBuildFactory
+
+- scheduler: nightly
+  branch: dev
+  os: alma9
+  cc: gcc
+  arch: amd64
+  flavor: dkms_check
+  workers:
+    - alma9-amd64-2
+    - alma9-amd64-3
+    - alma9-amd64-4
+  factory:
+    name: ELRpmBuildFactory
+    args:
+      build_dkms_source: true
 
 - scheduler: nightly
   branch: dev
