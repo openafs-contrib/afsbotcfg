@@ -206,3 +206,20 @@
       configure: --enable-warnings --enable-checking
         --enable-kernel-module --with-linux-kernel-packaging
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+
+- scheduler: nightly
+  branch: dev
+  os: alma10
+  cc: gcc
+  arch: amd64
+  workers:
+    - alma10-amd64-1
+  factory:
+    name: UnixBuildFactory
+    args:
+      jobs: 4
+      test: true
+      docs: false
+      configure: --enable-warnings --enable-checking
+        --enable-kernel-module --with-linux-kernel-packaging
+        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
