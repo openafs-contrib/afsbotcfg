@@ -15,6 +15,7 @@ import shlex
 import re
 import os
 
+from twisted.internet import defer
 from buildbot.plugins import steps
 from buildbot.plugins import util
 
@@ -38,10 +39,14 @@ class Regen(steps.ShellCommand):
             self.command.append('-q')
 
 
-class Configure(steps.Configure):
+class Configure(steps.ShellCommand):
     """Run the autoconf configure script."""
 
-    name = 'configure'
+    name = "configure"
+    haltOnFailure = 1
+    flunkOnFailure = 1
+    description = "configuring"
+    descriptionDone = "configure"
     logfiles = {'config.log': 'config.log'}
 
     def __init__(self, configure='./configure', options=None, **kwargs):
@@ -55,6 +60,13 @@ class Configure(steps.Configure):
         self.command = [configure]
         if options is not None:
             self.command.extend(shlex.split(options))
+
+    @defer.inlineCallbacks
+    def run(self):
+        cmd = yield self.makeRemoteShellCommand()
+        yield self.addCompleteLog("command", " ".join(self.command))
+        yield self.runCommand(cmd)
+        return cmd.results()
 
 
 class Make(steps.Compile):
