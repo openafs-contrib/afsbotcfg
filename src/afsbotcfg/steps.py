@@ -202,7 +202,7 @@ class GitStatusObserver(util.LogLineObserver):
             self.changed.append(line)
 
 
-class GitStatus(steps.ShellCommand):
+class GitStatus(steps.WarningCountingShellCommand):
     """
     Run git status to check for untracked changes.
 
