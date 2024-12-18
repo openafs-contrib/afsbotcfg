@@ -185,3 +185,52 @@ class Test(steps.WarningCountingShellCommand):
 | FAILED {:>5} |
 +--------------+""".format(self.tap.passed, self.tap.failed)
         self.addCompleteLog('summary', summary)
+
+
+class GitStatusObserver(util.LogLineObserver):
+    """
+    Gather git status output.
+    """
+
+    untracked = []
+    changed = []
+
+    def outLineReceived(self, line):
+        if line.startswith("?? "):
+            self.untracked.append(line.replace("?? ", ""))
+        else:
+            self.changed.append(line)
+
+
+class GitStatus(steps.ShellCommand):
+    """
+    Run git status to check for untracked changes.
+
+    This step is intended to check for new untracked artifacts.  This can
+    happen if a commit adds a new artifact, but the developer missed updating
+    the .gitignore file(s).
+    """
+
+    name = 'git status'
+    workdir = 'build'
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.command = ['git', 'status', '--porcelain']
+        self.observer = GitStatusObserver()
+        self.addLogObserver('stdio', self.observer)
+
+    def evaluateCommand(self, cmd):
+        if self.observer.untracked:
+            return util.FAILURE
+        if self.observer.changed:
+            return util.FAILURE
+        return util.SUCCESS
+
+    def createSummary(self):
+        if self.observer.untracked:
+            untracked = "\n".join(self.observer.untracked)
+            self.addCompleteLog('untracked', untracked)
+        if self.observer.changed:
+            changed = "\n".join(self.observer.changed)
+            self.addCompleteLog('changed', changed)

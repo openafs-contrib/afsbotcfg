@@ -34,7 +34,15 @@ Classes:
 from buildbot.plugins import steps
 from buildbot.plugins import util
 
-from afsbotcfg.steps import Regen, Configure, Make, MakeDocs, MakeManPages, Test
+from afsbotcfg.steps import (
+    Regen,
+    Configure,
+    Make,
+    MakeDocs,
+    MakeManPages,
+    Test,
+    GitStatus
+)
 
 
 def str2bool(s):
@@ -85,6 +93,11 @@ class GerritCheckoutFactory(util.BuildFactory):
             name='git show',
             workdir=workdir,
             command=['git', 'log', '-n', '1', '--stat']))
+
+        self.addStep(steps.ShellCommand(
+            name='git clean',
+            workdir=workdir,
+            command=['git', 'clean', '-f', '-x', '-d']))
 
         self.addStep(steps.ShellCommand(
             name='git gc',
@@ -168,6 +181,9 @@ class UnixBuildFactory(GerritCheckoutFactory):
         if test:
             self.addStep(Test(make=make))
 
+        if not objdir:
+            self.addStep(GitStatus())
+
 
 class WindowsBuildFactory(GerritCheckoutFactory):
     """Build on Windows with a script.
@@ -180,6 +196,8 @@ class WindowsBuildFactory(GerritCheckoutFactory):
         self.addStep(steps.ShellCommand(
             name='build-openafs',
             command=['build-openafs.cmd', arch, variant]))
+
+        self.addStep(GitStatus())
 
     def delay(self, seconds):
         """Delay with ping.

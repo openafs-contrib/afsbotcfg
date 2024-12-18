@@ -78,7 +78,7 @@ setup: $(PACKAGES) build collections
 .PHONY: build
 build: $(PACKAGES)
 	$(INFO) "Building afsbotcfg python package"
-	$(ACTIVATED) $(MAKE) --no-print-directory -C src build
+	$(ACTIVATED) $(MAKE) --no-print-directory -C src lint build
 
 #--------------------------------------------------------------------------------------------------------
 # Run targets
