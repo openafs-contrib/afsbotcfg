@@ -204,14 +204,13 @@ class GitStatusObserver(util.LogLineObserver):
     Gather git status output.
     """
 
-    untracked = []
-    changed = []
+    def __init__(self, **kwargs):
+        """Create a step to generate the man pages."""
+        super().__init__(**kwargs)
+        self.changed = []
 
     def outLineReceived(self, line):
-        if line.startswith("?? "):
-            self.untracked.append(line.replace("?? ", ""))
-        else:
-            self.changed.append(line)
+        self.changed.append(line)
 
 
 class GitStatus(steps.WarningCountingShellCommand):
@@ -225,24 +224,19 @@ class GitStatus(steps.WarningCountingShellCommand):
 
     name = 'git status'
     workdir = 'build'
+    command = ['git', 'status', '--porcelain']
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.command = ['git', 'status', '--porcelain']
         self.observer = GitStatusObserver()
         self.addLogObserver('stdio', self.observer)
 
     def evaluateCommand(self, cmd):
-        if self.observer.untracked:
-            return util.FAILURE
         if self.observer.changed:
             return util.FAILURE
         return util.SUCCESS
 
     def createSummary(self):
-        if self.observer.untracked:
-            untracked = "\n".join(self.observer.untracked)
-            self.addCompleteLog('untracked', untracked)
         if self.observer.changed:
             changed = "\n".join(self.observer.changed)
             self.addCompleteLog('changed', changed)
