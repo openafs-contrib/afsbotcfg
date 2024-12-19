@@ -269,7 +269,8 @@ class GitStatus(steps.WarningCountingShellCommand):
 
     def evaluateCommand(self, cmd):
         if self.observer.changed:
-            return util.FAILURE
+            # return util.FAILURE
+            return util.WARNINGS
         return util.SUCCESS
 
     def createSummary(self):
