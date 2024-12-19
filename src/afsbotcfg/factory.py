@@ -100,6 +100,11 @@ class GerritCheckoutFactory(util.BuildFactory):
             command=['git', 'clean', '-f', '-x', '-d']))
 
         self.addStep(steps.ShellCommand(
+            name='git reset',
+            workdir=workdir,
+            command=['git', 'reset', '--hard', 'HEAD']))
+
+        self.addStep(steps.ShellCommand(
             name='git gc',
             workdir=workdir,
             command=['git', 'gc', '--auto']))
@@ -112,7 +117,7 @@ class UnixBuildFactory(GerritCheckoutFactory):
     """Build with autoconf and make.
 
     Build OpenAFS on Unix-like systems with autoconf and make. Optionally
-    render the documentation and run the TAB unit tests.
+    render the documentation and run the TAP unit tests.
     """
 
     DOCS = ('AdminGuide', 'AdminRef', 'QuickStartUnix', 'UserGuide')
