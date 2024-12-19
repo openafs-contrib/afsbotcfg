@@ -82,7 +82,7 @@ def summaryCB(buildInfoList, results, status, arg):
         and buildinfo not in skippedBuilds
     ]
 
-    msgs.append("Final Build Status (failed %d succeeded %d skipped %d):" %
+    msgs.append("Final Build Status (failed=%d succeeded=%d skipped=%d):" %
                 (len(failedBuilds), len(successfulBuilds), len(skippedBuilds)))
 
     if len(failedBuilds) > 0:
