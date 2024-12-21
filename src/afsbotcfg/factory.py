@@ -35,13 +35,14 @@ from buildbot.plugins import steps
 from buildbot.plugins import util
 
 from afsbotcfg.steps import (
+    Delay,
     Regen,
     Configure,
     Make,
     MakeDocs,
     MakeManPages,
-    Test,
-    GitStatus
+    RunTests,
+    GitIgnoreCheck,
 )
 
 
@@ -57,7 +58,7 @@ class GerritCheckoutFactory(util.BuildFactory):
     """
 
     gerrit_lock = util.MasterLock("gerrit")
-    gerrit_lock_count = 1  # Max number of concurrent checkouts.
+    gerrit_lock_count = 3  # Max number of concurrent checkouts.
 
     def __init__(self, repo=None, start_delay=0, workdir='build', **kwargs):
         """Checkout source code from the Gerrit repository.
@@ -72,22 +73,28 @@ class GerritCheckoutFactory(util.BuildFactory):
             workdir:     The directory to checkout source files.
         """
         super().__init__(**kwargs)
-        if not repo:
-            repo = 'git://git.openafs.org/openafs.git'
 
         if start_delay:
-            self.addStep(steps.ShellCommand(name='delay',
-                                            command=self.delay(start_delay)))
+            self.addStep(Delay(start_delay))
 
-        self.addStep(steps.Gerrit(
-            workdir=workdir,
-            repourl=repo,
-            mode='full',
-            method='fresh',
-            retryFetch=True,
-            timeout=3600,
-            locks=[self.gerrit_lock.access('counting',
-                                           self.gerrit_lock_count)]))
+        self.addStep(
+            steps.Gerrit(
+                workdir=workdir,
+                repourl=repo,
+                mode='full',
+                method='fresh',
+                retryFetch=True,
+                timeout=300))
+
+        # self.addStep(
+        #    steps.ShellSequence(
+        #        name='git cleanup',
+        #        workdir=workdir,
+        #        commands=[
+        #            util.ShellArg(command=['git', 'gc', '--auto']),
+        #            util.ShellArg(command=['git', 'clean', '-f', '-x', '-d']),
+        #            util.ShellArg(command=['git', 'reset', '--hard', 'HEAD']),
+        #            util.ShellArg(command=['git', 'log', '-n', '1', '--stat'])]))
 
         self.addStep(steps.ShellCommand(
             name='git show',
@@ -109,9 +116,6 @@ class GerritCheckoutFactory(util.BuildFactory):
             workdir=workdir,
             command=['git', 'gc', '--auto']))
 
-    def delay(self, seconds):
-        return ['sleep', seconds]
-
 
 class UnixBuildFactory(GerritCheckoutFactory):
     """Build with autoconf and make.
@@ -130,7 +134,7 @@ class UnixBuildFactory(GerritCheckoutFactory):
                  jobs='4',
                  target='all',
                  docs='false',
-                 test='false',
+                 test='warn',
                  **kwargs):
         """Create a UnixBuildFactory instance.
 
@@ -142,16 +146,18 @@ class UnixBuildFactory(GerritCheckoutFactory):
             jobs:         Number of make jobs (int string)
             target:       The top level makefile target (string)
             docs:         Also render the docs when true (boolean string)
-            test:         Also run the TAP unit tests when true (boolean string)
+            test:         Also run the TAP unit tests (string)
+                          one of: skip, warn, flunk
         """
         objdir = str2bool(objdir)
         pretty = str2bool(pretty)
         docs = str2bool(docs)
-        test = str2bool(test)
         try:
             jobs = int(jobs)
         except ValueError:
             jobs = 0
+        if test not in ['skip', 'warn', 'flunk']:
+            test = 'warn'
 
         # Use separate source and build directories in objdir mode.
         if objdir:
@@ -180,14 +186,13 @@ class UnixBuildFactory(GerritCheckoutFactory):
         if docs:
             self.addStep(MakeDocs(self.DOCS, make=make))
 
-        if docs or test:
-            self.addStep(MakeManPages())
+        self.addStep(MakeManPages())  # warn on failure
 
-        if test:
-            self.addStep(Test(make=make))
+        if test != 'skip':
+            self.addStep(RunTests(make=make, flunk=test))
 
         if not objdir:
-            self.addStep(GitStatus())
+            self.addStep(GitIgnoreCheck())
 
 
 class WindowsBuildFactory(GerritCheckoutFactory):
@@ -198,19 +203,12 @@ class WindowsBuildFactory(GerritCheckoutFactory):
     """
     def __init__(self, arch='amd64', variant='free', **kwargs):
         super().__init__(**kwargs)
+
         self.addStep(steps.ShellCommand(
             name='build-openafs',
             command=['build-openafs.cmd', arch, variant]))
 
-        self.addStep(GitStatus())
-
-    def delay(self, seconds):
-        """Delay with ping.
-
-        Overrides the base class delay method to run 'ping' instead of
-        'sleep', since the 'sleep' command is not available on Windows.
-        """
-        return ['ping', '-n', seconds, 'localhost']
+        self.addStep(GitIgnoreCheck())
 
 
 class ELRpmBuildFactory(GerritCheckoutFactory):

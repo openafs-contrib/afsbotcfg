@@ -11,13 +11,25 @@
 # GNU General Public License for more details.
 
 
-import shlex
-import re
 import os
+import random
+import re
+import shlex
 
 from twisted.internet import defer
 from buildbot.plugins import steps
 from buildbot.plugins import util
+
+
+class Delay(steps.MasterShellCommand):
+    """
+    Delay a random time to stagger git traffic.
+    """
+    def __init__(self, seconds, **kwargs):
+        seconds += random.randint(1, 120)
+        command = ["sleep", str(seconds)]
+        name = "Delay {0} seconds".format(seconds)
+        super().__init__(name=name, command=command, **kwargs)
 
 
 class Regen(steps.ShellCommand):
@@ -101,7 +113,7 @@ class MakeDocs(steps.ShellSequence):
     the documents, but does provide a makefile for each docbook document.
     """
 
-    name = 'render docs'
+    name = 'docs'
 
     def __init__(self, docs, make='make', **kwargs):
         """Create a step to render a docbook document.
@@ -126,17 +138,21 @@ class MakeManPages(steps.ShellSequence):
     def __init__(self, **kwargs):
         """Create a step to generate the man pages."""
         super().__init__(**kwargs)
-        self.name = 'render man pages'
+        self.name = 'man pages'
         self.workdir = 'build/doc/man-pages'
         self.commands = [
             util.ShellArg(
                 command='/usr/bin/perl merge-pod pod*/*.in',
                 logname='merge-pod',
-                haltOnFailure=True),
+                haltOnFailure=False,
+                warnOnFailure=True,
+            ),
             util.ShellArg(
                 command=['./generate-man'],
                 logname='generate-man',
-                haltOnFailure=True),
+                haltOnFailure=False,
+                warnOnFailure=True,
+            ),
         ]
 
 
@@ -191,14 +207,16 @@ class TapObserver(util.LogLineObserver):
             self._current = None
 
 
-class Test(steps.WarningCountingShellCommand):
-    """Run the TAP unit tests."""
+class RunTests(steps.WarningCountingShellCommand):
+    """
+    Run the TAP unit tests.
+    """
 
-    name = 'test'
+    name = 'Run tests'
     workdir = 'build/tests'
-    warnOnFailure = 1
+    warnOnFailure = True
 
-    def __init__(self, make='make', **kwargs):
+    def __init__(self, make='make', flunk='warn', **kwargs):
         """Create the test step.
 
         Run the make check command in the tests directory. Attach an
@@ -208,17 +226,20 @@ class Test(steps.WarningCountingShellCommand):
             make:  The make program to be run.
         """
         super().__init__(**kwargs)
+        self.flunk = flunk
         self.command = [make, 'check', 'V=1']
         self.tap = TapObserver()
         self.addLogObserver('stdio', self.tap)
 
     def evaluateCommand(self, cmd):
         """Determine if the test failed or succeeded."""
-        if cmd.didFail():
-            return util.FAILURE
-        if self.tap.failed > 0:
-            return util.FAILURE
-        return util.SUCCESS
+        if cmd.didFail() or self.tap.failed > 0:
+            if self.flunk == "flunk":
+                return util.FAILURE
+            else:
+                return util.WARNINGS
+        else:
+            return util.SUCCESS
 
     def createSummary(self):
         """Create a summary with number of tests passed and failed."""
@@ -249,7 +270,7 @@ class GitStatusObserver(util.LogLineObserver):
         self.changed.append(line)
 
 
-class GitStatus(steps.WarningCountingShellCommand):
+class GitIgnoreCheck(steps.WarningCountingShellCommand):
     """
     Run git status to check for untracked changes.
 
@@ -258,7 +279,7 @@ class GitStatus(steps.WarningCountingShellCommand):
     the .gitignore file(s).
     """
 
-    name = 'git status'
+    name = 'Git ignore check'
     workdir = 'build'
     command = ['git', 'status', '--porcelain']
 
