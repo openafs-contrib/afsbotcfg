@@ -1,5 +1,5 @@
 ---
-- scheduler: gerrit
+- scheduler: nightly
   branch: dev
   os: macos12
   cc: xcode
@@ -13,7 +13,7 @@
       target: dest
       jobs: 1
 
-- scheduler: gerrit
+- scheduler: nightly
   branch: stable
   os: macos12
   cc: gcc

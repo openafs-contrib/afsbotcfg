@@ -75,7 +75,7 @@
         --enable-supergroups --enable-warnings --with-linux-kernel-packaging
         --with-docbook2pdf=dblatex --with-xslt-processor=xsltproc
 
-- scheduler: gerrit
+- scheduler: nightly
   branch: dev
   os: debian12
   cc: gcc
