@@ -12,7 +12,8 @@
     name: UnixBuildFactory
     args:
       jobs: 4
-      test: true
+      test: flunk
+      man: true
       docs: false
       configure: --enable-warnings --enable-checking
         --enable-kernel-module --with-linux-kernel-packaging
@@ -44,7 +45,8 @@
     name: UnixBuildFactory
     args:
       jobs: 4
-      test: true
+      test: flunk
+      man: true
       docs: false
       configure: --enable-warnings --enable-checking
         --enable-kernel-module --with-linux-kernel-packaging
@@ -63,7 +65,8 @@
     name: UnixBuildFactory
     args:
       jobs: 4
-      test: true
+      test: flunk
+      man: true
       docs: false
       configure: --enable-warnings --enable-checking
         --enable-kernel-module --with-linux-kernel-packaging
@@ -82,7 +85,8 @@
     name: UnixBuildFactory
     args:
       jobs: 4
-      test: true
+      test: flunk
+      man: true
       docs: false
       configure: --enable-warnings --enable-checking
         --enable-kernel-module --with-linux-kernel-packaging
@@ -103,6 +107,7 @@
     args:
       jobs: 4
       test: false
+      man: false
       docs: false
       configure: --disable-shared --enable-warnings --enable-checking
         --enable-kernel-module --with-linux-kernel-packaging
@@ -154,7 +159,8 @@
     name: UnixBuildFactory
     args:
       jobs: 4
-      test: true
+      test: flunk
+      man: true
       docs: false
       configure: --enable-warnings --enable-checking
         --enable-kernel-module --with-linux-kernel-packaging
@@ -201,7 +207,8 @@
     name: UnixBuildFactory
     args:
       jobs: 4
-      test: true
+      test: flunk
+      man: true
       docs: false
       configure: --enable-warnings --enable-checking
         --enable-kernel-module --with-linux-kernel-packaging
@@ -218,7 +225,8 @@
     name: UnixBuildFactory
     args:
       jobs: 4
-      test: true
+      test: flunk
+      man: true
       docs: false
       configure: --enable-warnings --enable-checking
         --enable-kernel-module --with-linux-kernel-packaging

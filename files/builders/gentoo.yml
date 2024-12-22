@@ -10,7 +10,7 @@
     args:
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
-      test: true
+      test: warn
 
 - scheduler: gerrit
   branch: dev
@@ -23,4 +23,4 @@
     args:
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
-      test: true
+      test: warn

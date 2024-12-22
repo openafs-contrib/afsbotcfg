@@ -114,6 +114,7 @@ class UnixBuildFactory(GerritCheckoutFactory):
                  jobs='4',
                  target='all',
                  docs='false',
+                 man='false',
                  test='warn',
                  **kwargs):
         """Create a UnixBuildFactory instance.
@@ -126,12 +127,14 @@ class UnixBuildFactory(GerritCheckoutFactory):
             jobs:         Number of make jobs (int string)
             target:       The top level makefile target (string)
             docs:         Also render the docs when true (boolean string)
+            man:          Also generate man pages (boolean string)
             test:         Also run the TAP unit tests (string)
                           one of: skip, warn, flunk
         """
         objdir = str2bool(objdir)
         pretty = str2bool(pretty)
         docs = str2bool(docs)
+        man = str2bool(man)
         try:
             jobs = int(jobs)
         except ValueError:
@@ -166,7 +169,8 @@ class UnixBuildFactory(GerritCheckoutFactory):
         if docs:
             self.addStep(MakeDocs(self.DOCS, make=make))
 
-        self.addStep(MakeManPages())  # warn on failure
+        if man:
+            self.addStep(MakeManPages())
 
         if test != 'skip':
             self.addStep(RunTests(make=make, flunk=test))
