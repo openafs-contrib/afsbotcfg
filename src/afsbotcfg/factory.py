@@ -86,35 +86,15 @@ class GerritCheckoutFactory(util.BuildFactory):
                 retryFetch=True,
                 timeout=300))
 
-        # self.addStep(
-        #    steps.ShellSequence(
-        #        name='git cleanup',
-        #        workdir=workdir,
-        #        commands=[
-        #            util.ShellArg(command=['git', 'gc', '--auto']),
-        #            util.ShellArg(command=['git', 'clean', '-f', '-x', '-d']),
-        #            util.ShellArg(command=['git', 'reset', '--hard', 'HEAD']),
-        #            util.ShellArg(command=['git', 'log', '-n', '1', '--stat'])]))
-
-        self.addStep(steps.ShellCommand(
-            name='git show',
-            workdir=workdir,
-            command=['git', 'log', '-n', '1', '--stat']))
-
-        self.addStep(steps.ShellCommand(
-            name='git clean',
-            workdir=workdir,
-            command=['git', 'clean', '-f', '-x', '-d']))
-
-        self.addStep(steps.ShellCommand(
-            name='git reset',
-            workdir=workdir,
-            command=['git', 'reset', '--hard', 'HEAD']))
-
-        self.addStep(steps.ShellCommand(
-            name='git gc',
-            workdir=workdir,
-            command=['git', 'gc', '--auto']))
+        self.addStep(
+           steps.ShellSequence(
+               name='git cleanup',
+               workdir=workdir,
+               commands=[
+                   util.ShellArg(command=['git', 'gc', '--auto'], logname='git gc'),
+                   util.ShellArg(command=['git', 'clean', '-f', '-x', '-d'], logname='git clean'),
+                   util.ShellArg(command=['git', 'reset', '--hard', 'HEAD'], logname='git reset'),
+                   util.ShellArg(command=['git', 'log', '-n', '1', '--stat'], logname='git log')]))
 
 
 class UnixBuildFactory(GerritCheckoutFactory):

@@ -176,7 +176,7 @@ BuildmasterConfig = {
 {% if afsbotcfg_gerrit is defined %}
         # Gerrit force scheduler.
         afsbotcfg.schedulers.GerritForceScheduler(
-            name='Force gerrit build',
+            name='force-gerrit',
             gerritserver='{{ afsbotcfg_gerrit.server }}',
             gerritport={{ afsbotcfg_gerrit.ssh_port }},
             username='{{ afsbotcfg_gerrit.user }}',

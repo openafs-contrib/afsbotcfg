@@ -171,6 +171,7 @@ class GerritForceScheduler(schedulers.ForceScheduler):
         super().__init__(
             name,
             builderNames,
+            label='Force gerrit build',
             reason=util.StringParameter(
                 name='reason',
                 label='Reason',
