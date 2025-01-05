@@ -222,47 +222,49 @@ class ELRpmBuildFactory(GerritCheckoutFactory):
 
     def __init__(self, build_dkms_source=False, **kwargs):
         super().__init__(**kwargs)
-
-        self.addStep(steps.MakeDirectory(dir='build/packages'))
-
-        self.addStep(steps.ShellCommand(
-            name='Create source distribution tarballs',
-            command=['build-tools/make-release', '--dir=packages', 'HEAD']))
-
-        self.addStep(steps.FileDownload(
-            name='Download make-rpm-workspace script',
-            mastersrc='build-scripts/make-rpm-workspace.sh',
-            workerdest='packages/make-rpm-workspace.sh',
-            mode=0o755))
-
-        self.addStep(steps.ShellCommand(
-            name='Create rpmbuild directory',
-            command=['packages/make-rpm-workspace.sh']))
-
-        self.addStep(steps.RpmBuild(
-            specfile='packages/rpmbuild/SPECS/openafs.spec',
-            topdir='`pwd`/packages/rpmbuild',
-            builddir='`pwd`/packages/rpmbuild/BUILD',
-            rpmdir='`pwd`/packages/rpmbuild/RPMS',
-            sourcedir='`pwd`/packages/rpmbuild/SOURCES',
-            srcrpmdir='`pwd`/packages/rpmbuild/SRPMS'))
-
-        if build_dkms_source:
-            self.addStep(steps.FileDownload(
-                name='Download unpack-dkms-rpm script',
+        self.addStep(
+            steps.MakeDirectory(
+                name="mkdir build/packages",
+                dir='build/packages'))
+        self.addStep(
+            steps.FileDownload(
+                name='download make-rpm-workspace.sh',
+                mastersrc='build-scripts/make-rpm-workspace.sh',
+                workerdest='packages/make-rpm-workspace.sh',
+                mode=0o755))
+        self.addStep(
+            steps.FileDownload(
+                name='download unpack-dkms-rpm.sh',
                 mastersrc='build-scripts/unpack-dkms-rpm.sh',
                 workerdest='packages/unpack-dkms-rpm.sh',
                 mode=0o755))
-
-            self.addStep(steps.ShellCommand(
-                name='Unpack dkms-openafs rpm',
-                command=['packages/unpack-dkms-rpm.sh']))
-
-            self.addStep(steps.Configure(
-                command=['./configure', '--with-linux-kernel-packaging'],
-                workdir='build/packages/dkms/usr/src/openafs',
-                logfiles={'config.log': 'config.log'}))
-
-            self.addStep(steps.Compile(
-                command=['make', '-j', '4', 'V=0'],
-                workdir='build/packages/dkms/usr/src/openafs'))
+        self.addStep(
+            steps.ShellCommand(
+                name='make-release',
+                command=['build-tools/make-release', '--dir=packages', 'HEAD']))
+        self.addStep(
+            steps.ShellCommand(
+                name='make-rpm-workspace.sh',
+                command=['packages/make-rpm-workspace.sh']))
+        self.addStep(
+            steps.RpmBuild(
+                specfile='packages/rpmbuild/SPECS/openafs.spec',
+                topdir='`pwd`/packages/rpmbuild',
+                builddir='`pwd`/packages/rpmbuild/BUILD',
+                rpmdir='`pwd`/packages/rpmbuild/RPMS',
+                sourcedir='`pwd`/packages/rpmbuild/SOURCES',
+                srcrpmdir='`pwd`/packages/rpmbuild/SRPMS'))
+        if build_dkms_source:
+            self.addStep(
+                steps.ShellCommand(
+                    name='unpack-dksm-rpm.sh',
+                    command=['packages/unpack-dkms-rpm.sh']))
+            self.addStep(
+                steps.Configure(
+                    command=['./configure', '--with-linux-kernel-packaging'],
+                    workdir='build/packages/dkms/usr/src/openafs',
+                    logfiles={'config.log': 'config.log'}))
+            self.addStep(
+                steps.Compile(
+                    command=['make', '-j', '4', 'V=0'],
+                    workdir='build/packages/dkms/usr/src/openafs'))
