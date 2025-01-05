@@ -113,7 +113,7 @@ class MakeDocs(steps.ShellSequence):
     the documents, but does provide a makefile for each docbook document.
     """
 
-    name = 'docs'
+    name = 'make docs'
 
     def __init__(self, docs, make='make', **kwargs):
         """Create a step to render a docbook document.
@@ -126,34 +126,34 @@ class MakeDocs(steps.ShellSequence):
         self.commands = []
         for doc in docs:
             workdir = os.path.join('doc/xml', doc)
-            self.commands.append(util.ShellArg(
-                command=[make, '-C', workdir, 'all'],
-                logname=doc,
-                haltOnFailure=True))
+            self.commands.append(
+                util.ShellArg(
+                    command=[make, '-C', workdir, 'all'],
+                    logname=doc,
+                    haltOnFailure=False,
+                    warnOnFailure=True))
 
 
 class MakeManPages(steps.ShellSequence):
     """Render the manpages from the POD source."""
 
+    name = 'make man-pages'
+    workdir = 'build/doc/man-pages'
+
     def __init__(self, **kwargs):
         """Create a step to generate the man pages."""
         super().__init__(**kwargs)
-        self.name = 'man pages'
-        self.workdir = 'build/doc/man-pages'
         self.commands = [
             util.ShellArg(
                 command='/usr/bin/perl merge-pod pod*/*.in',
                 logname='merge-pod',
                 haltOnFailure=False,
-                warnOnFailure=True,
-            ),
+                warnOnFailure=True),
             util.ShellArg(
                 command=['./generate-man'],
                 logname='generate-man',
                 haltOnFailure=False,
-                warnOnFailure=True,
-            ),
-        ]
+                warnOnFailure=True)]
 
 
 class TapObserver(util.LogLineObserver):
@@ -212,7 +212,7 @@ class RunTests(steps.WarningCountingShellCommand):
     Run the TAP unit tests.
     """
 
-    name = 'Run tests'
+    name = 'run tests'
     workdir = 'build/tests'
     warnOnFailure = True
 
@@ -279,7 +279,7 @@ class GitIgnoreCheck(steps.WarningCountingShellCommand):
     the .gitignore file(s).
     """
 
-    name = 'Git ignore check'
+    name = 'git ignore check'
     workdir = 'build'
     command = ['git', 'status', '--porcelain']
 

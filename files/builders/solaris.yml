@@ -8,6 +8,7 @@
   factory:
     name: UnixBuildFactory
     args:
+      docs: skip
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
       make: gmake
@@ -21,6 +22,7 @@
   factory:
     name: UnixBuildFactory
     args:
+      docs: skip
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
       make: gmake
@@ -34,6 +36,7 @@
   factory:
     name: UnixBuildFactory
     args:
+      docs: skip
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
       make: gmake
@@ -47,6 +50,7 @@
   factory:
     name: UnixBuildFactory
     args:
+      docs: skip
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
       make: gmake

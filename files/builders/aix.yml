@@ -8,6 +8,7 @@
   factory:
     name: UnixBuildFactory
     args:
+      docs: skip
       jobs: 1
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
@@ -21,6 +22,7 @@
   factory:
     name: UnixBuildFactory
     args:
+      docs: skip
       jobs: 1
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
@@ -35,6 +37,7 @@
   factory:
     name: UnixBuildFactory
     args:
+      docs: skip
       jobs: 1
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
@@ -51,6 +54,7 @@
   factory:
     name: UnixBuildFactory
     args:
+      docs: skip
       jobs: 1
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
@@ -67,6 +71,7 @@
   factory:
     name: UnixBuildFactory
     args:
+      docs: skip
       jobs: 1
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups

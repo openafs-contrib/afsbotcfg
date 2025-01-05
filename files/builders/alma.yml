@@ -13,8 +13,7 @@
     args:
       jobs: 4
       test: flunk
-      man: true
-      docs: false
+      docs: skip
       configure: --enable-warnings --enable-checking
         --enable-kernel-module --with-linux-kernel-packaging
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
@@ -46,8 +45,7 @@
     args:
       jobs: 4
       test: flunk
-      man: true
-      docs: false
+      docs: skip
       configure: --enable-warnings --enable-checking
         --enable-kernel-module --with-linux-kernel-packaging
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
@@ -65,9 +63,7 @@
     name: UnixBuildFactory
     args:
       jobs: 4
-      test: flunk
-      man: true
-      docs: false
+      test: flunk-on-failure
       configure: --enable-warnings --enable-checking
         --enable-kernel-module --with-linux-kernel-packaging
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
@@ -85,9 +81,8 @@
     name: UnixBuildFactory
     args:
       jobs: 4
-      test: flunk
-      man: true
-      docs: false
+      test: flunk-on-failure
+      docs: skip
       configure: --enable-warnings --enable-checking
         --enable-kernel-module --with-linux-kernel-packaging
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
@@ -106,12 +101,11 @@
     name: UnixBuildFactory
     args:
       jobs: 4
-      test: false
-      man: false
-      docs: false
       configure: --disable-shared --enable-warnings --enable-checking
         --enable-kernel-module --with-linux-kernel-packaging
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+      test: flunk-on-failure
+      docs: skip
 
 - scheduler: nightly
   branch: dev
@@ -127,11 +121,12 @@
     name: UnixBuildFactory
     args:
       jobs: 4
-      test: false
-      docs: false
+      docs: skip
       configure: --disable-static --enable-warnings --enable-checking
         --enable-kernel-module --with-linux-kernel-packaging
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+      test: flunk-on-failure
+      docs: skip
 
 - scheduler: gerrit
   branch: dev
@@ -159,9 +154,8 @@
     name: UnixBuildFactory
     args:
       jobs: 4
-      test: flunk
-      man: true
-      docs: false
+      docs: skip
+      test: flunk-on-failure
       configure: --enable-warnings --enable-checking
         --enable-kernel-module --with-linux-kernel-packaging
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
@@ -207,9 +201,7 @@
     name: UnixBuildFactory
     args:
       jobs: 4
-      test: flunk
-      man: true
-      docs: false
+      test: flunk-on-failure
       configure: --enable-warnings --enable-checking
         --enable-kernel-module --with-linux-kernel-packaging
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
@@ -225,9 +217,7 @@
     name: UnixBuildFactory
     args:
       jobs: 4
-      test: flunk
-      man: true
-      docs: false
+      test: flunk-on-failure
       configure: --enable-warnings --enable-checking
         --enable-kernel-module --with-linux-kernel-packaging
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups

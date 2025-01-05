@@ -50,6 +50,12 @@ def str2bool(s):
     return s.lower() in ["1", "yes", "true"]
 
 
+def str2enum(s, enums, default):
+    if s not in enums:
+        s = default
+    return s
+
+
 class GerritCheckoutFactory(util.BuildFactory):
     """Base class build factory.
 
@@ -113,9 +119,9 @@ class UnixBuildFactory(GerritCheckoutFactory):
                  pretty='false',
                  jobs='4',
                  target='all',
-                 docs='false',
-                 man='false',
-                 test='warn',
+                 docs='warn-on-failure',
+                 man='warn-on-failure',
+                 test='warn-on-failure',
                  **kwargs):
         """Create a UnixBuildFactory instance.
 
@@ -126,21 +132,20 @@ class UnixBuildFactory(GerritCheckoutFactory):
             pretty:       Pretty make output (boolean string)
             jobs:         Number of make jobs (int string)
             target:       The top level makefile target (string)
-            docs:         Also render the docs when true (boolean string)
-            man:          Also generate man pages (boolean string)
+            docs:         Also render the docs when true (string)
+            man:          Also generate man pages (string)
             test:         Also run the TAP unit tests (string)
-                          one of: skip, warn, flunk
         """
+        enums = ('skip', 'warn-on-failure', 'flunk-on-failure')
         objdir = str2bool(objdir)
         pretty = str2bool(pretty)
-        docs = str2bool(docs)
-        man = str2bool(man)
+        test = str2enum(test, enums, enums[1])
+        docs = str2enum(docs, enums, enums[1])
+        man = str2enum(man, enums, enums[1])
         try:
             jobs = int(jobs)
         except ValueError:
             jobs = 0
-        if test not in ['skip', 'warn', 'flunk']:
-            test = 'warn'
 
         # Use separate source and build directories in objdir mode.
         if objdir:
@@ -166,10 +171,10 @@ class UnixBuildFactory(GerritCheckoutFactory):
         self.addStep(Make(make=make, jobs=jobs,
                           pretty=pretty, target=target))
 
-        if docs:
+        if docs != 'skip':
             self.addStep(MakeDocs(self.DOCS, make=make))
 
-        if man:
+        if man != 'skip':
             self.addStep(MakeManPages())
 
         if test != 'skip':

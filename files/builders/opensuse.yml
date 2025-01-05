@@ -8,6 +8,7 @@
   factory:
     name: UnixBuildFactory
     args:
+      docs: skip
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --with-linux-kernel-build=/usr/src/linux-obj/x86_64/default
 
@@ -20,6 +21,7 @@
   factory:
     name: UnixBuildFactory
     args:
+      docs: skip
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --with-linux-kernel-build=/usr/src/linux-obj/x86_64/default
 
@@ -32,5 +34,6 @@
   factory:
     name: UnixBuildFactory
     args:
+      docs: skip
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --with-linux-kernel-build=/usr/src/linux-obj/aarch64/default

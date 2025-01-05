@@ -8,6 +8,7 @@
   factory:
     name: UnixBuildFactory
     args:
+      docs: skip
       configure: --disable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --with-afs-sysname=amd64_linux26
     env:
@@ -23,6 +24,7 @@
   factory:
     name: UnixBuildFactory
     args:
+      docs: skip
       configure: --disable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --with-afs-sysname=amd64_linux26
     env:
@@ -38,6 +40,7 @@
   factory:
     name: UnixBuildFactory
     args:
+      docs: skip
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
     env:
@@ -53,6 +56,7 @@
   factory:
     name: UnixBuildFactory
     args:
+      docs: skip
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
     env:
@@ -68,6 +72,7 @@
   factory:
     name: UnixBuildFactory
     args:
+      docs: skip
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
     env:
@@ -83,6 +88,7 @@
   factory:
     name: UnixBuildFactory
     args:
+      docs: skip
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
     env:
@@ -98,6 +104,7 @@
   factory:
     name: UnixBuildFactory
     args:
+      docs: skip
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
     env:
@@ -113,6 +120,7 @@
   factory:
     name: UnixBuildFactory
     args:
+      docs: skip
       configure: --enable-kernel-module --enable-checking --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
     env:
@@ -128,6 +136,7 @@
   factory:
     name: UnixBuildFactory
     args:
+      docs: skip
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
     env:
@@ -143,6 +152,7 @@
   factory:
     name: UnixBuildFactory
     args:
+      docs: skip
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
     env:
@@ -158,6 +168,7 @@
   factory:
     name: UnixBuildFactory
     args:
+      docs: skip
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
     env:
@@ -173,6 +184,7 @@
   factory:
     name: UnixBuildFactory
     args:
+      docs: skip
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
     env:
@@ -188,6 +200,7 @@
   factory:
     name: UnixBuildFactory
     args:
+      docs: skip
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
     env:
@@ -203,6 +216,7 @@
   factory:
     name: UnixBuildFactory
     args:
+      docs: skip
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
     env:
@@ -218,6 +232,7 @@
   factory:
     name: UnixBuildFactory
     args:
+      docs: skip
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
     env:
@@ -233,6 +248,7 @@
   factory:
     name: UnixBuildFactory
     args:
+      docs: skip
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
     env:
@@ -248,6 +264,7 @@
   factory:
     name: UnixBuildFactory
     args:
+      docs: skip
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
     env:
@@ -263,6 +280,7 @@
   factory:
     name: UnixBuildFactory
     args:
+      docs: skip
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
     env:
@@ -278,8 +296,7 @@
   factory:
     name: UnixBuildFactory
     args:
-      test: false
-      docs: false
+      docs: skip
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
@@ -292,8 +309,7 @@
   factory:
     name: UnixBuildFactory
     args:
-      test: false
-      docs: false
+      docs: skip
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
@@ -306,7 +322,6 @@
   factory:
     name: UnixBuildFactory
     args:
-      test: false
-      docs: false
+      docs: skip
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups

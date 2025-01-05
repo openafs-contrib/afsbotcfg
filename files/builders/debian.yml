@@ -68,9 +68,7 @@
   factory:
     name: UnixBuildFactory
     args:
-      test: true
-      docs: true
-      man: true
+      test: flunk-on-failure
       configure: --disable-optimize --disable-optimize-kernel --enable-checking --enable-debug
         --enable-debug-kernel --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings --with-linux-kernel-packaging
@@ -88,7 +86,7 @@
     args:
       objdir: true
       test: skip
-      man: false
+      man: skip
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
 
@@ -116,6 +114,6 @@
     args:
       objdir: true
       test: skip
-      man: false
+      man: skip
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
