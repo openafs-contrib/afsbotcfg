@@ -32,6 +32,15 @@ class Delay(steps.MasterShellCommand):
         super().__init__(name=name, command=command, **kwargs)
 
 
+class Skip(steps.MasterShellCommand):
+    """
+    Placeholder to show skip steps.
+    """
+    def __init__(self, name, **kwargs):
+        command = ["echo", "Builder is configured to skip", name]
+        super().__init__(name="skip: " + name, command=command, **kwargs)
+
+
 class Regen(steps.ShellCommand):
     """Run the regen script to generate configure."""
 

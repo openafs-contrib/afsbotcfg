@@ -36,6 +36,7 @@ from buildbot.plugins import util
 
 from afsbotcfg.steps import (
     Delay,
+    Skip,
     Regen,
     Configure,
     Make,
@@ -171,16 +172,26 @@ class UnixBuildFactory(GerritCheckoutFactory):
         self.addStep(Make(make=make, jobs=jobs,
                           pretty=pretty, target=target))
 
-        if docs != 'skip':
-            self.addStep(MakeDocs(self.DOCS, make=make))
+        # if docs == 'skip':
+        #    self.addStep(Skip('make docs'))
+        # else:
+        #    self.addStep(MakeDocs(self.DOCS, make=make))
+        self.addStep(
+            MakeDocs(self.DOCS, make=make, doStepIf=(docs != 'skip')))
 
-        if man != 'skip':
+        if man == 'skip':
+            self.addStep(Skip('make man'))
+        else:
             self.addStep(MakeManPages())
 
-        if test != 'skip':
+        if test == 'skip':
+            self.addStep(Skip('run tests'))
+        else:
             self.addStep(RunTests(make=make, flunk=test))
 
-        if not objdir:
+        if objdir:
+            self.addStep(Skip('git ignore check'))
+        else:
             self.addStep(GitIgnoreCheck())
 
 
