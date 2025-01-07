@@ -115,6 +115,5 @@
       objdir: true
       test: skip
       man: skip
-      docs: skip
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
