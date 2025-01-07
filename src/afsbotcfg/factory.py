@@ -36,7 +36,6 @@ from buildbot.plugins import util
 
 from afsbotcfg.steps import (
     Delay,
-    Skip,
     Regen,
     Configure,
     Make,
@@ -161,38 +160,47 @@ class UnixBuildFactory(GerritCheckoutFactory):
         super().__init__(workdir=checkoutdir, **kwargs)
 
         if builddir != checkoutdir:
-            self.addStep(steps.RemoveDirectory(dir=builddir))
-            self.addStep(steps.MakeDirectory(dir=builddir))
+            self.addStep(
+                steps.RemoveDirectory(dir=builddir))
+            self.addStep(
+                steps.MakeDirectory(dir=builddir))
 
-        self.addStep(Regen(workdir=checkoutdir,
-                           manpages=target.startswith('dest')))
-
-        self.addStep(Configure(configure=cf, options=configure))
-
-        self.addStep(Make(make=make, jobs=jobs,
-                          pretty=pretty, target=target))
-
-        # if docs == 'skip':
-        #    self.addStep(Skip('make docs'))
-        # else:
-        #    self.addStep(MakeDocs(self.DOCS, make=make))
         self.addStep(
-            MakeDocs(self.DOCS, make=make, doStepIf=(docs != 'skip')))
+            Regen(
+                workdir=checkoutdir,
+                manpages=target.startswith('dest')))
 
-        if man == 'skip':
-            self.addStep(Skip('make man'))
-        else:
-            self.addStep(MakeManPages())
+        self.addStep(
+            Configure(
+                configure=cf,
+                options=configure))
 
-        if test == 'skip':
-            self.addStep(Skip('run tests'))
-        else:
-            self.addStep(RunTests(make=make, flunk=test))
+        self.addStep(
+            Make(
+                make=make,
+                jobs=jobs,
+                pretty=pretty,
+                target=target))
 
-        if objdir:
-            self.addStep(Skip('git ignore check'))
-        else:
-            self.addStep(GitIgnoreCheck())
+        self.addStep(
+            MakeDocs(
+                self.DOCS,
+                make=make,
+                doStepIf=(docs != 'skip')))
+
+        self.addStep(
+            MakeManPages(
+                doStepIf=(man != 'skip')))
+
+        self.addStep(
+            RunTests(
+                make=make,
+                flunk=test,
+                doStepIf=(test != 'skip')))
+
+        self.addStep(
+            GitIgnoreCheck(
+                doStepIf=(not objdir)))
 
 
 class WindowsBuildFactory(GerritCheckoutFactory):
@@ -265,17 +273,19 @@ class ELRpmBuildFactory(GerritCheckoutFactory):
                 rpmdir='`pwd`/packages/rpmbuild/RPMS',
                 sourcedir='`pwd`/packages/rpmbuild/SOURCES',
                 srcrpmdir='`pwd`/packages/rpmbuild/SRPMS'))
-        if build_dkms_source:
-            self.addStep(
-                steps.ShellCommand(
-                    name='unpack-dksm-rpm.sh',
-                    command=['packages/unpack-dkms-rpm.sh']))
-            self.addStep(
-                steps.Configure(
-                    command=['./configure', '--with-linux-kernel-packaging'],
-                    workdir='build/packages/dkms/usr/src/openafs',
-                    logfiles={'config.log': 'config.log'}))
-            self.addStep(
-                steps.Compile(
-                    command=['make', '-j', '4', 'V=0'],
-                    workdir='build/packages/dkms/usr/src/openafs'))
+        self.addStep(
+            steps.ShellCommand(
+                name='unpack-dksm-rpm.sh',
+                command=['packages/unpack-dkms-rpm.sh'],
+                doStepIf=build_dkms_source))
+        self.addStep(
+            steps.Configure(
+                command=['./configure', '--with-linux-kernel-packaging'],
+                workdir='build/packages/dkms/usr/src/openafs',
+                logfiles={'config.log': 'config.log'},
+                doStepIf=build_dkms_source))
+        self.addStep(
+            steps.Compile(
+                command=['make', '-j', '4', 'V=0'],
+                workdir='build/packages/dkms/usr/src/openafs',
+                doStepIf=build_dkms_source))
