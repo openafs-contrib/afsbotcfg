@@ -239,8 +239,9 @@ class ELRpmBuildFactory(GerritCheckoutFactory):
         build_dkms_source
     """
 
-    def __init__(self, build_dkms_source=False, **kwargs):
+    def __init__(self, build_dkms_source="false", **kwargs):
         super().__init__(**kwargs)
+        build_dkms_source = str2bool(build_dkms_source)
         self.addStep(
             steps.MakeDirectory(
                 name="mkdir build/packages",
@@ -275,7 +276,7 @@ class ELRpmBuildFactory(GerritCheckoutFactory):
                 srcrpmdir='`pwd`/packages/rpmbuild/SRPMS'))
         self.addStep(
             steps.ShellCommand(
-                name='unpack-dksm-rpm.sh',
+                name='unpack-dkms-rpm.sh',
                 command=['packages/unpack-dkms-rpm.sh'],
                 doStepIf=build_dkms_source))
         self.addStep(
