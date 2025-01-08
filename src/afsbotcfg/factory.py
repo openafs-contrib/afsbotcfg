@@ -80,6 +80,9 @@ class GerritCheckoutFactory(util.BuildFactory):
                          This delay allows the gerrit server
             workdir:     The directory to checkout source files.
         """
+        delay = 30  # seconds
+        retries = 120
+
         super().__init__(**kwargs)
 
         if start_delay:
@@ -91,6 +94,7 @@ class GerritCheckoutFactory(util.BuildFactory):
                 repourl=repo,
                 mode='full',
                 method='fresh',
+                retry=(delay, retries),
                 retryFetch=True,
                 timeout=300))
 
