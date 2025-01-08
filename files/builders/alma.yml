@@ -12,7 +12,7 @@
     name: UnixBuildFactory
     args:
       jobs: 4
-      test: flunk
+      test: skip
       docs: skip
       configure: --enable-warnings --enable-checking
         --enable-kernel-module --with-linux-kernel-packaging
@@ -44,7 +44,7 @@
     name: UnixBuildFactory
     args:
       jobs: 4
-      test: flunk
+      test: skip
       docs: skip
       configure: --enable-warnings --enable-checking
         --enable-kernel-module --with-linux-kernel-packaging

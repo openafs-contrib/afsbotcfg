@@ -8,9 +8,9 @@
   factory:
     name: UnixBuildFactory
     args:
+      test: warn-on-failure
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
-      test: warn
 
 - scheduler: gerrit
   branch: dev
@@ -21,6 +21,6 @@
   factory:
     name: UnixBuildFactory
     args:
+      test: warn-on-failure
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
-      test: warn

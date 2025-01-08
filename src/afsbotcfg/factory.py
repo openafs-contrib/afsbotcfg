@@ -51,8 +51,10 @@ def str2bool(s):
 
 
 def str2enum(s, enums, default):
-    if s not in enums:
+    if not s:
         s = default
+    elif s not in enums:
+        raise ValueError("Invalid enum: {0}; must be one of: {1}".format(s, ",".join(enums)))
     return s
 
 
