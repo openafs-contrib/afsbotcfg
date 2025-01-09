@@ -8,10 +8,10 @@
   factory:
     name: UnixBuildFactory
     args:
-      configure: --disable-pam --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
-        --enable-supergroups --enable-transarc-paths
-      target: dest
-      jobs: 1
+      docs: skip
+      test: warn-on-failure
+      configure: --disable-warnings --disable-checking --disable-pam
+        --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
 - scheduler: nightly
   branch: stable
@@ -22,7 +22,49 @@
   factory:
     name: UnixBuildFactory
     args:
-      configure: --disable-pam --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
-        --enable-supergroups --enable-transarc-paths
-      target: dest
-      jobs: 1
+      docs: skip
+      test: warn-on-failure
+      configure: --disable-warnings --disable-checking --disable-pam
+        --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+
+- scheduler: nightly
+  branch: dev
+  os: macos13
+  cc: xcode
+  arch: amd64
+  worker: macos13-x86_64
+  factory:
+    name: UnixBuildFactory
+    args:
+      docs: skip
+      test: warn-on-failure
+      configure: --disable-warnings --disable-checking --disable-pam
+        --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+
+- scheduler: nightly
+  branch: dev
+  os: macos14
+  cc: xcode
+  arch: amd64
+  worker: macos14-x86_64
+  factory:
+    name: UnixBuildFactory
+    args:
+      docs: skip
+      test: warn-on-failure
+      configure: --enable-warnings --enable-checking --disable-pam --enable-kernel-module
+        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups --enable-transarc-paths
+
+- scheduler: nightly
+  branch: dev
+  os: macos15
+  cc: xcode
+  arch: amd64
+  worker: macos15-x86_64
+  factory:
+    name: UnixBuildFactory
+    args:
+      docs: skip
+      test: warn-on-failure
+      configure: --disable-warnings --disable-checking --disable-pam
+        --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
