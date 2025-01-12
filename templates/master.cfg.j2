@@ -101,6 +101,13 @@ BuildmasterConfig = {
 {% for builder in afsbotcfg_builders %}
         util.BuilderConfig(
             name='{{ builder_name(builder) }}',
+{%   if builder.tags is defined %}
+            tags=[
+{%     for tag in builder.tags %}
+                '{{ tag }}',
+{%     endfor %}
+            ],
+{%   endif %}
 {%   if builder.workers is defined %}
             workernames=[
 {%     for worker in builder.workers %}
@@ -167,7 +174,11 @@ BuildmasterConfig = {
             builderNames=[
 {%   for builder in afsbotcfg_builders %}
 {%     if builder.scheduler == 'gerrit' and builder.branch == branch %}
+{%       if 'skip' in (builder.tags | d([])) %}
+                # '{{ builder_name(builder) }}',
+{%       else %}
                 '{{ builder_name(builder) }}',
+{%       endif %}
 {%     endif %}
 {%   endfor %}
             ],
@@ -187,7 +198,11 @@ BuildmasterConfig = {
                 '{{ afsbotcfg_project.branches[branch] }}': [
 {%     for builder in afsbotcfg_builders %}
 {%       if builder.scheduler == 'gerrit' and builder.branch == branch %}
+{%         if 'skip' in (builder.tags | d([])) %}
+                     # '{{ builder_name(builder) }}'
+{%         else %}
                     '{{ builder_name(builder) }}',
+{%         endif %}
 {%       endif %}
 {%     endfor %}
                 ],
