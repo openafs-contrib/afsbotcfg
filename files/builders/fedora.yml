@@ -5,6 +5,8 @@
   cc: gcc
   arch: amd64
   worker: fedora26-x86_64
+  tags:
+    - skip
   factory:
     name: UnixBuildFactory
     args:
@@ -165,6 +167,8 @@
   cc: gcc
   arch: amd64
   worker: fedora36-x86_64
+  tags:
+    - skip
   factory:
     name: UnixBuildFactory
     args:
@@ -181,6 +185,8 @@
   cc: gcc
   arch: amd64
   worker: fedora36-x86_64
+  tags:
+    - skip
   factory:
     name: UnixBuildFactory
     args:
