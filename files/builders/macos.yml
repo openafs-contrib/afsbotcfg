@@ -1,4 +1,20 @@
 ---
+- scheduler: gerrit
+  branch: dev
+  os: macos12
+  cc: xcode
+  arch: amd64
+  worker: macos12-x86_64
+  tags:
+    - skip
+  factory:
+    name: UnixBuildFactory
+    args:
+      docs: skip
+      test: warn-on-failure
+      configure: --disable-warnings --disable-checking --disable-pam
+        --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+
 - scheduler: nightly
   branch: dev
   os: macos12
@@ -27,6 +43,22 @@
       configure: --disable-warnings --disable-checking --disable-pam
         --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
+- scheduler: gerrit
+  branch: dev
+  os: macos13
+  cc: xcode
+  arch: amd64
+  worker: macos13-x86_64
+  tags:
+    - skip
+  factory:
+    name: UnixBuildFactory
+    args:
+      docs: skip
+      test: warn-on-failure
+      configure: --disable-warnings --disable-checking --disable-pam
+        --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+
 - scheduler: nightly
   branch: dev
   os: macos13
@@ -41,6 +73,22 @@
       configure: --disable-warnings --disable-checking --disable-pam
         --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
+- scheduler: gerrit
+  branch: dev
+  os: macos14
+  cc: xcode
+  arch: amd64
+  worker: macos14-x86_64
+  tags:
+    - skip
+  factory:
+    name: UnixBuildFactory
+    args:
+      docs: skip
+      test: warn-on-failure
+      configure: --enable-warnings --enable-checking --disable-pam --enable-kernel-module
+        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups --enable-transarc-paths
+
 - scheduler: nightly
   branch: dev
   os: macos14
@@ -54,6 +102,22 @@
       test: warn-on-failure
       configure: --enable-warnings --enable-checking --disable-pam --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups --enable-transarc-paths
+
+- scheduler: gerrit
+  branch: dev
+  os: macos15
+  cc: xcode
+  arch: amd64
+  worker: macos15-x86_64
+  tags:
+    - skip
+  factory:
+    name: UnixBuildFactory
+    args:
+      docs: skip
+      test: warn-on-failure
+      configure: --disable-warnings --disable-checking --disable-pam
+        --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
 - scheduler: nightly
   branch: dev
