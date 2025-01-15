@@ -64,6 +64,7 @@
     args:
       jobs: 4
       test: flunk-on-failure
+      docs: skip
       configure: --enable-warnings --enable-checking
         --enable-kernel-module --with-linux-kernel-packaging
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
@@ -101,6 +102,7 @@
     name: UnixBuildFactory
     args:
       jobs: 4
+      docs: skip
       configure: --disable-shared --enable-warnings --enable-checking
         --enable-kernel-module --with-linux-kernel-packaging
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
@@ -202,6 +204,7 @@
     args:
       jobs: 4
       test: flunk-on-failure
+      docs: skip
       configure: --enable-warnings --enable-checking
         --enable-kernel-module --with-linux-kernel-packaging
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
@@ -218,6 +221,7 @@
     args:
       jobs: 4
       test: flunk-on-failure
+      docs: skip
       configure: --enable-warnings --enable-checking
         --enable-kernel-module --with-linux-kernel-packaging
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
