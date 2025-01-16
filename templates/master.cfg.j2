@@ -98,13 +98,22 @@ BuildmasterConfig = {
 {% for builder in afsbotcfg_builders %}
         util.BuilderConfig(
             name='{{ builder_name(builder) }}',
-{%   if builder.tags is defined %}
             tags=[
-{%     for tag in builder.tags %}
+{%   for tag in builder.tags | d([]) %}
                 '{{ tag }}',
-{%     endfor %}
-            ],
+{%   endfor %}
+{%   if builder.factory.name | d('UnixBuildFactory') == 'UnixBuildFactory' %}
+{%     if '--enable-checking' in builder.factory.args.configure | d('') %}
+                'checking',
+{%     endif %}
+{%     if builder.factory.args.test | d('') == 'flunk-on-failure' %}
+                'tests',
+{%     endif %}
+{%     if builder.factory.args.docs | d('') != 'skip' %}
+                'docs',
+{%     endif %}
 {%   endif %}
+            ],
 {%   if builder.workers is defined %}
             workernames=[
 {%     for worker in builder.workers %}
@@ -122,7 +131,7 @@ BuildmasterConfig = {
 {%       endfor %}
             },
 {%     endif %}
-            factory=afsbotcfg.factory.{{ builder.factory.name | d('UnixBuild') }}(
+            factory=afsbotcfg.factory.{{ builder.factory.name | d('UnixBuildFactory') }}(
 {%     if afsbotcfg_project.repo is defined %}
                 repo='{{ afsbotcfg_project.repo }}',
 {%     endif %}
