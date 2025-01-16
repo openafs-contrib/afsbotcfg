@@ -22,6 +22,8 @@ import afsbotcfg.gerrit
 import afsbotcfg.master
 import afsbotcfg.schedulers
 
+import passwords
+
 BuildmasterConfig = {
     'title': '{{ afsbotcfg_project.title }}',
     'titleURL':  '{{ afsbotcfg_project.url }}',
@@ -38,17 +40,13 @@ BuildmasterConfig = {
     ],
     'www': {
         'port': {{ afsbotcfg_project.www_port }},
-        'auth': util.UserPasswordAuth([
-{% for admin in afsbotcfg_admin_passwords %}
-            ('{{ admin[0] }}', '{{ admin[1] }}'),
-{% endfor %}
-        ]),
+        'auth': util.UserPasswordAuth(passwords.admins),
         'authz': util.Authz(
             allowRules=[util.AnyControlEndpointMatcher(role='admins')],
             roleMatchers=[
                 util.RolesFromEmails(admins=[
-{% for admin in afsbotcfg_admin_passwords %}
-                    '{{ admin[0] }}',
+{% for admin, _ in afsbotcfg_admin_passwords %}
+                    '{{ admin }}',
 {% endfor %}
                 ])]),
         'plugins': {
@@ -93,8 +91,7 @@ BuildmasterConfig = {
     'workers': [
 {% for name in afsbotcfg_workers %}
 {%   set properties = lookup('file', 'workers/' + name + '/properties.yml') | from_yaml %}
-{%   set password = lookup('unvault', 'workers/' + name + '/password.txt') | trim  %}
-        worker.Worker('{{ name }}', '{{ password }}', notify_on_missing='{{ properties.notify }}'),
+        worker.Worker('{{ name }}', passwords.worker['{{ name }}'], notify_on_missing='{{ properties.notify }}'),
 {% endfor %}
     ],
     'builders': [
