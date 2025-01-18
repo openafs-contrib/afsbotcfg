@@ -266,7 +266,9 @@
   os: fedora39
   cc: gcc
   arch: amd64
-  worker: fedora39-x86_64
+  workers:
+    - fedora39-x86_64
+    - fedora39-x86_64-02
   factory:
     name: UnixBuildFactory
     args:
