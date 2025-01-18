@@ -102,15 +102,48 @@ BuildmasterConfig = {
 {%   for tag in builder.tags | d([]) %}
                 '{{ tag }}',
 {%   endfor %}
-{%   if builder.factory.name | d('UnixBuildFactory') == 'UnixBuildFactory' %}
-{%     if '--enable-checking' in builder.factory.args.configure | d('') %}
-                'checking',
+{%   if  'skip-all' in builder.tags | d([]) %}
+{%   elif builder.factory.name | d('') == 'ELRpmBuildFactory' %}
+                'package',
+{%     if builder.factory.args.build_dkms_source | d('') == 'true' %}
+                'dkms-check',
 {%     endif %}
-{%     if builder.factory.args.test | d('') == 'flunk-on-failure' %}
+{%   elif builder.factory.name | d('UnixBuildFactory') == 'UnixBuildFactory' %}
+{%     set test = builder.factory.args.test | d('warn-on-failure') %}
+{%     set docs = builder.factory.args.docs | d('warn-on-failure') %}
+{%     set man = builder.factory.args.man | d('warn-on-failure') %}
+{%     set objdir = builder.factory.args.objdir | d('false') %}
+{%     set gic = builder.factory.args.git_ignore_check | d('warn-on-failure') %}
+{%     if '--enable-checking' not in builder.factory.args.configure | d('') %}
+                'skip-checking',
+{%     endif %}
+{%     if test == 'skip' %}
+                'skip-tests',
+{%     elif test == 'warn-on-failure' %}
+                'try-tests',
+{%     elif test == 'flunk-on-failure' %}
                 'tests',
 {%     endif %}
-{%     if builder.factory.args.docs | d('') != 'skip' %}
+{%     if docs == 'skip' %}
+                'skip-docs',
+{%     elif docs == 'warn-on-failure' %}
+                'try-docs',
+{%     elif docs == 'flunk-on-failure' %}
                 'docs',
+{%     endif %}
+{%     if man == 'skip' %}
+                'skip-man',
+{%     elif man == 'warn-on-failure' %}
+                'try-man',
+{%     elif man == 'flunk-on-failure' %}
+                'man',
+{%     endif %}
+{%     if objdir == 'true' or gic == 'skip' %}
+                'skip-git-ignore-check',
+{%     elif gic == 'warn-on-failure' %}
+                'try-git-ignore-check',
+{%     elif gic == 'flunk-on-failure' %}
+                'git-ignore-check',
 {%     endif %}
 {%   endif %}
             ],
