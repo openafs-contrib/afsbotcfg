@@ -8,6 +8,7 @@ help:
 	@echo ""
 	@echo "Run targets:"
 	@echo "  deploy             to run the playbook to create/update the buildbot server"
+	@echo "  configure          to run the playbook to configure the buildbot server"
 	@echo "  ping               to check connectivity to the buildbot server"
 	@echo "  getlog             to download the buildbot server log"
 	@echo ""
@@ -91,8 +92,12 @@ ping: $(PACKAGES) $(VAULT_KEYFILE)
 .PHONY: deploy buildbot
 deploy buildbot: $(PACKAGES) $(VAULT_KEYFILE) collections build $(AFSBOTCFG_LOGDIR)
 	$(INFO) "Running buildbot playbook"
-	$(ACTIVATED) $(LOG) ansible-playbook --inventory=$(INVENTORY) --vault-password-file=$(VAULT_KEYFILE) $(PLAYBOOK)
+	$(ACTIVATED) $(LOG) ansible-playbook --inventory=$(INVENTORY) --vault-password-file=$(VAULT_KEYFILE) $(OPT_TAGS) $(PLAYBOOK)
 	$(LOGINFO)
+
+.PHONY: configure
+configure:
+	$(MAKE) deploy OPT_TAGS="--tags configure"
 
 .PHONY: getlog
 getlog: $(AFSBOTCFG_LOGDIR)

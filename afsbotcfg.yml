@@ -11,9 +11,13 @@
         cmd: "ls"
       changed_when: false
       register: _ls_workers
+      tags:
+        - configure
 
     - ansible.builtin.set_fact:
         _workers: "{{ _ls_workers.stdout_lines }}"
+      tags:
+        - configure
 
     #- debug:
     #    var: _workers
@@ -24,6 +28,8 @@
       ansible.builtin.set_fact:
         _builders: "{{ _builders + (lookup('file', item) | from_yaml) }}"
       with_fileglob: "builders/*.yml"
+      tags:
+        - configure
 
     #- debug:
     #    var: _builders
@@ -32,15 +38,23 @@
     - ansible.builtin.set_fact:
         afsbotcfg_master_home: "{{ ansible_user_dir }}"
       when: afsbotcfg_master_home is undefined
+      tags:
+        - configure
     - ansible.builtin.set_fact:
         afsbotcfg_master_basedir: "{{ afsbotcfg_master_home }}/master/{{ afsbotcfg_project.name | d('openafs') }}"
       when: afsbotcfg_master_basedir is undefined
+      tags:
+        - configure
     - ansible.builtin.set_fact:
         afsbotcfg_master_venv: "{{ afsbotcfg_master_home }}/.venv/buildbot"
       when: afsbotcfg_master_venv is undefined
+      tags:
+        - configure
     - ansible.builtin.set_fact:
         afsbotcfg_master_python: "/usr/bin/python3"
       when: afsbotcfg_master_python is undefined
+      tags:
+        - configure
 
     #--------------------------------------------------------------------------
     # Install the ssh keys for gerrit integration.
@@ -198,8 +212,10 @@
           notify: "restart buildbot master instance"
 
 
-    - ansible.builtin.import_role:
+    - ansible.builtin.include_role:
         name: openafs_contrib.buildbot.buildbot_master
+      tags:
+        - configure
       vars:
         buildbot_master_home: "{{ afsbotcfg_master_home }}"
         buildbot_master_basedir: "{{ afsbotcfg_master_basedir }}"
