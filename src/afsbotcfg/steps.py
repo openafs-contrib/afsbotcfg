@@ -216,7 +216,7 @@ class RunTests(steps.WarningCountingShellCommand):
     workdir = 'build/tests'
     warnOnFailure = True
 
-    def __init__(self, make='make', flunk='warn', **kwargs):
+    def __init__(self, make='make', flunk=False, **kwargs):
         """Create the test step.
 
         Run the make check command in the tests directory. Attach an
@@ -234,7 +234,7 @@ class RunTests(steps.WarningCountingShellCommand):
     def evaluateCommand(self, cmd):
         """Determine if the test failed or succeeded."""
         if cmd.didFail() or self.tap.failed > 0:
-            if self.flunk == "flunk":
+            if self.flunk:
                 return util.FAILURE
             else:
                 return util.WARNINGS

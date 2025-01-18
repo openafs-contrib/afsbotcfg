@@ -201,7 +201,7 @@ class UnixBuildFactory(GerritCheckoutFactory):
         self.addStep(
             RunTests(
                 make=make,
-                flunk=test,
+                flunk=(test == 'flunk-on-failure'),
                 doStepIf=(test != 'skip')))
 
         self.addStep(
