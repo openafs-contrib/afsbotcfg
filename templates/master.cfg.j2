@@ -158,7 +158,7 @@ BuildmasterConfig = {
             builderNames=[
 {%   for builder in afsbotcfg_builders %}
 {%     if builder.scheduler == 'nightly' and builder.branch == branch %}
-{%       if 'skip' in (builder.tags | d([])) %}
+{%       if 'skip-all' in (builder.tags | d([])) %}
                 # '{{ builder_name(builder) }}',
 {%       else %}
                 '{{ builder_name(builder) }}',
@@ -184,7 +184,7 @@ BuildmasterConfig = {
             builderNames=[
 {%   for builder in afsbotcfg_builders %}
 {%     if builder.scheduler == 'gerrit' and builder.branch == branch %}
-{%       if 'skip' in (builder.tags | d([])) %}
+{%       if 'skip-all' in (builder.tags | d([])) %}
                 # '{{ builder_name(builder) }}',
 {%       else %}
                 '{{ builder_name(builder) }}',
@@ -208,7 +208,7 @@ BuildmasterConfig = {
                 '{{ afsbotcfg_project.branches[branch] }}': [
 {%     for builder in afsbotcfg_builders %}
 {%       if builder.scheduler == 'gerrit' and builder.branch == branch %}
-{%         if 'skip' in (builder.tags | d([])) %}
+{%         if 'skip-all' in (builder.tags | d([])) %}
                      # '{{ builder_name(builder) }}'
 {%         else %}
                     '{{ builder_name(builder) }}',

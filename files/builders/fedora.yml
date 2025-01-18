@@ -6,7 +6,7 @@
   arch: amd64
   worker: fedora26-x86_64
   tags:
-    - skip
+    - skip-all
   factory:
     name: UnixBuildFactory
     args:
@@ -168,7 +168,7 @@
   arch: amd64
   worker: fedora36-x86_64
   tags:
-    - skip
+    - skip-all
   factory:
     name: UnixBuildFactory
     args:
@@ -186,7 +186,7 @@
   arch: amd64
   worker: fedora36-x86_64
   tags:
-    - skip
+    - skip-all
   factory:
     name: UnixBuildFactory
     args:
