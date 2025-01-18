@@ -126,6 +126,7 @@ class UnixBuildFactory(GerritCheckoutFactory):
                  docs='warn-on-failure',
                  man='warn-on-failure',
                  test='warn-on-failure',
+                 git_ignore_check='warn-on-failure',
                  **kwargs):
         """Create a UnixBuildFactory instance.
 
@@ -146,6 +147,7 @@ class UnixBuildFactory(GerritCheckoutFactory):
         test = str2enum(test, enums, enums[1])
         docs = str2enum(docs, enums, enums[1])
         man = str2enum(man, enums, enums[1])
+        git_ignore_check = str2enum(man, enums, enums[1])
         try:
             jobs = int(jobs)
         except ValueError:
@@ -156,6 +158,7 @@ class UnixBuildFactory(GerritCheckoutFactory):
             checkoutdir = 'source'
             builddir = 'build'
             cf = '../source/configure'
+            git_ignore_check = 'skip'
         else:
             checkoutdir = 'build'
             builddir = 'build'
@@ -203,7 +206,8 @@ class UnixBuildFactory(GerritCheckoutFactory):
 
         self.addStep(
             GitIgnoreCheck(
-                doStepIf=(not objdir)))
+                flunk=(git_ignore_check == 'flunk-on-failure'),
+                doStepIf=(git_ignore_check != 'skip')))
 
 
 class WindowsBuildFactory(GerritCheckoutFactory):

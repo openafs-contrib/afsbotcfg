@@ -283,16 +283,19 @@ class GitIgnoreCheck(steps.WarningCountingShellCommand):
     workdir = 'build'
     command = ['git', 'status', '--porcelain']
 
-    def __init__(self, **kwargs):
+    def __init__(self, flunk=False, **kwargs):
         super().__init__(**kwargs)
         self.observer = GitStatusObserver()
         self.addLogObserver('stdio', self.observer)
 
     def evaluateCommand(self, cmd):
         if self.observer.changed:
-            # return util.FAILURE
-            return util.WARNINGS
-        return util.SUCCESS
+            if self.flunk:
+                return util.FAILURE
+            else:
+                return util.WARNINGS
+        else:
+            return util.SUCCESS
 
     def createSummary(self):
         if self.observer.changed:
