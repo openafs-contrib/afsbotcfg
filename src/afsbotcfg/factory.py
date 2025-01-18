@@ -50,11 +50,12 @@ def str2bool(s):
     return s.lower() in ["1", "yes", "true"]
 
 
-def str2enum(s, enums, default):
+def check_option(s):
+    choices = ('skip', 'warn-on-failure', 'flunk-on-failure')
     if not s:
-        s = default
-    elif s not in enums:
-        raise ValueError("Invalid enum: {0}; must be one of: {1}".format(s, ",".join(enums)))
+        raise ValueError("Missing enum: {0}; must be one of: {1}".format(s, ",".join(choices)))
+    elif s not in choices:
+        raise ValueError("Invalid enum: {0}; must be one of: {1}".format(s, ",".join(choices)))
     return s
 
 
@@ -141,13 +142,14 @@ class UnixBuildFactory(GerritCheckoutFactory):
             man:          Also generate man pages (string)
             test:         Also run the TAP unit tests (string)
         """
-        enums = ('skip', 'warn-on-failure', 'flunk-on-failure')
         objdir = str2bool(objdir)
         pretty = str2bool(pretty)
-        test = str2enum(test, enums, enums[1])
-        docs = str2enum(docs, enums, enums[1])
-        man = str2enum(man, enums, enums[1])
-        git_ignore_check = str2enum(man, enums, enums[1])
+
+        test = check_option(test)
+        docs = check_option(docs)
+        man = check_option(man)
+        git_ignore_check = check_option(man)
+
         try:
             jobs = int(jobs)
         except ValueError:
