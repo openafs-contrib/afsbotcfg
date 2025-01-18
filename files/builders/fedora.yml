@@ -284,7 +284,45 @@
   os: fedora39
   cc: gcc
   arch: amd64
-  worker: fedora39-x86_64
+  workers:
+    - fedora39-x86_64
+    - fedora39-x86_64-02
+  factory:
+    name: UnixBuildFactory
+    args:
+      docs: skip
+      configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
+        --enable-supergroups
+    env:
+      CFLAGS: -Wno-error=array-bounds -Wno-error=format-overflow -Wno-error=format-truncation
+        -Wno-error=implicit-function-declaration -Wno-error=restrict
+
+- scheduler: nightly
+  branch: dev
+  os: fedora39
+  cc: gcc
+  arch: amd64
+  workers:
+    - fedora39-x86_64
+    - fedora39-x86_64-02
+  factory:
+    name: UnixBuildFactory
+    args:
+      docs: skip
+      configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
+        --enable-supergroups
+    env:
+      CFLAGS: -Wno-error=array-bounds -Wno-error=format-overflow -Wno-error=format-truncation
+        -Wno-error=implicit-function-declaration -Wno-error=restrict
+
+- scheduler: nightly
+  branch: stable
+  os: fedora39
+  cc: gcc
+  arch: amd64
+  workers:
+    - fedora39-x86_64
+    - fedora39-x86_64-02
   factory:
     name: UnixBuildFactory
     args:
@@ -341,7 +379,35 @@
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
 - scheduler: nightly
+  branch: stable
+  os: fedora40
+  cc: gcc
+  arch: amd64
+  workers:
+    - fedora40-x86_64
+    - fedora40-x86_64-02
+  factory:
+    name: UnixBuildFactory
+    args:
+      docs: skip
+      configure: --enable-warnings --enable-checking --enable-kernel-module
+        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+
+- scheduler: nightly
   branch: dev
+  os: fedora41
+  cc: gcc
+  arch: amd64
+  worker: fedora41-x86_64
+  factory:
+    name: UnixBuildFactory
+    args:
+      docs: skip
+      configure: --enable-warnings --enable-checking --enable-kernel-module
+        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+
+- scheduler: nightly
+  branch: stable
   os: fedora41
   cc: gcc
   arch: amd64
