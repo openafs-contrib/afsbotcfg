@@ -127,7 +127,7 @@ class UnixBuildFactory(GerritCheckoutFactory):
                  docs='warn-on-failure',
                  man='warn-on-failure',
                  test='warn-on-failure',
-                 git_ignore_check='warn-on-failure',
+                 git_ignore_check='flunk-on-failure',
                  **kwargs):
         """Create a UnixBuildFactory instance.
 

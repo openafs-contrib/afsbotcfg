@@ -285,6 +285,7 @@ class GitIgnoreCheck(steps.WarningCountingShellCommand):
 
     def __init__(self, flunk=False, **kwargs):
         super().__init__(**kwargs)
+        self.flunk = flunk
         self.observer = GitStatusObserver()
         self.addLogObserver('stdio', self.observer)
 

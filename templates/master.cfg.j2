@@ -113,7 +113,7 @@ BuildmasterConfig = {
 {%     set docs = builder.factory.args.docs | d('warn-on-failure') %}
 {%     set man = builder.factory.args.man | d('warn-on-failure') %}
 {%     set objdir = builder.factory.args.objdir | d('false') %}
-{%     set gic = builder.factory.args.git_ignore_check | d('warn-on-failure') %}
+{%     set gic = builder.factory.args.git_ignore_check | d('flunk-on-failure') %}
 {%     if '--enable-checking' not in builder.factory.args.configure | d('') %}
                 'skip-checking',
 {%     endif %}
