@@ -115,7 +115,7 @@ class MakeDocs(steps.ShellSequence):
 
     name = 'make docs'
 
-    def __init__(self, docs, make='make', **kwargs):
+    def __init__(self, make='make', **kwargs):
         """Create a step to render a docbook document.
 
         Args:
@@ -124,7 +124,7 @@ class MakeDocs(steps.ShellSequence):
         """
         super().__init__(**kwargs)
         self.commands = []
-        for doc in docs:
+        for doc in ['AdminGuide', 'AdminRef', 'QuickStartUnix', 'UserGuide']:
             workdir = os.path.join('doc/xml', doc)
             self.commands.append(
                 util.ShellArg(

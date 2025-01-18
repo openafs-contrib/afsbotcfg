@@ -116,8 +116,6 @@ class UnixBuildFactory(GerritCheckoutFactory):
     render the documentation and run the TAP unit tests.
     """
 
-    DOCS = ('AdminGuide', 'AdminRef', 'QuickStartUnix', 'UserGuide')
-
     def __init__(self,
                  objdir='false',
                  configure=None,
@@ -190,7 +188,6 @@ class UnixBuildFactory(GerritCheckoutFactory):
 
         self.addStep(
             MakeDocs(
-                self.DOCS,
                 make=make,
                 doStepIf=(docs != 'skip')))
 
