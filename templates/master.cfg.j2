@@ -120,30 +120,30 @@ BuildmasterConfig = {
 {%     if test == 'skip' %}
                 'skip-tests',
 {%     elif test == 'warn-on-failure' %}
-                'try-tests',
+                'warn-tests',
 {%     elif test == 'flunk-on-failure' %}
-                'tests',
+                # 'tests',
 {%     endif %}
 {%     if docs == 'skip' %}
                 'skip-docs',
 {%     elif docs == 'warn-on-failure' %}
-                'try-docs',
+                'warn-docs',
 {%     elif docs == 'flunk-on-failure' %}
                 'docs',
 {%     endif %}
 {%     if man == 'skip' %}
                 'skip-man',
 {%     elif man == 'warn-on-failure' %}
-                'try-man',
+                'warn-man',
 {%     elif man == 'flunk-on-failure' %}
-                'man',
+                # 'man',
 {%     endif %}
 {%     if objdir == 'true' or gic == 'skip' %}
                 'skip-git-ignore-check',
 {%     elif gic == 'warn-on-failure' %}
-                'try-git-ignore-check',
+                'warn-git-ignore-check',
 {%     elif gic == 'flunk-on-failure' %}
-                'git-ignore-check',
+                # 'git-ignore-check',
 {%     endif %}
 {%   endif %}
             ],
