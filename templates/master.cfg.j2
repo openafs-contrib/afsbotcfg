@@ -74,6 +74,13 @@ BuildmasterConfig = {
             identity_file='{{ afsbotcfg_master_home }}/.ssh/{{ afsbotcfg_gerrit.ident | basename }}',
             summaryCB=afsbotcfg.gerrit.summaryCB,
             summaryArg=('{{ afsbotcfg_project.summary_title }}', '{{ afsbotcfg_project.url }}'),
+            builders=[
+{%   for builder in afsbotcfg_builders %}
+{%     if builder.scheduler == 'gerrit' %}
+                '{{ builder_name(builder) }}',
+{%     endif %}
+{%   endfor %}
+            ],
         ),
 {% endif %}
         reporters.MailNotifier(
