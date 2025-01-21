@@ -9,6 +9,8 @@
     name: UnixBuildFactory
     args:
       test: skip
+      docs: flunk-on-failure
+      man: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
         --with-docbook2pdf=dblatex --with-xslt-processor=xsltproc
@@ -23,6 +25,8 @@
     name: UnixBuildFactory
     args:
       test: skip
+      docs: flunk-on-failure
+      man: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
         --with-docbook2pdf=dblatex --with-xslt-processor=xsltproc
@@ -37,6 +41,8 @@
     name: UnixBuildFactory
     args:
       test: skip
+      docs: flunk-on-failure
+      man: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
         --with-docbook2pdf=dblatex --with-xslt-processor=xsltproc
@@ -51,6 +57,8 @@
     name: UnixBuildFactory
     args:
       test: skip
+      docs: flunk-on-failure
+      man: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
         --with-docbook2pdf=dblatex --with-xslt-processor=xsltproc
@@ -65,6 +73,8 @@
     name: UnixBuildFactory
     args:
       test: skip
+      docs: flunk-on-failure
+      man: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
         --with-docbook2pdf=dblatex --with-xslt-processor=xsltproc
@@ -79,6 +89,8 @@
     name: UnixBuildFactory
     args:
       test: skip
+      docs: flunk-on-failure
+      man: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
         --with-docbook2pdf=dblatex --with-xslt-processor=xsltproc
@@ -93,6 +105,8 @@
     name: UnixBuildFactory
     args:
       test: flunk-on-failure
+      docs: flunk-on-failure
+      man: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
         --with-docbook2pdf=dblatex --with-xslt-processor=xsltproc
@@ -107,6 +121,8 @@
     name: UnixBuildFactory
     args:
       test: flunk-on-failure
+      docs: flunk-on-failure
+      man: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
         --with-docbook2pdf=dblatex --with-xslt-processor=xsltproc
@@ -121,6 +137,8 @@
     name: UnixBuildFactory
     args:
       test: flunk-on-failure
+      docs: flunk-on-failure
+      man: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
         --with-docbook2pdf=dblatex --with-xslt-processor=xsltproc

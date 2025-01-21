@@ -9,6 +9,7 @@
     name: UnixBuildFactory
     args:
       test: warn-on-failure
+      docs: flunk-on-failure
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
 
@@ -22,5 +23,6 @@
     name: UnixBuildFactory
     args:
       test: warn-on-failure
+      docs: flunk-on-failure
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
