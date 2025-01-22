@@ -108,6 +108,10 @@ BuildmasterConfig = {
 {%   for tag in builder.tags | d([]) %}
                 '{{ tag }}',
 {%   endfor %}
+                '{{ afsbotcfg_project.branches[builder.branch] }}',
+{%   if builder.scheduler == 'gerrit' %}
+                'verify',
+{%   endif %}
 {%   if  'disabled' in builder.tags | d([]) %}
 {%   elif builder.factory.name | d('') == 'ELRpmBuildFactory' %}
                 'package',
