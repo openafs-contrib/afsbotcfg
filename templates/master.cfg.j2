@@ -108,7 +108,7 @@ BuildmasterConfig = {
 {%   for tag in builder.tags | d([]) %}
                 '{{ tag }}',
 {%   endfor %}
-{%   if  'skip-all' in builder.tags | d([]) %}
+{%   if  'disabled' in builder.tags | d([]) %}
 {%   elif builder.factory.name | d('') == 'ELRpmBuildFactory' %}
                 'package',
 {%     if builder.factory.args.build_dkms_source | d('') == 'true' %}
@@ -197,7 +197,7 @@ BuildmasterConfig = {
             builderNames=[
 {%   for builder in afsbotcfg_builders %}
 {%     if builder.scheduler == 'nightly' and builder.branch == branch %}
-{%       if 'skip-all' in (builder.tags | d([])) %}
+{%       if 'disabled' in (builder.tags | d([])) %}
                 # '{{ builder_name(builder) }}',
 {%       else %}
                 '{{ builder_name(builder) }}',
@@ -223,7 +223,7 @@ BuildmasterConfig = {
             builderNames=[
 {%   for builder in afsbotcfg_builders %}
 {%     if builder.scheduler == 'gerrit' and builder.branch == branch %}
-{%       if 'skip-all' in (builder.tags | d([])) %}
+{%       if 'disabled' in (builder.tags | d([])) %}
                 # '{{ builder_name(builder) }}',
 {%       else %}
                 '{{ builder_name(builder) }}',
@@ -247,7 +247,7 @@ BuildmasterConfig = {
                 '{{ afsbotcfg_project.branches[branch] }}': [
 {%     for builder in afsbotcfg_builders %}
 {%       if builder.scheduler == 'gerrit' and builder.branch == branch %}
-{%         if 'skip-all' in (builder.tags | d([])) %}
+{%         if 'disabled' in (builder.tags | d([])) %}
                      # '{{ builder_name(builder) }}'
 {%         else %}
                     '{{ builder_name(builder) }}',
