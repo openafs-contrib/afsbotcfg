@@ -212,7 +212,7 @@
           notify: "restart buildbot master instance"
 
 
-    - ansible.builtin.include_role:
+    - ansible.builtin.import_role:
         name: openafs_contrib.buildbot.buildbot_master
       tags:
         - configure
