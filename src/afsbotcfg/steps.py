@@ -21,6 +21,9 @@ from buildbot.plugins import steps
 from buildbot.plugins import util
 
 
+run_tests_lock = util.WorkerLock("tap-tests")
+
+
 class Delay(steps.MasterShellCommand):
     """
     Delay a random time to stagger git traffic.
@@ -219,8 +222,13 @@ class RunTests(steps.WarningCountingShellCommand):
     def __init__(self, make='make', flunk=False, **kwargs):
         """Create the test step.
 
-        Run the make check command in the tests directory. Attach an
-        observer instance to count the passed and failed tests.
+        Run the make check command in the tests directory. Attach an observer
+        instance to count the passed and failed tests.
+
+        A worker lock is used to ensure the tests for different builders do not
+        run at the same time on the same worker. This is needed since some of
+        the tests run client server programs on fixed ports and so tests are
+        not isolated.
 
         Args:
             make:  The make program to be run.
@@ -230,6 +238,7 @@ class RunTests(steps.WarningCountingShellCommand):
         self.command = [make, 'check', 'V=1']
         self.tap = TapObserver()
         self.addLogObserver('stdio', self.tap)
+        self.locks = [run_tests_lock.access('exclusive')]
 
     def evaluateCommand(self, cmd):
         """Determine if the test failed or succeeded."""
