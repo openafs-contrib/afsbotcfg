@@ -14,6 +14,8 @@
 
 from buildbot.plugins import util
 
+from twisted.python import log
+
 
 def summaryCB(buildInfoList, results, status, arg):
     """Generate the build summary report.
@@ -62,6 +64,14 @@ def summaryCB(buildInfoList, results, status, arg):
             elif buildInfo['text'] == 'build skipped due to worker timeout':
                 builderFinalStatus[buildInfo['name']]['result'] = util.SKIPPED
                 builderFinalStatus[buildInfo['name']]['resultText'] = "cancelled"
+        elif buildInfo['result'] == util.SUCCESS:
+            buildername = buildInfo['name']
+            workername, workertype = buildInfo['build']['properties']['workername']
+            log.msg(f"afsbotcfg: summaryCB: buildername={buildername} workername={workername} workertype={workertype}")
+            if workertype == "DummyWorker":
+                log.msg(f"afsbotcfg: summaryCB: setting skipped build: buildername={buildername} workername={workername} workertype={workertype}")
+                builderFinalStatus[buildInfo['name']]['result'] = util.SKIPPED
+                builderFinalStatus[buildInfo['name']]['resultText'] = "skipped"
 
     # Possible results: SUCCESS WARNINGS FAILURE SKIPPED EXCEPTION RETRY CANCELLED
     successfulBuilds = [
