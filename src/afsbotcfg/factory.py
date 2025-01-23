@@ -169,47 +169,34 @@ class UnixBuildFactory(GerritCheckoutFactory):
         super().__init__(workdir=checkoutdir, **kwargs)
 
         if builddir != checkoutdir:
-            self.addStep(
-                steps.RemoveDirectory(dir=builddir))
-            self.addStep(
-                steps.MakeDirectory(dir=builddir))
+            self.addStep(steps.RemoveDirectory(dir=builddir))
+            self.addStep(steps.MakeDirectory(dir=builddir))
 
-        self.addStep(
-            Regen(
-                workdir=checkoutdir,
-                manpages=target.startswith('dest')))
+        self.addStep(Regen(workdir=checkoutdir, manpages=target.startswith('dest')))
+        self.addStep(Configure(configure=cf, options=configure))
+        self.addStep(Make(make=make, jobs=jobs, pretty=pretty, target=target))
 
-        self.addStep(
-            Configure(
-                configure=cf,
-                options=configure))
+        if docs == 'skip':
+            self.addStep(MakeDocs(make=make, doStepIf=False))
+        else:
+            self.addStep(MakeDocs(make=make))
 
-        self.addStep(
-            Make(
-                make=make,
-                jobs=jobs,
-                pretty=pretty,
-                target=target))
+        if man == 'skip':
+            self.addStep(MakeManPages(doStepIf=False))
+        else:
+            self.addStep(MakeManPages())
 
-        self.addStep(
-            MakeDocs(
-                make=make,
-                doStepIf=(docs != 'skip')))
+        tflunk = (test == 'flunk-on-failure')
+        if test == 'skip':
+            self.addStep(RunTests(make=make, flunk=tflunk, doStepIf=False))
+        else:
+            self.addStep(RunTests(make=make, flunk=tflunk))
 
-        self.addStep(
-            MakeManPages(
-                doStepIf=(man != 'skip')))
-
-        self.addStep(
-            RunTests(
-                make=make,
-                flunk=(test == 'flunk-on-failure'),
-                doStepIf=(test != 'skip')))
-
-        self.addStep(
-            GitIgnoreCheck(
-                flunk=(git_ignore_check == 'flunk-on-failure'),
-                doStepIf=(git_ignore_check != 'skip')))
+        gflunk = (git_ignore_check == 'flunk-on-failure')
+        if git_ignore_check == 'skip':
+            self.addStep(GitIgnoreCheck(flunk=gflunk, doStepIf=False))
+        else:
+            self.addStep(GitIgnoreCheck(flunk=gflunk))
 
 
 class WindowsBuildFactory(GerritCheckoutFactory):
@@ -283,19 +270,18 @@ class ELRpmBuildFactory(GerritCheckoutFactory):
                 rpmdir='`pwd`/packages/rpmbuild/RPMS',
                 sourcedir='`pwd`/packages/rpmbuild/SOURCES',
                 srcrpmdir='`pwd`/packages/rpmbuild/SRPMS'))
-        self.addStep(
-            steps.ShellCommand(
-                name='unpack-dkms-rpm.sh',
-                command=['packages/unpack-dkms-rpm.sh'],
-                doStepIf=build_dkms_source))
-        self.addStep(
-            steps.Configure(
-                command=['./configure', '--with-linux-kernel-packaging'],
-                workdir='build/packages/dkms/usr/src/openafs',
-                logfiles={'config.log': 'config.log'},
-                doStepIf=build_dkms_source))
-        self.addStep(
-            steps.Compile(
-                command=['make', '-j', '4', 'V=0'],
-                workdir='build/packages/dkms/usr/src/openafs',
-                doStepIf=build_dkms_source))
+
+        if build_dkms_source:
+            self.addStep(
+                steps.ShellCommand(
+                    name='unpack-dkms-rpm.sh',
+                    command=['packages/unpack-dkms-rpm.sh']))
+            self.addStep(
+                steps.Configure(
+                    command=['./configure', '--with-linux-kernel-packaging'],
+                    workdir='build/packages/dkms/usr/src/openafs',
+                    logfiles={'config.log': 'config.log'}))
+            self.addStep(
+                steps.Compile(
+                    command=['make', '-j', '4', 'V=0'],
+                    workdir='build/packages/dkms/usr/src/openafs'))
