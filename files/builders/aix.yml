@@ -5,6 +5,7 @@
   cc: xlc
   arch: rs
   worker: aix61-rs
+  repo: "git://gerrit.openafs.org/openafs.git"
   factory:
     name: UnixBuildFactory
     args:
@@ -20,6 +21,7 @@
   cc: gcc
   arch: rs
   worker: aix61-rs
+  repo: "git://gerrit.openafs.org/openafs.git"
   factory:
     name: UnixBuildFactory
     args:
@@ -36,6 +38,7 @@
   arch: rs
   flavor: nocheck
   worker: aix73-rs
+  repo: "https://gerrit.openafs.org/openafs.git"
   factory:
     name: UnixBuildFactory
     args:
@@ -54,6 +57,7 @@
   arch: rs
   flavor: nocheck
   worker: aix73-rs
+  repo: "https://gerrit.openafs.org/openafs.git"
   factory:
     name: UnixBuildFactory
     args:
@@ -72,6 +76,7 @@
   arch: rs
   flavor: check
   worker: aix73-rs
+  repo: "https://gerrit.openafs.org/openafs.git"
   factory:
     name: UnixBuildFactory
     args:

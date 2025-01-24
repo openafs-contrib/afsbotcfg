@@ -7,7 +7,7 @@ url: "https://buildbot.openafs.org/"
 www_port: 8011
 pb_port: 9989
 email_from: "buildbot@openafs.MIT.EDU"
-repo: "git://gerrit.openafs.org/openafs.git"
+repo: "https://gerrit.openafs.org/openafs.git"
 start_delay: 30
 
 # Long term branch names.
