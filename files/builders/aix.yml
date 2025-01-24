@@ -33,6 +33,22 @@
 
 - scheduler: nightly
   branch: dev
+  os: aix61
+  cc: xlc
+  arch: rs
+  worker: aix61-rs
+  repo: "https://gerrit.openafs.org/openafs.git"
+  factory:
+    name: UnixBuildFactory
+    args:
+      docs: skip
+      git_ignore_check: warn-on-failure
+      jobs: 1
+      configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
+        --enable-supergroups
+
+- scheduler: nightly
+  branch: dev
   os: aix73
   cc: xlc
   arch: rs
