@@ -46,6 +46,12 @@ from afsbotcfg.steps import (
 )
 
 
+def isRealWorker(step):
+    if step.worker.name == 'dummy':
+        return False
+    return True
+
+
 def str2bool(s):
     return s.lower() in ["1", "yes", "true"]
 
@@ -87,7 +93,7 @@ class GerritCheckoutFactory(util.BuildFactory):
         super().__init__(**kwargs)
 
         if start_delay:
-            self.addStep(Delay(start_delay))
+            self.addStep(Delay(start_delay, doStepIf=isRealWorker))
 
         self.addStep(
             steps.Gerrit(
@@ -97,7 +103,8 @@ class GerritCheckoutFactory(util.BuildFactory):
                 method='fresh',
                 retry=(delay, retries),
                 retryFetch=True,
-                timeout=300))
+                timeout=300,
+                doStepIf=isRealWorker))
 
         self.addStep(
            steps.ShellSequence(
@@ -107,7 +114,8 @@ class GerritCheckoutFactory(util.BuildFactory):
                    util.ShellArg(command=['git', 'gc', '--auto'], logname='git gc'),
                    util.ShellArg(command=['git', 'clean', '-f', '-x', '-d'], logname='git clean'),
                    util.ShellArg(command=['git', 'reset', '--hard', 'HEAD'], logname='git reset'),
-                   util.ShellArg(command=['git', 'log', '-n', '1', '--stat'], logname='git log')]))
+                   util.ShellArg(command=['git', 'log', '-n', '1', '--stat'], logname='git log')],
+               doStepIf=isRealWorker))
 
 
 class UnixBuildFactory(GerritCheckoutFactory):
@@ -169,34 +177,34 @@ class UnixBuildFactory(GerritCheckoutFactory):
         super().__init__(workdir=checkoutdir, **kwargs)
 
         if builddir != checkoutdir:
-            self.addStep(steps.RemoveDirectory(dir=builddir))
-            self.addStep(steps.MakeDirectory(dir=builddir))
+            self.addStep(steps.RemoveDirectory(dir=builddir, doStepIf=isRealWorker))
+            self.addStep(steps.MakeDirectory(dir=builddir, doStepIf=isRealWorker))
 
-        self.addStep(Regen(workdir=checkoutdir, manpages=target.startswith('dest')))
-        self.addStep(Configure(configure=cf, options=configure))
-        self.addStep(Make(make=make, jobs=jobs, pretty=pretty, target=target))
+        self.addStep(Regen(workdir=checkoutdir, manpages=target.startswith('dest'), doStepIf=isRealWorker))
+        self.addStep(Configure(configure=cf, options=configure, doStepIf=isRealWorker))
+        self.addStep(Make(make=make, jobs=jobs, pretty=pretty, target=target, doStepIf=isRealWorker))
 
         if docs == 'skip':
             self.addStep(MakeDocs(make=make, doStepIf=False))
         else:
-            self.addStep(MakeDocs(make=make))
+            self.addStep(MakeDocs(make=make, doStepIf=isRealWorker))
 
         if man == 'skip':
             self.addStep(MakeManPages(doStepIf=False))
         else:
-            self.addStep(MakeManPages())
+            self.addStep(MakeManPages(doStepIf=isRealWorker))
 
         tflunk = (test == 'flunk-on-failure')
         if test == 'skip':
             self.addStep(RunTests(make=make, flunk=tflunk, doStepIf=False))
         else:
-            self.addStep(RunTests(make=make, flunk=tflunk))
+            self.addStep(RunTests(make=make, flunk=tflunk, doStepIf=isRealWorker))
 
         gflunk = (git_ignore_check == 'flunk-on-failure')
         if git_ignore_check == 'skip':
             self.addStep(GitIgnoreCheck(flunk=gflunk, doStepIf=False))
         else:
-            self.addStep(GitIgnoreCheck(flunk=gflunk))
+            self.addStep(GitIgnoreCheck(flunk=gflunk, doStepIf=isRealWorker))
 
 
 class WindowsBuildFactory(GerritCheckoutFactory):
@@ -210,9 +218,10 @@ class WindowsBuildFactory(GerritCheckoutFactory):
 
         self.addStep(steps.ShellCommand(
             name='build-openafs',
-            command=['build-openafs.cmd', arch, variant]))
+            command=['build-openafs.cmd', arch, variant],
+            doStepIf=isRealWorker))
 
-        self.addStep(GitIgnoreCheck())
+        self.addStep(GitIgnoreCheck(doStepIf=isRealWorker))
 
 
 class ELRpmBuildFactory(GerritCheckoutFactory):
@@ -241,27 +250,32 @@ class ELRpmBuildFactory(GerritCheckoutFactory):
         self.addStep(
             steps.MakeDirectory(
                 name="mkdir build/packages",
-                dir='build/packages'))
+                dir='build/packages',
+                doStepIf=isRealWorker))
         self.addStep(
             steps.FileDownload(
                 name='download make-rpm-workspace.sh',
                 mastersrc='build-scripts/make-rpm-workspace.sh',
                 workerdest='packages/make-rpm-workspace.sh',
-                mode=0o755))
+                mode=0o755,
+                doStepIf=isRealWorker))
         self.addStep(
             steps.FileDownload(
                 name='download unpack-dkms-rpm.sh',
                 mastersrc='build-scripts/unpack-dkms-rpm.sh',
                 workerdest='packages/unpack-dkms-rpm.sh',
-                mode=0o755))
+                mode=0o755,
+                doStepIf=isRealWorker))
         self.addStep(
             steps.ShellCommand(
                 name='make-release',
-                command=['build-tools/make-release', '--dir=packages', 'HEAD']))
+                command=['build-tools/make-release', '--dir=packages', 'HEAD'],
+                doStepIf=isRealWorker))
         self.addStep(
             steps.ShellCommand(
                 name='make-rpm-workspace.sh',
-                command=['packages/make-rpm-workspace.sh']))
+                command=['packages/make-rpm-workspace.sh'],
+                doStepIf=isRealWorker))
         self.addStep(
             steps.RpmBuild(
                 specfile='packages/rpmbuild/SPECS/openafs.spec',
@@ -269,19 +283,23 @@ class ELRpmBuildFactory(GerritCheckoutFactory):
                 builddir='`pwd`/packages/rpmbuild/BUILD',
                 rpmdir='`pwd`/packages/rpmbuild/RPMS',
                 sourcedir='`pwd`/packages/rpmbuild/SOURCES',
-                srcrpmdir='`pwd`/packages/rpmbuild/SRPMS'))
+                srcrpmdir='`pwd`/packages/rpmbuild/SRPMS',
+                doStepIf=isRealWorker))
 
         if build_dkms_source:
             self.addStep(
                 steps.ShellCommand(
                     name='unpack-dkms-rpm.sh',
-                    command=['packages/unpack-dkms-rpm.sh']))
+                    command=['packages/unpack-dkms-rpm.sh'],
+                    doStepIf=isRealWorker))
             self.addStep(
                 steps.Configure(
                     command=['./configure', '--with-linux-kernel-packaging'],
                     workdir='build/packages/dkms/usr/src/openafs',
-                    logfiles={'config.log': 'config.log'}))
+                    logfiles={'config.log': 'config.log'},
+                    doStepIf=isRealWorker))
             self.addStep(
                 steps.Compile(
                     command=['make', '-j', '4', 'V=0'],
-                    workdir='build/packages/dkms/usr/src/openafs'))
+                    workdir='build/packages/dkms/usr/src/openafs',
+                    doStepIf=isRealWorker))
