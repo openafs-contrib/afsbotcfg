@@ -159,15 +159,16 @@ BuildmasterConfig = {
 {%     endif %}
 {%   endif %}
             ],
-{%   if builder.workers is defined %}
             workernames=[
+{%   if builder.worker is defined %}
+                'dummy',
+                '{{builder.worker}}',
+{%   elif builder.workers is defined %}
 {%     for worker in builder.workers %}
                 '{{worker}}',
 {%     endfor %}
-            ],
-{%   else %}
-            workernames=['{{builder.worker}}'],
 {%   endif %}
+            ],
             canStartBuild=afsbotcfg.worker.canStartBuild,
 {%     if builder.factory.env is defined %}
             env={
