@@ -5,7 +5,7 @@ ansible_user: buildbot
 afsbotcfg_master_python: "/opt/rh/rh-python36/root/usr/bin/python3.6"
 afsbotcfg_sqlalchemy_version: "==1.4.28"
 afsbotcfg_buildbot_version: "==3.5.0"
-afsbotcfg_version: 25.1.23rc5
+afsbotcfg_version: 25.1.27rc1
 
 afsbotcfg_gerrit:
   url: "https://gerrit.openafs.org"

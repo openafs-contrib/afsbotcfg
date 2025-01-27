@@ -168,7 +168,7 @@ BuildmasterConfig = {
 {%   else %}
             workernames=['{{builder.worker}}'],
 {%   endif %}
-            canStartBuild=util.enforceChosenWorker,
+            canStartBuild=afsbotcfg.worker.canStartBuild,
 {%     if builder.factory.env is defined %}
             env={
 {%       for key, value in builder.factory.env.items() %}
