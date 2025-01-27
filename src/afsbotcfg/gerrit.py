@@ -66,10 +66,9 @@ def summaryCB(buildInfoList, results, status, arg):
                 builderFinalStatus[buildInfo['name']]['resultText'] = "cancelled"
         elif buildInfo['result'] == util.SUCCESS:
             buildername = buildInfo['name']
-            workername, workertype = buildInfo['build']['properties']['workername']
-            log.msg(f"afsbotcfg: summaryCB: buildername={buildername} workername={workername} workertype={workertype}")
-            if workertype == "DummyWorker":
-                log.msg(f"afsbotcfg: summaryCB: setting skipped build: buildername={buildername} workername={workername} workertype={workertype}")
+            workername, _ = buildInfo['build']['properties']['workername']
+            if workername == "dummy":
+                log.msg(f"afsbotcfg: summaryCB: setting skipped build: buildername={buildername} workername={workername}")
                 builderFinalStatus[buildInfo['name']]['result'] = util.SKIPPED
                 builderFinalStatus[buildInfo['name']]['resultText'] = "skipped"
 
