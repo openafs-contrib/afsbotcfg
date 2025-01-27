@@ -86,7 +86,7 @@
     args:
       docs: skip
       test: warn-on-failure
-      configure: --enable-warnings --enable-checking --disable-pam --enable-kernel-module
+      configure: --disable-warnings --disable-checking --disable-pam --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups --enable-transarc-paths
 
 - scheduler: nightly
@@ -100,7 +100,7 @@
     args:
       docs: skip
       test: warn-on-failure
-      configure: --enable-warnings --enable-checking --disable-pam --enable-kernel-module
+      configure: --disable-warnings --disable-checking --disable-pam --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups --enable-transarc-paths
 
 - scheduler: gerrit
