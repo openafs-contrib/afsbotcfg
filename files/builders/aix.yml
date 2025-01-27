@@ -44,6 +44,24 @@
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
 
+- scheduler: gerrit
+  branch: dev
+  os: aix73
+  cc: xlc
+  arch: rs
+  flavor: nocheck
+  worker: aix73-rs
+  factory:
+    name: UnixBuildFactory
+    args:
+      docs: skip
+      git_ignore_check: warn-on-failure
+      jobs: 1
+      configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
+        --enable-supergroups
+    env:
+      PATH: /opt/IBM/xlC/16.1.0/bin:/usr/bin:/etc:/usr/sbin:/usr/ucb:/usr/bin/X11:/sbin:/opt/freeware/bin
+
 - scheduler: nightly
   branch: dev
   os: aix73
