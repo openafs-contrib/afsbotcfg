@@ -178,7 +178,7 @@ BuildmasterConfig = {
             },
 {%     endif %}
             factory=afsbotcfg.factory.{{ builder.factory.name | d('UnixBuildFactory') }}(
-                repo='{{ builder.repo | d(afsbotcfg_project.repo) | d("https://gerrit.openafs.org/openafs.git") }}',
+                repo='{{ builder.repo | d(afsbotcfg_project.repo) }}',
 {%     if builder.scheduler == 'gerrit' %}
                 start_delay={{ afsbotcfg_project.start_delay }},
 {%     endif %}
