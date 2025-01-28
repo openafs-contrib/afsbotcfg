@@ -14,6 +14,8 @@
       test: warn-on-failure
       configure: --disable-warnings --disable-checking --disable-pam
         --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+    env:
+      ARCHFLAGS: -arch x86_64 -arch arm64
 
 - scheduler: nightly
   branch: dev
@@ -28,6 +30,8 @@
       test: warn-on-failure
       configure: --disable-warnings --disable-checking --disable-pam
         --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+    env:
+      ARCHFLAGS: -arch x86_64 -arch arm64
 
 - scheduler: nightly
   branch: stable
@@ -42,6 +46,8 @@
       test: warn-on-failure
       configure: --disable-warnings --disable-checking --disable-pam
         --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+    env:
+      ARCHFLAGS: -arch x86_64 -arch arm64
 
 - scheduler: gerrit
   branch: dev
@@ -58,6 +64,8 @@
       test: warn-on-failure
       configure: --disable-warnings --disable-checking --disable-pam
         --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+    env:
+      ARCHFLAGS: -arch x86_64 -arch arm64
 
 - scheduler: nightly
   branch: dev
@@ -72,6 +80,8 @@
       test: warn-on-failure
       configure: --disable-warnings --disable-checking --disable-pam
         --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+    env:
+      ARCHFLAGS: -arch x86_64 -arch arm64
 
 - scheduler: gerrit
   branch: dev
@@ -88,6 +98,8 @@
       test: warn-on-failure
       configure: --disable-warnings --disable-checking --disable-pam --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups --enable-transarc-paths
+    env:
+      ARCHFLAGS: -arch x86_64 -arch arm64
 
 - scheduler: nightly
   branch: dev
@@ -102,6 +114,8 @@
       test: warn-on-failure
       configure: --disable-warnings --disable-checking --disable-pam --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups --enable-transarc-paths
+    env:
+      ARCHFLAGS: -arch x86_64 -arch arm64
 
 - scheduler: gerrit
   branch: dev
@@ -118,6 +132,8 @@
       test: warn-on-failure
       configure: --disable-warnings --disable-checking --disable-pam
         --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+    env:
+      ARCHFLAGS: -arch x86_64 -arch arm64
 
 - scheduler: nightly
   branch: dev
@@ -132,3 +148,5 @@
       test: warn-on-failure
       configure: --disable-warnings --disable-checking --disable-pam
         --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+    env:
+      ARCHFLAGS: -arch x86_64 -arch arm64
