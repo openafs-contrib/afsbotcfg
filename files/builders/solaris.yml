@@ -5,6 +5,7 @@
   cc: spro
   arch: sparc
   worker: sol11sparc
+  repo: git://gerrit.openafs.org/openafs.git
   factory:
     name: UnixBuildFactory
     args:
