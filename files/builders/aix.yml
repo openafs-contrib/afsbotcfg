@@ -87,6 +87,8 @@
   arch: rs
   flavor: nocheck
   worker: aix73-rs
+  tags:
+    - disabled
   factory:
     name: UnixBuildFactory
     args:
@@ -105,6 +107,8 @@
   arch: rs
   flavor: check
   worker: aix73-rs
+  tags:
+    - disabled
   factory:
     name: UnixBuildFactory
     args:
