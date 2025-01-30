@@ -199,7 +199,12 @@ BuildmasterConfig = {
 {%   set hour = afsbotcfg_project.nightly[branch] %}
         schedulers.Nightly(
             name='nightly-{{ branch }}',
-            codebases={'': {'branch': '{{ name }}'}},
+            codebases={
+                '': {
+                    'branch': '{{ name }}',
+                    'repository': '{{ afsbotcfg_project.gitbaseurl }}/{{ afsbotcfg_project.name }}',
+                },
+            },
             builderNames=[
 {%   for builder in afsbotcfg_builders %}
 {%     if builder.scheduler == 'nightly' and builder.branch == branch %}
