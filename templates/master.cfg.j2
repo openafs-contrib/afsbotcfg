@@ -64,6 +64,7 @@ BuildmasterConfig = {
             gerritport={{ afsbotcfg_gerrit.ssh_port }},
             username='{{ afsbotcfg_gerrit.user }}',
             identity_file='{{ afsbotcfg_master_home }}/.ssh/{{ afsbotcfg_gerrit.ident | basename }}',
+            gitBaseURL='{{ afsbotcfg_project.gitbaseurl }}',
             debug=False),
 {% endif %}
     ],
