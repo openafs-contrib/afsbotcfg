@@ -267,6 +267,7 @@
   cc: gcc
   arch: amd64
   workers:
+    - dummy
     - fedora39-x86_64
     - fedora39-x86_64-02
   factory:
@@ -285,6 +286,7 @@
   cc: gcc
   arch: amd64
   workers:
+    - dummy
     - fedora39-x86_64
     - fedora39-x86_64-02
   factory:
@@ -303,6 +305,7 @@
   cc: gcc
   arch: amd64
   workers:
+    - dummy
     - fedora39-x86_64
     - fedora39-x86_64-02
   factory:
@@ -321,6 +324,7 @@
   cc: gcc
   arch: amd64
   workers:
+    - dummy
     - fedora39-x86_64
     - fedora39-x86_64-02
   factory:
@@ -339,6 +343,7 @@
   cc: gcc
   arch: amd64
   workers:
+    - dummy
     - fedora40-x86_64
     - fedora40-x86_64-02
   factory:
@@ -354,6 +359,7 @@
   cc: gcc
   arch: amd64
   workers:
+    - dummy
     - fedora40-x86_64
     - fedora40-x86_64-02
   factory:
@@ -369,6 +375,7 @@
   cc: gcc
   arch: amd64
   workers:
+    - dummy
     - fedora40-x86_64
     - fedora40-x86_64-02
   factory:
@@ -384,6 +391,7 @@
   cc: gcc
   arch: amd64
   workers:
+    - dummy
     - fedora40-x86_64
     - fedora40-x86_64-02
   factory:
