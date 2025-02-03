@@ -5,8 +5,6 @@
   cc: xcode
   arch: amd64
   worker: macos12-x86_64
-  tags:
-    - disabled
   factory:
     name: UnixBuildFactory
     args:
@@ -55,8 +53,6 @@
   cc: xcode
   arch: amd64
   worker: macos13-x86_64
-  tags:
-    - disabled
   factory:
     name: UnixBuildFactory
     args:
@@ -89,8 +85,6 @@
   cc: xcode
   arch: amd64
   worker: macos14-x86_64
-  tags:
-    - disabled
   factory:
     name: UnixBuildFactory
     args:
@@ -123,8 +117,6 @@
   cc: xcode
   arch: amd64
   worker: macos15-x86_64
-  tags:
-    - disabled
   factory:
     name: UnixBuildFactory
     args:
