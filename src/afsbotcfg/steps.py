@@ -29,7 +29,7 @@ class Delay(steps.MasterShellCommand):
     Delay a random time to stagger git traffic.
     """
     def __init__(self, seconds, **kwargs):
-        seconds += random.randint(1, 120)
+        seconds += random.randint(1, 20)
         command = ["sleep", str(seconds)]
         name = "Delay {0} seconds".format(seconds)
         super().__init__(name=name, command=command, **kwargs)

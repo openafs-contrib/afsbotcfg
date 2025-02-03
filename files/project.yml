@@ -9,7 +9,7 @@ pb_port: 9989
 email_from: "buildbot@openafs.MIT.EDU"
 gitbaseurl: "https://gerrit.openafs.org"
 repo: "https://gerrit.openafs.org/openafs.git"
-start_delay: 30
+start_delay: 10
 
 # Long term branch names.
 branches:
