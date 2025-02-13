@@ -406,7 +406,10 @@
   os: fedora41
   cc: gcc
   arch: amd64
-  worker: fedora41-x86_64
+  workers:
+    - dummy
+    - fedora41-x86_64
+    - fedora41-x86_64-02
   factory:
     name: UnixBuildFactory
     args:
@@ -419,7 +422,10 @@
   os: fedora41
   cc: gcc
   arch: amd64
-  worker: fedora41-x86_64
+  workers:
+    - dummy
+    - fedora41-x86_64
+    - fedora41-x86_64-02
   factory:
     name: UnixBuildFactory
     args:
