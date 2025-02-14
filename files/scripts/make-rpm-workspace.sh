@@ -62,11 +62,20 @@ cp NEWS ${SOURCES}/RELNOTES-${version}
 touch ${SOURCES}/ChangeLog
 cp src/afsd/CellServDB ${SOURCES}/CellServDB
 
-cp ${AUX}/openafs-kvers-is.sh ${SOURCES}/
-cp ${AUX}/openafs-buildfedora.pl ${SOURCES}/
-cp ${AUX}/openafs-buildall.sh ${SOURCES}/
-cp ${AUX}/openafs-kmodtool ${SOURCES}/
-chmod 0755 ${SOURCES}/openafs-kvers-is.sh
+# Install auxiliary files.
+if [ -f ${AUX}/openafs-kvers-is.sh ]; then
+    cp ${AUX}/openafs-kvers-is.sh ${SOURCES}/
+    chmod 0755 ${SOURCES}/openafs-kvers-is.sh
+fi
+if [ -f ${AUX}/openafs-buildfedora.pl ]; then
+    cp ${AUX}/openafs-buildfedora.pl ${SOURCES}/
+fi
+if [ -f ${AUX}/openafs-buildall.sh ]; then
+    cp ${AUX}/openafs-buildall.sh ${SOURCES}/
+fi
+if [ -f ${AUX}/openafs-kmodtool ]; then
+    cp ${AUX}/openafs-kmodtool ${SOURCES}/
+fi
 
 # Generate the spec file.
 mkdir -p ${SPECS}
