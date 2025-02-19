@@ -100,7 +100,7 @@ BuildmasterConfig = {
         afsbotcfg.worker.DummyWorker(),
 {% for name in afsbotcfg_workers %}
 {%   set properties = lookup('file', 'workers/' + name + '/properties.yml') | from_yaml %}
-        worker.Worker('{{ name }}', passwords.worker['{{ name }}'], notify_on_missing='{{ properties.notify }}'),
+        worker.Worker('{{ name }}', passwords.worker['{{ name }}'], max_builds={{ properties.max_builds | d(1) }}, notify_on_missing='{{ properties.notify | d("mmeffie@sinenomine.net") }}'),
 {% endfor %}
     ],
     'builders': [
