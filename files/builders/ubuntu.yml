@@ -8,7 +8,7 @@
   factory:
     name: UnixBuildFactory
     args:
-      test: skip
+      test: flunk-on-failure
       docs: flunk-on-failure
       man: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
@@ -24,7 +24,7 @@
   factory:
     name: UnixBuildFactory
     args:
-      test: skip
+      test: flunk-on-failure
       docs: flunk-on-failure
       man: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
@@ -40,7 +40,7 @@
   factory:
     name: UnixBuildFactory
     args:
-      test: skip
+      test: flunk-on-failure
       docs: flunk-on-failure
       man: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
@@ -56,7 +56,7 @@
   factory:
     name: UnixBuildFactory
     args:
-      test: skip
+      test: flunk-on-failure
       docs: flunk-on-failure
       man: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
@@ -72,7 +72,7 @@
   factory:
     name: UnixBuildFactory
     args:
-      test: skip
+      test: flunk-on-failure
       docs: flunk-on-failure
       man: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
@@ -88,7 +88,7 @@
   factory:
     name: UnixBuildFactory
     args:
-      test: skip
+      test: flunk-on-failure
       docs: flunk-on-failure
       man: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
