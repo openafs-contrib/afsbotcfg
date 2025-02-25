@@ -9,7 +9,7 @@
   factory:
     name: UnixBuildFactory
     args:
-      test: warn-on-failure
+      test: flunk-on-failure
       docs: skip
       git_ignore_check: warn-on-failure
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
@@ -25,7 +25,7 @@
   factory:
     name: UnixBuildFactory
     args:
-      test: warn-on-failure
+      test: flunk-on-failure
       docs: skip
       git_ignore_check: warn-on-failure
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
@@ -41,7 +41,7 @@
   factory:
     name: UnixBuildFactory
     args:
-      test: warn-on-failure
+      test: flunk-on-failure
       docs: skip
       git_ignore_check: warn-on-failure
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
@@ -57,7 +57,7 @@
   factory:
     name: UnixBuildFactory
     args:
-      test: warn-on-failure
+      test: flunk-on-failure
       docs: skip
       git_ignore_check: warn-on-failure
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
