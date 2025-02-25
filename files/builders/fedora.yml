@@ -12,6 +12,7 @@
     args:
       test: skip
       docs: skip
+      man: skip
       configure: --disable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --with-afs-sysname=amd64_linux26
     env:
@@ -29,6 +30,7 @@
     args:
       test: skip
       docs: skip
+      man: skip
       configure: --disable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --with-afs-sysname=amd64_linux26
     env:
@@ -46,6 +48,7 @@
     args:
       test: skip
       docs: skip
+      man: skip
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
     env:
@@ -63,6 +66,7 @@
     args:
       test: skip
       docs: skip
+      man: skip
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
     env:
@@ -80,6 +84,7 @@
     args:
       test: skip
       docs: skip
+      man: skip
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
     env:
@@ -97,6 +102,7 @@
     args:
       test: skip
       docs: skip
+      man: skip
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
     env:
@@ -114,6 +120,7 @@
     args:
       test: skip
       docs: skip
+      man: skip
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
     env:
@@ -131,6 +138,7 @@
     args:
       test: skip
       docs: skip
+      man: skip
       configure: --enable-kernel-module --enable-checking --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
     env:
@@ -148,6 +156,7 @@
     args:
       test: skip
       docs: skip
+      man: skip
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
     env:
@@ -165,6 +174,7 @@
     args:
       test: skip
       docs: skip
+      man: skip
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
     env:
@@ -184,6 +194,7 @@
     args:
       test: skip
       docs: skip
+      man: skip
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
     env:
@@ -203,6 +214,7 @@
     args:
       test: skip
       docs: skip
+      man: skip
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
     env:
@@ -220,6 +232,7 @@
     args:
       test: skip
       docs: skip
+      man: skip
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
     env:
@@ -237,6 +250,7 @@
     args:
       test: skip
       docs: skip
+      man: skip
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
     env:
@@ -254,6 +268,7 @@
     args:
       test: skip
       docs: skip
+      man: skip
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
     env:
@@ -271,6 +286,7 @@
     args:
       test: skip
       docs: skip
+      man: skip
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
     env:
@@ -291,6 +307,7 @@
     args:
       test: skip
       docs: skip
+      man: skip
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
     env:
@@ -311,6 +328,7 @@
     args:
       test: skip
       docs: skip
+      man: skip
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
     env:
@@ -331,6 +349,7 @@
     args:
       test: skip
       docs: skip
+      man: skip
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
     env:
@@ -351,6 +370,7 @@
     args:
       test: skip
       docs: skip
+      man: skip
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
     env:
@@ -371,6 +391,7 @@
     args:
       test: skip
       docs: skip
+      man: skip
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
@@ -388,6 +409,7 @@
     args:
       test: skip
       docs: skip
+      man: skip
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
@@ -405,6 +427,7 @@
     args:
       test: skip
       docs: skip
+      man: skip
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
@@ -422,6 +445,7 @@
     args:
       test: skip
       docs: skip
+      man: skip
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
@@ -439,6 +463,7 @@
     args:
       test: skip
       docs: skip
+      man: skip
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
@@ -456,6 +481,7 @@
     args:
       test: skip
       docs: skip
+      man: skip
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
@@ -473,6 +499,7 @@
     args:
       test: skip
       docs: skip
+      man: skip
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
@@ -490,5 +517,6 @@
     args:
       test: skip
       docs: skip
+      man: skip
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups

@@ -10,6 +10,7 @@
     args:
       test: warn-on-failure
       docs: skip
+      man: flunk-on-failure
       git_ignore_check: flunk-on-failure
       jobs: 1
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
@@ -26,6 +27,7 @@
     args:
       test: warn-on-failure
       docs: skip
+      man: flunk-on-failure
       git_ignore_check: warn-on-failure
       jobs: 1
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
@@ -42,6 +44,7 @@
     args:
       test: warn-on-failure
       docs: skip
+      man: flunk-on-failure
       git_ignore_check: flunk-on-failure
       jobs: 1
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
@@ -59,6 +62,7 @@
     args:
       test: warn-on-failure
       docs: skip
+      man: flunk-on-failure
       git_ignore_check: flunk-on-failure
       jobs: 1
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
@@ -78,6 +82,7 @@
     args:
       test: warn-on-failure
       docs: skip
+      man: flunk-on-failure
       git_ignore_check: flunk-on-failure
       jobs: 1
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
@@ -99,6 +104,7 @@
     args:
       test: warn-on-failure
       docs: skip
+      man: flunk-on-failure
       git_ignore_check: flunk-on-failure
       jobs: 1
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
@@ -120,6 +126,7 @@
     args:
       test: warn-on-failure
       docs: skip
+      man: flunk-on-failure
       git_ignore_check: flunk-on-failure
       jobs: 1
       configure: --enable-warnings --enable-checking --enable-kernel-module

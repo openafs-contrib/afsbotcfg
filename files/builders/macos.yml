@@ -9,6 +9,7 @@
     name: UnixBuildFactory
     args:
       docs: skip
+      man: flunk-on-failure
       test: warn-on-failure
       configure: --disable-warnings --disable-checking --disable-pam
         --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
@@ -25,6 +26,7 @@
     name: UnixBuildFactory
     args:
       docs: skip
+      man: flunk-on-failure
       test: warn-on-failure
       configure: --disable-warnings --disable-checking --disable-pam
         --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
@@ -41,6 +43,7 @@
     name: UnixBuildFactory
     args:
       docs: skip
+      man: flunk-on-failure
       test: warn-on-failure
       configure: --disable-warnings --disable-checking --disable-pam
         --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
@@ -57,6 +60,7 @@
     name: UnixBuildFactory
     args:
       docs: skip
+      man: flunk-on-failure
       test: warn-on-failure
       configure: --disable-warnings --disable-checking --disable-pam
         --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
@@ -73,6 +77,7 @@
     name: UnixBuildFactory
     args:
       docs: skip
+      man: flunk-on-failure
       test: warn-on-failure
       configure: --disable-warnings --disable-checking --disable-pam
         --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
@@ -89,6 +94,7 @@
     name: UnixBuildFactory
     args:
       docs: skip
+      man: flunk-on-failure
       test: warn-on-failure
       configure: --disable-warnings --disable-checking --disable-pam --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups --enable-transarc-paths
@@ -105,6 +111,7 @@
     name: UnixBuildFactory
     args:
       docs: skip
+      man: flunk-on-failure
       test: warn-on-failure
       configure: --disable-warnings --disable-checking --disable-pam --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups --enable-transarc-paths
@@ -121,6 +128,7 @@
     name: UnixBuildFactory
     args:
       docs: skip
+      man: flunk-on-failure
       test: warn-on-failure
       configure: --disable-warnings --disable-checking --disable-pam
         --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
@@ -137,6 +145,7 @@
     name: UnixBuildFactory
     args:
       docs: skip
+      man: flunk-on-failure
       test: warn-on-failure
       configure: --disable-warnings --disable-checking --disable-pam
         --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups

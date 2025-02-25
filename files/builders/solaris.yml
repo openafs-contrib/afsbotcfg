@@ -9,8 +9,9 @@
   factory:
     name: UnixBuildFactory
     args:
-      test: flunk-on-failure
       docs: skip
+      man: flunk-on-failure
+      test: flunk-on-failure
       git_ignore_check: flunk-on-failure
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
@@ -25,8 +26,9 @@
   factory:
     name: UnixBuildFactory
     args:
-      test: flunk-on-failure
       docs: skip
+      man: flunk-on-failure
+      test: flunk-on-failure
       git_ignore_check: flunk-on-failure
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
@@ -41,8 +43,9 @@
   factory:
     name: UnixBuildFactory
     args:
-      test: flunk-on-failure
       docs: skip
+      man: flunk-on-failure
+      test: flunk-on-failure
       git_ignore_check: warn-on-failure
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
@@ -57,8 +60,9 @@
   factory:
     name: UnixBuildFactory
     args:
-      test: flunk-on-failure
       docs: skip
+      man: flunk-on-failure
+      test: flunk-on-failure
       git_ignore_check: warn-on-failure
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
