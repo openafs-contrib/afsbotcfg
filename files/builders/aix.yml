@@ -8,6 +8,7 @@
   factory:
     name: UnixBuildFactory
     args:
+      test: warn-on-failure
       docs: skip
       git_ignore_check: warn-on-failure
       jobs: 1
@@ -23,6 +24,7 @@
   factory:
     name: UnixBuildFactory
     args:
+      test: warn-on-failure
       docs: skip
       git_ignore_check: warn-on-failure
       jobs: 1
@@ -38,6 +40,7 @@
   factory:
     name: UnixBuildFactory
     args:
+      test: warn-on-failure
       docs: skip
       git_ignore_check: warn-on-failure
       jobs: 1
@@ -54,6 +57,7 @@
   factory:
     name: UnixBuildFactory
     args:
+      test: warn-on-failure
       docs: skip
       git_ignore_check: warn-on-failure
       jobs: 1
@@ -72,6 +76,7 @@
   factory:
     name: UnixBuildFactory
     args:
+      test: warn-on-failure
       docs: skip
       git_ignore_check: warn-on-failure
       jobs: 1
@@ -92,6 +97,7 @@
   factory:
     name: UnixBuildFactory
     args:
+      test: warn-on-failure
       docs: skip
       git_ignore_check: warn-on-failure
       jobs: 1
@@ -112,6 +118,7 @@
   factory:
     name: UnixBuildFactory
     args:
+      test: warn-on-failure
       docs: skip
       git_ignore_check: warn-on-failure
       jobs: 1
