@@ -79,7 +79,10 @@
   os: debian12
   cc: gcc
   arch: amd64
-  worker: debian12-amd64
+  workers:
+    - dummy
+    - debian12-amd64
+    - debian12-amd64-02
   factory:
     name: UnixBuildFactory
     args:
@@ -97,7 +100,10 @@
   cc: gcc
   arch: amd64
   flavor: objdir
-  worker: debian12-amd64
+  workers:
+    - dummy
+    - debian12-amd64
+    - debian12-amd64-02
   factory:
     name: UnixBuildFactory
     args:
@@ -113,7 +119,10 @@
   os: debian12
   cc: gcc
   arch: amd64
-  worker: debian12-amd64
+  workers:
+    - dummy
+    - debian12-amd64
+    - debian12-amd64-02
   factory:
     name: UnixBuildFactory
     args:
@@ -129,7 +138,10 @@
   cc: gcc
   arch: amd64
   flavor: objdir
-  worker: debian12-amd64
+  workers:
+    - dummy
+    - debian12-amd64
+    - debian12-amd64-02
   factory:
     name: UnixBuildFactory
     args:
