@@ -28,7 +28,7 @@
       test: warn-on-failure
       docs: skip
       man: flunk-on-failure
-      git_ignore_check: warn-on-failure
+      git_ignore_check: skip
       jobs: 1
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
