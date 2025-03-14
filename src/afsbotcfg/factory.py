@@ -156,7 +156,7 @@ class UnixBuildFactory(GerritCheckoutFactory):
         test = check_option(test)
         docs = check_option(docs)
         man = check_option(man)
-        git_ignore_check = check_option(man)
+        git_ignore_check = check_option(git_ignore_check)
 
         try:
             jobs = int(jobs)
