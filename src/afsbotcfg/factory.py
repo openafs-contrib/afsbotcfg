@@ -180,7 +180,7 @@ class UnixBuildFactory(GerritCheckoutFactory):
             self.addStep(steps.RemoveDirectory(dir=builddir, doStepIf=isRealWorker))
             self.addStep(steps.MakeDirectory(dir=builddir, doStepIf=isRealWorker))
 
-        self.addStep(Regen(workdir=checkoutdir, manpages=target.startswith('dest'), doStepIf=isRealWorker))
+        self.addStep(Regen(workdir=checkoutdir, manpages=True, doStepIf=isRealWorker))
         self.addStep(Configure(configure=cf, options=configure, doStepIf=isRealWorker))
         self.addStep(Make(make=make, jobs=jobs, pretty=pretty, target=target, doStepIf=isRealWorker))
 
