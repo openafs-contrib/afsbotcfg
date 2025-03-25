@@ -145,11 +145,11 @@ BuildmasterConfig = {
                 'docs',
 {%     endif %}
 {%     if man == 'skip' %}
-                'skip-man',
+                # 'skip-man',
 {%     elif man == 'warn-on-failure' %}
-                'warn-man',
+                # 'warn-man',
 {%     elif man == 'flunk-on-failure' %}
-                'man',
+                # 'man',
 {%     endif %}
 {%     if objdir == 'true' or gic == 'skip' %}
                 'skip-git-ignore-check',

@@ -40,7 +40,7 @@ from afsbotcfg.steps import (
     Configure,
     Make,
     MakeDocs,
-    MakeManPages,
+    # MakeManPages,
     RunTests,
     GitIgnoreCheck,
 )
@@ -189,10 +189,10 @@ class UnixBuildFactory(GerritCheckoutFactory):
         else:
             self.addStep(MakeDocs(make=make, doStepIf=isRealWorker))
 
-        if man == 'skip':
-            self.addStep(MakeManPages(doStepIf=False))
-        else:
-            self.addStep(MakeManPages(doStepIf=isRealWorker))
+        # if man == 'skip':
+        #    self.addStep(MakeManPages(doStepIf=False))
+        # else:
+        #    self.addStep(MakeManPages(doStepIf=isRealWorker))
 
         tflunk = (test == 'flunk-on-failure')
         if test == 'skip':
