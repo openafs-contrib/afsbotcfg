@@ -4,7 +4,10 @@
   os: centos6
   cc: gcc
   arch: amd64
-  worker: centos6-amd64
+  workers:
+    - dummy
+    - centos6-amd64
+    - centos6-amd64-2
   factory:
     name: UnixBuildFactory
     args:
@@ -19,7 +22,10 @@
   os: centos6
   cc: gcc
   arch: amd64
-  worker: centos6-amd64
+  workers:
+    - dummy
+    - centos6-amd64
+    - centos6-amd64-2
   factory:
     name: UnixBuildFactory
     args:
@@ -28,6 +34,25 @@
       test: flunk-on-failure
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
+
+- scheduler: nightly
+  branch: stable
+  os: centos6
+  cc: gcc
+  arch: amd64
+  workers:
+    - dummy
+    - centos6-amd64
+    - centos6-amd64-2
+  factory:
+    name: UnixBuildFactory
+    args:
+      docs: skip
+      man: flunk-on-failure
+      test: flunk-on-failure
+      configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
+        --enable-supergroups
+
 
 - scheduler: gerrit
   branch: dev
@@ -79,7 +104,10 @@
   os: centos8
   cc: gcc
   arch: amd64
-  worker: centos8-amd64
+  workers:
+    - dummy
+    - centos8-amd64
+    - centos8-amd64-3
   factory:
     name: UnixBuildFactory
     args:
@@ -94,7 +122,10 @@
   os: centos8
   cc: gcc
   arch: amd64
-  worker: centos8-amd64
+  workers:
+    - dummy
+    - centos8-amd64
+    - centos8-amd64-3
   factory:
     name: UnixBuildFactory
     args:
@@ -109,7 +140,28 @@
   os: centos8
   cc: gcc
   arch: amd64
-  worker: centos8-amd64
+  workers:
+    - dummy
+    - centos8-amd64
+    - centos8-amd64-3
+  factory:
+    name: UnixBuildFactory
+    args:
+      docs: skip
+      man: flunk-on-failure
+      test: flunk-on-failure
+      configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
+        --enable-supergroups
+
+- scheduler: nightly
+  branch: oldstable
+  os: centos8
+  cc: gcc
+  arch: amd64
+  workers:
+    - dummy
+    - centos8-amd64
+    - centos8-amd64-3
   factory:
     name: UnixBuildFactory
     args:

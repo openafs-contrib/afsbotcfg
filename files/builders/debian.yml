@@ -4,7 +4,10 @@
   os: debian10
   cc: gcc
   arch: amd64
-  worker: debian10-amd64
+  workers:
+    - dummy
+    - debian10-amd64
+    - debian10-amd64-2
   factory:
     name: UnixBuildFactory
     args:
@@ -19,7 +22,10 @@
   os: debian10
   cc: gcc
   arch: amd64
-  worker: debian10-amd64
+  workers:
+    - dummy
+    - debian10-amd64
+    - debian10-amd64-2
   factory:
     name: UnixBuildFactory
     args:
@@ -44,12 +50,33 @@
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
 
+- scheduler: nightly
+  branch: stable
+  os: debian10
+  cc: gcc
+  arch: amd64
+  workers:
+    - dummy
+    - debian10-amd64
+    - debian10-amd64-2
+  factory:
+    name: UnixBuildFactory
+    args:
+      test: flunk-on-failure
+      docs: flunk-on-failure
+      man: flunk-on-failure
+      configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
+        --enable-supergroups --enable-warnings
+
 - scheduler: gerrit
   branch: dev
   os: debian11
   cc: gcc
   arch: amd64
-  worker: debian11-amd64
+  workers:
+    - dummy
+    - debian11-amd64
+    - debian11-amd64-2
   factory:
     name: UnixBuildFactory
     args:
@@ -64,7 +91,28 @@
   os: debian11
   cc: gcc
   arch: amd64
-  worker: debian11-amd64
+  workers:
+    - dummy
+    - debian11-amd64
+    - debian11-amd64-2
+  factory:
+    name: UnixBuildFactory
+    args:
+      test: flunk-on-failure
+      docs: flunk-on-failure
+      man: flunk-on-failure
+      configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
+        --enable-supergroups --enable-warnings
+
+- scheduler: nightly
+  branch: stable
+  os: debian11
+  cc: gcc
+  arch: amd64
+  workers:
+    - dummy
+    - debian11-amd64
+    - debian11-amd64-2
   factory:
     name: UnixBuildFactory
     args:
