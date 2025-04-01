@@ -40,7 +40,10 @@
   os: debian10
   cc: gcc
   arch: amd64
-  worker: debian10-amd64
+  workers:
+    - dummy
+    - debian10-amd64
+    - debian10-amd64-2
   factory:
     name: UnixBuildFactory
     args:
