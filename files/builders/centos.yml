@@ -6,7 +6,6 @@
   arch: amd64
   workers:
     - dummy
-    - centos6-amd64
     - centos6-amd64-2
   factory:
     name: UnixBuildFactory
@@ -24,7 +23,6 @@
   arch: amd64
   workers:
     - dummy
-    - centos6-amd64
     - centos6-amd64-2
   factory:
     name: UnixBuildFactory
@@ -42,7 +40,6 @@
   arch: amd64
   workers:
     - dummy
-    - centos6-amd64
     - centos6-amd64-2
   factory:
     name: UnixBuildFactory
@@ -119,7 +116,6 @@
   arch: amd64
   workers:
     - dummy
-    - centos8-amd64
     - centos8-amd64-3
   factory:
     name: UnixBuildFactory
@@ -136,7 +132,6 @@
   arch: amd64
   workers:
     - dummy
-    - centos8-amd64
     - centos8-amd64-3
   factory:
     name: UnixBuildFactory
@@ -153,7 +148,6 @@
   arch: amd64
   workers:
     - dummy
-    - centos8-amd64
     - centos8-amd64-3
   factory:
     name: UnixBuildFactory
@@ -170,7 +164,6 @@
   arch: amd64
   workers:
     - dummy
-    - centos8-amd64
     - centos8-amd64-3
   factory:
     name: UnixBuildFactory
