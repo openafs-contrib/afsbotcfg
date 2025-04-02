@@ -11,7 +11,8 @@
       docs: skip
       man: flunk-on-failure
       test: flunk-on-failure
-      configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
+      configure: --enable-warnings --enable-checking --enable-kernel-module
+        --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --with-linux-kernel-build=/usr/src/linux-obj/x86_64/default
 
 - scheduler: gerrit
@@ -26,7 +27,8 @@
       docs: skip
       man: flunk-on-failure
       test: flunk-on-failure
-      configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
+      configure: --enable-warnings --enable-checking --enable-kernel-module
+        --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --with-linux-kernel-build=/usr/src/linux-obj/x86_64/default
 
 - scheduler: nightly
@@ -73,7 +75,8 @@
       docs: skip
       man: flunk-on-failure
       test: flunk-on-failure
-      configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
+      configure: --enable-warnings --enable-checking --enable-kernel-module
+        --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --with-linux-kernel-build=/usr/src/linux-obj/aarch64/default
 
 - scheduler: nightly
