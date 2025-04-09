@@ -88,6 +88,7 @@ class GerritCheckoutFactory(util.BuildFactory):
         """
         delay = 30  # seconds
         retries = 120
+        self.checkout_workdir = workdir
 
         super().__init__(**kwargs)
 
@@ -96,7 +97,7 @@ class GerritCheckoutFactory(util.BuildFactory):
 
         self.addStep(
             steps.Gerrit(
-                workdir=workdir,
+                workdir=self.checkout_workdir,
                 repourl=repo,
                 mode='full',
                 method='fresh',
@@ -108,12 +109,21 @@ class GerritCheckoutFactory(util.BuildFactory):
         self.addStep(
            steps.ShellSequence(
                name='git cleanup',
-               workdir=workdir,
+               workdir=self.checkout_workdir,
                commands=[
-                   util.ShellArg(command=['git', 'gc', '--auto'], logname='git gc'),
                    util.ShellArg(command=['git', 'clean', '-f', '-x', '-d'], logname='git clean'),
                    util.ShellArg(command=['git', 'reset', '--hard', 'HEAD'], logname='git reset'),
                    util.ShellArg(command=['git', 'log', '-n', '1', '--stat'], logname='git log')],
+               doStepIf=isRealWorker))
+
+    def addCleanupStep(self):
+        self.addStep(
+           steps.ShellSequence(
+               name='git cleanup',
+               workdir=self.checkout_workdir,
+               commands=[
+                   util.ShellArg(command=['git', 'clean', '-f', '-x', '-d'], logname='git clean'),
+                   util.ShellArg(command=['git', 'gc', '--auto'], logname='git gc')],
                doStepIf=isRealWorker))
 
 
@@ -197,6 +207,8 @@ class UnixBuildFactory(GerritCheckoutFactory):
         else:
             self.addStep(GitIgnoreCheck(flunk=gflunk, doStepIf=isRealWorker))
 
+        self.addCleanupStep()
+
 
 class WindowsBuildFactory(GerritCheckoutFactory):
     """Build on Windows with a script.
@@ -213,6 +225,8 @@ class WindowsBuildFactory(GerritCheckoutFactory):
             doStepIf=isRealWorker))
 
         self.addStep(GitIgnoreCheck(doStepIf=isRealWorker))
+
+        self.addCleanupStep()
 
 
 class ELRpmBuildFactory(GerritCheckoutFactory):
@@ -294,3 +308,5 @@ class ELRpmBuildFactory(GerritCheckoutFactory):
                     command=['make', '-j', '4', 'V=0'],
                     workdir='build/packages/dkms/usr/src/openafs',
                     doStepIf=isRealWorker))
+
+        self.addCleanupStep()
