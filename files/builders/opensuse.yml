@@ -9,7 +9,6 @@
     name: UnixBuildFactory
     args:
       docs: skip
-      man: flunk-on-failure
       test: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik
@@ -25,7 +24,6 @@
     name: UnixBuildFactory
     args:
       docs: skip
-      man: flunk-on-failure
       test: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik
@@ -41,7 +39,6 @@
     name: UnixBuildFactory
     args:
       docs: skip
-      man: flunk-on-failure
       test: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik
@@ -57,7 +54,6 @@
     name: UnixBuildFactory
     args:
       docs: skip
-      man: flunk-on-failure
       test: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik
@@ -73,7 +69,6 @@
     name: UnixBuildFactory
     args:
       docs: skip
-      man: flunk-on-failure
       test: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik
@@ -89,7 +84,6 @@
     name: UnixBuildFactory
     args:
       docs: skip
-      man: flunk-on-failure
       test: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik
@@ -105,7 +99,6 @@
     name: UnixBuildFactory
     args:
       docs: skip
-      man: flunk-on-failure
       test: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik

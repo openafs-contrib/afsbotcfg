@@ -10,7 +10,7 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 
-"""Classes to support manaually forced builds."""
+"""Classes to support manually forced builds."""
 
 import json
 

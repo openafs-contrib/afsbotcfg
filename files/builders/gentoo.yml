@@ -10,7 +10,6 @@
     args:
       test: flunk-on-failure
       docs: flunk-on-failure
-      man: flunk-on-failure
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
 
@@ -25,6 +24,5 @@
     args:
       test: flunk-on-failure
       docs: flunk-on-failure
-      man: flunk-on-failure
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings

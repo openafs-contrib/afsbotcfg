@@ -40,18 +40,15 @@ class Regen(steps.ShellCommand):
 
     name = 'regen'
 
-    def __init__(self, workdir='build', manpages=False, **kwargs):
+    def __init__(self, workdir='build', **kwargs):
         """Create a regen step.
 
         Args:
             workdir:   Directory to run regen.sh
-            manpages:  Also render the manpages if true
         """
         super().__init__(**kwargs)
         self.workdir = workdir
         self.command = ['/bin/sh', 'regen.sh']
-        if not manpages:
-            self.command.append('-q')
 
 
 class Configure(steps.ShellCommand):
@@ -135,28 +132,6 @@ class MakeDocs(steps.ShellSequence):
                     logname=doc,
                     haltOnFailure=False,
                     warnOnFailure=True))
-
-
-class MakeManPages(steps.ShellSequence):
-    """Render the manpages from the POD source."""
-
-    name = 'make man-pages'
-    workdir = 'build/doc/man-pages'
-
-    def __init__(self, **kwargs):
-        """Create a step to generate the man pages."""
-        super().__init__(**kwargs)
-        self.commands = [
-            util.ShellArg(
-                command='/usr/bin/perl merge-pod pod*/*.in',
-                logname='merge-pod',
-                haltOnFailure=False,
-                warnOnFailure=True),
-            util.ShellArg(
-                command=['./generate-man'],
-                logname='generate-man',
-                haltOnFailure=False,
-                warnOnFailure=True)]
 
 
 class TapObserver(util.LogLineObserver):
@@ -271,7 +246,6 @@ class GitStatusObserver(util.LogLineObserver):
     """
 
     def __init__(self, **kwargs):
-        """Create a step to generate the man pages."""
         super().__init__(**kwargs)
         self.changed = []
 

@@ -40,7 +40,6 @@ from afsbotcfg.steps import (
     Configure,
     Make,
     MakeDocs,
-    # MakeManPages,
     RunTests,
     GitIgnoreCheck,
 )
@@ -133,7 +132,6 @@ class UnixBuildFactory(GerritCheckoutFactory):
                  jobs='4',
                  target='all',
                  docs='warn-on-failure',
-                 man='warn-on-failure',
                  test='warn-on-failure',
                  git_ignore_check='flunk-on-failure',
                  **kwargs):
@@ -147,7 +145,6 @@ class UnixBuildFactory(GerritCheckoutFactory):
             jobs:         Number of make jobs (int string)
             target:       The top level makefile target (string)
             docs:         Also render the docs when true (string)
-            man:          Also generate man pages (string)
             test:         Also run the TAP unit tests (string)
         """
         objdir = str2bool(objdir)
@@ -155,7 +152,6 @@ class UnixBuildFactory(GerritCheckoutFactory):
 
         test = check_option(test)
         docs = check_option(docs)
-        man = check_option(man)
         git_ignore_check = check_option(git_ignore_check)
 
         try:
@@ -180,7 +176,7 @@ class UnixBuildFactory(GerritCheckoutFactory):
             self.addStep(steps.RemoveDirectory(dir=builddir, doStepIf=isRealWorker))
             self.addStep(steps.MakeDirectory(dir=builddir, doStepIf=isRealWorker))
 
-        self.addStep(Regen(workdir=checkoutdir, manpages=True, doStepIf=isRealWorker))
+        self.addStep(Regen(workdir=checkoutdir, doStepIf=isRealWorker))
         self.addStep(Configure(configure=cf, options=configure, doStepIf=isRealWorker))
         self.addStep(Make(make=make, jobs=jobs, pretty=pretty, target=target, doStepIf=isRealWorker))
 
@@ -188,11 +184,6 @@ class UnixBuildFactory(GerritCheckoutFactory):
             self.addStep(MakeDocs(make=make, doStepIf=False))
         else:
             self.addStep(MakeDocs(make=make, doStepIf=isRealWorker))
-
-        # if man == 'skip':
-        #    self.addStep(MakeManPages(doStepIf=False))
-        # else:
-        #    self.addStep(MakeManPages(doStepIf=isRealWorker))
 
         tflunk = (test == 'flunk-on-failure')
         if test == 'skip':
