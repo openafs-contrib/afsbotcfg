@@ -14,6 +14,8 @@
       docs: skip
       configure: --disable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --with-afs-sysname=amd64_linux26
+        --enable-warnings --enable-checking
+
     env:
       CFLAGS: -Wno-error=array-bounds -Wno-error=format-overflow -Wno-error=format-truncation
         -Wno-error=implicit-function-declaration -Wno-error=restrict
@@ -31,6 +33,7 @@
       docs: skip
       configure: --disable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --with-afs-sysname=amd64_linux26
+        --enable-warnings --enable-checking
     env:
       CFLAGS: -Wno-error=array-bounds -Wno-error=format-overflow -Wno-error=format-truncation
         -Wno-error=implicit-function-declaration -Wno-error=restrict
@@ -150,6 +153,7 @@
       docs: skip
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
+        --enable-warnings --enable-checking
     env:
       CFLAGS: -Wno-error=array-bounds -Wno-error=format-overflow -Wno-error=format-truncation
         -Wno-error=implicit-function-declaration -Wno-error=restrict
@@ -167,6 +171,7 @@
       docs: skip
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
+        --enable-warnings --enable-checking
     env:
       CFLAGS: -Wno-error=array-bounds -Wno-error=format-overflow -Wno-error=format-truncation
         -Wno-error=implicit-function-declaration -Wno-error=restrict
@@ -186,6 +191,7 @@
       docs: skip
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
+        --enable-warnings --enable-checking
     env:
       CFLAGS: -Wno-error=array-bounds -Wno-error=format-overflow -Wno-error=format-truncation
         -Wno-error=implicit-function-declaration -Wno-error=restrict
@@ -205,6 +211,7 @@
       docs: skip
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
+        --enable-warnings --enable-checking
     env:
       CFLAGS: -Wno-error=array-bounds -Wno-error=format-overflow -Wno-error=format-truncation
         -Wno-error=implicit-function-declaration -Wno-error=restrict
@@ -222,6 +229,7 @@
       docs: skip
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
+        --enable-warnings --enable-checking
     env:
       CFLAGS: -Wno-error=array-bounds -Wno-error=format-overflow -Wno-error=format-truncation
         -Wno-error=implicit-function-declaration -Wno-error=restrict
@@ -239,6 +247,7 @@
       docs: skip
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
+        --enable-warnings --enable-checking
     env:
       CFLAGS: -Wno-error=array-bounds -Wno-error=format-overflow -Wno-error=format-truncation
         -Wno-error=implicit-function-declaration -Wno-error=restrict
@@ -256,6 +265,7 @@
       docs: skip
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
+        --enable-warnings --enable-checking
     env:
       CFLAGS: -Wno-error=array-bounds -Wno-error=format-overflow -Wno-error=format-truncation
         -Wno-error=implicit-function-declaration -Wno-error=restrict
@@ -273,6 +283,7 @@
       docs: skip
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
+        --enable-warnings --enable-checking
     env:
       CFLAGS: -Wno-error=array-bounds -Wno-error=format-overflow -Wno-error=format-truncation
         -Wno-error=implicit-function-declaration -Wno-error=restrict
@@ -293,6 +304,7 @@
       docs: skip
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
+        --enable-warnings --enable-checking
     env:
       CFLAGS: -Wno-error=array-bounds -Wno-error=format-overflow -Wno-error=format-truncation
         -Wno-error=implicit-function-declaration -Wno-error=restrict
@@ -313,6 +325,7 @@
       docs: skip
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
+        --enable-warnings --enable-checking
     env:
       CFLAGS: -Wno-error=array-bounds -Wno-error=format-overflow -Wno-error=format-truncation
         -Wno-error=implicit-function-declaration -Wno-error=restrict
@@ -333,6 +346,7 @@
       docs: skip
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
+        --enable-warnings --enable-checking
     env:
       CFLAGS: -Wno-error=array-bounds -Wno-error=format-overflow -Wno-error=format-truncation
         -Wno-error=implicit-function-declaration -Wno-error=restrict
@@ -353,6 +367,7 @@
       docs: skip
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
+        --enable-warnings --enable-checking
     env:
       CFLAGS: -Wno-error=array-bounds -Wno-error=format-overflow -Wno-error=format-truncation
         -Wno-error=implicit-function-declaration -Wno-error=restrict
