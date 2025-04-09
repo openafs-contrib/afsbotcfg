@@ -48,6 +48,22 @@
         --enable-supergroups --enable-warnings
 
 - scheduler: nightly
+  branch: dev
+  os: debian10
+  cc: gcc
+  arch: amd64
+  workers:
+    - dummy
+    - debian10-amd64-2
+  factory:
+    name: UnixBuildFactory
+    args:
+      test: flunk-on-failure
+      docs: flunk-on-failure
+      configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
+        --enable-supergroups --enable-warnings
+
+- scheduler: nightly
   branch: stable
   os: debian10
   cc: gcc
@@ -81,6 +97,22 @@
 
 - scheduler: gerrit
   branch: stable
+  os: debian11
+  cc: gcc
+  arch: amd64
+  workers:
+    - dummy
+    - debian11-amd64-2
+  factory:
+    name: UnixBuildFactory
+    args:
+      test: flunk-on-failure
+      docs: flunk-on-failure
+      configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
+        --enable-supergroups --enable-warnings
+
+- scheduler: nightly
+  branch: dev
   os: debian11
   cc: gcc
   arch: amd64
@@ -184,3 +216,41 @@
       docs: skip
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
+
+- scheduler: nightly
+  branch: dev
+  os: debian12
+  cc: gcc
+  arch: amd64
+  workers:
+    - dummy
+    - debian12-amd64
+    - debian12-amd64-02
+  factory:
+    name: UnixBuildFactory
+    args:
+      test: flunk-on-failure
+      docs: flunk-on-failure
+      configure: --disable-optimize --disable-optimize-kernel --enable-checking --enable-debug
+        --enable-debug-kernel --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
+        --enable-supergroups --enable-warnings --with-linux-kernel-packaging
+        --with-docbook2pdf=dblatex --with-xslt-processor=xsltproc
+
+- scheduler: nightly
+  branch: stable
+  os: debian12
+  cc: gcc
+  arch: amd64
+  workers:
+    - dummy
+    - debian12-amd64
+    - debian12-amd64-02
+  factory:
+    name: UnixBuildFactory
+    args:
+      test: flunk-on-failure
+      docs: flunk-on-failure
+      configure: --disable-optimize --disable-optimize-kernel --enable-checking --enable-debug
+        --enable-debug-kernel --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
+        --enable-supergroups --enable-warnings --with-linux-kernel-packaging
+        --with-docbook2pdf=dblatex --with-xslt-processor=xsltproc
