@@ -108,11 +108,12 @@ class GerritCheckoutFactory(util.BuildFactory):
 
         self.addStep(
            steps.ShellSequence(
-               name='git cleanup',
+               name='show commit',
                workdir=self.checkout_workdir,
                commands=[
-                   util.ShellArg(command=['git', 'clean', '-f', '-x', '-d'], logname='git clean'),
-                   util.ShellArg(command=['git', 'reset', '--hard', 'HEAD'], logname='git reset'),
+                   # The clean and reset were attempts at work arounds, and should not be needed here.
+                   # util.ShellArg(command=['git', 'clean', '-f', '-x', '-d'], logname='git clean'),
+                   # util.ShellArg(command=['git', 'reset', '--hard', 'HEAD'], logname='git reset'),
                    util.ShellArg(command=['git', 'log', '-n', '1', '--stat'], logname='git log')],
                doStepIf=isRealWorker))
 
