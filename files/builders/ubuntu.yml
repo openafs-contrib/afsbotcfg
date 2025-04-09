@@ -29,6 +29,36 @@
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
         --with-docbook2pdf=dblatex --with-xslt-processor=xsltproc
 
+- scheduler: nightly
+  branch: dev
+  os: ubuntu1804
+  cc: gcc
+  arch: amd64
+  worker: ubuntu1804-amd64-2
+  factory:
+    name: UnixBuildFactory
+    args:
+      test: flunk-on-failure
+      docs: flunk-on-failure
+      configure: --enable-warnings --enable-checking --enable-kernel-module
+        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+        --with-docbook2pdf=dblatex --with-xslt-processor=xsltproc
+
+- scheduler: nightly
+  branch: stable
+  os: ubuntu1804
+  cc: gcc
+  arch: amd64
+  worker: ubuntu1804-amd64-2
+  factory:
+    name: UnixBuildFactory
+    args:
+      test: flunk-on-failure
+      docs: flunk-on-failure
+      configure: --enable-warnings --enable-checking --enable-kernel-module
+        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+        --with-docbook2pdf=dblatex --with-xslt-processor=xsltproc
+
 - scheduler: gerrit
   branch: dev
   os: ubuntu2004
@@ -59,12 +89,27 @@
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
         --with-docbook2pdf=dblatex --with-xslt-processor=xsltproc
 
-- scheduler: gerrit
+- scheduler: nightly
   branch: dev
-  os: ubuntu2204
+  os: ubuntu2004
   cc: gcc
   arch: amd64
-  worker: ubuntu2204-amd64-2
+  worker: ubuntu2004-amd64-2
+  factory:
+    name: UnixBuildFactory
+    args:
+      test: flunk-on-failure
+      docs: flunk-on-failure
+      configure: --enable-warnings --enable-checking --enable-kernel-module
+        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+        --with-docbook2pdf=dblatex --with-xslt-processor=xsltproc
+
+- scheduler: nightly
+  branch: stable
+  os: ubuntu2004
+  cc: gcc
+  arch: amd64
+  worker: ubuntu2004-amd64-2
   factory:
     name: UnixBuildFactory
     args:
@@ -88,6 +133,22 @@
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
         --with-docbook2pdf=dblatex --with-xslt-processor=xsltproc
+
+- scheduler: nightly
+  branch: stable
+  os: ubuntu2204
+  cc: gcc
+  arch: amd64
+  worker: ubuntu2204-amd64-2
+  factory:
+    name: UnixBuildFactory
+    args:
+      test: flunk-on-failure
+      docs: flunk-on-failure
+      configure: --enable-warnings --enable-checking --enable-kernel-module
+        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+        --with-docbook2pdf=dblatex --with-xslt-processor=xsltproc
+
 
 - scheduler: gerrit
   branch: dev
@@ -121,6 +182,21 @@
 
 - scheduler: nightly
   branch: dev
+  os: ubuntu2404
+  cc: gcc
+  arch: amd64
+  worker: ubuntu2404-amd64-2
+  factory:
+    name: UnixBuildFactory
+    args:
+      test: flunk-on-failure
+      docs: flunk-on-failure
+      configure: --enable-warnings --enable-checking --enable-kernel-module
+        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+        --with-docbook2pdf=dblatex --with-xslt-processor=xsltproc
+
+- scheduler: nightly
+  branch: stable
   os: ubuntu2404
   cc: gcc
   arch: amd64
