@@ -124,7 +124,6 @@ BuildmasterConfig = {
 {%   elif builder.factory.name | d('UnixBuildFactory') == 'UnixBuildFactory' %}
 {%     set test = builder.factory.args.test | d('warn-on-failure') %}
 {%     set docs = builder.factory.args.docs | d('warn-on-failure') %}
-{%     set man = builder.factory.args.man | d('warn-on-failure') %}
 {%     set objdir = builder.factory.args.objdir | d('false') %}
 {%     set gic = builder.factory.args.git_ignore_check | d('flunk-on-failure') %}
 {%     if '--enable-checking' not in builder.factory.args.configure | d('') %}
@@ -143,13 +142,6 @@ BuildmasterConfig = {
                 'warn-docs',
 {%     elif docs == 'flunk-on-failure' %}
                 'docs',
-{%     endif %}
-{%     if man == 'skip' %}
-                # 'skip-man',
-{%     elif man == 'warn-on-failure' %}
-                # 'warn-man',
-{%     elif man == 'flunk-on-failure' %}
-                # 'man',
 {%     endif %}
 {%     if objdir == 'true' or gic == 'skip' %}
                 'skip-git-ignore-check',
