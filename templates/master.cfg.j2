@@ -122,18 +122,18 @@ BuildmasterConfig = {
                 'dkms-check',
 {%     endif %}
 {%   elif builder.factory.name | d('UnixBuildFactory') == 'UnixBuildFactory' %}
-{%     set test = builder.factory.args.test | d('warn-on-failure') %}
+{%     set tests = builder.factory.args.tests | d('warn-on-failure') %}
 {%     set docs = builder.factory.args.docs | d('warn-on-failure') %}
 {%     set objdir = builder.factory.args.objdir | d('false') %}
 {%     set gic = builder.factory.args.git_ignore_check | d('flunk-on-failure') %}
 {%     if '--enable-checking' not in builder.factory.args.configure | d('') %}
                 'skip-checking',
 {%     endif %}
-{%     if test == 'skip' %}
+{%     if tests == 'skip' %}
                 'skip-tests',
-{%     elif test == 'warn-on-failure' %}
+{%     elif tests == 'warn-on-failure' %}
                 'warn-tests',
-{%     elif test == 'flunk-on-failure' %}
+{%     elif tests == 'flunk-on-failure' %}
                 'tests',
 {%     endif %}
 {%     if docs == 'skip' %}

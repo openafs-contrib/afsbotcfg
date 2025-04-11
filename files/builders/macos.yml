@@ -9,7 +9,7 @@
     name: UnixBuildFactory
     args:
       docs: skip
-      test: warn-on-failure
+      tests: warn-on-failure
       configure: --disable-warnings --disable-checking --disable-pam
         --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
     env:
@@ -25,7 +25,7 @@
     name: UnixBuildFactory
     args:
       docs: skip
-      test: warn-on-failure
+      tests: warn-on-failure
       configure: --disable-warnings --disable-checking --disable-pam
         --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
     env:
@@ -41,7 +41,7 @@
     name: UnixBuildFactory
     args:
       docs: skip
-      test: warn-on-failure
+      tests: warn-on-failure
       configure: --disable-warnings --disable-checking --disable-pam
         --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
     env:
@@ -59,7 +59,7 @@
     name: UnixBuildFactory
     args:
       docs: skip
-      test: warn-on-failure
+      tests: warn-on-failure
       configure: --disable-warnings --disable-checking --disable-pam
         --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
     env:
@@ -75,7 +75,7 @@
     name: UnixBuildFactory
     args:
       docs: skip
-      test: warn-on-failure
+      tests: warn-on-failure
       configure: --disable-warnings --disable-checking --disable-pam
         --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
     env:
@@ -93,7 +93,7 @@
     name: UnixBuildFactory
     args:
       docs: skip
-      test: warn-on-failure
+      tests: warn-on-failure
       configure: --disable-warnings --disable-checking --disable-pam --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups --enable-transarc-paths
     env:
@@ -111,7 +111,7 @@
     name: UnixBuildFactory
     args:
       docs: skip
-      test: warn-on-failure
+      tests: warn-on-failure
       configure: --disable-warnings --disable-checking --disable-pam --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups --enable-transarc-paths
     env:
@@ -129,7 +129,7 @@
     name: UnixBuildFactory
     args:
       docs: skip
-      test: warn-on-failure
+      tests: warn-on-failure
       configure: --disable-warnings --disable-checking --disable-pam
         --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
     env:
@@ -147,7 +147,7 @@
     name: UnixBuildFactory
     args:
       docs: skip
-      test: warn-on-failure
+      tests: warn-on-failure
       configure: --disable-warnings --disable-checking --disable-pam
         --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
     env:

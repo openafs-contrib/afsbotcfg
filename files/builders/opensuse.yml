@@ -9,7 +9,7 @@
     name: UnixBuildFactory
     args:
       docs: skip
-      test: flunk-on-failure
+      tests: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --with-linux-kernel-build=/usr/src/linux-obj/x86_64/default
@@ -24,7 +24,7 @@
     name: UnixBuildFactory
     args:
       docs: skip
-      test: flunk-on-failure
+      tests: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --with-linux-kernel-build=/usr/src/linux-obj/x86_64/default
@@ -39,7 +39,7 @@
     name: UnixBuildFactory
     args:
       docs: skip
-      test: flunk-on-failure
+      tests: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --with-linux-kernel-build=/usr/src/linux-obj/x86_64/default
@@ -54,7 +54,7 @@
     name: UnixBuildFactory
     args:
       docs: skip
-      test: flunk-on-failure
+      tests: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --with-linux-kernel-build=/usr/src/linux-obj/x86_64/default
@@ -69,7 +69,7 @@
     name: UnixBuildFactory
     args:
       docs: skip
-      test: flunk-on-failure
+      tests: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --with-linux-kernel-build=/usr/src/linux-obj/aarch64/default
@@ -84,7 +84,7 @@
     name: UnixBuildFactory
     args:
       docs: skip
-      test: flunk-on-failure
+      tests: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --with-linux-kernel-build=/usr/src/linux-obj/aarch64/default
@@ -99,7 +99,7 @@
     name: UnixBuildFactory
     args:
       docs: skip
-      test: flunk-on-failure
+      tests: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --with-linux-kernel-build=/usr/src/linux-obj/aarch64/default
@@ -114,7 +114,7 @@
     name: UnixBuildFactory
     args:
       docs: skip
-      test: flunk-on-failure
+      tests: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --with-linux-kernel-build=/usr/src/linux-obj/aarch64/default

@@ -143,7 +143,7 @@ class UnixBuildFactory(GerritCheckoutFactory):
                  jobs='4',
                  target='all',
                  docs='warn-on-failure',
-                 test='warn-on-failure',
+                 tests='warn-on-failure',
                  git_ignore_check='flunk-on-failure',
                  **kwargs):
         """Create a UnixBuildFactory instance.
@@ -156,12 +156,12 @@ class UnixBuildFactory(GerritCheckoutFactory):
             jobs:         Number of make jobs (int string)
             target:       The top level makefile target (string)
             docs:         Also render the docs when true (string)
-            test:         Also run the TAP unit tests (string)
+            tests:         Also run the TAP unit tests (string)
         """
         objdir = str2bool(objdir)
         pretty = str2bool(pretty)
 
-        test = check_option(test)
+        tests = check_option(tests)
         docs = check_option(docs)
         git_ignore_check = check_option(git_ignore_check)
 
@@ -196,8 +196,8 @@ class UnixBuildFactory(GerritCheckoutFactory):
         else:
             self.addStep(MakeDocs(make=make, doStepIf=isRealWorker))
 
-        tflunk = (test == 'flunk-on-failure')
-        if test == 'skip':
+        tflunk = (tests == 'flunk-on-failure')
+        if tests == 'skip':
             self.addStep(RunTests(make=make, flunk=tflunk, doStepIf=False))
         else:
             self.addStep(RunTests(make=make, flunk=tflunk, doStepIf=isRealWorker))

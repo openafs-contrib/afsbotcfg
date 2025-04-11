@@ -11,7 +11,7 @@
     name: UnixBuildFactory
     args:
       docs: skip
-      test: flunk-on-failure
+      tests: flunk-on-failure
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
 
@@ -27,7 +27,7 @@
     name: UnixBuildFactory
     args:
       docs: skip
-      test: flunk-on-failure
+      tests: flunk-on-failure
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
 
@@ -43,7 +43,7 @@
     name: UnixBuildFactory
     args:
       docs: skip
-      test: flunk-on-failure
+      tests: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
@@ -59,7 +59,7 @@
     name: UnixBuildFactory
     args:
       docs: skip
-      test: flunk-on-failure
+      tests: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
@@ -73,7 +73,7 @@
     name: UnixBuildFactory
     args:
       docs: skip
-      test: flunk-on-failure
+      tests: flunk-on-failure
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
 
@@ -87,7 +87,7 @@
     name: UnixBuildFactory
     args:
       docs: skip
-      test: flunk-on-failure
+      tests: flunk-on-failure
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
 
@@ -101,7 +101,7 @@
     name: UnixBuildFactory
     args:
       docs: skip
-      test: flunk-on-failure
+      tests: flunk-on-failure
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
 - scheduler: nightly
@@ -114,7 +114,7 @@
     name: UnixBuildFactory
     args:
       docs: skip
-      test: flunk-on-failure
+      tests: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
@@ -128,7 +128,7 @@
     name: UnixBuildFactory
     args:
       docs: skip
-      test: flunk-on-failure
+      tests: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
@@ -144,7 +144,7 @@
     name: UnixBuildFactory
     args:
       docs: skip
-      test: flunk-on-failure
+      tests: flunk-on-failure
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
 - scheduler: gerrit
@@ -159,7 +159,7 @@
     name: UnixBuildFactory
     args:
       docs: skip
-      test: flunk-on-failure
+      tests: flunk-on-failure
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
 - scheduler: gerrit
@@ -174,7 +174,7 @@
     name: UnixBuildFactory
     args:
       docs: skip
-      test: flunk-on-failure
+      tests: flunk-on-failure
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
 - scheduler: nightly
@@ -189,7 +189,7 @@
     name: UnixBuildFactory
     args:
       docs: skip
-      test: flunk-on-failure
+      tests: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
@@ -205,6 +205,6 @@
     name: UnixBuildFactory
     args:
       docs: skip
-      test: flunk-on-failure
+      tests: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
