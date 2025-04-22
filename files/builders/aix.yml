@@ -10,7 +10,6 @@
     args:
       tests: warn-on-failure
       docs: skip
-      git_ignore_check: flunk-on-failure
       jobs: 1
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
@@ -42,7 +41,6 @@
     args:
       tests: warn-on-failure
       docs: skip
-      git_ignore_check: flunk-on-failure
       jobs: 1
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
@@ -59,7 +57,6 @@
     args:
       tests: warn-on-failure
       docs: skip
-      git_ignore_check: flunk-on-failure
       jobs: 1
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
@@ -78,7 +75,6 @@
     args:
       tests: warn-on-failure
       docs: skip
-      git_ignore_check: flunk-on-failure
       jobs: 1
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
@@ -99,7 +95,6 @@
     args:
       tests: warn-on-failure
       docs: skip
-      git_ignore_check: flunk-on-failure
       jobs: 1
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
@@ -120,7 +115,6 @@
     args:
       tests: warn-on-failure
       docs: skip
-      git_ignore_check: flunk-on-failure
       jobs: 1
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
