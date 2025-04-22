@@ -126,18 +126,18 @@ BuildmasterConfig = {
 {%     set docs = builder.factory.args.docs | d('warn-on-failure') %}
 {%     set objdir = builder.factory.args.objdir | d('false') %}
 {%     set git_status = builder.factory.args.git_status | d('flunk-on-failure') %}
-{%     if '--enable-checking' not in builder.factory.args.configure | d('') %}
-                'skip-checking',
+{%     if '--enable-checking' in builder.factory.args.configure | d('') %}
+                'checking',
 {%     endif %}
 {%     if tests == 'skip' %}
-                'skip-tests',
+                # 'skip-tests',
 {%     elif tests == 'warn-on-failure' %}
                 'warn-tests',
 {%     elif tests == 'flunk-on-failure' %}
                 'tests',
 {%     endif %}
 {%     if docs == 'skip' %}
-                'skip-docs',
+                # 'skip-docs',
 {%     elif docs == 'warn-on-failure' %}
                 'warn-docs',
 {%     elif docs == 'flunk-on-failure' %}
