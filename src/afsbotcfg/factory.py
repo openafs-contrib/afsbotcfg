@@ -156,7 +156,8 @@ class UnixBuildFactory(GerritCheckoutFactory):
             jobs:         Number of make jobs (int string)
             target:       The top level makefile target (string)
             docs:         Also render the docs when true (string)
-            tests:         Also run the TAP unit tests (string)
+            tests:        Also run the TAP unit tests (string)
+            git_status    Run git status after the build and tests (string)
         """
         objdir = str2bool(objdir)
         pretty = str2bool(pretty)
@@ -196,16 +197,16 @@ class UnixBuildFactory(GerritCheckoutFactory):
         else:
             self.addStep(MakeDocs(make=make, doStepIf=isRealWorker))
 
+        # Post build git status check.
+        self.addStep(GitStatusCheck(flunk=True, doStepIf=False))
+
         tflunk = (tests == 'flunk-on-failure')
         if tests == 'skip':
             self.addStep(RunTests(make=make, flunk=tflunk, doStepIf=False))
         else:
             self.addStep(RunTests(make=make, flunk=tflunk, doStepIf=isRealWorker))
-
-        gflunk = (git_status == 'flunk-on-failure')
-        if git_status == 'skip':
-            self.addStep(GitStatusCheck(flunk=gflunk, doStepIf=False))
-        else:
+            # Post test git status check.
+            gflunk = (git_status == 'flunk-on-failure')
             self.addStep(GitStatusCheck(flunk=gflunk, doStepIf=isRealWorker))
 
         self.addCleanupStep()
@@ -225,7 +226,7 @@ class WindowsBuildFactory(GerritCheckoutFactory):
             command=['build-openafs.cmd', arch, variant],
             doStepIf=isRealWorker))
 
-        self.addStep(GitIgnoreCheck(doStepIf=isRealWorker))
+        self.addStep(GitStatusCheck(doStepIf=isRealWorker))
 
         self.addCleanupStep()
 

@@ -145,9 +145,9 @@ BuildmasterConfig = {
 {%     endif %}
 {%     if objdir == 'true' or git_status == 'skip' %}
                 # 'skip-git-status-check',
-{%     elif gic == 'warn-on-failure' %}
+{%     elif git_status == 'warn-on-failure' %}
                 'git-status-warn',
-{%     elif gic == 'flunk-on-failure' %}
+{%     elif git_status  == 'flunk-on-failure' %}
                 'git-status-check',
 {%     endif %}
 {%   endif %}
