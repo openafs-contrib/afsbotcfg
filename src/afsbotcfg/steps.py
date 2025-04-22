@@ -262,12 +262,12 @@ class GitStatusCheck(steps.WarningCountingShellCommand):
     the .gitignore file(s).
     """
 
-    name = 'git status check'
     workdir = 'build'
     command = ['git', 'status', '--porcelain']
 
-    def __init__(self, flunk=False, **kwargs):
+    def __init__(self, prefix='', flunk=False, **kwargs):
         super().__init__(**kwargs)
+        self.name = prefix + 'git status check'
         self.flunk = flunk
         self.observer = GitStatusObserver()
         self.addLogObserver('stdio', self.observer)

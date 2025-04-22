@@ -198,7 +198,8 @@ class UnixBuildFactory(GerritCheckoutFactory):
             self.addStep(MakeDocs(make=make, doStepIf=isRealWorker))
 
         # Post build git status check.
-        self.addStep(GitStatusCheck(flunk=True, doStepIf=False))
+        if not objdir:
+            self.addStep(GitStatusCheck(prefix='post build ', flunk=True, doStepIf=isRealWorker))
 
         tflunk = (tests == 'flunk-on-failure')
         if tests == 'skip':
@@ -206,8 +207,9 @@ class UnixBuildFactory(GerritCheckoutFactory):
         else:
             self.addStep(RunTests(make=make, flunk=tflunk, doStepIf=isRealWorker))
             # Post test git status check.
-            gflunk = (git_status == 'flunk-on-failure')
-            self.addStep(GitStatusCheck(flunk=gflunk, doStepIf=isRealWorker))
+            if not objdir:
+                gflunk = (git_status == 'flunk-on-failure')
+                self.addStep(GitStatusCheck(prefix='post test ', flunk=gflunk, doStepIf=isRealWorker))
 
         self.addCleanupStep()
 

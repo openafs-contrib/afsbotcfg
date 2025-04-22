@@ -143,12 +143,12 @@ BuildmasterConfig = {
 {%     elif docs == 'flunk-on-failure' %}
                 'docs',
 {%     endif %}
-{%     if objdir == 'true' or git_status == 'skip' %}
-                # 'skip-git-status',
+{%     if git_status == 'skip' %}
+                'skip-git-status',
 {%     elif git_status == 'warn-on-failure' %}
                 'warn-git-status',
 {%     elif git_status  == 'flunk-on-failure' %}
-                'git-status',
+                # 'git-status',
 {%     endif %}
 {%   endif %}
             ],
