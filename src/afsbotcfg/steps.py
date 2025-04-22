@@ -253,7 +253,7 @@ class GitStatusObserver(util.LogLineObserver):
         self.changed.append(line)
 
 
-class GitIgnoreCheck(steps.WarningCountingShellCommand):
+class GitStatusCheck(steps.WarningCountingShellCommand):
     """
     Run git status to check for untracked changes.
 
@@ -262,7 +262,7 @@ class GitIgnoreCheck(steps.WarningCountingShellCommand):
     the .gitignore file(s).
     """
 
-    name = 'git ignore check'
+    name = 'git status check'
     workdir = 'build'
     command = ['git', 'status', '--porcelain']
 

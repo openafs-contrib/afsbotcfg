@@ -41,7 +41,7 @@
     args:
       docs: skip
       tests: flunk-on-failure
-      git_ignore_check: warn-on-failure
+      git_status: warn-on-failure
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
       make: gmake
@@ -57,7 +57,7 @@
     args:
       docs: skip
       tests: flunk-on-failure
-      git_ignore_check: warn-on-failure
+      git_status: warn-on-failure
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
       make: gmake

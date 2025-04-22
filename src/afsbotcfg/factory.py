@@ -41,7 +41,7 @@ from afsbotcfg.steps import (
     Make,
     MakeDocs,
     RunTests,
-    GitIgnoreCheck,
+    GitStatusCheck,
 )
 
 
@@ -144,7 +144,7 @@ class UnixBuildFactory(GerritCheckoutFactory):
                  target='all',
                  docs='warn-on-failure',
                  tests='warn-on-failure',
-                 git_ignore_check='flunk-on-failure',
+                 git_status='flunk-on-failure',
                  **kwargs):
         """Create a UnixBuildFactory instance.
 
@@ -163,7 +163,7 @@ class UnixBuildFactory(GerritCheckoutFactory):
 
         tests = check_option(tests)
         docs = check_option(docs)
-        git_ignore_check = check_option(git_ignore_check)
+        git_status = check_option(git_status)
 
         try:
             jobs = int(jobs)
@@ -175,7 +175,7 @@ class UnixBuildFactory(GerritCheckoutFactory):
             checkoutdir = 'source'
             builddir = 'build'
             cf = '../source/configure'
-            git_ignore_check = 'skip'
+            git_status = 'skip'
         else:
             checkoutdir = 'build'
             builddir = 'build'
@@ -202,11 +202,11 @@ class UnixBuildFactory(GerritCheckoutFactory):
         else:
             self.addStep(RunTests(make=make, flunk=tflunk, doStepIf=isRealWorker))
 
-        gflunk = (git_ignore_check == 'flunk-on-failure')
-        if git_ignore_check == 'skip':
-            self.addStep(GitIgnoreCheck(flunk=gflunk, doStepIf=False))
+        gflunk = (git_status == 'flunk-on-failure')
+        if git_status == 'skip':
+            self.addStep(GitStatusCheck(flunk=gflunk, doStepIf=False))
         else:
-            self.addStep(GitIgnoreCheck(flunk=gflunk, doStepIf=isRealWorker))
+            self.addStep(GitStatusCheck(flunk=gflunk, doStepIf=isRealWorker))
 
         self.addCleanupStep()
 
