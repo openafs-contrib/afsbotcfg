@@ -9,5 +9,4 @@
     name: UnixBuildFactory
     args:
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
-
-# --with-afs-sysname=amd64_fbsd?
+                 --with-afs-sysname=amd64_fbsd141
