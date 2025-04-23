@@ -5,6 +5,8 @@
   cc: xlc
   arch: rs
   worker: aix61-rs
+  tags:
+    - tests-failing
   factory:
     name: UnixBuildFactory
     args:
@@ -20,6 +22,8 @@
   cc: gcc
   arch: rs
   worker: aix61-rs
+  tags:
+    - tests-failing
   factory:
     name: UnixBuildFactory
     args:
@@ -36,6 +40,8 @@
   cc: xlc
   arch: rs
   worker: aix61-rs
+  tags:
+    - tests-failing
   factory:
     name: UnixBuildFactory
     args:
@@ -52,6 +58,8 @@
   arch: rs
   flavor: nocheck
   worker: aix73-rs
+  tags:
+    - tests-failing
   factory:
     name: UnixBuildFactory
     args:
@@ -70,6 +78,8 @@
   arch: rs
   flavor: nocheck
   worker: aix73-rs
+  tags:
+    - tests-failing
   factory:
     name: UnixBuildFactory
     args:
@@ -90,6 +100,7 @@
   worker: aix73-rs
   tags:
     - disabled
+    - tests-failing
   factory:
     name: UnixBuildFactory
     args:
@@ -110,6 +121,7 @@
   worker: aix73-rs
   tags:
     - disabled
+    - tests-failing
   factory:
     name: UnixBuildFactory
     args:
