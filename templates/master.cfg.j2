@@ -175,6 +175,11 @@ BuildmasterConfig = {
 {%     if builder.scheduler == 'gerrit' %}
                 start_delay={{ afsbotcfg_project.start_delay }},
 {%     endif %}
+                tags=[
+{%   for tag in builder.tags | d([]) %}
+                    '{{ tag }}',
+{%   endfor %}
+                ],
 {%     if builder.factory.args is defined %}
 {%       for key, value in builder.factory.args.items() %}
                 {{ key }}='{{ value }}',

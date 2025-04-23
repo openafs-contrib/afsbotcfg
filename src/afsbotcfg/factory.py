@@ -74,7 +74,7 @@ class GerritCheckoutFactory(util.BuildFactory):
     gerrit_lock = util.MasterLock("gerrit")
     gerrit_lock_count = 3  # Max number of concurrent checkouts.
 
-    def __init__(self, repo=None, start_delay=0, workdir='build', **kwargs):
+    def __init__(self, repo=None, start_delay=0, tags=None, workdir='build', **kwargs):
         """Checkout source code from the Gerrit repository.
 
         Checkout the source using a lock to prevent too much load on the
@@ -136,6 +136,7 @@ class UnixBuildFactory(GerritCheckoutFactory):
     """
 
     def __init__(self,
+                 tags=None,
                  objdir='false',
                  configure=None,
                  make='make',
@@ -149,6 +150,7 @@ class UnixBuildFactory(GerritCheckoutFactory):
         """Create a UnixBuildFactory instance.
 
         Args:
+            tags          Builder tags (list of strings)
             objdir:       Build in separate directory when true (boolean)
             configure:    configure options (string)
             make:         make command (string)
@@ -159,6 +161,8 @@ class UnixBuildFactory(GerritCheckoutFactory):
             tests:        Also run the TAP unit tests (string)
             git_status    Run git status after the build and tests (string)
         """
+        if tags is None:
+            tags = []
         objdir = str2bool(objdir)
         pretty = str2bool(pretty)
 
