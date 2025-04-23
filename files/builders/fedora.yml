@@ -314,48 +314,6 @@
       CFLAGS: -Wno-error=array-bounds -Wno-error=format-overflow -Wno-error=format-truncation
         -Wno-error=implicit-function-declaration -Wno-error=restrict
 
-- scheduler: gerrit
-  branch: dev
-  os: fedora39
-  cc: gcc
-  arch: amd64
-  workers:
-    - dummy
-    - fedora39-x86_64
-    - fedora39-x86_64-02
-  factory:
-    name: UnixBuildFactory
-    args:
-      tests: skip
-      docs: skip
-      configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
-        --enable-supergroups
-        --enable-warnings --enable-checking
-    env:
-      CFLAGS: -Wno-error=array-bounds -Wno-error=format-overflow -Wno-error=format-truncation
-        -Wno-error=implicit-function-declaration -Wno-error=restrict
-
-- scheduler: gerrit
-  branch: stable
-  os: fedora39
-  cc: gcc
-  arch: amd64
-  workers:
-    - dummy
-    - fedora39-x86_64
-    - fedora39-x86_64-02
-  factory:
-    name: UnixBuildFactory
-    args:
-      tests: skip
-      docs: skip
-      configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
-        --enable-supergroups
-        --enable-warnings --enable-checking
-    env:
-      CFLAGS: -Wno-error=array-bounds -Wno-error=format-overflow -Wno-error=format-truncation
-        -Wno-error=implicit-function-declaration -Wno-error=restrict
-
 - scheduler: nightly
   branch: dev
   os: fedora39
@@ -365,6 +323,8 @@
     - dummy
     - fedora39-x86_64
     - fedora39-x86_64-02
+  tags:
+    - disabled
   factory:
     name: UnixBuildFactory
     args:
@@ -386,6 +346,8 @@
     - dummy
     - fedora39-x86_64
     - fedora39-x86_64-02
+  tags:
+    - disabled
   factory:
     name: UnixBuildFactory
     args:
@@ -405,12 +367,12 @@
   arch: amd64
   workers:
     - dummy
-    - fedora40-x86_64
+    #- fedora40-x86_64
     - fedora40-x86_64-02
   factory:
     name: UnixBuildFactory
     args:
-      tests: skip
+      tests: flunk-on-failure
       docs: skip
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
@@ -422,12 +384,12 @@
   arch: amd64
   workers:
     - dummy
-    - fedora40-x86_64
+    #- fedora40-x86_64
     - fedora40-x86_64-02
   factory:
     name: UnixBuildFactory
     args:
-      tests: skip
+      tests: flunk-on-failure
       docs: skip
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
@@ -439,7 +401,7 @@
   arch: amd64
   workers:
     - dummy
-    - fedora40-x86_64
+    #- fedora40-x86_64
     - fedora40-x86_64-02
   factory:
     name: UnixBuildFactory
@@ -456,7 +418,7 @@
   arch: amd64
   workers:
     - dummy
-    - fedora40-x86_64
+    #- fedora40-x86_64
     - fedora40-x86_64-02
   factory:
     name: UnixBuildFactory
@@ -473,12 +435,12 @@
   arch: amd64
   workers:
     - dummy
-    - fedora41-x86_64
+    #- fedora41-x86_64
     - fedora41-x86_64-02
   factory:
     name: UnixBuildFactory
     args:
-      tests: skip
+      tests: flunk-on-failure
       docs: skip
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
@@ -490,12 +452,12 @@
   arch: amd64
   workers:
     - dummy
-    - fedora41-x86_64
+    #- fedora41-x86_64
     - fedora41-x86_64-02
   factory:
     name: UnixBuildFactory
     args:
-      tests: skip
+      tests: flunk-on-failure
       docs: skip
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
@@ -507,7 +469,7 @@
   arch: amd64
   workers:
     - dummy
-    - fedora41-x86_64
+    #- fedora41-x86_64
     - fedora41-x86_64-02
   factory:
     name: UnixBuildFactory
@@ -524,7 +486,7 @@
   arch: amd64
   workers:
     - dummy
-    - fedora41-x86_64
+    #- fedora41-x86_64
     - fedora41-x86_64-02
   factory:
     name: UnixBuildFactory
