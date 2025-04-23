@@ -12,8 +12,8 @@
     args:
       docs: skip
       tests: flunk-on-failure
-      configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
-        --enable-supergroups
+      configure: --enable-warnings --enable-checking --enable-kernel-module
+                 --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
 - scheduler: gerrit
   branch: stable
@@ -28,8 +28,8 @@
     args:
       docs: skip
       tests: flunk-on-failure
-      configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
-        --enable-supergroups
+      configure: --enable-warnings --enable-checking --enable-kernel-module
+                 --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
 - scheduler: nightly
   branch: dev
@@ -45,7 +45,7 @@
       docs: skip
       tests: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
-        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+                 --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
 - scheduler: nightly
   branch: stable
@@ -61,7 +61,7 @@
       docs: skip
       tests: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
-        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+                 --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
 - scheduler: gerrit
   branch: dev
@@ -74,8 +74,8 @@
     args:
       docs: skip
       tests: flunk-on-failure
-      configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
-        --enable-supergroups
+      configure: --enable-warnings --enable-checking --enable-kernel-module
+                 --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
 - scheduler: gerrit
   branch: stable
@@ -88,8 +88,8 @@
     args:
       docs: skip
       tests: flunk-on-failure
-      configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
-        --enable-supergroups
+      configure: --enable-warnings --enable-checking --enable-kernel-module
+                 --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
 - scheduler: gerrit
   branch: oldstable
@@ -116,7 +116,7 @@
       docs: skip
       tests: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
-        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+                 --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
 - scheduler: nightly
   branch: stable
@@ -130,7 +130,7 @@
       docs: skip
       tests: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
-        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+                 --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
 - scheduler: gerrit
   branch: dev
@@ -145,7 +145,8 @@
     args:
       docs: skip
       tests: flunk-on-failure
-      configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+      configure: --enable-warnings --enable-checking --enable-kernel-module
+                 --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
 - scheduler: gerrit
   branch: stable
@@ -160,7 +161,8 @@
     args:
       docs: skip
       tests: flunk-on-failure
-      configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+      configure: --enable-warnings --enable-checking --enable-kernel-module
+                 --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
 - scheduler: gerrit
   branch: oldstable
@@ -191,7 +193,7 @@
       docs: skip
       tests: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
-        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+                 --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
 - scheduler: nightly
   branch: stable
@@ -207,4 +209,4 @@
       docs: skip
       tests: flunk-on-failure
       configure: --enable-warnings --enable-checking --enable-kernel-module
-        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+                 --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
