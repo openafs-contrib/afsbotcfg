@@ -36,6 +36,8 @@
   cc: gcc
   arch: x86
   worker: solaris114-x86-2
+  tags:
+    - git-status-failing
   factory:
     name: UnixBuildFactory
     args:
@@ -52,6 +54,8 @@
   cc: spro
   arch: x86
   worker: solaris114-x86-2
+  tags:
+    - git-status-failing
   factory:
     name: UnixBuildFactory
     args:

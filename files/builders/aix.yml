@@ -24,6 +24,7 @@
   worker: aix61-rs
   tags:
     - tests-failing
+    - git-status-failing
   factory:
     name: UnixBuildFactory
     args:
