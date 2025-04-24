@@ -6,7 +6,7 @@
   arch: amd64
   worker: fedora26-x86_64
   tags:
-    - disabled
+    - deactivated
   factory:
     name: UnixBuildFactory
     args:
@@ -27,7 +27,7 @@
   arch: amd64
   worker: fedora27-x86_64
   tags:
-    - disabled
+    - deactivated
   factory:
     name: UnixBuildFactory
     args:
@@ -47,7 +47,7 @@
   arch: amd64
   worker: fedora28-x86_64
   tags:
-    - disabled
+    - deactivated
   factory:
     name: UnixBuildFactory
     args:
@@ -66,7 +66,7 @@
   arch: amd64
   worker: fedora29-x86_64
   tags:
-    - disabled
+    - deactivated
   factory:
     name: UnixBuildFactory
     args:
@@ -85,7 +85,7 @@
   arch: amd64
   worker: fedora30-x86_64
   tags:
-    - disabled
+    - deactivated
   factory:
     name: UnixBuildFactory
     args:
@@ -104,7 +104,7 @@
   arch: amd64
   worker: fedora31-x86_64
   tags:
-    - disabled
+    - deactivated
   factory:
     name: UnixBuildFactory
     args:
@@ -123,7 +123,7 @@
   arch: amd64
   worker: fedora32-x86_64
   tags:
-    - disabled
+    - deactivated
   factory:
     name: UnixBuildFactory
     args:
@@ -142,7 +142,7 @@
   arch: amd64
   worker: fedora33-x86_64
   tags:
-    - disabled
+    - deactivated
   factory:
     name: UnixBuildFactory
     args:
@@ -161,7 +161,7 @@
   arch: amd64
   worker: fedora34-x86_64
   tags:
-    - disabled
+    - deactivated
   factory:
     name: UnixBuildFactory
     args:
@@ -181,7 +181,7 @@
   arch: amd64
   worker: fedora35-x86_64
   tags:
-    - disabled
+    - deactivated
   factory:
     name: UnixBuildFactory
     args:
@@ -201,7 +201,7 @@
   arch: amd64
   worker: fedora36-x86_64
   tags:
-    - disabled
+    - deactivated
   factory:
     name: UnixBuildFactory
     args:
@@ -221,7 +221,7 @@
   arch: amd64
   worker: fedora36-x86_64
   tags:
-    - disabled
+    - deactivated
   factory:
     name: UnixBuildFactory
     args:
@@ -241,7 +241,7 @@
   arch: amd64
   worker: fedora37-x86_64
   tags:
-    - disabled
+    - deactivated
   factory:
     name: UnixBuildFactory
     args:
@@ -261,7 +261,7 @@
   arch: amd64
   worker: fedora37-x86_64
   tags:
-    - disabled
+    - deactivated
   factory:
     name: UnixBuildFactory
     args:
@@ -281,7 +281,7 @@
   arch: amd64
   worker: fedora38-x86_64
   tags:
-    - disabled
+    - deactivated
   factory:
     name: UnixBuildFactory
     args:
@@ -301,7 +301,7 @@
   arch: amd64
   worker: fedora38-x86_64
   tags:
-    - disabled
+    - deactivated
   factory:
     name: UnixBuildFactory
     args:
@@ -324,7 +324,7 @@
     - fedora39-x86_64
     - fedora39-x86_64-02
   tags:
-    - disabled
+    - deactivated
   factory:
     name: UnixBuildFactory
     args:
@@ -347,7 +347,7 @@
     - fedora39-x86_64
     - fedora39-x86_64-02
   tags:
-    - disabled
+    - deactivated
   factory:
     name: UnixBuildFactory
     args:

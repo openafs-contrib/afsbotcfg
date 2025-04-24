@@ -100,7 +100,7 @@
   flavor: nocheck
   worker: aix73-rs
   tags:
-    - disabled
+    - deactivated
     - tests-failing
   factory:
     name: UnixBuildFactory
@@ -121,7 +121,7 @@
   flavor: check
   worker: aix73-rs
   tags:
-    - disabled
+    - deactivated
     - tests-failing
   factory:
     name: UnixBuildFactory
