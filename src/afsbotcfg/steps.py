@@ -264,19 +264,19 @@ class GitStatusCheck(steps.WarningCountingShellCommand):
     workdir = 'build'
     command = ['git', 'status', '--porcelain']
 
-    def __init__(self, prefix='', flunk=False, **kwargs):
+    def __init__(self, prefix='', warnOnFailure=False, **kwargs):
         super().__init__(**kwargs)
         self.name = prefix + 'git status check'
-        self.flunk = flunk
+        self.warnOnFailure = warnOnFailure
         self.observer = GitStatusObserver()
         self.addLogObserver('stdio', self.observer)
 
     def evaluateCommand(self, cmd):
         if self.observer.changed:
-            if self.flunk:
-                return util.FAILURE
-            else:
+            if self.warnOnFailure:
                 return util.WARNINGS
+            else:
+                return util.FAILURE
         else:
             return util.SUCCESS
 
