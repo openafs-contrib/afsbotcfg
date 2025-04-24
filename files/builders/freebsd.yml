@@ -8,7 +8,7 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: flunk-on-failure
-      docs: skip
+      tests: true
+      docs: false
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
                  --with-afs-sysname=amd64_fbsd141

@@ -9,8 +9,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      docs: skip
-      tests: flunk-on-failure
+      docs: false
+      tests: true
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
       make: gmake
@@ -24,8 +24,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      docs: skip
-      tests: flunk-on-failure
+      docs: false
+      tests: true
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
       make: gmake
@@ -41,9 +41,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      docs: skip
-      tests: flunk-on-failure
-      git_status: warn-on-failure
+      docs: false
+      tests: true
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
       make: gmake
@@ -59,9 +58,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      docs: skip
-      tests: flunk-on-failure
-      git_status: warn-on-failure
+      docs: false
+      tests: true
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
       make: gmake

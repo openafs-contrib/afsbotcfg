@@ -8,8 +8,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: flunk-on-failure
-      docs: flunk-on-failure
+      tests: true
+      docs: true
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
 
@@ -22,7 +22,7 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: flunk-on-failure
-      docs: flunk-on-failure
+      tests: true
+      docs: true
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings

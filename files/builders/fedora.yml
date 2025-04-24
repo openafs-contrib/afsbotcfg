@@ -10,8 +10,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: skip
-      docs: skip
+      tests: false
+      docs: false
       configure: --disable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --with-afs-sysname=amd64_linux26
         --enable-warnings --enable-checking
@@ -31,8 +31,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: skip
-      docs: skip
+      tests: false
+      docs: false
       configure: --disable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --with-afs-sysname=amd64_linux26
         --enable-warnings --enable-checking
@@ -51,8 +51,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: skip
-      docs: skip
+      tests: false
+      docs: false
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
     env:
@@ -70,8 +70,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: skip
-      docs: skip
+      tests: false
+      docs: false
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
     env:
@@ -89,8 +89,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: skip
-      docs: skip
+      tests: false
+      docs: false
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
     env:
@@ -108,8 +108,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: skip
-      docs: skip
+      tests: false
+      docs: false
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
     env:
@@ -127,8 +127,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: skip
-      docs: skip
+      tests: false
+      docs: false
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
     env:
@@ -146,8 +146,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: skip
-      docs: skip
+      tests: false
+      docs: false
       configure: --enable-kernel-module --enable-checking --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
     env:
@@ -165,8 +165,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: skip
-      docs: skip
+      tests: false
+      docs: false
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
         --enable-warnings --enable-checking
@@ -185,8 +185,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: skip
-      docs: skip
+      tests: false
+      docs: false
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
         --enable-warnings --enable-checking
@@ -205,8 +205,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: skip
-      docs: skip
+      tests: false
+      docs: false
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
         --enable-warnings --enable-checking
@@ -225,8 +225,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: skip
-      docs: skip
+      tests: false
+      docs: false
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
         --enable-warnings --enable-checking
@@ -245,8 +245,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: skip
-      docs: skip
+      tests: false
+      docs: false
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
         --enable-warnings --enable-checking
@@ -265,8 +265,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: skip
-      docs: skip
+      tests: false
+      docs: false
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
         --enable-warnings --enable-checking
@@ -285,8 +285,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: skip
-      docs: skip
+      tests: false
+      docs: false
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
         --enable-warnings --enable-checking
@@ -305,8 +305,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: skip
-      docs: skip
+      tests: false
+      docs: false
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
         --enable-warnings --enable-checking
@@ -328,8 +328,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: flunk-on-failure
-      docs: skip
+      tests: true
+      docs: false
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
         --enable-warnings --enable-checking
@@ -351,8 +351,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: flunk-on-failure
-      docs: skip
+      tests: true
+      docs: false
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups
         --enable-warnings --enable-checking
@@ -372,8 +372,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: flunk-on-failure
-      docs: skip
+      tests: true
+      docs: false
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
@@ -389,8 +389,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: flunk-on-failure
-      docs: skip
+      tests: true
+      docs: false
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
@@ -406,8 +406,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: flunk-on-failure
-      docs: skip
+      tests: true
+      docs: false
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
@@ -423,8 +423,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: flunk-on-failure
-      docs: skip
+      tests: true
+      docs: false
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
@@ -440,8 +440,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: flunk-on-failure
-      docs: skip
+      tests: true
+      docs: false
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
@@ -457,8 +457,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: flunk-on-failure
-      docs: skip
+      tests: true
+      docs: false
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
@@ -474,8 +474,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: flunk-on-failure
-      docs: skip
+      tests: true
+      docs: false
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
@@ -491,7 +491,7 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: flunk-on-failure
-      docs: skip
+      tests: true
+      docs: false
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups

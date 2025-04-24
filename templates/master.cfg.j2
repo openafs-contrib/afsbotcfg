@@ -118,35 +118,17 @@ BuildmasterConfig = {
 {%   if  'deactived' in builder.tags | d([]) %}
 {%   elif builder.factory.name | d('') == 'ELRpmBuildFactory' %}
                 'package',
-{%     if builder.factory.args.build_dkms_source | d('') == 'true' %}
-                'dkms-check',
-{%     endif %}
 {%   elif builder.factory.name | d('UnixBuildFactory') == 'UnixBuildFactory' %}
-{%     set tests = builder.factory.args.tests | d('warn-on-failure') %}
-{%     set docs = builder.factory.args.docs | d('warn-on-failure') %}
-{%     set objdir = builder.factory.args.objdir | d('false') %}
-{%     set git_status = builder.factory.args.git_status | d('flunk-on-failure') %}
+{%     set tests = builder.factory.args.tests | d(True) %}
+{%     set docs = builder.factory.args.docs | d(False) %}
 {%     if '--enable-checking' in builder.factory.args.configure | d('') %}
                 'checking',
 {%     endif %}
-{%     if tests == 'skip' %}
-{%     elif tests == 'warn-on-failure' %}
-                'tests',
-{%     elif tests == 'flunk-on-failure' %}
+{%     if tests %}
                 'tests',
 {%     endif %}
-{%     if docs == 'skip' %}
-{%     elif docs == 'warn-on-failure' %}
+{%     if docs %}
                 'docs',
-{%     elif docs == 'flunk-on-failure' %}
-                'docs',
-{%     endif %}
-{%     if git_status == 'skip' %}
-                #'skip-git-status',
-{%     elif git_status == 'warn-on-failure' %}
-                #'warn-git-status',
-{%     elif git_status  == 'flunk-on-failure' %}
-                #'git-status',
 {%     endif %}
 {%   endif %}
             ],

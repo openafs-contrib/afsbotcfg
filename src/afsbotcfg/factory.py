@@ -52,16 +52,9 @@ def isRealWorker(step):
 
 
 def str2bool(s):
+    if isinstance(s, bool):
+        return s
     return s.lower() in ["1", "yes", "true"]
-
-
-def check_option(s):
-    choices = ('skip', 'warn-on-failure', 'flunk-on-failure')
-    if not s:
-        raise ValueError("Missing enum: {0}; must be one of: {1}".format(s, ",".join(choices)))
-    elif s not in choices:
-        raise ValueError("Invalid enum: {0}; must be one of: {1}".format(s, ",".join(choices)))
-    return s
 
 
 class GerritCheckoutFactory(util.BuildFactory):
@@ -143,9 +136,8 @@ class UnixBuildFactory(GerritCheckoutFactory):
                  pretty='false',
                  jobs='4',
                  target='all',
-                 docs='warn-on-failure',
-                 tests='warn-on-failure',
-                 git_status='flunk-on-failure',
+                 tests=True,
+                 docs=False,
                  **kwargs):
         """Create a UnixBuildFactory instance.
 
@@ -157,18 +149,15 @@ class UnixBuildFactory(GerritCheckoutFactory):
             pretty:       Pretty make output (boolean string)
             jobs:         Number of make jobs (int string)
             target:       The top level makefile target (string)
-            docs:         Also render the docs when true (string)
-            tests:        Also run the TAP unit tests (string)
-            git_status    Run git status after the build and tests (string)
+            tests:        Also run the TAP unit tests (bool)
+            docs:         Also render the docs when true (bool)
         """
         if tags is None:
             tags = []
         objdir = str2bool(objdir)
         pretty = str2bool(pretty)
-
-        tests = check_option(tests)
-        docs = check_option(docs)
-        git_status = check_option(git_status)
+        tests = str2bool(tests)
+        docs = str2bool(docs)
 
         try:
             jobs = int(jobs)
@@ -180,7 +169,6 @@ class UnixBuildFactory(GerritCheckoutFactory):
             checkoutdir = 'source'
             builddir = 'build'
             cf = '../source/configure'
-            git_status = 'skip'
         else:
             checkoutdir = 'build'
             builddir = 'build'
@@ -196,12 +184,13 @@ class UnixBuildFactory(GerritCheckoutFactory):
         self.addStep(Configure(configure=cf, options=configure, doStepIf=isRealWorker))
         self.addStep(Make(make=make, jobs=jobs, pretty=pretty, target=target, doStepIf=isRealWorker))
 
-        if docs == 'skip':
-            self.addStep(MakeDocs(make=make, doStepIf=False))
-        else:
-            self.addStep(MakeDocs(make=make, doStepIf=isRealWorker))
+        if docs:
+            self.addStep(
+                MakeDocs(
+                    make=make,
+                    warnOnFailure=('docs-failing' in tags),
+                    doStepIf=isRealWorker))
 
-        # Post build git status check.
         if not objdir:
             self.addStep(
                 GitStatusCheck(
@@ -209,13 +198,7 @@ class UnixBuildFactory(GerritCheckoutFactory):
                     warnOnFailure=('git-status-failing' in tags),
                     doStepIf=isRealWorker))
 
-        if tests == 'skip':
-            self.addStep(
-                RunTests(
-                    make=make,
-                    warnOnFailure=('tests-failing' in tags),
-                    doStepIf=False))
-        else:
+        if tests:
             self.addStep(
                 RunTests(
                     make=make,

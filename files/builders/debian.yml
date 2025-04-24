@@ -10,8 +10,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: flunk-on-failure
-      docs: flunk-on-failure
+      tests: true
+      docs: true
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
 
@@ -26,8 +26,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: flunk-on-failure
-      docs: flunk-on-failure
+      tests: true
+      docs: true
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
 
@@ -42,8 +42,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: flunk-on-failure
-      docs: flunk-on-failure
+      tests: true
+      docs: true
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
 
@@ -58,8 +58,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: flunk-on-failure
-      docs: flunk-on-failure
+      tests: true
+      docs: true
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
 
@@ -74,8 +74,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: flunk-on-failure
-      docs: flunk-on-failure
+      tests: true
+      docs: true
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
 
@@ -90,8 +90,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: flunk-on-failure
-      docs: flunk-on-failure
+      tests: true
+      docs: true
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
 
@@ -106,8 +106,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: flunk-on-failure
-      docs: flunk-on-failure
+      tests: true
+      docs: true
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
 
@@ -122,8 +122,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: flunk-on-failure
-      docs: flunk-on-failure
+      tests: true
+      docs: true
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
 
@@ -138,8 +138,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: flunk-on-failure
-      docs: flunk-on-failure
+      tests: true
+      docs: true
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
 
@@ -155,8 +155,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: flunk-on-failure
-      docs: flunk-on-failure
+      tests: true
+      docs: true
       configure: --disable-optimize --disable-optimize-kernel --enable-checking --enable-debug
         --enable-debug-kernel --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings --with-linux-kernel-packaging
@@ -176,8 +176,8 @@
     name: UnixBuildFactory
     args:
       objdir: true
-      tests: flunk-on-failure
-      docs: skip
+      tests: true
+      docs: false
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
 
@@ -193,8 +193,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: flunk-on-failure
-      docs: flunk-on-failure
+      tests: true
+      docs: true
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
 
@@ -212,8 +212,8 @@
     name: UnixBuildFactory
     args:
       objdir: true
-      tests: skip
-      docs: skip
+      tests: false
+      docs: false
       configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings
 
@@ -229,8 +229,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: flunk-on-failure
-      docs: flunk-on-failure
+      tests: true
+      docs: true
       configure: --disable-optimize --disable-optimize-kernel --enable-checking --enable-debug
         --enable-debug-kernel --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings --with-linux-kernel-packaging
@@ -248,8 +248,8 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: flunk-on-failure
-      docs: flunk-on-failure
+      tests: true
+      docs: true
       configure: --disable-optimize --disable-optimize-kernel --enable-checking --enable-debug
         --enable-debug-kernel --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
         --enable-supergroups --enable-warnings --with-linux-kernel-packaging
