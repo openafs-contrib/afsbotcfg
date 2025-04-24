@@ -205,12 +205,18 @@ class UnixBuildFactory(GerritCheckoutFactory):
         if not objdir:
             self.addStep(GitStatusCheck(prefix='post build ', flunk=True, doStepIf=isRealWorker))
 
-        tflunk = (tests == 'flunk-on-failure')
         if tests == 'skip':
-            self.addStep(RunTests(make=make, flunk=tflunk, doStepIf=False))
+            self.addStep(
+                RunTests(
+                    make=make,
+                    warnOnFailure=('tests-failing' in tags),
+                    doStepIf=False))
         else:
-            self.addStep(RunTests(make=make, flunk=tflunk, doStepIf=isRealWorker))
-            # Post test git status check.
+            self.addStep(
+                RunTests(
+                    make=make,
+                    warnOnFailure=('tests-failing' in tags),
+                    doStepIf=isRealWorker))
             if not objdir:
                 gflunk = (git_status == 'flunk-on-failure')
                 self.addStep(GitStatusCheck(prefix='post test ', flunk=gflunk, doStepIf=isRealWorker))

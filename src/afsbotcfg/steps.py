@@ -192,9 +192,8 @@ class RunTests(steps.WarningCountingShellCommand):
 
     name = 'run tests'
     workdir = 'build/tests'
-    warnOnFailure = True
 
-    def __init__(self, make='make', flunk=False, **kwargs):
+    def __init__(self, make='make', warnOnFailure=False, **kwargs):
         """Create the test step.
 
         Run the make check command in the tests directory. Attach an observer
@@ -209,7 +208,7 @@ class RunTests(steps.WarningCountingShellCommand):
             make:  The make program to be run.
         """
         super().__init__(**kwargs)
-        self.flunk = flunk
+        self.warnOnFailure = warnOnFailure
         self.command = [make, 'check', 'V=1']
         self.tap = TapObserver()
         self.addLogObserver('stdio', self.tap)
@@ -218,10 +217,10 @@ class RunTests(steps.WarningCountingShellCommand):
     def evaluateCommand(self, cmd):
         """Determine if the test failed or succeeded."""
         if cmd.didFail() or self.tap.failed > 0:
-            if self.flunk:
-                return util.FAILURE
-            else:
+            if self.warnOnFailure:
                 return util.WARNINGS
+            else:
+                return util.FAILURE
         else:
             return util.SUCCESS
 
