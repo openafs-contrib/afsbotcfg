@@ -118,17 +118,17 @@
     - alma9-amd64-2
     - alma9-amd64-3
     - alma9-amd64-4
+  tags:
+    - docs-failing
   factory:
     name: UnixBuildFactory
     args:
       jobs: 4
-      docs: false
+      docs: true
       tests: true
       configure: --disable-static --enable-warnings --enable-checking
         --enable-kernel-module --with-linux-kernel-packaging
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
-      tests: true
-      docs: false
 
 - scheduler: gerrit
   branch: dev
@@ -199,12 +199,14 @@
     - alma9-amd64-2
     - alma9-amd64-3
     - alma9-amd64-4
+  tags:
+    - docs-failing
   factory:
     name: UnixBuildFactory
     args:
       jobs: 4
       tests: true
-      docs: false
+      docs: true
       configure: --enable-warnings --enable-checking
         --enable-kernel-module --with-linux-kernel-packaging
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
