@@ -15,6 +15,12 @@ without errors.  After the build completes on each builder for the given
 branch, the buildbot marks the changes as verifed in the [OpenAFS Gerrit code
 review system][2].
 
+**deactivated**: These builders are temporarily or permanently excluded from
+receiving build requests. This is because they may be experiencing problems, be
+outdated, or be undergoing setup and are not yet ready for use.
+
+### Build Option Tags
+
 **checking**: These builders are specifically configured to **check for
 compiler warnings**. On these builders, compiler warnings are treated as errors
 to prevent potential issues from going unnoticed.
@@ -33,16 +39,21 @@ Buildbot at this time.
 
 ### Known Issues Tags
 
-**deactived**: These builders are temporarily or permanently excluded from
-receiving build requests. This is because they may be experiencing problems, be
-outdated, or be undergoing setup and are not yet ready for use.
+**build-failing**: Builders with this tag are know to have errors during the
+build, either due to platform or compiler level support, issues with the
+builder setup, or other problems. Builders with this tag may also be
+`deactivated` while waiting for further investigation.
 
-**tests-failing**: Builders with this tag are known to have pre-existing issues
-that cause some unit tests to fail. While the tests are still executed, the
-test step is configured to report a warning instead of a failure. This
-indicates that these failures are acknowledged and are likely being tracked,
-but haven't been resolved yet. Developers should be aware of these known
-failing tests when reviewing results from these builders.
+**tests-failing**: Builders with this tag are known to have issues that cause
+some unit tests to fail. While the tests are still executed, the test step is
+configured to report a warning instead of a failure. This indicates that these
+failures are acknowledged and are likely being tracked, but haven't been
+resolved yet. Developers should be aware of these known failing tests when
+reviewing results from these builders.
+
+**checking-failing**:: Builders with this tag are know to generate non-masked
+compiler warnings. Builders may be configured to permit compiler warnings in in
+order to complete the build while the warnings are under investigation.
 
 **git-status-failing**: Builders with this tag are known to have problems with
 the git status check. This tag indicates that discrepancies in the reported Git
