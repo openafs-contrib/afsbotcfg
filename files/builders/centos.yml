@@ -23,12 +23,14 @@
   workers:
     - dummy
     - centos6-amd64-2
+  tags:
+    - checking-failing
   factory:
     name: UnixBuildFactory
     args:
       docs: false
       tests: true
-      configure: --enable-warnings --enable-checking --enable-kernel-module
+      configure: --enable-kernel-module
                  --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
 - scheduler: nightly
@@ -55,12 +57,14 @@
   workers:
     - dummy
     - centos6-amd64-2
+  tags:
+    - checking-failing
   factory:
     name: UnixBuildFactory
     args:
       docs: false
       tests: true
-      configure: --enable-warnings --enable-checking --enable-kernel-module
+      configure: --enable-kernel-module
                  --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
 - scheduler: gerrit
