@@ -124,6 +124,7 @@ class MakeDocs(steps.ShellSequence):
         """
         super().__init__(**kwargs)
         self.warnOnFailure = warnOnFailure
+        self.flunkOnFailure = not warnOnFailure
         self.commands = []
         for doc in ['AdminGuide', 'AdminRef', 'QuickStartUnix', 'UserGuide']:
             workdir = os.path.join('doc/xml', doc)
@@ -132,7 +133,8 @@ class MakeDocs(steps.ShellSequence):
                     command=[make, '-C', workdir, 'all'],
                     logname=doc,
                     haltOnFailure=False,
-                    warnOnFailure=True))
+                    warnOnFailure=warnOnFailure,
+                    flunkOnFailure=not warnOnFailure))
 
 
 class TapObserver(util.LogLineObserver):
