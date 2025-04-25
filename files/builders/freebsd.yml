@@ -5,6 +5,8 @@
   cc: gcc
   arch: amd64
   worker: freebsd14-amd64
+  tags:
+    - deactivated
   factory:
     name: UnixBuildFactory
     args:
