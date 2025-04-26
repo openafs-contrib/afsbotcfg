@@ -56,9 +56,9 @@
   os: aix73
   cc: xlc
   arch: rs
-  flavor: nocheck
   worker: aix73-rs
   tags:
+    - checking-failing
     - tests-failing
   factory:
     name: UnixBuildFactory
@@ -79,6 +79,7 @@
   flavor: nocheck
   worker: aix73-rs
   tags:
+    - checking-failing
     - tests-failing
   factory:
     name: UnixBuildFactory
@@ -100,6 +101,7 @@
   worker: aix73-rs
   tags:
     - deactivated
+    - checking-failing
     - tests-failing
   factory:
     name: UnixBuildFactory
