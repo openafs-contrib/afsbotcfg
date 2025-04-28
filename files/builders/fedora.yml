@@ -470,6 +470,7 @@
   workers:
     - dummy
     #- fedora41-x86_64
+    - fedora41-x86_64-01
     - fedora41-x86_64-02
   factory:
     name: UnixBuildFactory
@@ -487,7 +488,80 @@
   workers:
     - dummy
     #- fedora41-x86_64
+    - fedora41-x86_64-01
     - fedora41-x86_64-02
+  factory:
+    name: UnixBuildFactory
+    args:
+      tests: true
+      docs: false
+      configure: --enable-warnings --enable-checking --enable-kernel-module
+        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+
+- scheduler: gerrit
+  branch: dev
+  os: fedora42
+  cc: gcc
+  arch: amd64
+  workers:
+    - dummy
+    - fedora42-x86_64-01
+  tags:
+    - deactivated
+  factory:
+    name: UnixBuildFactory
+    args:
+      tests: true
+      docs: false
+      configure: --enable-warnings --enable-checking --enable-kernel-module
+        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+
+- scheduler: gerrit
+  branch: stable
+  os: fedora42
+  cc: gcc
+  arch: amd64
+  workers:
+    - dummy
+    - fedora42-x86_64-01
+  tags:
+    - deactivated
+  factory:
+    name: UnixBuildFactory
+    args:
+      tests: true
+      docs: false
+      configure: --enable-warnings --enable-checking --enable-kernel-module
+        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+
+- scheduler: nightly
+  branch: dev
+  os: fedora42
+  cc: gcc
+  arch: amd64
+  workers:
+    - dummy
+    - fedora42-x86_64-01
+  tags:
+    - deactivated
+  factory:
+    name: UnixBuildFactory
+    args:
+      tests: true
+      docs: false
+      configure: --enable-warnings --enable-checking --enable-kernel-module
+        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+
+- scheduler: nightly
+  branch: stable
+  os: fedora42
+  cc: gcc
+  arch: amd64
+  workers:
+    - dummy
+    - fedora42-x86_64-01
+  tags:
+    - deactivated
   factory:
     name: UnixBuildFactory
     args:
