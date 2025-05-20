@@ -40,7 +40,7 @@ afsbotcfg/__init__.py: Makefile
 
 dist/afsbotcfg-$(VERSION).tar.gz: $(SOURCE) Makefile
 	echo "__version__ = '$(VERSION)'" >afsbotcfg/__init__.py
-	python setup.py sdist
+	python -m build .
 	@echo "Wrote $@"
 
 build: dist/afsbotcfg-$(VERSION).tar.gz
