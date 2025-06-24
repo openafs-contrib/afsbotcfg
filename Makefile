@@ -104,6 +104,11 @@ getlog: $(AFSBOTCFG_LOGDIR)
 	$(INFO) "Downloading buildbot log"
 	scp $(AFSBOTCFG_HOST):master/openafs/twistd.log $(AFSBOTCFG_LOGDIR)/twistd-$(shell date "+%Y%m%dT%H%M").log
 
+.PHONY: getcfg
+getcfg: $(AFSBOTCFG_LOGDIR)
+	$(INFO) "Downloading buildbot master.cfg"
+	scp $(AFSBOTCFG_HOST):master/openafs/master.cfg $(AFSBOTCFG_LOGDIR)/master.cfg
+
 #------------------------------------------------------------------------------
 # Cleanup targets
 #
