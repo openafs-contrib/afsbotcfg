@@ -121,6 +121,7 @@ BuildmasterConfig = {
 {%   elif builder.factory.name | d('UnixBuildFactory') == 'UnixBuildFactory' %}
 {%     set tests = builder.factory.args.tests | d(True) %}
 {%     set docs = builder.factory.args.docs | d(False) %}
+{%     set shuffle = builder.factory.args.shuffle | d(False) %}
 {%     if '--enable-checking' in builder.factory.args.configure | d('') %}
                 'checking',
 {%     endif %}
@@ -129,6 +130,9 @@ BuildmasterConfig = {
 {%     endif %}
 {%     if docs %}
                 'docs',
+{%     endif %}
+{%     if shuffle %}
+                'shuffle',
 {%     endif %}
 {%   endif %}
             ],

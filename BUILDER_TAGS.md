@@ -37,6 +37,9 @@ not break a packaging process. They ensure that the changes will not prevent
 the creation of valid packages. The release packages are not created by
 Buildbot at this time.
 
+**shuffle**: Builders with this tag use the `make --shuffle` option to
+randomize build order, helping to identify parallel build errors.
+
 ### Known Issues Tags
 
 **build-failing**: Builders with this tag are know to have errors during the

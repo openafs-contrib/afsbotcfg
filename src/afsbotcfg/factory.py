@@ -135,6 +135,7 @@ class UnixBuildFactory(GerritCheckoutFactory):
                  make='make',
                  pretty='false',
                  jobs='4',
+                 shuffle='false',
                  target='all',
                  tests=True,
                  docs=False,
@@ -148,6 +149,7 @@ class UnixBuildFactory(GerritCheckoutFactory):
             make:         make command (string)
             pretty:       Pretty make output (boolean string)
             jobs:         Number of make jobs (int string)
+            shuffle:      Shuffle make file targets (boolean string)
             target:       The top level makefile target (string)
             tests:        Also run the TAP unit tests (bool)
             docs:         Also render the docs when true (bool)
@@ -156,6 +158,7 @@ class UnixBuildFactory(GerritCheckoutFactory):
             tags = []
         objdir = str2bool(objdir)
         pretty = str2bool(pretty)
+        shuffle = str2bool(shuffle)
         tests = str2bool(tests)
         docs = str2bool(docs)
 
@@ -182,7 +185,7 @@ class UnixBuildFactory(GerritCheckoutFactory):
 
         self.addStep(Regen(workdir=checkoutdir, doStepIf=isRealWorker))
         self.addStep(Configure(configure=cf, options=configure, doStepIf=isRealWorker))
-        self.addStep(Make(make=make, jobs=jobs, pretty=pretty, target=target, doStepIf=isRealWorker))
+        self.addStep(Make(make=make, jobs=jobs, pretty=pretty, shuffle=shuffle, target=target, doStepIf=isRealWorker))
 
         if docs:
             self.addStep(

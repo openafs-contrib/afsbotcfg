@@ -511,6 +511,7 @@
     args:
       tests: true
       docs: false
+      shuffle: true
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
@@ -545,6 +546,7 @@
     args:
       tests: true
       docs: false
+      shuffle: true
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 

@@ -86,7 +86,7 @@ class Make(steps.Compile):
 
     name = 'make'
 
-    def __init__(self, make='make', jobs=1, pretty=False, target='all', **kwargs):
+    def __init__(self, make='make', jobs=1, pretty=False, shuffle=False, target='all', **kwargs):
         """Create the make step.
 
         Args:
@@ -99,6 +99,8 @@ class Make(steps.Compile):
         if jobs > 1:
             self.command.append('-j')
             self.command.append('%d' % jobs)
+        if shuffle:
+            self.command.append('--shuffle')
         if pretty:
             self.command.append('V=0')
         else:
