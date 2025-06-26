@@ -3,7 +3,7 @@
 ifdef AFSBOTCFG_VERSION
 VERSION=$(AFSBOTCFG_VERSION)
 else
-VERSION=25.6.25rc1
+VERSION=25.6.26rc1
 endif
 
 # afsbotcfg package source files

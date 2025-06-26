@@ -100,7 +100,7 @@ class Make(steps.Compile):
             self.command.append('-j')
             self.command.append('%d' % jobs)
         if shuffle:
-            self.command.append('--shuffle')
+            self.command.append('--shuffle=reverse')
         if pretty:
             self.command.append('V=0')
         else:
