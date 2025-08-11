@@ -23,10 +23,10 @@
   branch: dev
   os: macos14
   cc: xcode
-  arch: amd64
+  arch: arm64
   workers:
     - dummy
-    #- macos14-x86_64
+    - macos14-arm64
   tags:
     - tests-failing
   factory:
