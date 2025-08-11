@@ -40,15 +40,54 @@
       ARCHFLAGS: -arch x86_64 -arch arm64
 
 - scheduler: gerrit
-  branch: dev
-  os: macos15
+  branch: stable
+  os: macos14
   cc: xcode
   arch: amd64
   workers:
     - dummy
-    #- macos15-x86_64
+    #- macos14-x86_64
   tags:
-    - deactivated
+    - tests-failing
+  factory:
+    name: UnixBuildFactory
+    args:
+      docs: false
+      tests: true
+      configure: --disable-warnings --disable-checking --disable-pam --enable-kernel-module
+        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups --enable-transarc-paths
+    env:
+      ARCHFLAGS: -arch x86_64 -arch arm64
+
+- scheduler: nightly
+  branch: stable
+  os: macos14
+  cc: xcode
+  arch: arm64
+  workers:
+    - dummy
+    - macos14-arm64
+  tags:
+    - tests-failing
+  factory:
+    name: UnixBuildFactory
+    args:
+      docs: false
+      tests: true
+      configure: --disable-warnings --disable-checking --disable-pam --enable-kernel-module
+        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups --enable-transarc-paths
+    env:
+      ARCHFLAGS: -arch x86_64 -arch arm64
+
+- scheduler: gerrit
+  branch: dev
+  os: macos15
+  cc: xcode
+  arch: arm64
+  workers:
+    - dummy
+    #- macos15-arm64
+  tags:
     - tests-failing
   factory:
     name: UnixBuildFactory
@@ -64,12 +103,51 @@
   branch: dev
   os: macos15
   cc: xcode
-  arch: amd64
+  arch: arm64
   workers:
     - dummy
-    - macos15-x86_64
+    - macos15-arm64
   tags:
-    - deactivated
+    - tests-failing
+  factory:
+    name: UnixBuildFactory
+    args:
+      docs: false
+      tests: true
+      configure: --disable-warnings --disable-checking --disable-pam
+        --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+    env:
+      ARCHFLAGS: -arch x86_64 -arch arm64
+
+- scheduler: gerrit
+  branch: stable
+  os: macos15
+  cc: xcode
+  arch: arm64
+  workers:
+    - dummy
+    #- macos15-arm64
+  tags:
+    - tests-failing
+  factory:
+    name: UnixBuildFactory
+    args:
+      docs: false
+      tests: true
+      configure: --disable-warnings --disable-checking --disable-pam
+        --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+    env:
+      ARCHFLAGS: -arch x86_64 -arch arm64
+
+- scheduler: nightly
+  branch: stable
+  os: macos15
+  cc: xcode
+  arch: arm64
+  workers:
+    - dummy
+    - macos15-arm64
+  tags:
     - tests-failing
   factory:
     name: UnixBuildFactory
