@@ -6,7 +6,7 @@
   arch: arm64
   workers:
     - dummy
-    #- macos14-x86_64
+    - macos14-arm64
   tags:
     - tests-failing
   factory:
@@ -46,7 +46,7 @@
   arch: arm64
   workers:
     - dummy
-    #- macos14-x86_64
+    - macos14-arm64
   tags:
     - tests-failing
   factory:
@@ -86,7 +86,7 @@
   arch: arm64
   workers:
     - dummy
-    #- macos15-arm64
+    - macos15-arm64
   tags:
     - tests-failing
   factory:
@@ -126,7 +126,7 @@
   arch: arm64
   workers:
     - dummy
-    #- macos15-arm64
+    - macos15-arm64
   tags:
     - tests-failing
   factory:
