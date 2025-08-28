@@ -99,6 +99,7 @@ class Make(steps.Compile):
         if jobs > 1:
             self.command.append('-j')
             self.command.append('%d' % jobs)
+            self.command.append('--output-sync=target')
         if shuffle:
             self.command.append('--shuffle=reverse')
         if pretty:

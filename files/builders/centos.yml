@@ -12,6 +12,7 @@
     args:
       docs: false
       tests: true
+      jobs: 1
       configure: --enable-warnings --enable-checking --enable-kernel-module
                  --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
@@ -30,6 +31,7 @@
     args:
       docs: false
       tests: true
+      jobs: 1
       configure: --enable-kernel-module
                  --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
@@ -46,6 +48,7 @@
     args:
       docs: false
       tests: true
+      jobs: 1
       configure: --enable-warnings --enable-checking --enable-kernel-module
                  --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
@@ -64,6 +67,7 @@
     args:
       docs: false
       tests: true
+      jobs: 1
       configure: --enable-kernel-module
                  --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
@@ -78,6 +82,7 @@
     args:
       docs: false
       tests: true
+      jobs: 1
       configure: --enable-warnings --enable-checking --enable-kernel-module
                  --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
@@ -92,6 +97,7 @@
     args:
       docs: false
       tests: true
+      jobs: 1
       configure: --enable-warnings --enable-checking --enable-kernel-module
                  --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
@@ -106,6 +112,7 @@
     args:
       docs: false
       tests: true
+      jobs: 1
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
 - scheduler: nightly
@@ -119,6 +126,7 @@
     args:
       docs: false
       tests: true
+      jobs: 1
       configure: --enable-warnings --enable-checking --enable-kernel-module
                  --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
@@ -133,6 +141,7 @@
     args:
       docs: false
       tests: true
+      jobs: 1
       configure: --enable-warnings --enable-checking --enable-kernel-module
                  --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
