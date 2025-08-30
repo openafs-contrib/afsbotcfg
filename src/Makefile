@@ -2,6 +2,8 @@
 # afsbotcfg python package
 #
 
+IMAGE_NAME = openafs-contrib/afsbotcfg-package:latest
+
 .PHONY: help
 help:
 	@echo "usage: make <target>"
@@ -14,12 +16,11 @@ help:
 
 .PHONY: lint
 lint:
-	pyflakes afsbotcfg/*.py
-	flake8 afsbotcfg/*.py
+	podman run -ti --rm -v $(CURDIR):/app/src $(IMAGE_NAME) lint
 
 .PHONY: build
 build:
-	python -m build .
+	podman run -ti --rm -v $(CURDIR):/app/src $(IMAGE_NAME) build
 
 .PHONY: clean
 clean:

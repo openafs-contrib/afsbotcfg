@@ -1,155 +1,136 @@
+#
+# Run the OpenAFS buildbot playbook.
+#
+
+# Playbook
+AFSBOTCFG_IMAGE_NAME    := openafs-contrib/afsbotcfg-ansible:latest
+AFSBOTCFG_SECRET_NAME   := vault-afsbotcfg
+AFSBOTCFG_VAULT_FILE    := $(CURDIR)/.vault-afsbotcfg
+AFSBOTCFG_SSH_DIRECTORY := $(HOME)/.ssh
+
+# Testing
+TEST_IMAGE_NAME         := openafs-contrib/afsbotcfg-test
+TEST_CONTAINER_NAME     := buildbot-test
+TEST_AUTHORIZED_KEY     := $(HOME)/.ssh/id_rsa.pub
+
+# Mount the ssh-agent socket if available, otherwise ssh will prompt for
+# a password.
+ifdef SSH_AUTH_SOCK
+VOLUME_SSH_AGENT_SOCKET := --volume $(SSH_AUTH_SOCK):/root/ssh-agent.socket
+endif
+
+# For colorized info messages.  Define NO_COLOR to disable.
+ifndef NO_COLOR
+RED = \033[0;31m
+GREEN = \033[0;32m
+YELLOW = \033[0;33m
+START_COLOR = $(GREEN)
+END_COLOR = \033[0m
+endif
+INFO := @printf "$(START_COLOR)==> %s <==$(END_COLOR)\n"
+
 .PHONY: help
 help:
 	@echo "Usage: make <target>"
 	@echo ""
-	@echo "Setup targets:"
-	@echo "  setup              to setup the virtualenv and generate files"
-	@echo "  build              to build the afsbotcfg Python package"
+	@echo "setup targets:"
+	@echo "  build                to build Python packages and container images"
+	@echo "  secret               to setup the vault key secret"
+	@echo "  encrypt FILE=<path>  to encrypt a file with the vault key"
 	@echo ""
-	@echo "Run targets:"
-	@echo "  deploy             to run the playbook to create/update the buildbot server"
-	@echo "  configure          to run the playbook to configure the buildbot server"
-	@echo "  ping               to check connectivity to the buildbot server"
-	@echo "  getlog             to download the buildbot server log"
+	@echo "test targets:"
+	@echo "  lint                 to run static checks"
+	@echo "  create               to create the local test container"
+	@echo "  converge             to run the playbook on the local test container"
+	@echo "  destroy              to destroy the local test container"
+	@echo "  test                 to run create, converge, destroy"
 	@echo ""
-	@echo "Cleanup targets:"
-	@echo "  clean              to remove generated files"
-	@echo "  reallyclean        to remove all non-project files"
-	@echo ""
-	@echo "Environment:"
-	@echo "  AFSBOTCFG_PYTHON                python interpreter path (default: python)"
-	@echo "  AFSBOTCFG_LOGDIR                ansible play log directory (default: logs)"
-	@echo "  NO_COLOR                        disable Makefile color output"
-	@echo ""
-
-#--------------------------------------------------------------------------------------------------------
-# Definitions
-#
-
-# Environment
-AFSBOTCFG_HOST ?= buildbot.openafs.org
-AFSBOTCFG_PYTHON ?= python
-AFSBOTCFG_LOGDIR ?= logs
-
-YAML_FILES=\
-  *.yml \
-  inventory/group_vars/openafs_buildbot_masters/master.yml
-
-LINT_OPTIONS=\
-  --exclude=inventory/group_vars/openafs_buildbot_masters/worker_passwords.yml \
-  --exclude=inventory/group_vars/openafs_buildbot_masters/admin_passwords.yml
-
-PLAYBOOK=afsbotcfg.yml
-INVENTORY=inventory/hosts.ini
-VAULT_KEYFILE=.vault-afsbotcfg
-
-PACKAGES=.packages
-ifdef VIRTUAL_ENV
-PIP=$(VIRTUAL_ENV)/bin/pip
-ACTIVATED=ANSIBLE_COLLECTIONS_PATH=$(CURDIR)/collections
-else
-VENV=.venv
-PIP=$(VENV)/bin/pip
-ACTIVATE=$(VENV)/bin/activate
-ACTIVATED=. $(ACTIVATE); ANSIBLE_COLLECTIONS_PATH=$(CURDIR)/collections
-endif
-
-ifndef NO_COLOR
-RED=\033[0;31m
-GREEN=\033[0;32m
-YELLOW=\033[0;33m
-START_COLOR=$(GREEN)
-END_COLOR=\033[0m
-endif
-
-INFO=@printf "$(START_COLOR)==> %s <==$(END_COLOR)\n"
-
-ifdef AFSBOTCFG_LOGDIR
-LOGFILE=$(AFSBOTCFG_LOGDIR)/buildbot-$(shell date "+%Y%m%dT%H%M").log
-LOG=ANSIBLE_LOG_PATH="$(LOGFILE)"
-LOGINFO=$(INFO) "Wrote $(LOGFILE)"
-endif
-
-#--------------------------------------------------------------------------------------------------------
-# Setup targets
-#
-.PHONY: setup
-setup: $(PACKAGES) build collections
+	@echo "deployment targets:"
+	@echo "  ping                 to check connectivity to the buildbot server"
+	@echo "  deploy               to to the buildbot playbook"
 
 .PHONY: build
-build: $(PACKAGES)
-	$(INFO) "Building afsbotcfg python package"
-	$(ACTIVATED) $(MAKE) --no-print-directory -C src lint build
+build:
+	$(INFO) "Building Python package afsbotcfg"
+	$(MAKE) --no-print-directory -C src build
+	$(INFO) "Building podman images"
+	$(MAKE) --no-print-directory -C container build
 
-#--------------------------------------------------------------------------------------------------------
-# Run targets
-#
+.PHONY: secret
+secret:
+	$(INFO) "Setting secret '$(AFSBOTCFG_SECRET_NAME)'"
+ifndef AFSBOTCFG_PASS_NAME
+	podman secret create $(AFSBOTCFG_SECRET_NAME) $(AFSBOTCFG_VAULT_FILE)
+else
+	pass $(AFSBOTCFG_PASS_NAME) | podman secret create $(AFSBOTCFG_SECRET_NAME) -
+endif
+
+.PHONY: encrypt
+encrypt:
+	$(INFO) "Encrypting '$(FILE)'"
+	@podman run -ti --rm \
+        --volume $(CURDIR):/app/afsbotcfg \
+        --secret $(AFSBOTCFG_SECRET_NAME),type=mount,target=/root/vault \
+        $(AFSBOTCFG_IMAGE_NAME) \
+	    ansible-vault encrypt $(FILE)
+
+.PHONY: lint
+lint:
+	$(INFO) "Running lint checks"
+	podman run -ti --rm \
+        --volume $(CURDIR):/app/afsbotcfg:ro \
+        --secret $(AFSBOTCFG_SECRET_NAME),type=mount,target=/root/vault \
+        $(AFSBOTCFG_IMAGE_NAME) \
+		ansible-lint afsbotcfg.yml
+
 .PHONY: ping
-ping: $(PACKAGES) $(VAULT_KEYFILE)
+ping:
 	$(INFO) "Pinging buildbot"
-	$(ACTIVATED) ansible --inventory=$(INVENTORY) --vault-password-file=$(VAULT_KEYFILE) all -m ping
+	podman run -ti --rm \
+        --volume $(CURDIR):/app/afsbotcfg:ro \
+        --volume $(AFSBOTCFG_SSH_DIRECTORY):/root/.ssh:ro \
+        $(VOLUME_SSH_AGENT_SOCKET) \
+        --secret $(AFSBOTCFG_SECRET_NAME),type=mount,target=/root/vault \
+        $(AFSBOTCFG_IMAGE_NAME) \
+        ansible -i inventory/prod/hosts.ini all -m ping
 
-.PHONY: deploy buildbot
-deploy buildbot: $(PACKAGES) $(VAULT_KEYFILE) collections build $(AFSBOTCFG_LOGDIR)
+.PHONY: create
+create: .test_container
+.test_container:
+	podman run -ti --detach -p 2222:22 -p 8011:8011 \
+        --volume $(TEST_AUTHORIZED_KEY):/root/.ssh/authorized_keys:ro \
+        --name $(TEST_CONTAINER_NAME) \
+        $(TEST_IMAGE_NAME)
+	podman ps --quiet --noheading --filter name=$(TEST_CONTAINER_NAME) >$@
+
+.PHONY: converge
+converge: create
+	$(INFO) "Running buildbot playbook test"
+	podman run -ti --rm \
+        --volume $(CURDIR):/app/afsbotcfg:ro \
+        --volume $(AFSBOTCFG_SSH_DIRECTORY):/root/.ssh:ro \
+        $(VOLUME_SSH_AGENT_SOCKET) \
+        --secret $(AFSBOTCFG_SECRET_NAME),type=mount,target=/root/vault \
+        $(AFSBOTCFG_IMAGE_NAME) \
+        ansible-playbook -i inventory/test/hosts.ini afsbotcfg.yml
+	$(INFO) "Listening on http://localhost:8011"
+
+.PHONY: destroy
+destroy:
+	podman stop $(TEST_CONTAINER_NAME)
+	podman rm $(TEST_CONTAINER_NAME)
+	rm -f .test_container
+
+.PHONY: test
+test: create converge destroy
+
+.PHONY: deploy
+deploy:
 	$(INFO) "Running buildbot playbook"
-	$(ACTIVATED) $(LOG) ansible-playbook --inventory=$(INVENTORY) --vault-password-file=$(VAULT_KEYFILE) $(OPT_TAGS) $(PLAYBOOK)
-	$(LOGINFO)
-
-.PHONY: configure
-configure:
-	$(MAKE) deploy OPT_TAGS="--tags configure"
-
-.PHONY: getlog
-getlog: $(AFSBOTCFG_LOGDIR)
-	$(INFO) "Downloading buildbot log"
-	scp $(AFSBOTCFG_HOST):master/openafs/twistd.log $(AFSBOTCFG_LOGDIR)/twistd-$(shell date "+%Y%m%dT%H%M").log
-
-.PHONY: getcfg
-getcfg: $(AFSBOTCFG_LOGDIR)
-	$(INFO) "Downloading buildbot master.cfg"
-	scp $(AFSBOTCFG_HOST):master/openafs/master.cfg $(AFSBOTCFG_LOGDIR)/master.cfg
-
-#------------------------------------------------------------------------------
-# Cleanup targets
-#
-.PHONY: clean
-clean:
-	$(INFO) "Cleanup files"
-	$(MAKE) -C src clean
-	rm logs/*
-
-.PHONY: reallyclean
-reallyclean: clean
-	$(INFO) "Cleanup project directory"
-	$(MAKE) -C src distclean
-	rm -rf .config .venv collections .direnv
-
-#------------------------------------------------------------------------------
-# Dependencies
-#
-$(AFSBOTCFG_LOGDIR):
-	mkdir -p $(AFSBOTCFG_LOGDIR)
-
-$(VAULT_KEYFILE):
-	$(INFO) "Downloading vault key"
-	scp $(AFSBOTCFG_HOST):$(VAULT_KEYFILE) $(VAULT_KEYFILE)
-
-collections: $(PACKAGES) requirements.yml
-	$(INFO) "Installing required Ansible collections"
-	$(ACTIVATED) ansible-galaxy collection install --force -p collections -r requirements.yml
-	touch collections
-
-$(PACKAGES): $(PIP) requirements.txt
-	$(INFO) "Installing python packages"
-	$(PIP) install -U -r requirements.txt
-	touch $(PACKAGES)
-
-$(PIP): $(VENV)
-	$(INFO) "Updating pip"
-	$(PIP) install -U pip wheel
-	touch $(PIP)
-
-$(VENV):
-	$(INFO) "Creating python virtualenv"
-	$(AFSBOTCFG_PYTHON) -m venv .venv
-	touch $(VENV)
+	podman run -ti --rm \
+        --volume $(CURDIR):/app/afsbotcfg:ro \
+        --volume $(AFSBOTCFG_SSH_DIRECTORY):/root/.ssh:ro \
+        $(VOLUME_SSH_AGENT_SOCKET) \
+        --secret $(AFSBOTCFG_SECRET_NAME),type=mount,target=/root/vault \
+        $(AFSBOTCFG_IMAGE_NAME) \
+        ansible-playbook -i inventory/prod/hosts.ini afsbotcfg.yml

@@ -1,0 +1,19 @@
+FROM almalinux:10-minimal
+
+LABEL org.opencontainers.image.title="afsbotcfg-ansible" \
+      org.opencontainers.image.description="Ansible commands for OpenAFS Buildbot maintenance" \
+      org.opencontainers.image.authors="Michael Meffie" \
+      org.opencontainers.image.source="https://github.com/openafs-contrib/afsbotcfg/podman/afsbotcfg-ansible"
+
+RUN microdnf install -y python3 python3-pip ansible-core
+
+RUN pip3 install ansible-lint==25.8.2
+
+RUN ansible-galaxy collection install "openafs_contrib.buildbot==1.8.4"
+
+ENV SSH_AUTH_SOCK=/root/ssh-agent.socket
+WORKDIR /app
+COPY entrypoint.sh .
+RUN chmod +x entrypoint.sh
+
+ENTRYPOINT ["/app/entrypoint.sh"]

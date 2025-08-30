@@ -1,0 +1,14 @@
+---
+ansible_python_interpreter: "/usr/bin/python3"
+afsbotcfg_master_python: "/usr/bin/python3"
+afsbotcfg_sqlalchemy_version: "==1.4.28"
+afsbotcfg_buildbot_version: "==3.5.0"
+afsbotcfg_version: 25.8.28rc1
+
+#afsbotcfg_gerrit:
+#  url: "https://gerrit.openafs.org"
+#  ident: "gerrit"
+#  hostkey: "gerrit.hostkey"
+#  user: "buildbot"
+#  server: "gerrit.openafs.org"
+#  ssh_port: 29418

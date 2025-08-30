@@ -1,4 +1,0 @@
----
-collections:
-  - name: openafs_contrib.buildbot
-    version: 1.8.4

@@ -1,0 +1,23 @@
+# Mimic the release the prod buildbot machine is running.
+FROM centos:7.9.2009
+
+LABEL org.opencontainers.image.title="afsbotcfg-centos7" \
+  org.opencontainers.image.description="Container image for OpenAFS Buildbot playbook testing" \
+  org.opencontainers.image.authors="Michael Meffie" \
+  org.opencontainers.image.source="https://github.com/openafs-contrib/afsbotcfg/podman/afsbotcfg-centos7"
+
+# Use a CentOS vault repo for this end of life CentOS release.
+COPY *.repo /etc/yum.repos.d/
+
+RUN yum clean all && \
+    yum makecache && \
+    yum -y install python3 python3-venv openssh-server cronie
+
+RUN mkdir -p /var/run/sshd && \
+    sed -i 's/#PermitRootLogin .*/PermitRootLogin yes/' /etc/ssh/sshd_config && \
+    ssh-keygen -A && \
+    mkdir -p /root/.ssh && \
+    chmod 0700 /root/.ssh
+
+EXPOSE 22
+CMD ["/usr/sbin/sshd", "-D"]

@@ -1,0 +1,23 @@
+FROM centos:7.9.2009
+
+LABEL org.opencontainers.image.title="afsbotcfg-package" \
+  org.opencontainers.image.description="Python packaging for OpenAFS Buildbot customizations" \
+  org.opencontainers.image.authors="Michael Meffie" \
+  org.opencontainers.image.source="https://github.com/openafs-contrib/afsbotcfg/podman/afsbotcfg-package"
+
+# Use the vault repo since CentOS 7 is EOL.
+COPY *.repo /etc/yum.repos.d/
+
+RUN yum clean all && \
+    yum makecache && \
+    yum -y install python3 python3-pip && \
+    yum clean all
+
+RUN pip3 install pyflakes flake8
+
+WORKDIR /app
+COPY entrypoint.sh .
+RUN chmod +x entrypoint.sh
+
+CMD ["help"]
+ENTRYPOINT ["/app/entrypoint.sh"]
