@@ -2,4 +2,3 @@
 __pycache__/
 afsbotcfg.egg-info/
 dist/
-afsbotcfg/__init__.py
