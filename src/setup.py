@@ -17,6 +17,9 @@ setuptools.setup(
     name='afsbotcfg',
     version=read_version(),
     description='Buildbot extensions for OpenAFS',
+    author='Michael Meffie',
+    author_email='maintainers@openafs.org',
+    url='https://github.com/openafs-contrib/afsbotcfg',
     packages=['afsbotcfg'],
     install_requires=[],
     classifiers=[
