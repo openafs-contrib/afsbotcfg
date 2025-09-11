@@ -166,3 +166,87 @@
         --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
     env:
       ARCHFLAGS: -arch x86_64 -arch arm64
+
+- scheduler: gerrit
+  branch: dev
+  os: macos26
+  cc: xcode
+  arch: arm64
+  workers:
+    - dummy
+    - macos26-arm64
+  tags:
+    - tests-failing
+  factory:
+    name: UnixBuildFactory
+    args:
+      docs: false
+      tests: true
+      jobs: 1
+      configure: --disable-warnings --disable-checking --disable-pam
+        --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+    env:
+      ARCHFLAGS: -arch x86_64 -arch arm64
+
+- scheduler: nightly
+  branch: dev
+  os: macos26
+  cc: xcode
+  arch: arm64
+  workers:
+    - dummy
+    - macos26-arm64
+  tags:
+    - tests-failing
+  factory:
+    name: UnixBuildFactory
+    args:
+      docs: false
+      tests: true
+      jobs: 1
+      configure: --disable-warnings --disable-checking --disable-pam
+        --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+    env:
+      ARCHFLAGS: -arch x86_64 -arch arm64
+
+- scheduler: gerrit
+  branch: stable
+  os: macos26
+  cc: xcode
+  arch: arm64
+  workers:
+    - dummy
+    - macos26-arm64
+  tags:
+    - tests-failing
+  factory:
+    name: UnixBuildFactory
+    args:
+      docs: false
+      tests: true
+      jobs: 1
+      configure: --disable-warnings --disable-checking --disable-pam
+        --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+    env:
+      ARCHFLAGS: -arch x86_64 -arch arm64
+
+- scheduler: nightly
+  branch: stable
+  os: macos26
+  cc: xcode
+  arch: arm64
+  workers:
+    - dummy
+    - macos26-arm64
+  tags:
+    - tests-failing
+  factory:
+    name: UnixBuildFactory
+    args:
+      docs: false
+      tests: true
+      jobs: 1
+      configure: --disable-warnings --disable-checking --disable-pam
+        --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+    env:
+      ARCHFLAGS: -arch x86_64 -arch arm64
