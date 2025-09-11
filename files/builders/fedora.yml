@@ -523,8 +523,6 @@
   workers:
     - dummy
     - fedora42-x86_64-01
-  tags:
-    - deactivated
   factory:
     name: UnixBuildFactory
     args:
@@ -558,8 +556,6 @@
   workers:
     - dummy
     - fedora42-x86_64-01
-  tags:
-    - deactivated
   factory:
     name: UnixBuildFactory
     args:
