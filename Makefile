@@ -3,13 +3,14 @@
 #
 
 # Playbook
-AFSBOTCFG_IMAGE_NAME    := openafs-contrib/afsbotcfg-ansible:latest
+AFSBOTCFG_REGISTRY      := ghcr.io
+AFSBOTCFG_IMAGE_NAME    := docker://$(AFSBOTCFG_REGISTRY)/openafs-contrib/afsbotcfg-ansible:latest
 AFSBOTCFG_SECRET_NAME   := vault-afsbotcfg
 AFSBOTCFG_VAULT_FILE    := $(CURDIR)/.vault-afsbotcfg
 AFSBOTCFG_SSH_DIRECTORY := $(HOME)/.ssh
 
 # Testing
-TEST_IMAGE_NAME         := openafs-contrib/afsbotcfg-test
+TEST_IMAGE_NAME         := docker://$(AFSBOTCFG_REGISTRY)/openafs-contrib/afsbotcfg-test
 TEST_CONTAINER_NAME     := buildbot-test
 TEST_AUTHORIZED_KEY     := $(HOME)/.ssh/id_rsa.pub
 
@@ -34,7 +35,8 @@ help:
 	@echo "Usage: make <target>"
 	@echo ""
 	@echo "setup targets:"
-	@echo "  build                to build Python packages and container images"
+	@echo "  images               to create the Podman container images"
+	@echo "  package              to create the Python afsbotcfg package"
 	@echo "  secret               to setup the vault key secret"
 	@echo "  encrypt FILE=<path>  to encrypt a file with the vault key"
 	@echo ""
@@ -49,10 +51,13 @@ help:
 	@echo "  ping                 to check connectivity to the buildbot server"
 	@echo "  deploy               to to the buildbot playbook"
 
-.PHONY: build
-build:
+.PHONY: package
+package:
 	$(INFO) "Building Python package afsbotcfg"
 	$(MAKE) --no-print-directory -C src build
+
+.PHONY: images
+images:
 	$(INFO) "Building podman images"
 	$(MAKE) --no-print-directory -C container build
 
