@@ -102,11 +102,17 @@ class Make(steps.Compile):
             self.command.append('--output-sync=target')
         if shuffle:
             self.command.append('--shuffle=reverse')
+
+        self.command.append(target)
+
         if pretty:
             self.command.append('V=0')
         else:
             self.command.append('V=1')
-        self.command.append(target)
+
+        if target.startswith('install'):
+            destdir = util.Interpolate('DESTDIR=%(prop:builddir)s/build/packages')
+            self.command.append(destdir)
 
 
 class MakeDocs(steps.ShellSequence):
