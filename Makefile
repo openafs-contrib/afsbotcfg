@@ -14,6 +14,11 @@ TEST_IMAGE_NAME         := docker://$(AFSBOTCFG_REGISTRY)/openafs-contrib/afsbot
 TEST_CONTAINER_NAME     := buildbot-test
 TEST_AUTHORIZED_KEY     := $(HOME)/.ssh/id_rsa.pub
 
+# The TEST_LOCAL_ADDRESS specifies the address used by the ansible-playbook
+# running on the ansible container to connect to the buildbot master test
+# container, so it *must* be a non-loopback address of this container host.
+TEST_LOCAL_ADDRESS       := 192.168.199.100
+
 # Mount the ssh-agent socket if available, otherwise ssh will prompt for
 # a password.
 ifdef SSH_AUTH_SOCK
@@ -42,14 +47,11 @@ help:
 	@echo ""
 	@echo "test targets:"
 	@echo "  lint                 to run static checks"
-	@echo "  create               to create the local test container"
-	@echo "  converge             to run the playbook on the local test container"
-	@echo "  destroy              to destroy the local test container"
-	@echo "  test                 to run create, converge, destroy"
+	@echo "  test                 to test on a local container"
 	@echo ""
 	@echo "deployment targets:"
 	@echo "  ping                 to check connectivity to the buildbot server"
-	@echo "  deploy               to to the buildbot playbook"
+	@echo "  deploy               to run the buildbot playbook"
 
 .PHONY: package
 package:
@@ -117,7 +119,10 @@ converge: create
         $(VOLUME_SSH_AGENT_SOCKET) \
         --secret $(AFSBOTCFG_SECRET_NAME),type=mount,target=/root/vault \
         $(AFSBOTCFG_IMAGE_NAME) \
-        ansible-playbook -i inventory/test/hosts.ini afsbotcfg.yml
+        ansible-playbook \
+          -i inventory/test/hosts.ini \
+          -e ansible_host=$(TEST_LOCAL_ADDRESS) \
+          afsbotcfg.yml
 	$(INFO) "Listening on http://localhost:8011"
 
 .PHONY: destroy
