@@ -1,0 +1,21 @@
+FROM almalinux:9-minimal
+
+LABEL org.opencontainers.image.title="afsbotcfg-fake-worker" \
+      org.opencontainers.image.description="Buildbot fake worker for local testing" \
+      org.opencontainers.image.authors="Michael Meffie" \
+      org.opencontainers.image.source="https://github.com/openafs-contrib/afsbotcfg/podman/afsbotcfg-fake-worker"
+
+RUN microdnf install -y python3 python3-setuptools python3-pip make gcc
+RUN pip3 install buildbot-worker
+RUN microdnf remove -y make gcc
+COPY stubs/* /usr/bin/
+
+WORKDIR /app
+
+RUN /usr/local/bin/buildbot-worker create-worker \
+      /app \
+      192.168.199.100:9989 \
+      alma9-amd64-2 \
+      secret
+
+CMD ["/usr/bin/bash"]

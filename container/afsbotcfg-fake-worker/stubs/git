@@ -1,0 +1,11 @@
+#!/usr/bin/bash
+
+if [ "x$1" == "x--version" ]; then
+	echo "git version 2.43.0"
+elif [ "x$1" == "xclone" ]; then
+	echo "#!/bin/sh" > ./regen.sh
+	echo "#!/bin/sh" > ./configure
+	chmod +x ./regen.sh ./configure
+elif [ "x$1" == "xrev-parse" -a "x$2" == "xHEAD" ]; then
+	echo "0000000000000000000000000000000000000000"
+fi
