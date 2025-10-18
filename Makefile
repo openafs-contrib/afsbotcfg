@@ -49,7 +49,7 @@ help:
 	@echo ""
 	@echo "deployment targets:"
 	@echo "  ping                 to check connectivity to the buildbot server"
-	@echo "  deploy               to to the buildbot playbook"
+	@echo "  deploy               to run the buildbot playbook"
 
 .PHONY: package
 package:
@@ -102,7 +102,7 @@ ping:
 .PHONY: create
 create: .test_container
 .test_container:
-	podman run -ti --detach -p 2222:22 -p 8011:8011 \
+	podman run --detach -p 2222:22 -p 8011:8011 -p 9989:9989 \
         --volume $(TEST_AUTHORIZED_KEY):/root/.ssh/authorized_keys:ro \
         --name $(TEST_CONTAINER_NAME) \
         $(TEST_IMAGE_NAME)
