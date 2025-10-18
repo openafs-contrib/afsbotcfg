@@ -230,7 +230,6 @@
           - "{{ playbook_dir }}/templates/passwords.py.j2"
           - "{{ playbook_dir }}/templates/master.cfg.j2"
         # Master configuration
-        afsbotcfg_project: "{{ lookup('file', 'project.yml') | from_yaml }}"
         afsbotcfg_admin_passwords: "{{ lookup('file', 'admin_passwords.yml') | from_yaml }}"
         afsbotcfg_workers: "{{ _workers }}"
         afsbotcfg_builders: "{{ _builders }}"

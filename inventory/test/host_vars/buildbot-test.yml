@@ -1,4 +1,11 @@
 ---
+ansible_user: root
+ansible_ssh_port: 2222
+# The ssh private key file path is a container path. It is mapped (with
+# --volume) to a directory on the container host.
+ansible_ssh_private_key_file: /root/.ssh/id_rsa
+ansible_ssh_common_args: -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR
+
 ansible_python_interpreter: "/usr/bin/python3"
 afsbotcfg_master_python: "/usr/bin/python3"
 afsbotcfg_sqlalchemy_version: "==1.4.28"
@@ -12,3 +19,34 @@ afsbotcfg_version: 25.10.7rc3
 #  user: "buildbot"
 #  server: "gerrit.openafs.org"
 #  ssh_port: 29418
+
+afsbotcfg_project:
+  name: "openafs"
+  title: "OpenAFS Buildbot"
+  summary_title: "The OpenAFS Buildbot Coordinator"
+  db_url: "sqlite:///state.sqlite"
+  url: "http://localhost:8011/"
+  www_port: 8011
+  pb_port: 9989
+  email_from: "buildbot@openafs.MIT.EDU"
+  gitbaseurl: "https://gerrit.openafs.org"
+  repo: "https://gerrit.openafs.org/openafs.git"
+  start_delay: 10
+
+  # Long term branch names.
+  branches:
+    dev: "master"
+    stable: "openafs-stable-1_8_x"
+    oldstable: "openafs-stable-1_6_x"
+
+  # Nightly build times.
+  nightly:
+    dev: 1
+    stable: 2
+    oldstable: 3
+
+  # Delete build logs older than four weeks on Sunday at 12:00PM (noon).
+  janitor:
+    log_horizon: 4
+    day_of_week: 6
+    hour: 12
