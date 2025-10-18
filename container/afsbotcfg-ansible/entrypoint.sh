@@ -25,16 +25,11 @@ usage() {
     echo "  ansible-vault"
 }
 
-if [ ! -e /root/vault ]; then
-    echo "Missing /root/vault" >&2
-    exit 1
-fi
 if [ ! -d /app/afsbotcfg ]; then
     echo "Missing /app/afsbotcfg" >&2
     exit 1
 fi
 
-export ANSIBLE_VAULT_PASSWORD_FILE=/root/vault
 cd afsbotcfg
 
 cmd="${1:-help}"

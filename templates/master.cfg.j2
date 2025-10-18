@@ -23,7 +23,7 @@ import afsbotcfg.master
 import afsbotcfg.schedulers
 import afsbotcfg.worker
 
-import passwords
+import {{ afsbotcfg_passwords | d('passwords') }} as passwords
 
 BuildmasterConfig = {
     'title': '{{ afsbotcfg_project.title }}',
@@ -45,12 +45,7 @@ BuildmasterConfig = {
         'auth': util.UserPasswordAuth(passwords.admins),
         'authz': util.Authz(
             allowRules=[util.AnyControlEndpointMatcher(role='admins')],
-            roleMatchers=[
-                util.RolesFromEmails(admins=[
-{% for admin, _ in afsbotcfg_admin_passwords %}
-                    '{{ admin }}',
-{% endfor %}
-                ])]),
+            roleMatchers=[util.RolesFromEmails(admins=passwords.admin_emails)]),
         'plugins': {
             'waterfall_view': {},
             'console_view': {},

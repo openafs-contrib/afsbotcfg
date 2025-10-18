@@ -228,10 +228,9 @@
         buildbot_master_buildbot_version: "{{ afsbotcfg_buildbot_version }}"
         buildbot_project: "{{ afsbotcfg_project.name | d('openafs') }}"
         buildbot_master_config_templates:
-          - "{{ playbook_dir }}/templates/passwords.py.j2"
+          - "{{ playbook_dir }}/templates/{{ afsbotcfg_passwords | d('passwords') }}.py.j2"
           - "{{ playbook_dir }}/templates/master.cfg.j2"
         # Master configuration
-        afsbotcfg_admin_passwords: "{{ lookup('file', 'admin_passwords.yml') | from_yaml }}"
         afsbotcfg_workers: "{{ _workers }}"
         afsbotcfg_builders: "{{ _builders }}"
 

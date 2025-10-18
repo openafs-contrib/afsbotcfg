@@ -115,9 +115,11 @@ converge: create
         --volume $(CURDIR):/app/afsbotcfg:ro \
         --volume $(AFSBOTCFG_SSH_DIRECTORY):/root/.ssh:ro \
         $(VOLUME_SSH_AGENT_SOCKET) \
-        --secret $(AFSBOTCFG_SECRET_NAME),type=mount,target=/root/vault \
         $(AFSBOTCFG_IMAGE_NAME) \
-        ansible-playbook -i inventory/test/hosts.ini afsbotcfg.yml
+        ansible-playbook \
+          -i inventory/test/hosts.ini \
+          -e afsbotcfg_passwords=test_passwords \
+          afsbotcfg.yml
 	$(INFO) "Listening on http://localhost:8011"
 
 .PHONY: destroy
@@ -138,4 +140,7 @@ deploy:
         $(VOLUME_SSH_AGENT_SOCKET) \
         --secret $(AFSBOTCFG_SECRET_NAME),type=mount,target=/root/vault \
         $(AFSBOTCFG_IMAGE_NAME) \
-        ansible-playbook -i inventory/prod/hosts.ini afsbotcfg.yml
+        ansible-playbook \
+          -i inventory/prod/hosts.ini \
+          --vault-password-file=/root/vault \
+          afsbotcfg.yml
