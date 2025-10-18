@@ -1,0 +1,11 @@
+#!/bin/sh
+#
+# Stub out the git commands used by the build steps.
+#
+if [ "x$1" == "x--version" ]; then
+	echo "git version 2.43.0"
+elif [ "x$1" == "xclone" ]; then
+    cp -r -v /app/stubs/* .
+elif [ "x$1" == "xrev-parse" -a "x$2" == "xHEAD" ]; then
+	echo "0000000000000000000000000000000000000000"
+fi

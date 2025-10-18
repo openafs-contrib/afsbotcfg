@@ -2,8 +2,8 @@
 # afsbotcfg python package
 #
 
-IMAGE_REGISTRY := ghcr.io
-IMAGE_NAME := docker://$(IMAGE_REGISTRY)/openafs-contrib/afsbotcfg-package:latest
+REGISTRY := ghcr.io
+IMAGE_NAME := $(REGISTRY)/openafs-contrib/afsbotcfg-package:latest
 
 .PHONY: help
 help:

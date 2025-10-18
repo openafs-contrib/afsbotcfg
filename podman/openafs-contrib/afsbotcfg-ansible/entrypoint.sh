@@ -54,9 +54,9 @@ ansible-vault)
 help)
     usage
     ;;
-# shell)
-#    exec /bin/bash
-#    ;;
+shell)
+    exec /bin/bash
+    ;;
 *)
     usage
     exit 1

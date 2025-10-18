@@ -3,7 +3,7 @@ FROM centos:7.9.2009
 LABEL org.opencontainers.image.title="afsbotcfg-package" \
   org.opencontainers.image.description="Python packaging for OpenAFS Buildbot customizations" \
   org.opencontainers.image.authors="Michael Meffie" \
-  org.opencontainers.image.source="https://github.com/openafs-contrib/afsbotcfg/podman/afsbotcfg-package"
+  org.opencontainers.image.source="https://github.com/openafs-contrib/afsbotcfg/podman/openafs-contrib/afsbotcfg-package"
 
 # Use the vault repo since CentOS 7 is EOL.
 COPY *.repo /etc/yum.repos.d/

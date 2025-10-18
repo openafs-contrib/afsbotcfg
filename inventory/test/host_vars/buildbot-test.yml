@@ -1,10 +1,9 @@
 ---
 ansible_user: root
-ansible_ssh_port: 2222
-# The ssh private key file path is a container path. It is mapped (with
-# --volume) to a directory on the container host.
-ansible_ssh_private_key_file: /root/.ssh/id_rsa
+ansible_host: localhost
+ansible_ssh_port: 22
 ansible_ssh_common_args: -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR
+ansible_ssh_private_key_file: /root/.ssh/id_rsa
 
 ansible_python_interpreter: "/usr/bin/python3"
 afsbotcfg_master_python: "/usr/bin/python3"
@@ -12,13 +11,14 @@ afsbotcfg_sqlalchemy_version: "==1.4.28"
 afsbotcfg_buildbot_version: "==3.5.0"
 afsbotcfg_version: 25.10.7rc3
 
-#afsbotcfg_gerrit:
-#  url: "https://gerrit.openafs.org"
-#  ident: "gerrit"
-#  hostkey: "gerrit.hostkey"
-#  user: "buildbot"
-#  server: "gerrit.openafs.org"
-#  ssh_port: 29418
+afsbotcfg_gerrit:
+  url: "http://localhost:8000"
+  ident: "id_rsa"
+  keysdir: "/root/.ssh"
+  hostkey: "fake_gerrit_known_hosts"
+  user: "buildbot"
+  server: "localhost"
+  ssh_port: 29418
 
 afsbotcfg_project:
   name: "openafs"

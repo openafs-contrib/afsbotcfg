@@ -2,23 +2,20 @@
 # Run the OpenAFS buildbot playbook.
 #
 
+# Image registry.
+REGISTRY := ghcr.io
+
 # Playbook
-AFSBOTCFG_REGISTRY      := ghcr.io
-AFSBOTCFG_IMAGE_NAME    := docker://$(AFSBOTCFG_REGISTRY)/openafs-contrib/afsbotcfg-ansible:latest
 AFSBOTCFG_SECRET_NAME   := vault-afsbotcfg
 AFSBOTCFG_VAULT_FILE    := $(CURDIR)/.vault-afsbotcfg
 AFSBOTCFG_SSH_DIRECTORY := $(HOME)/.ssh
-
-# Testing
-TEST_IMAGE_NAME         := docker://$(AFSBOTCFG_REGISTRY)/openafs-contrib/afsbotcfg-test
-TEST_CONTAINER_NAME     := buildbot-test
-TEST_AUTHORIZED_KEY     := $(HOME)/.ssh/id_rsa.pub
 
 # Mount the ssh-agent socket if available, otherwise ssh will prompt for
 # a password.
 ifdef SSH_AUTH_SOCK
 VOLUME_SSH_AGENT_SOCKET := --volume $(SSH_AUTH_SOCK):/root/ssh-agent.socket
 endif
+
 
 # For colorized info messages.  Define NO_COLOR to disable.
 ifndef NO_COLOR
@@ -42,10 +39,8 @@ help:
 	@echo ""
 	@echo "test targets:"
 	@echo "  lint                 to run static checks"
-	@echo "  create               to create the local test container"
-	@echo "  converge             to run the playbook on the local test container"
-	@echo "  destroy              to destroy the local test container"
-	@echo "  test                 to run create, converge, destroy"
+	@echo "  test                 to run the playbook on the local container"
+	@echo "  clean                to stop and remove the test container"
 	@echo ""
 	@echo "deployment targets:"
 	@echo "  ping                 to check connectivity to the buildbot server"
@@ -59,7 +54,7 @@ package:
 .PHONY: images
 images:
 	$(INFO) "Building podman images"
-	$(MAKE) --no-print-directory -C container build
+	$(MAKE) --no-print-directory -C podman images
 
 .PHONY: secret
 secret:
@@ -76,8 +71,8 @@ encrypt:
 	@podman run -ti --rm \
         --volume $(CURDIR):/app/afsbotcfg \
         --secret $(AFSBOTCFG_SECRET_NAME),type=mount,target=/root/vault \
-        $(AFSBOTCFG_IMAGE_NAME) \
-	    ansible-vault encrypt $(FILE)
+        $(REGISTRY)/openafs-contrib/afsbotcfg-ansible:latest \
+	    ansible-vault encrypt --vault-password-file=/root/vault $(FILE)
 
 .PHONY: lint
 lint:
@@ -85,7 +80,7 @@ lint:
 	podman run -ti --rm \
         --volume $(CURDIR):/app/afsbotcfg:ro \
         --secret $(AFSBOTCFG_SECRET_NAME),type=mount,target=/root/vault \
-        $(AFSBOTCFG_IMAGE_NAME) \
+        $(REGISTRY)/openafs-contrib/afsbotcfg-ansible:latest \
 		ansible-lint afsbotcfg.yml
 
 .PHONY: ping
@@ -96,40 +91,46 @@ ping:
         --volume $(AFSBOTCFG_SSH_DIRECTORY):/root/.ssh:ro \
         $(VOLUME_SSH_AGENT_SOCKET) \
         --secret $(AFSBOTCFG_SECRET_NAME),type=mount,target=/root/vault \
-        $(AFSBOTCFG_IMAGE_NAME) \
+        $(REGISTRY)/openafs-contrib/afsbotcfg-ansible:latest \
         ansible -i inventory/prod/hosts.ini all -m ping
 
-.PHONY: create
-create: .test_container
-.test_container:
-	podman run --detach -p 2222:22 -p 8011:8011 -p 9989:9989 \
-        --volume $(TEST_AUTHORIZED_KEY):/root/.ssh/authorized_keys:ro \
-        --name $(TEST_CONTAINER_NAME) \
-        $(TEST_IMAGE_NAME)
-	podman ps --quiet --noheading --filter name=$(TEST_CONTAINER_NAME) >$@
-
-.PHONY: converge
-converge: create
-	$(INFO) "Running buildbot playbook test"
-	podman run -ti --rm \
-        --volume $(CURDIR):/app/afsbotcfg:ro \
-        --volume $(AFSBOTCFG_SSH_DIRECTORY):/root/.ssh:ro \
-        $(VOLUME_SSH_AGENT_SOCKET) \
-        $(AFSBOTCFG_IMAGE_NAME) \
-        ansible-playbook \
-          -i inventory/test/hosts.ini \
-          -e afsbotcfg_passwords=test_passwords \
-          afsbotcfg.yml
-	$(INFO) "Listening on http://localhost:8011"
-
-.PHONY: destroy
-destroy:
-	podman stop $(TEST_CONTAINER_NAME)
-	podman rm $(TEST_CONTAINER_NAME)
-	rm -f .test_container
+WORKERS := $(subst files/workers/,,$(wildcard files/workers/*))
+.PHONY: pod
+pod: .pod
+.pod:
+	$(INFO) "Creating test containers"
+	podman volume create afsbotcfg
+	podman pod create --name afsbotcfg -p 8011:8011 -p 8000:8000 --volume afsbotcfg:/root/.ssh
+	podman run --name fake-gerrit --pod afsbotcfg --detach \
+      $(REGISTRY)/openafs-contrib/afsbotcfg-fake-gerrit:latest
+	podman run --name fake-buildbot-master --pod afsbotcfg --detach \
+      $(REGISTRY)/openafs-contrib/afsbotcfg-fake-master:latest
+	@for w in $(WORKERS); do \
+      podman run --name fake-buildbot-worker-$$w --pod afsbotcfg --detach \
+        $(REGISTRY)/openafs-contrib/afsbotcfg-fake-worker:latest \
+        $$w secret; \
+    done
+	touch .pod
 
 .PHONY: test
-test: create converge destroy
+test: package .pod
+	$(INFO) "Running buildbot playbook test"
+	podman run --pod afsbotcfg -ti --rm \
+      --volume $(CURDIR):/app/afsbotcfg:ro \
+      $(REGISTRY)/openafs-contrib/afsbotcfg-ansible:latest \
+      ansible-playbook \
+        -i inventory/test/hosts.ini \
+        -e afsbotcfg_passwords=test_passwords \
+        afsbotcfg.yml
+	$(INFO) "fake-gerrit           listening on http://localhost:8000"
+	$(INFO) "fake-buildbot-master  listening on http://localhost:8011"
+
+.PHONY: clean
+clean:
+	-podman pod kill afsbotcfg
+	-podman pod rm afsbotcfg
+	-podman volume rm afsbotcfg
+	rm -rf .pod
 
 .PHONY: deploy
 deploy:
@@ -139,7 +140,7 @@ deploy:
         --volume $(AFSBOTCFG_SSH_DIRECTORY):/root/.ssh:ro \
         $(VOLUME_SSH_AGENT_SOCKET) \
         --secret $(AFSBOTCFG_SECRET_NAME),type=mount,target=/root/vault \
-        $(AFSBOTCFG_IMAGE_NAME) \
+        $(REGISTRY)/openafs-contrib/afsbotcfg-ansible:latest \
         ansible-playbook \
           -i inventory/prod/hosts.ini \
           --vault-password-file=/root/vault \

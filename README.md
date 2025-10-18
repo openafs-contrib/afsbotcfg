@@ -33,20 +33,35 @@ with the podman container, this key must be added to a podman secret.
 
     $ make secret
 
+## Testing the playbook
+
+The playbook can be tested locally using podman and prebuild container images.
+Buildbot credentials and the ansible vault key are not required to run the
+local test.
+
+The local test will create a podman pod, start containers to run the local
+buildbot master in a container, run a set of containers to simulate the
+buildbot workers, and run a container to simulate the Gerrit code review
+system.
+
+To create the pod and run the local test:
+
+    make test
+
+To remove the test containers:
+
+    make clean
+
 ## Running the playbook
 
-Run `make test` to do a local lint check and playbook test on a local
-container. (Currently, this requires the vault key.)
+To check ssh connectivity with the buildbot:
 
-    $ make test
+    make ping
 
-Run `make ping` to check ssh connectivity with the buildbot.
+To run update the Buildbot master:
 
-    $ make ping
+    make deploy
 
-Run `make deploy` to run the Ansible playbook to update the buildbot.
-
-    $ make deploy
 
 [1]: https://www.openafs.org/
 [2]: https://buildbot.openafs.org/

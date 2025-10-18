@@ -1,0 +1,15 @@
+FROM almalinux:9-minimal
+
+LABEL org.opencontainers.image.title="afsbotcfg-fake-gerrit" \
+      org.opencontainers.image.description="Fake gerrit for local buildbot testing" \
+      org.opencontainers.image.authors="Michael Meffie" \
+      org.opencontainers.image.source="https://github.com/openafs-contrib/afsbotcfg/podman/openafs-contrib/afsbotcfg-fake-gerrit"
+
+RUN microdnf install -y epel-release
+RUN microdnf install -y python3 python3-paramiko
+RUN microdnf clean all
+
+WORKDIR /app
+COPY fake_gerrit.py .
+ENTRYPOINT ["/usr/bin/python3", "fake_gerrit.py"]
+CMD ["--logdir", "/app", "--keydir", "/root/.ssh"]

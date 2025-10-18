@@ -3,7 +3,7 @@ FROM almalinux:10-minimal
 LABEL org.opencontainers.image.title="afsbotcfg-ansible" \
       org.opencontainers.image.description="Ansible commands for OpenAFS Buildbot maintenance" \
       org.opencontainers.image.authors="Michael Meffie" \
-      org.opencontainers.image.source="https://github.com/openafs-contrib/afsbotcfg/podman/afsbotcfg-ansible"
+      org.opencontainers.image.source="https://github.com/openafs-contrib/afsbotcfg/podman/openafs-contrib/afsbotcfg-ansible"
 
 RUN microdnf install -y python3 python3-pip ansible-core
 
