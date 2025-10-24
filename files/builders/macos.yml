@@ -7,8 +7,6 @@
   workers:
     - dummy
     - macos14-arm64
-  tags:
-    - tests-failing
   factory:
     name: UnixBuildFactory
     args:
@@ -28,8 +26,6 @@
   workers:
     - dummy
     - macos14-arm64
-  tags:
-    - tests-failing
   factory:
     name: UnixBuildFactory
     args:
@@ -91,8 +87,6 @@
   workers:
     - dummy
     - macos15-arm64
-  tags:
-    - tests-failing
   factory:
     name: UnixBuildFactory
     args:
@@ -112,8 +106,6 @@
   workers:
     - dummy
     - macos15-arm64
-  tags:
-    - tests-failing
   factory:
     name: UnixBuildFactory
     args:
@@ -175,8 +167,6 @@
   workers:
     - dummy
     - macos26-arm64
-  tags:
-    - tests-failing
   factory:
     name: UnixBuildFactory
     args:
@@ -196,8 +186,6 @@
   workers:
     - dummy
     - macos26-arm64
-  tags:
-    - tests-failing
   factory:
     name: UnixBuildFactory
     args:
