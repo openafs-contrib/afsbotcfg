@@ -96,10 +96,11 @@
             name: "[{{ _server }}]:{{ _port }}"
 
         - name: "Ensure weak ssh key types are accepted."
+          when: afsbotcfg_gerrit.ssh_keytypes is defined
           ansible.builtin.lineinfile:
             state: present
-            path: ".ssh/config"
-            line: "PubkeyAcceptedKeyTypes=+ssh-dss"
+            path: "{{ afsbotcfg_master_home }}/.ssh/config"
+            line: "PubkeyAcceptedKeyTypes={{ afsbotcfg_gerrit.ssh_keytypes }}"
             create: yes
             mode: "0600"
 
