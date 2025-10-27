@@ -87,6 +87,8 @@
   workers:
     - dummy
     - macos15-arm64
+  tags:
+    - tests-failing
   factory:
     name: UnixBuildFactory
     args:
@@ -106,6 +108,8 @@
   workers:
     - dummy
     - macos15-arm64
+  tags:
+    - tests-failing
   factory:
     name: UnixBuildFactory
     args:
