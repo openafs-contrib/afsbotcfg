@@ -211,12 +211,70 @@
         --enable-kernel-module --with-linux-kernel-packaging
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
+- scheduler: gerrit
+  branch: dev
+  os: alma10
+  cc: gcc
+  arch: amd64
+  workers:
+    - dummy
+    - alma10-amd64-1
+  factory:
+    name: UnixBuildFactory
+    args:
+      jobs: 4
+      tests: true
+      docs: false
+      configure: --enable-warnings --enable-checking
+        --enable-kernel-module --with-linux-kernel-packaging
+        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+      target: install
+
 - scheduler: nightly
   branch: dev
   os: alma10
   cc: gcc
   arch: amd64
   workers:
+    - dummy
+    - alma10-amd64-1
+  factory:
+    name: UnixBuildFactory
+    args:
+      jobs: 4
+      tests: true
+      docs: false
+      configure: --enable-warnings --enable-checking
+        --enable-kernel-module --with-linux-kernel-packaging
+        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+      target: install
+
+- scheduler: gerrit
+  branch: stable
+  os: alma10
+  cc: gcc
+  arch: amd64
+  workers:
+    - dummy
+    - alma10-amd64-1
+  factory:
+    name: UnixBuildFactory
+    args:
+      jobs: 4
+      tests: true
+      docs: false
+      configure: --enable-warnings --enable-checking
+        --enable-kernel-module --with-linux-kernel-packaging
+        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+      target: install
+
+- scheduler: nightly
+  branch: stable
+  os: alma10
+  cc: gcc
+  arch: amd64
+  workers:
+    - dummy
     - alma10-amd64-1
   factory:
     name: UnixBuildFactory
