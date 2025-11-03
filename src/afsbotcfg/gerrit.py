@@ -36,13 +36,12 @@ def summaryCB(buildInfoList, results, status, arg):
 
     def report_build_status(buildlist, finalstatus=None):
         for info in buildlist:
-            msg = "    Builder %(name)s %(resultText)s (%(text)s)" % info
+            msg = "    Builder %(name)s" % info
             link = info.get('url', None)
             if link:
                 msg += " - " + link
             if finalstatus:
                 msg += "\n       Final build status %(resultText)s" % finalstatus[info['name']]
-            msg += "."
             yield msg
 
     msgs = list(arg)   # summaryArg contains the message headers.
@@ -110,7 +109,7 @@ def summaryCB(buildInfoList, results, status, arg):
         msgs.append("\n Skipped Builds:")
         msgs.extend(report_build_status(skippedBuilds))
 
-    message = '\n\n'.join(msgs)
+    message = '\n'.join(msgs)
 
     if len(successfulBuilds) != 0 and len(failedBuilds) == 0:
         verified = 1
