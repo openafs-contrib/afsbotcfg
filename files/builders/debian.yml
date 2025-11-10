@@ -244,6 +244,7 @@
   workers:
     - dummy
     - debian13-amd64-01
+    - debian13-amd64-02
   factory:
     name: UnixBuildFactory
     args:
@@ -262,6 +263,7 @@
   workers:
     - dummy
     - debian13-amd64-01
+    - debian13-amd64-02
   factory:
     name: UnixBuildFactory
     args:
@@ -299,6 +301,7 @@
   workers:
     - dummy
     - debian13-amd64-01
+    - debian13-amd64-02
   factory:
     name: UnixBuildFactory
     args:
@@ -317,6 +320,7 @@
   workers:
     - dummy
     - debian13-amd64-01
+    - debian13-amd64-02
   factory:
     name: UnixBuildFactory
     args:
