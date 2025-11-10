@@ -572,6 +572,7 @@
   workers:
     - dummy
     - fedora43-x86_64-01
+    - fedora43-x86_64-02
   factory:
     name: UnixBuildFactory
     args:
@@ -589,6 +590,7 @@
   workers:
     - dummy
     - fedora43-x86_64-01
+    - fedora43-x86_64-02
   factory:
     name: UnixBuildFactory
     args:
