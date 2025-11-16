@@ -41,6 +41,7 @@ help:
 	@echo "  lint                 to run static checks"
 	@echo "  test                 to run the playbook on the local container"
 	@echo "  clean                to stop and remove the test container"
+	@echo "  reallyclean          to remove containers, images, and built packages"
 	@echo ""
 	@echo "deployment targets:"
 	@echo "  ping                 to check connectivity to the buildbot server"
@@ -100,7 +101,12 @@ pod: .pod
 .pod:
 	$(INFO) "Creating test containers"
 	podman volume create afsbotcfg
-	podman pod create --name afsbotcfg -p 8011:8011 -p 8000:8000 --volume afsbotcfg:/root/.ssh
+	podman pod create --name afsbotcfg --infra-name=afsbotcfg-infra \
+      -p 8011:8011 -p 8000:8000 --volume afsbotcfg:/root/.ssh
+	podman inspect afsbotcfg-infra | \
+      grep '"ImageName":' | \
+      sed 's/  *"ImageName":  *"//' | \
+      sed 's/",//' >.afsbotcfg-infra
 	podman run --name fake-gerrit --pod afsbotcfg --detach \
       $(REGISTRY)/openafs-contrib/afsbotcfg-fake-gerrit:latest
 	podman run --name fake-buildbot-master --pod afsbotcfg --detach \
@@ -131,6 +137,17 @@ clean:
 	-podman pod rm afsbotcfg
 	-podman volume rm afsbotcfg
 	rm -rf .pod
+
+.PHONY: reallyclean
+reallyclean: clean
+	$(MAKE) --no-print-directory -C src clean
+	-podman rmi openafs-contrib/afsbotcfg-fake-gerrit:latest
+	-podman rmi openafs-contrib/afsbotcfg-fake-worker:latest
+	-podman rmi openafs-contrib/afsbotcfg-package:latest
+	-podman rmi openafs-contrib/afsbotcfg-ansible:latest
+	-podman rmi openafs-contrib/afsbotcfg-fake-master:latest
+	-( test -f .afsbotcfg-infra && podman rmi $(file < .afsbotcfg-infra) )
+	rm -f .afsbotcfg-infra
 
 .PHONY: deploy
 deploy:
