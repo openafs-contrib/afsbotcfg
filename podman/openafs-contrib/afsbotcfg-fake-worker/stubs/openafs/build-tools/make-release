@@ -3,4 +3,5 @@
 # Clobber the scripts downloaded from the buildbot master with stubs.
 #
 cp /app/stubs/packages/make-rpm-workspace.sh  packages/make-rpm-workspace.sh
+cp /app/stubs/packages/prep-rpmbuild          packages/prep-rpmbuild
 cp /app/stubs/packages/unpack-dkms-rpm.sh     packages/unpack-dkms-rpm.sh

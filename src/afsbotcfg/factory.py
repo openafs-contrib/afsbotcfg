@@ -249,7 +249,7 @@ class ELRpmBuildFactory(GerritCheckoutFactory):
     factory since it is far too fragile.
 
     Scripts:
-        make-rpm-workspace.sh   Create and populate the rpmbuild/SOURCES.
+        prep-rpmbuild           Create and populate the rpmbuild.
         unpack-dkms-rpm.sh      Unpack the DKMS package.
 
     Args:
@@ -266,9 +266,9 @@ class ELRpmBuildFactory(GerritCheckoutFactory):
                 doStepIf=isRealWorker))
         self.addStep(
             steps.FileDownload(
-                name='download make-rpm-workspace.sh',
-                mastersrc='build-scripts/make-rpm-workspace.sh',
-                workerdest='packages/make-rpm-workspace.sh',
+                name='download prep-rpmbuild',
+                mastersrc='build-scripts/prep-rpmbuild',
+                workerdest='packages/prep-rpmbuild',
                 mode=0o755,
                 doStepIf=isRealWorker))
         self.addStep(
@@ -285,8 +285,8 @@ class ELRpmBuildFactory(GerritCheckoutFactory):
                 doStepIf=isRealWorker))
         self.addStep(
             steps.ShellCommand(
-                name='make-rpm-workspace.sh',
-                command=['packages/make-rpm-workspace.sh'],
+                name='prep-rpmbuild',
+                command=['packages/prep-rpmbuild', '--topdir=packages/rpmbuild', '--source=dir:packages'],
                 doStepIf=isRealWorker))
         self.addStep(
             steps.RpmBuild(

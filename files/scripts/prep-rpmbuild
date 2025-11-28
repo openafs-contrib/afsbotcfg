@@ -1,0 +1,1094 @@
+#!/bin/bash
+#
+# Prepare an rpmbuild tree to build OpenAFS RPMs.
+#
+
+TOPDIR=
+VERSION=
+PACKAGE_VERSION=
+PACKAGE_RELEASE=
+SPEC=
+SOURCE=
+DOCS=
+CELLSERVDB=
+RELNOTES=
+CHANGELOG=
+PATCHES=
+
+BUILD=
+RPMS=
+SOURCES=
+SPECS=
+SRPMS=
+
+DEFINE_CSDB=
+RPMBUILD_FLAGS=
+CP_FLAGS=()
+WGET_FLAGS=()
+TAR_FLAGS=()
+
+DEFAULT_TOPDIR="$(rpm --eval '%{_topdir}' 2>/dev/null)"
+DEFAULT_SPEC="archive:src/packaging/RedHat/openafs.spec.in"
+DEFAULT_SOURCE="spec:Source0"
+DEFAULT_DOCS="spec:Source1"
+DEFAULT_CELLSERVDB="archive:src/afsd/CellServDB"
+DEFAULT_RELNOTES="archive:NEWS"
+DEFAULT_CHANGELOG="file:/dev/null"
+DEFAULT_PATCHES="dir:."
+
+#
+# Helpers to print messages.
+#
+
+debug() {
+    if [[ -n "$DEBUG" ]]; then
+        echo "debug: $*"
+    fi
+}
+
+info() {
+    echo "$*"
+}
+
+warn() {
+    echo "warn: $*" >&2
+}
+
+fatal() {
+    echo "error: $*" >&2
+    exit 1
+}
+
+err_arg_missing() {
+    echo "error: $1 option requires a value." >&2
+    usage
+    exit 1
+}
+
+err_too_many() {
+    echo "error: $1 option cannot be specified more than once." >&2
+    usage
+    exit 1
+}
+
+dump_variables() {
+    if [[ -n "$DEBUG" ]]; then
+        echo "BUILD=$BUILD"
+        echo "CELLSERVDB=$CELLSERVDB"
+        echo "CHANGELOG=$CHANGELOG"
+        echo "CP_FLAGS=${CP_FLAGS[*]}"
+        echo "DEBUG=$DEBUG"
+        echo "DEFINE_CSDB=$DEFINE_CSDB"
+        echo "DOCS=$DOCS"
+        echo "PACKAGE_RELEASE=$PACKAGE_RELEASE"
+        echo "PACKAGE_VERSION=$PACKAGE_VERSION"
+        echo "PATCHES=${PATCHES}"
+        echo "RELNOTES=$RELNOTES"
+        echo "RPMBUILD_FLAGS=$RPMBUILD_FLAGS"
+        echo "RPMS=$RPMS"
+        echo "SOURCE=$SOURCE"
+        echo "SOURCES=$SOURCES"
+        echo "SPEC=$SPEC"
+        echo "SPECS=$SPECS"
+        echo "SRPMS=$SRPMS"
+        echo "TAR_FLAGS=${TAR_FLAGS[*]}"
+        echo "TOPDIR=$TOPDIR"
+        echo "VERSION=$VERSION"
+        echo "WGET_FLAGS=${WGET_FLAGS[*]}"
+    fi
+}
+
+#
+# Print a usage message to stdout.
+#
+usage() {
+    echo "usage: prep-rpmbuild [OPTIONS]"
+    echo
+    echo "Prepare an rpmbuild tree to build OpenAFS RPMs."
+    echo
+    echo "OPTIONS"
+    echo "    --topdir PATH              The rpmbuild directory [default: '$DEFAULT_TOPDIR']"
+    echo "    --spec URI                 Spec file URI [default: '$DEFAULT_SPEC']"
+    echo "    --source URI               Source archive URI [default: '$DEFAULT_SOURCE']"
+    echo "    --docs URI                 Doc archive URI [default: '$DEFAULT_DOCS']"
+    echo "    --cellservdb URI           CellServDB file URI [default: '$DEFAULT_CELLSERVDB']"
+    echo "    --relnotes URI             Release notes file URI [default: '$DEFAULT_RELNOTES']"
+    echo "    --changelog URI            Change log file URI [default: '$DEFAULT_CHANGELOG']"
+    echo "    --patches URI              Patches directory URI [default: '$DEFAULT_PATCHES']"
+    echo "    --version VERSION          OpenAFS version"
+    echo "    --package-version VERSION  RPM package version"
+    echo "    --package-release RELEASE  RPM package release"
+    echo "    -d, --debug                Print debug messages"
+    echo "    --no-pager                 Disable help text pager"
+    echo "    -h, --help                 Display extended help and exit"
+}
+
+#
+# Print a detailed help message to stdout.
+#
+print_help() {
+    cat << "EOF"
+NAME
+    prep-rpmbuild - Prepare an rpmbuild tree to build OpenAFS RPMs
+
+SYNOPSIS
+    prep-rpmbuild [OPTIONS]
+
+DESCRIPTION
+    Prepares a directory tree for building OpenAFS RPMs with the 'rpmbuild'
+    command.
+
+    This program automates the setup of an rpmbuild tree, creating the
+    standard directories (SOURCES, SPECS) and populating them with the
+    necessary files. It can fetch files from various locations, specified via
+    flexible URIs. Source files can be copied from the local filesystem,
+    downloaded from URLs, or extracted from a source archive.
+
+    The program automatically determines the OpenAFS version from the source
+    archive filename, a git repository, or an existing spec file. This version
+    is then used to process a '.spec.in' template into a final '.spec' file,
+    injecting the correct version and release numbers.
+
+    After running, the rpmbuild tree is ready for building the source and
+    binary RPMs. The program will print the exact 'rpmbuild' commands to use.
+
+    The spec file can be updated before running 'rpmbuild', for example to make
+    corrections or make other changes.
+
+OPTIONS
+    --spec URI
+        Specifies the spec file to be copied to the SPECS directory.  The spec
+        file name must be 'openafs.spec' or 'openafs.spec.in'.  If the spec
+        file name is 'openafs.spec.in', then the 'openafs.spec' file will be
+        generated from the 'openafs.spec.in' file.
+
+        If not specified, the --source option must be specified, and the
+        'openafs.spec.in' file will be extracted from the source distribution
+        archive.  Use this option to specify a different spec file.
+
+        See the 'URI FORMATS' section for the supported URI formats.
+
+    --source URI
+        Path or URL to the OpenAFS source distribution archive file to be
+        copied to the SOURCES directory and to provide additional packaging
+        files.
+
+        If not specified, the --spec option must be specified, and the
+        source distribution file specified in the spec file will be
+        downloaded.
+
+        See the 'URI FORMATS' section for the supported URI formats.
+
+    --docs URI
+        Path or URL to the OpenAFS documentation distribution archive file to be
+        copied to the SOURCES directory when the spec file requires this file.
+
+        See the 'URI FORMATS' section for the supported URI formats.
+
+    --cellservdb URI
+        The CellServDB file to be copied to the SOURCES directory.  The
+        default is to extract a 'CellServDB' file from the source distribution
+        archive.
+
+        See the 'URI FORMATS' section for the supported URI formats.
+
+    --relnotes URI
+        The release notes file to be copied to the SOURCES directory. The
+        default is to extract the 'NEWS' file from the source archive.
+
+        See the 'URI FORMATS' section for the supported URI formats.
+
+    --changelog URI
+        The change log file to be copied to the SOURCES directory. The default
+        is to create an empty file. Use this option to provide a ChangeLog
+        file to be packaged.
+
+        See the 'URI FORMATS' section for the supported URI formats.
+
+    --patches URI
+        The directory containing the patch files. Must be in the form
+        dir:PATH.
+
+    --topdir PATH
+        Specifies the 'rpmbuild' directory to be created. If not specified,
+        the rpmbuild tree will be created in the default path used by
+        the `rpmbuild` command, for example, '$HOME/rpmbuild'
+
+    --version VERSION
+        Specifies the OpenAFS version string. If not provided, the version
+        is automatically detected. See VERSION DETERMINATION.
+
+        This option is ignored when the --spec file name is '*.spec'.
+
+    --package-version VERSION
+        Specifies the RPM package version. If not
+        provided, the version is automatically detected from the source
+        distribution archive filename. Use this option to specify a custom
+        value.
+
+        This option is ignored when the --spec file name is '*.spec'.
+
+    --package-release RELEASE
+        Specifies the RPM package release. If not provided, the release is
+        automatically detected from the source distribution archive filename.
+        Use this option to specify a custom value.
+
+        This option is ignored when the --spec file name is '*.spec'.
+
+    -d, --debug
+        Print debug messages.
+
+    --no-pager
+        Do not pipe the help text through a pager.
+
+    -h, --help
+        Display this help and exit.
+
+VERSION DETERMINATION
+    The OpenAFS version string is determined using the following order of
+    precedence:
+
+    1. Existing .spec file
+       If an existing 'openafs.spec' file is provided with the --spec
+       option, the version is extracted from the '%define afsvers' line
+       in that file.
+
+    2. --version option
+       If the --version option is specified, its value is used.
+
+    3. Source archive filename
+       The version is parsed from the source archive filename if it is in
+       the format 'openafs-VERSION-src.tar.*'. This is the default
+       behavior when a source archive is provided.
+
+    4. Git repository
+       If the --source option URI is a directory ('dir:PATH'), the program
+       will attempt to find the version from the git repository in that
+       directory. It first checks for a '.version' file in the top-level
+       directory of the git repository, and if not found, it runs
+       'git describe'.
+
+URI FORMATS
+    The URI can be specified in one of the following forms:
+
+    archive:PATH
+        Extract the file from the given PATH inside the source archive.
+
+        Examples:
+          archive:src/packaging/RedHat/openafs.spec.in
+
+    file:PATH
+    PATH
+        Copy the file from the local filesystem.
+
+        Examples:
+          file:/path/to/openafs.spec
+          /path/to/openafs.spec.in
+
+    dir:PATH
+        Copy the file from the local filesystem directory. The file name
+        is determined from the spec file. The "dir:" scheme is not vaild
+        for the --spec URI.
+
+        Exampes:
+          dir:/path/to/my/files
+          dir:relative/path/to/my/files
+
+    http:URL
+    https:URL
+    ftp:URL
+        Download the file from a URL.
+
+        Examples:
+          http://www.example.com/path/to/openafs.spec
+          https://www.example.com/myfile.tar.gz
+
+    spec:SourceNUMBER
+        Use the URL specified in the SourceNUMBER directive in the spec
+        file.  The "spec:" scheme is not valid for the --spec URI.
+        See SPEC SOURCES.
+
+        Examples:
+          spec:Source1
+          spec:Source20
+
+SPEC SOURCES
+    The 'openafs.spec' file specifies several Source directives to define
+    the files used in the build process. This program handles specific
+    Source numbers as follows:
+
+    Source0
+        The URL of the source distribution archive. The --source option
+        specifies an alternate URI from which to fetch this file.
+
+    Source1
+        The OpenAFS documentation archive. The --docs option specifies an
+        an alternate URI from which to fetch this file.
+
+    Source10
+        The release notes file. The --relnotes option specifies an alternate
+        URI from which to fetch this file.
+
+    Source11
+        The changelog file. The --changelog option specifies the URI from
+        which to fetch this file.
+
+    Source20
+        The CellServDB file. The --cellservdb option specifies an alternate
+        URI from which to fetch this file.
+
+    Sources9xx are reserved for extra files needed by the openafs.spec
+    file. File names in the form 'openafs-*' are assumed to be in the source
+    archive and are automatically prefixed with the 'archive:' URI scheme.
+
+    When providing an out-of-tree spec file using the --spec option be sure to
+    provide fully qualified URLs in the Sources for any external source files
+    you wish to provide to have these be downloaded automatically.
+
+EXAMPLES
+
+    Prepare an rpmbuild tree from a source distribution archive:
+
+       prep-rpmbuild \
+           --source https://openafs.org/dl/openafs/1.8.14/openafs-1.8.14-src.tar.bz2
+
+
+    Prepare an rpmbuild tree from a Git checkout. The 'make-release' script can
+    be used to create a source distribution archive of the given branch.
+
+       git clone git://git.openafs.org
+       cd
+       git checkout BRANCH_NAME
+       mkdir packages
+       ./build-tools/make-release --dir=packages HEAD
+       ./src/packaging/RedHat/prep-rpmbuild --topdir=packages/rpmbuild --source=dir:packages
+
+
+    Prepare an rpmbuild tree using a local spec file template. The source
+    distribution archive will be downloaded for the specifed version.
+
+       prep-rpmbuild --spec openafs.spec.in --version 1.8.14
+
+
+    Prepare an rpmbuild tree with a custom spec file and CellServDB file.
+
+       prep-rpmbuild \
+           --source openafs-1.9.1-src.tar.bz2 \
+           --spec /path/to/my/openafs.spec \
+           --cellservdb /path/to/my/CellServDB
+
+
+    Override the package version and release for a nightly build.
+
+       prep-rpmbuild \
+           --source packages/openafs-1.9.1-src.tar.bz2 \
+           --package-version 1.9.1 \
+           --package-release 0.nightly.20251122
+EOF
+}
+
+#
+# Parse command line arguments.
+#
+parse_args() {
+    local help_pager="${PAGER:-less}"
+
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+        -d|--debug)
+            DEBUG=1
+            shift;
+            ;;
+        --no-pager)
+            help_pager="cat"
+            shift
+            ;;
+        -h|--help)
+            print_help | $help_pager
+            exit 0
+            ;;
+        --topdir=*)
+            [[ -n "${1#*=}" ]] || err_arg_missing "--topdir"
+            [[ -z "$TOPDIR" ]] || err_too_many "--topdir"
+            TOPDIR="${1#*=}"
+            shift
+            ;;
+        --topdir)
+            [[ -n "$2" ]] || err_arg_missing "--topdir"
+            [[ -z "$TOPDIR" ]] || err_too_many "--topdir"
+            TOPDIR="$2"
+            shift; shift
+            ;;
+        --version=*)
+            [[ -n "${1#*=}" ]] || err_arg_missing "--version"
+            [[ -z "$VERSION" ]] || err_too_many "--version"
+            VERSION="${1#*=}"
+            shift
+            ;;
+        --version)
+            [[ -n "$2" ]] || err_arg_missing "--version."
+            [[ -z "$VERSION" ]] || err_too_many "--version"
+            VERSION="$2"
+            shift; shift
+            ;;
+        --package-version=*)
+            [[ -n "${1#*=}" ]] || err_arg_missing "--package-version"
+            [[ -z "$PACKAGE_VERSION" ]] || err_too_many "--package-version"
+            PACKAGE_VERSION="${1#*=}"
+            shift
+            ;;
+        --package-version)
+            [[ -n "$2" ]] || err_arg_missing "--package-version."
+            [[ -z "$PACKAGE_VERSION" ]] || err_too_many "--package-version"
+            PACKAGE_VERSION="$2"
+            shift; shift
+            ;;
+        --package-release=*)
+            [[ -n "${1#*=}" ]] || err_arg_missing "--package-release"
+            [[ -z "$PACKAGE_RELEASE" ]] || err_too_many "--package-release"
+            PACKAGE_RELEASE="${1#*=}"
+            shift
+            ;;
+        --package-release)
+            [[ -n "$2" ]] || err_arg_missing "--package-release"
+            [[ -z "$PACKAGE_RELEASE" ]] || err_too_many "--package-release"
+            PACKAGE_RELEASE="$2"
+            shift; shift
+            ;;
+        --spec=*)
+            [[ -n "${1#*=}" ]] || err_arg_missing "--spec"
+            [[ -z "$SPEC" ]] || err_too_many "--spec"
+            SPEC="${1#*=}"
+            shift
+            ;;
+        --spec)
+            [[ -n "$2" ]] || err_arg_missing "--spec"
+            [[ -z "$SPEC" ]] || err_too_many "--spec"
+            SPEC="$2"
+            shift; shift
+            ;;
+        --source=*)
+            [[ -n "${1#*=}" ]] || err_arg_missing "--source"
+            [[ -z "$SPEC" ]] || err_too_many "--source"
+            SOURCE="${1#*=}"
+            shift
+            ;;
+        --source)
+            [[ -n "$2" ]] || err_arg_missing "--source"
+            [[ -z "$SPEC" ]] || err_too_many "--source"
+            SOURCE="$2"
+            shift; shift
+            ;;
+        --docs=*)
+            [[ -n "${1#*=}" ]] || err_arg_missing "--docs"
+            [[ -z "$SPEC" ]] || err_too_many "--docs"
+            DOCS="${1#*=}"
+            shift
+            ;;
+        --docs)
+            [[ -n "$2" ]] || err_arg_missing "--docs"
+            [[ -z "$SPEC" ]] || err_too_many "--docs"
+            DOCS="$2"
+            shift; shift
+            ;;
+        --cellservdb=*)
+            [[ -n "${1#*=}" ]] || err_arg_missing "--cellservdb"
+            [[ -z "$CELLSERVDB" ]] || err_too_many "--cellservdb"
+            CELLSERVDB="${1#*=}"
+            shift
+            ;;
+        --cellservdb)
+            [[ -n "$2" ]] || err_arg_missing "--cellservdb"
+            [[ -z "$CELLSERVDB" ]] || err_too_many "--cellservdb"
+            CELLSERVDB="$2"
+            shift; shift
+            ;;
+        --relnotes=*)
+            [[ -n "${1#*=}" ]] || err_arg_missing "--relnotes"
+            [[ -z "$RELENOTES" ]] || err_too_many "--relnotes"
+            RELNOTES="${1#*=}"
+            shift
+            ;;
+        --relnotes)
+            [[ -n "$2" ]] || err_arg_missing "--relnotes"
+            [[ -z "$RELENOTES" ]] || err_too_many "--relnotes"
+            RELNOTES="$2"
+            shift; shift
+            ;;
+        --changelog=*)
+            [[ -n "${1#*=}" ]] || err_arg_missing "--changelog"
+            [[ -z "$CHANGELOG" ]] || err_too_many "--changelog"
+            CHANGELOG="${1#*=}"
+            shift
+            ;;
+        --changelog)
+            [[ -n "$2" ]] || err_arg_missing "--changelog"
+            [[ -z "$CHANGELOG" ]] || err_too_many "--changelog"
+            CHANGELOG="$2"
+            shift; shift
+            ;;
+        *)
+            fatal "Unknown option: $1"
+            ;;
+        esac
+    done
+
+    #
+    # Sanity checks and default values.
+    #
+
+    if [[ -z "$SPEC" && -z "$SOURCE" ]]; then
+        echo "error: --spec or --source is required."
+        usage
+        exit 1
+    fi
+
+    # If the user specified a directory for the source archive, then use
+    # that same directory as the default for the docs archive.
+    if [[ -n "$SOURCE" && "$SOURCE" = dir:* ]]; then
+        DEFAULT_DOCS="${SOURCE}"
+    fi
+
+    # Set default values.
+    SPEC="${SPEC:-$DEFAULT_SPEC}"
+    SOURCE="${SOURCE:-$DEFAULT_SOURCE}"
+    DOCS="${DOCS:-$DEFAULT_DOCS}"
+    RELNOTES="${RELNOTES:-$DEFAULT_RELNOTES}"
+    CHANGELOG="${CHANGELOG:-$DEFAULT_CHANGELOG}"
+    PATCHES="${PATCHES:-$DEFAULT_PATCHES}"
+
+    # If the user did not set a --topdir, then use the default topdir,
+    # otherwise, print the needed rpmbuild options in the summary.
+    if [[ -z "$TOPDIR" ]]; then
+        if [[ -z "$DEFAULT_TOPDIR" ]]; then
+            fatal "Unable to find the RPM topdir."
+        fi
+        TOPDIR="$DEFAULT_TOPDIR"
+    else
+        local abstopdir
+        abstopdir=$(realpath "$TOPDIR")
+        RPMBUILD_FLAGS="$RPMBUILD_FLAGS --define='_topdir $abstopdir'"
+    fi
+    BUILD="$TOPDIR/BUILD"
+    RPMS="$TOPDIR/RPMS"
+    SOURCES="$TOPDIR/SOURCES"
+    SPECS="$TOPDIR/SPECS"
+    SRPMS="$TOPDIR/SRPMS"
+
+    # Use the --cellservdb URI to also specify the cellservdb_url macro if it
+    # is a path or URL and print the needed rpmbuild options in the summary.
+    if [[ -z "$CELLSERVDB" ]]; then
+        CELLSERVDB="$DEFAULT_CELLSERVDB"
+    else
+        case "$CELLSERVDB" in
+        archive:*|spec:)  ;;
+        *)
+            DEFINE_CSDB="$CELLSERVDB"
+            RPMBUILD_FLAGS="$RPMBUILD_FLAGS --define='cellservdb_url $CELLSERVDB'"
+            ;;
+        esac
+    fi
+
+    if [[ "$PATCHES" != dir:* ]]; then
+        fatal "--patches $PATCHES invalid scheme"
+    fi
+
+    if [[ -z "$DEBUG" ]]; then
+        WGET_FLAGS=("${WGET_FLAGS[@]}" --quiet)
+    else
+        CP_FLAGS=("${CP_FLAGS[@]}" --verbose)
+        WGET_FLAGS=("${WGET_FLAGS[@]}" --verbose)
+        TAR_FLAGS=("${TAR_FLAGS[@]}" --verbose)
+    fi
+
+    # Circular dependency check.
+    if [[ "$SPEC" == archive:* && "$SOURCE" == spec:* ]]; then
+        fatal "Incompatible --spec $SPEC and --source $SOURCE values."
+    fi
+
+    dump_variables
+}
+
+#
+# Parse the source archive file name to find the OpenAFS version.
+# The file name must be in the form 'openafs-VERSION-src.tar.<suffix>'
+# where VERSION is the Git-style version number.
+#
+parse_source_name() {
+    local version
+
+    debug "parse_source_name: $SOURCE"
+    case "$SOURCE" in
+    */openafs-*-src.tar.*)
+        version="${SOURCE#*/openafs-}"    # Remove '*/openafs-'
+        version="${version%-src.tar.*}"   # Remove '-src.tar.*'
+        ;;
+    openafs-*-src.tar.*)
+        version="${SOURCE#openafs-}"      # Remove 'openafs-'
+        version="${version%-src.tar.*}"   # Remove '-src.tar.*'
+        ;;
+    *)
+        fatal "Invalid source archive file name: $SOURCE"
+        ;;
+    esac
+
+    if [[ -z "$version" ]]; then
+        fatal "Unable to determine version from $SOURCE filename."
+    fi
+
+    VERSION="$version"
+}
+
+#
+# Determine the RPM package version and release tags from the Git-style
+# OpenAFS version string.
+#
+# A variety of OpenAFS version number formats are supported:
+#
+# Stable release  1.8.14
+# Pre-release     1.8.15pre1
+# Devel release   1.9.1dev
+# Non-release     1.9.0dev-56-g98765
+# "               1.8.0-45-gabcdef
+# "               1.10.0pre1-37-g12345
+# Custom          1.2.3xyzzy1
+#
+# usage: parse_version <version-string>
+#
+parse_version() {
+    local version="$1"
+    local suffix package_version package_release
+
+    debug "parse_version: $version"
+    case "$version" in
+    *dev-*-g*)
+        # master branch commit
+        # example: 1.9.0dev-56-g98765 -> 1.9.0, 0.dev.56.g98765
+        package_version="${version%dev-*-g*}"
+        suffix="${version#"$package_version"}"
+        package_release="0.${suffix//-/.}"
+        ;;
+    *pre*-*-g*)
+        # Pre-release commit
+        # example: 1.10.0pre2-37-g12345 -> 1.10.0, 0.pre2.37.g12345
+        package_version="${version%pre*-*-g*}"
+        suffix="${version#"$package_version"}"
+        package_release="0.${suffix//-/.}"
+        ;;
+    *-*-g*)
+        # Stable branch commit
+        # example: 1.8.0-45-gabcdef -> 1.8.0, 1.45.gabcdef
+        package_version="${version%-*-g*}"
+        suffix="${version#"$package_version-"}"
+        package_release="1.${suffix//-/.}"
+        ;;
+    *dev)
+        # Development release
+        # example: 1.9.1dev -> 1.9.1, 0.dev
+        package_version="${version%dev}"
+        package_release="0.dev"
+        ;;
+    *pre*)
+        # Stable pre-release
+        # example: 1.8.15pre1 -> 1.8.15, 0.pre1
+        package_version="${version%pre*}"
+        package_release="0.${version#"$package_version"}"
+        ;;
+    *)
+        # Stable release or non-standard format
+        # example: 1.8.14 -> 1.8.14, 1
+        package_version="${version}"
+        package_release="1"
+        ;;
+    esac
+
+    if [[ -z "$PACKAGE_VERSION" ]]; then
+        PACKAGE_VERSION="$package_version"
+    fi
+
+    if [[ -z "$PACKAGE_RELEASE" ]]; then
+        PACKAGE_RELEASE="$package_release"
+    fi
+}
+
+
+#
+# Determine the OpenAFS version from a git repository.
+#
+# The version is determined by first checking for a '.version' file in the
+# top-level directory of the git repository. If that file does not exist,
+# 'git describe' is used to determine the version.
+#
+# usage: git_version <directory>
+#
+git_version() {
+    local directory="$1"
+    local version
+    local toplevel
+
+    [[ -d "$directory" ]] || fatal "--source $SOURCE: Directory $directory not found"
+
+    toplevel=$(cd "$directory" && git rev-parse --show-toplevel)
+    if [[ -z "$toplevel" ]]; then
+        fatal "Unable to find top-level directory."
+    fi
+
+    if [[ -f "$toplevel/.version" ]]; then
+        info "Reading '$toplevel/.version' for OpenAFS version."
+        version=$(cat "$toplevel/.version")
+        debug ".version file contains '$version'"
+        if [[ -z "$version" ]]; then
+            fatal "Unable to get VERSION from '$toplevel/.version' file."
+        fi
+    else
+        info "Running 'git describe' to get the OpenAFS version."
+        version=$(cd "$toplevel" && git describe --abbrev=4 HEAD)
+        debug "git_version: git describe output was '$version'"
+        version="${version#openafs-*-}"
+        version="${version//_/.}"
+        debug "git_version: setting VERSION to $version"
+        if [[ -z "$version" ]]; then
+            fatal "Unable to get VERSION from git describe."
+        fi
+    fi
+    VERSION="$version"
+}
+
+#
+# Determine the OpenAFS version and the RPM package version and release.
+#
+determine_version() {
+
+    if [[ "$SPEC" == *.spec && "$SPEC" != archive:* ]]; then
+        debug "The version will be extracted from the spec file."
+        return
+    fi
+
+    if [[ -z "$VERSION" ]]; then
+        if [[ "$SOURCE" == dir:* ]]; then
+            git_version "${SOURCE#dir:}"
+        else
+            parse_source_name "$SOURCE"
+        fi
+    fi
+    [[ -n "$VERSION" ]] || fatal "Unable to determine VERSION"
+
+    if [[ -z "$PACKAGE_VERSION" || -z "$PACKAGE_RELEASE" ]]; then
+        parse_version "$VERSION"
+    fi
+
+    # Hyphens are not allowed in RPM version and release tags.
+    PACKAGE_VERSION="${PACKAGE_VERSION//-/_}"
+    PACKAGE_RELEASE="${PACKAGE_RELEASE//-/_}"
+
+    info "Version is $VERSION"
+    info "Package Version is $PACKAGE_VERSION"
+    info "Package Release is $PACKAGE_RELEASE"
+}
+
+#
+# Create the rpmbuild directory tree.
+#
+create_rpmbuild_dirs() {
+    for d in "$BUILD" "$RPMS" "$SOURCES" "$SPECS" "$SRPMS"; do
+        if [[ ! -d "$d" ]]; then
+            info "Creating directory $d"
+            mkdir -p "$d" || {
+                fatal "Unable to create directory '$d'."
+            }
+        fi
+    done
+}
+
+#
+# Fetch a file from a URI to the rpmbuild tree.
+#
+# The URI can be a local file path, an http or https URL, or path
+# within the source archive, or a spec file source number, which
+# indicates the path or URL.
+#
+# The 'archive:' scheme requires the global variables $SOURCES and
+# $ARCHIVE to be set.
+#
+# The 'spec:' scheme requires the global variables $SPECS and
+# $VERSION to be set, and the openafs.spec file to be present
+# in the rpmbuild tree.
+#
+fetch_file() {
+    local uri="$1"
+    local dest="$2"
+    local uri_scheme uri_path
+    debug "fetch_file: uri='$uri'"
+    debug "fetch_file: dest='$dest'"
+
+    [[ -n "$uri" ]] || fatal "fetch_file: uri arg not set"
+    [[ -n "$dest" ]] || fatal "fetch_file: dest arg not set"
+
+    case "$uri" in
+    *:) fatal "fetch_file: path missing in uri '$uri'" ;;
+    :*) fatal "fetch_file: scheme missing in uri '$uri'" ;;
+    *:*)
+        uri_scheme="${uri%%:*}"
+        uri_path="${uri#*:}"
+        ;;
+    *)
+        uri_scheme="file"
+        uri_path="$uri"
+        ;;
+    esac
+
+    case "$uri_scheme" in
+    file)
+        info "Copying file"
+        info "  from $uri_path"
+        info "    to $dest"
+        cp "${CP_FLAGS[@]}" "$uri_path" "$dest" || {
+            fatal "Unable to copy $uri_path to $dest"
+        }
+        ;;
+    dir)
+        uri_path="$uri_path/${dest##*/}"
+        info "Copying file"
+        info "  from $uri_path"
+        info "    to $dest"
+        cp "${CP_FLAGS[@]}" "$uri_path" "$dest" || {
+            fatal "Unable to copy $uri_path to $dest"
+        }
+        ;;
+    http|https|ftp)
+        local url="$uri_scheme:$uri_path"
+        info "Downloading file"
+        info "  from $url"
+        info "   to $dest"
+        if [[ -z "$DEBUG" ]]; then
+            wget "${WGET_FLAGS[@]}" "$url" -O "$dest" >/dev/null || {
+                fatal "Unable to download $url"
+            }
+        else
+            wget "${WGET_FLAGS[@]}" "$url" -O "$dest" || {
+                fatal "Unable to download $url"
+            }
+        fi
+        ;;
+    archive)
+        [[ -n "$SOURCES" ]] || fatal "fetch_file: SOURCES is not set"
+        [[ -n "$ARCHIVE" ]] || fatal "fetch_file: ARCHIVE is not set"
+        [[ -n "$VERSION" ]] || fatal "fetch_file: VERSION is not set"
+        local src_file="${uri_path##*/}"
+        local dest_dir="${dest%/*}"
+        local dest_file="${dest##*/}"
+
+        info "Extracting file from archive"
+        info "  from $uri_path"
+        info "    to $dest"
+        tar --extract "${TAR_FLAGS[@]}" \
+            --file "$ARCHIVE" \
+            -C "$dest_dir" \
+            --transform="s@.*/${src_file}@${dest_file}@" \
+            "openafs-${VERSION}/$uri_path" || {
+                fatal "Unable to extract $uri_path from archive $ARCHIVE"
+        }
+        ;;
+    spec)
+        [[ -n "$SPECS" ]] || fatal "fetch_file: SPECS is not set"
+        [[ -n "$VERSION" ]] || fatal "fetch_file: VERSION is not set"
+        [[ -f "$SPECS/openafs.spec" ]] || fatal "fetch_file: openafs.spec missing"
+
+        local pattern source_line
+        pattern='%{afsvers}'
+        source_line=$(grep "^${uri_path}:" "$SPECS/openafs.spec")
+        uri="${source_line##Source*: }"  # Remove the Source prefix
+        uri="${uri//$pattern/$VERSION}"  # Replace the 'afsvers' placeholder
+
+        case "$uri" in
+        file:*|archive:*|https:*|http:*)
+            fetch_file "$uri" "$dest"
+            ;;
+        openafs-*)
+            fetch_file "archive:src/packaging/RedHat/$uri" "$dest"
+            ;;
+        *)
+            fatal "Unsupported URI scheme in $SPECS/openafs.spec: $source_line"
+            ;;
+        esac
+        ;;
+    *)
+        fatal "Unsupported URI scheme in $uri"
+        ;;
+    esac
+}
+
+#
+# Fetch the spec file from the archive, path, or URL. If it is a *.spec.in
+# file, then fill in the version info to create the openafs.spec file.
+#
+fetch_spec() {
+    debug "fetch_spec: starting"
+    local pattern afsvers
+
+    case "$SPEC" in
+    archive:*)
+        debug "Prefetching the archive for $SPEC"
+        if [[ -z "$VERSION" ]]; then
+           fatal "--spec $SPEC requires --version"
+        fi
+        fetch_archive "$SOURCE" "$SOURCES/openafs-${VERSION}-src.tar.bz2"
+        ;;
+    dir:*)
+        fatal "Invalid scheme for --spec $SPEC"
+        ;;
+    esac
+
+    case "$SPEC" in
+    *.spec)
+        fetch_file "$SPEC" "$SPECS/openafs.spec"
+
+        # Extract the VERSION from the spec file.
+        pattern='%{afsvers}'
+        afsvers=$(grep '^%define afsvers' "$SPECS/openafs.spec" | cut -f3 -d' ')
+        if [[ -n "$VERSION" && "$VERSION" -ne "$afsvers" ]]; then
+            warn "Ignoring --version $VERSION; using the value found in $SPEC"
+        fi
+        VERSION="$afsvers"
+        info "Version is $VERSION"
+        ;;
+    *.spec.in)
+        [[ -n "$VERSION" ]] || fatal "fetch_spec: VERSION is not set"
+        [[ -n "$PACKAGE_VERSION" ]] || fatal "fetch_spec: PACKAGE_VERSION is not set"
+        [[ -n "$PACKAGE_RELEASE" ]] || fatal "fetch_spec: PACKAGE_RELEASE is not set"
+
+        fetch_file "$SPEC" "$SPECS/openafs.spec.in"
+
+        info "Converting file"
+        info "  from $SPECS/openafs.spec.in"
+        info "    to $SPECS/openafs.spec"
+        sed -e "s/@PACKAGE_VERSION@/${VERSION}/g" \
+            -e "s/@LINUX_PKGVER@/${PACKAGE_VERSION}/g" \
+            -e "s/@LINUX_PKGREL@/${PACKAGE_RELEASE}/g" \
+            "$SPECS/openafs.spec.in" > "$SPECS/openafs.spec" || {
+                fatal "Unable to create spec $SPECS/openafs.spec"
+        }
+
+        rm -f "$SPECS/openafs.spec.in"  # Clean up.
+        ;;
+    *)
+        fatal "Invalid --spec name $SPEC"
+        ;;
+    esac
+
+    #
+    # Find the 'cellservdb_url' define in the spec file. The --cellservdb
+    # option overrides the one in the spec, so the user can setup an
+    # rpmbuild tree with a custom name.
+    #
+    if [[ -z $DEFINE_CSDB ]]; then
+        DEFINE_CSDB=$(grep 'define cellservdb_url' "$SPECS/openafs.spec" |
+                      cut -f4 -d' ' |
+                      tr -d '}')
+    fi
+
+    # Sanity check.
+    [[ -n "$VERSION" ]] || fatal "fetch_spec: VERSION is not set"
+    debug "fetch_spec: done"
+}
+
+#
+# Fetch the source archive file.
+#
+# Sets the ARCHIVE global used in fetch_file to extract files from the archive
+# and to support prefetching the archive when extracting the spec from the
+# archive.
+#
+fetch_archive() {
+    debug "fetch_archive: $*"
+    local uri="$1"
+    local dest="$2"
+
+    if [[ "$ARCHIVE" = "$dest" ]]; then
+        debug "fetch_archive: Source archive $ARCHIVE already fetched."
+    else
+        fetch_file "$uri" "$dest"
+        ARCHIVE="$dest"
+    fi
+}
+
+
+#
+# Fetch all of the Source files listed in the spec file.
+#
+# The user-provided URIs for Source0, Source1, Source10, Source11, and
+# Source20 are used instead of the values in the spec file. All other
+# Source files are fetched using the URI defined in the spec file.
+#
+fetch_sources() {
+    local source_num url filename
+    local afsvers='%{afsvers}'
+    local cellservdb_url='%{cellservdb_url}'
+    debug "fetch_sources: starting"
+
+    grep '^Source.*:' "$SPECS/openafs.spec" | while read -r source_num url; do
+        source_num="${source_num%:}"
+        url="${url//$afsvers/$VERSION}"
+        url="${url//$cellservdb_url/$DEFINE_CSDB}"
+        filename="${url##*/}"
+
+        debug "fetch_sources: fetching $source_num $url"
+        case "$source_num" in
+        Source0)  fetch_archive "$SOURCE"          "$SOURCES/$filename" ;;
+        Source1)  fetch_file    "$DOCS"            "$SOURCES/$filename" ;;
+        Source10) fetch_file    "$RELNOTES"        "$SOURCES/$filename" ;;
+        Source11) fetch_file    "$CHANGELOG"       "$SOURCES/$filename" ;;
+        Source20) fetch_file    "$CELLSERVDB"      "$SOURCES/$filename" ;;
+        Source*)  fetch_file    "spec:$source_num" "$SOURCES/$filename" ;;
+        esac
+    done || fatal "Unable to copy all sources."
+
+    debug "fetch_sources: done"
+}
+
+#
+# Fetch one or more patch files from a directory.
+#
+fetch_patches() {
+    local source_num url filename
+    debug "fetch_patches: starting"
+
+    grep '^Patch.*:' "$SPECS/openafs.spec" | while read -r patch_num filename; do
+        debug "fetch_patches: fetching $patch_num $filename"
+        fetch_file "$PATCHES" "$SOURCES/$filename"
+    done || fatal "Unable to copy all patches."
+
+    debug "fetch_patches: done"
+}
+
+#
+# Print completion notice.
+#
+print_summary() {
+    cat <<EOF
+
+The rpmbuild tree is ready in '$TOPDIR'.
+
+To build the RPMs:
+  rpmbuild$RPMBUILD_FLAGS -ba $SPECS/openafs.spec
+
+To build the source RPM only:
+  rpmbuild$RPMBUILD_FLAGS -bs $SPECS/openafs.spec
+
+EOF
+}
+
+#
+# Main function.
+#
+main() {
+    parse_args "$@"
+    determine_version
+    create_rpmbuild_dirs
+    fetch_spec
+    fetch_sources
+    fetch_patches
+    print_summary
+}
+
+main "$@"
