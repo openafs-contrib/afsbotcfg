@@ -219,6 +219,7 @@
   workers:
     - dummy
     - alma10-amd64-1
+    - alma10-amd64-2
   factory:
     name: UnixBuildFactory
     args:
@@ -238,6 +239,7 @@
   workers:
     - dummy
     - alma10-amd64-1
+    - alma10-amd64-2
   factory:
     name: UnixBuildFactory
     args:
@@ -257,6 +259,7 @@
   workers:
     - dummy
     - alma10-amd64-1
+    - alma10-amd64-2
   factory:
     name: UnixBuildFactory
     args:
@@ -276,6 +279,7 @@
   workers:
     - dummy
     - alma10-amd64-1
+    - alma10-amd64-2
   factory:
     name: UnixBuildFactory
     args:
