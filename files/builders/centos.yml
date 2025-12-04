@@ -7,6 +7,7 @@
   workers:
     - dummy
     - centos6-amd64-2
+    - centos6-amd64-3
   factory:
     name: UnixBuildFactory
     args:
@@ -24,6 +25,7 @@
   workers:
     - dummy
     - centos6-amd64-2
+    - centos6-amd64-3
   tags:
     - checking-failing
   factory:
@@ -43,6 +45,7 @@
   workers:
     - dummy
     - centos6-amd64-2
+    - centos6-amd64-3
   factory:
     name: UnixBuildFactory
     args:
@@ -60,6 +63,7 @@
   workers:
     - dummy
     - centos6-amd64-2
+    - centos6-amd64-3
   tags:
     - checking-failing
   factory:
