@@ -1,0 +1,52 @@
+FROM almalinux:10
+
+LABEL org.opencontainers.image.title="afsbotcfg-fake-worker-alma10" \
+      org.opencontainers.image.description="Buildbot fake worker for local testing" \
+      org.opencontainers.image.authors="Michael Meffie" \
+      org.opencontainers.image.source="https://github.com/openafs-contrib/afsbotcfg/podman/openafs-contrib/afsbotcfg-fake-worker"
+
+RUN dnf update -y
+RUN dnf install -y \
+      python3 \
+      python3-setuptools \
+      python3-pip \
+      autoconf \
+      automake \
+      bison \
+      elfutils-devel \
+      flex \
+      fuse-devel \
+      gcc \
+      git \
+      glibc-devel \
+      jansson-devel \
+      krb5-devel \
+      libevent-devel \
+      libtool \
+      make \
+      ncurses-devel \
+      openssl-devel \
+      pam-devel \
+      perl-core \
+      perl-devel \
+      perl-ExtUtils-Embed \
+      perl-FindBin \
+      perl-Sys-Hostname \
+      perl-Test-Simple \
+      redhat-rpm-config \
+      rpm-build \
+      swig \
+      which
+
+RUN dnf install -y kernel-devel-6.12.0-124.16.1.el10_1.x86_64 && \
+    mkdir -p /lib/modules/6.12.0-124.16.1.el10_1.x86_64 && \
+    ln -s /usr/src/kernels/6.12.0-124.16.1.el10_1.x86_64/ \
+          /lib/modules/6.12.0-124.16.1.el10_1.x86_64/build
+
+RUN pip3 install buildbot-worker
+
+WORKDIR /app
+COPY stubs/usr /usr/
+COPY entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+ENTRYPOINT ["/app/entrypoint.sh"]
