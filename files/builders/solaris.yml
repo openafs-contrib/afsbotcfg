@@ -1,20 +1,4 @@
 ---
-- scheduler: nightly
-  branch: dev
-  os: solaris11
-  cc: spro
-  arch: sparc
-  worker: sol11sparc
-  repo: git://gerrit.openafs.org/openafs.git
-  factory:
-    name: UnixBuildFactory
-    args:
-      docs: false
-      tests: true
-      configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
-        --enable-supergroups
-      make: gmake
-
 - scheduler: gerrit
   branch: dev
   os: solaris114
