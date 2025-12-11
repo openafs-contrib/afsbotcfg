@@ -600,6 +600,23 @@
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
+- scheduler: gerrit
+  branch: stable
+  os: fedora43
+  cc: gcc
+  arch: amd64
+  workers:
+    - dummy
+    - fedora43-x86_64-01
+    - fedora43-x86_64-02
+  factory:
+    name: UnixBuildFactory
+    args:
+      tests: true
+      docs: false
+      configure: --enable-warnings --enable-checking --enable-kernel-module
+        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+
 - scheduler: nightly
   branch: stable
   os: fedora43
