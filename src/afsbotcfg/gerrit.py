@@ -34,14 +34,11 @@ def summaryCB(buildInfoList, results, status, arg):
         A dict with the messages and the Gerrit verified label.
     """
 
-    def report_build_status(buildlist, finalstatus=None):
+    def report_build_status(buildlist):
         for info in buildlist:
-            msg = "    Builder %(name)s" % info
-            link = info.get('url', None)
-            if link:
-                msg += " - " + link
-            if finalstatus:
-                msg += "\n       Final build status %(resultText)s" % finalstatus[info['name']]
+            name = info.get('name', 'unknown')
+            link = info.get('url', '')
+            msg = "    {0:40}  {1}".format(name, link)
             yield msg
 
     msgs = list(arg)   # summaryArg contains the message headers.
@@ -103,7 +100,7 @@ def summaryCB(buildInfoList, results, status, arg):
 
     if len(restartedBuilds) > 0:
         msgs.append("\n Restarted Builds:")
-        msgs.extend(report_build_status(restartedBuilds, finalstatus=builderFinalStatus))
+        msgs.extend(report_build_status(restartedBuilds))
 
     if len(skippedBuilds) > 0:
         msgs.append("\n Skipped Builds:")

@@ -118,8 +118,8 @@ pod: .pod
     done
 	touch .pod
 
-.PHONY: test
-test: package .pod
+.PHONY: check test
+check test: package .pod
 	$(INFO) "Running buildbot playbook test"
 	podman run --pod afsbotcfg -ti --rm \
       --volume $(CURDIR):/app/afsbotcfg:ro \
