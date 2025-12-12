@@ -2,8 +2,7 @@
 # Run the OpenAFS buildbot playbook.
 #
 
-# Image registry.
-REGISTRY := ghcr.io
+REGISTRY := ghcr.io/
 
 # Playbook
 AFSBOTCFG_SECRET_NAME   := vault-afsbotcfg
@@ -72,7 +71,7 @@ encrypt:
 	@podman run -ti --rm \
         --volume $(CURDIR):/app/afsbotcfg \
         --secret $(AFSBOTCFG_SECRET_NAME),type=mount,target=/root/vault \
-        $(REGISTRY)/openafs-contrib/afsbotcfg-ansible:latest \
+        $(REGISTRY)openafs-contrib/afsbotcfg-ansible:latest \
 	    ansible-vault encrypt --vault-password-file=/root/vault $(FILE)
 
 .PHONY: lint
@@ -81,7 +80,7 @@ lint:
 	podman run -ti --rm \
         --volume $(CURDIR):/app/afsbotcfg:ro \
         --secret $(AFSBOTCFG_SECRET_NAME),type=mount,target=/root/vault \
-        $(REGISTRY)/openafs-contrib/afsbotcfg-ansible:latest \
+        $(REGISTRY)openafs-contrib/afsbotcfg-ansible:latest \
 		ansible-lint afsbotcfg.yml
 
 .PHONY: ping
@@ -92,7 +91,7 @@ ping:
         --volume $(AFSBOTCFG_SSH_DIRECTORY):/root/.ssh:ro \
         $(VOLUME_SSH_AGENT_SOCKET) \
         --secret $(AFSBOTCFG_SECRET_NAME),type=mount,target=/root/vault \
-        $(REGISTRY)/openafs-contrib/afsbotcfg-ansible:latest \
+        $(REGISTRY)openafs-contrib/afsbotcfg-ansible:latest \
         ansible -i inventory/prod/hosts.ini all -m ping
 
 WORKERS := $(subst files/workers/,,$(wildcard files/workers/*))
@@ -108,12 +107,12 @@ pod: .pod
       sed 's/  *"ImageName":  *"//' | \
       sed 's/",//' >.afsbotcfg-infra
 	podman run --name fake-gerrit --pod afsbotcfg --detach \
-      $(REGISTRY)/openafs-contrib/afsbotcfg-fake-gerrit:latest
+      $(REGISTRY)openafs-contrib/afsbotcfg-fake-gerrit:latest
 	podman run --name fake-buildbot-master --pod afsbotcfg --detach \
-      $(REGISTRY)/openafs-contrib/afsbotcfg-fake-master:latest
+      $(REGISTRY)openafs-contrib/afsbotcfg-fake-master:latest
 	@for w in $(WORKERS); do \
       podman run --name fake-buildbot-worker-$$w --pod afsbotcfg --detach \
-        $(REGISTRY)/openafs-contrib/afsbotcfg-fake-worker:latest \
+        $(REGISTRY)openafs-contrib/afsbotcfg-fake-worker:latest \
         $$w secret; \
     done
 	touch .pod
@@ -123,7 +122,7 @@ check test: package .pod
 	$(INFO) "Running buildbot playbook test"
 	podman run --pod afsbotcfg -ti --rm \
       --volume $(CURDIR):/app/afsbotcfg:ro \
-      $(REGISTRY)/openafs-contrib/afsbotcfg-ansible:latest \
+      $(REGISTRY)openafs-contrib/afsbotcfg-ansible:latest \
       ansible-playbook \
         -i inventory/test/hosts.ini \
         -e afsbotcfg_passwords=test_passwords \
@@ -157,7 +156,7 @@ deploy:
         --volume $(AFSBOTCFG_SSH_DIRECTORY):/root/.ssh:ro \
         $(VOLUME_SSH_AGENT_SOCKET) \
         --secret $(AFSBOTCFG_SECRET_NAME),type=mount,target=/root/vault \
-        $(REGISTRY)/openafs-contrib/afsbotcfg-ansible:latest \
+        $(REGISTRY)openafs-contrib/afsbotcfg-ansible:latest \
         ansible-playbook \
           -i inventory/prod/hosts.ini \
           --vault-password-file=/root/vault \

@@ -1,4 +1,5 @@
-IMAGE_NAME := openafs-contrib/$(notdir $(CURDIR))
+REGISTRY := ghcr.io/
+IMAGE_NAME := $(REGISTRY)openafs-contrib/$(notdir $(CURDIR))
 
 .PHONY: image
 image:
