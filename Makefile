@@ -111,9 +111,15 @@ pod: .pod
 	podman run --name fake-buildbot-master --pod afsbotcfg --detach \
       $(REGISTRY)openafs-contrib/afsbotcfg-fake-master:latest
 	@for w in $(WORKERS); do \
-      podman run --name fake-buildbot-worker-$$w --pod afsbotcfg --detach \
-        $(REGISTRY)openafs-contrib/afsbotcfg-fake-worker:latest \
-        $$w secret; \
+      if [ "$(TEST_BUILDS)" = yes ]; then \
+        case "$$w" in \
+        alma10-*) img="$(REGISTRY)openafs-contrib/afsbotcfg-fake-worker-alma10:latest" ;; \
+        *) img="$(REGISTRY)openafs-contrib/afsbotcfg-fake-worker:latest" ;; \
+        esac; \
+      else \
+        img="$(REGISTRY)openafs-contrib/afsbotcfg-fake-worker:latest" ; \
+      fi; \
+      podman run --name fake-buildbot-worker-$$w --pod afsbotcfg --detach $$img $$w secret; \
     done
 	touch .pod
 
