@@ -240,6 +240,8 @@
     - dummy
     - alma10-amd64-1
     - alma10-amd64-2
+  tags:
+    - lwp-warn
   factory:
     name: UnixBuildFactory
     args:
@@ -249,6 +251,7 @@
       configure: --enable-warnings --enable-checking
         --enable-kernel-module --with-linux-kernel-packaging
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+        --disable-optimize --disable-optimize-kernel --disable-strip-binaries
       target: install
 
 - scheduler: nightly
@@ -256,6 +259,8 @@
   os: alma10
   cc: gcc
   arch: amd64
+  tags:
+    - lwp-warn
   workers:
     - dummy
     - alma10-amd64-1
@@ -269,6 +274,7 @@
       configure: --enable-warnings --enable-checking
         --enable-kernel-module --with-linux-kernel-packaging
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+        --disable-optimize --disable-optimize-kernel --disable-strip-binaries
       target: install
 
 - scheduler: gerrit
@@ -289,6 +295,7 @@
       configure: --enable-warnings --enable-checking
         --enable-kernel-module --with-linux-kernel-packaging
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+        --disable-optimize --disable-optimize-kernel --disable-strip-binaries
       target: install
 
 - scheduler: nightly
@@ -309,4 +316,5 @@
       configure: --enable-warnings --enable-checking
         --enable-kernel-module --with-linux-kernel-packaging
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+        --disable-optimize --disable-optimize-kernel --disable-strip-binaries
       target: install

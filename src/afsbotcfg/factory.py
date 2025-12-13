@@ -42,6 +42,7 @@ from afsbotcfg.steps import (
     MakeDocs,
     RunTests,
     GitStatusCheck,
+    LwpCheck,
 )
 
 
@@ -213,6 +214,9 @@ class UnixBuildFactory(GerritCheckoutFactory):
                         prefix='post test ',
                         warnOnFailure=('git-status-failing' in tags),
                         doStepIf=isRealWorker))
+
+        if 'lwp-warn' in tags:
+            self.addStep(LwpCheck(doStepIf=isRealWorker))
 
         self.addCleanupStep()
 

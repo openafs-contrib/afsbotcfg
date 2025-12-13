@@ -9,7 +9,7 @@ ansible_python_interpreter: "/usr/bin/python3"
 afsbotcfg_master_python: "/usr/bin/python3"
 afsbotcfg_sqlalchemy_version: "==1.4.28"
 afsbotcfg_buildbot_version: "==3.5.0"
-afsbotcfg_version: 25.12.12rc1
+afsbotcfg_version: 25.12.12rc3
 
 afsbotcfg_gerrit:
   url: "http://localhost:8000"

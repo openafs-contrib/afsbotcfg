@@ -40,6 +40,11 @@ Buildbot at this time.
 **shuffle**: Builders with this tag use the `make --shuffle` option to
 randomize build order, helping to identify parallel build errors.
 
+**lwp-warn**: Builders with this tag check if the build generates LWP threaded
+binaries. Only binaries installed by `make install` are checked. These
+builders also run `make install` in a local `DESTDIR` to perform this check.
+This check is intended to help migrate away from the legacy LWP threading model.
+
 ### Known Issues Tags
 
 **build-failing**: Builders with this tag are know to have errors during the

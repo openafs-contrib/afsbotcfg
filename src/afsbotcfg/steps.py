@@ -296,3 +296,67 @@ class GitStatusCheck(steps.WarningCountingShellCommand):
         if self.observer.changed:
             changed = "\n".join(self.observer.changed)
             self.addCompleteLog('changed', changed)
+
+
+class LwpObserver(util.LogLineObserver):
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.lwp_files = []
+
+    def outLineReceived(self, line):
+        """
+        Parse the nm -A output to get the LWP threaded executable names.
+
+        example line:
+            packages/usr/local/sbin/volinfo:00000000004484f6 T LWP_CreateProcess
+
+        saved as:
+            usr/local/sbin/volinfo
+        """
+        if 'LWP_CreateProcess' in line:
+            file = line.split(':')[0].replace('packages/', '')
+            self.lwp_files.append(file)
+
+
+class LwpCheck(steps.WarningCountingShellCommand):
+    """
+    Warn if LWP threaded binaries are found in the install tree.
+
+    This check should be run after 'make install', which non-stripped
+    binaries. The DESTDIR must be 'packages', which is set in the Make
+    step.
+    """
+
+    name = 'LWP check'
+    workdir = 'build'
+    command = (
+        r"find packages -type f -exec file {} \;"
+        " | grep ': ELF'"
+        " | sed 's/: ELF.*//'"
+        " | xargs nm -A"
+        " | grep LWP_CreateProcess"
+    )
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+        self.haltOnFailure = False
+        self.flunkOnWarnings = False
+        self.flunkOnFailure = False
+        self.warnOnWarnings = False
+        self.warnOnFailure = False
+
+        self.observer = LwpObserver()
+        self.addLogObserver('stdio', self.observer)
+
+    def createSummary(self):
+        lwp_files = self.observer.lwp_files
+        summary = "Found {0} LWP threaded binaries.\n".format(len(lwp_files))
+        summary += "\n".join(lwp_files)
+        self.addCompleteLog('lwp', summary)
+
+    def evaluateCommand(self, cmd):
+        if self.observer.lwp_files:
+            return util.WARNINGS
+        return util.SUCCESS
