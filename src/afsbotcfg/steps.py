@@ -16,6 +16,7 @@ import random
 import re
 import shlex
 
+from twisted.python import log
 from twisted.internet import defer
 from buildbot.plugins import steps
 from buildbot.plugins import util
@@ -146,55 +147,163 @@ class MakeDocs(steps.ShellSequence):
                     flunkOnFailure=not warnOnFailure))
 
 
-class TapObserver(util.LogLineObserver):
-    """Count passed and failed TAP tests."""
+class TapState:
+    def __init__(self, observer, *args, **kwargs):
+        self.observer = observer
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.running = False
-        self.tests = []
-        self._current = None
+    def next(self, name):
+        return self.observer.getNextState(name)
+
+    def start(self, line):
+        pass
+
+    def consume(self, line):
+        return None
+
+    def end(self):
+        pass
+
+
+class TapInitialState(TapState):
+    def consume(self, line):
+        if re.match(r"Running all tests listed in TESTS.", line):
+            return self.next("starting")
+        return None
+
+
+class TapStartingState(TapState):
+    def consume(self, line):
+        if re.match(r"([a-z]+/[a-z0-9_\-]+)$", line):
+            return self.next("suite")
+
+        if re.match(r"All tests successful.", line):
+            return self.next("final")
+
+        if re.match(r"All tests successful, (\d+) tests skipped.", line):
+            return self.next("final")
+
+        if re.match(r"Failed Set", line):
+            return self.next("final")
+
+        return None
+
+
+class TapSuiteState(TapState):
+    def start(self, line):
+        self.name = line.rstrip()
+        self.error = False
         self.passed = 0
         self.failed = 0
 
-    def outLineReceived(self, line):
-        """
-        Scan the TAP output for passed and failed test results.
-        """
-        if line.startswith("Running all tests listed in TESTS."):
-            self.running = True
-            return
-        if line.startswith("test program with runtests -o to see more details."):
-            return
-        if not self.running:
-            return
-        m = re.match(r"[a-z]+/[a-z0-9_\-]+$", line)
-        if m:
-            if self._current:
-                self.tests.append(self._current)
-            self._current = {
-                "name": line,
-                "passed": 0,
-                "failed": 0,
-            }
-            return
-        m = re.match(r"ok \d+", line)
-        if m:
+    def end(self):
+        if self.error:
+            self.observer.setError(self.name)
+        else:
+            self.observer.setResults(self.name, self.passed, self.failed)
+
+    def consume(self, line):
+        # Skip blank lines.
+        if re.match(r"#", line) or re.match(r"\s*$", line):
+            return None
+
+        # Check tests for pass and fail for each test case.
+        if re.match(r"ok (\d+)", line):
             self.passed += 1
-            if self._current:
-                self._current["passed"] += 1
-            return
-        m = re.match(r"not ok \d+", line)
-        if m:
+            return None
+
+        if re.match(r"not ok (\d+)", line):
             self.failed += 1
-            if self._current:
-                self._current["failed"] += 1
-            return
-        m = re.match(r"Files=\d+,", line)
-        if m:
-            if self._current:
-                self.tests.append(self._current)
-            self._current = None
+            return None
+
+        # Checks for end of the test suite.
+        if re.match(r"ok$", line):
+            return self.next("starting")
+
+        if re.match(r"FAILED ", line):
+            return self.next("starting")
+
+        if re.match(r"MISSED ", line):
+            self.error = True
+            return self.next("starting")
+
+        if re.match(r"skipped$", line):
+            return self.next("starting")
+
+        if re.match(r"skipped \(.*\)$", line):
+            return self.next("starting")
+
+        # Just in case the end of the test suite was not found, check for the
+        # next suite and the end of the tests.
+        if re.match(r"[a-z]+/[a-z0-9_\-]+$", line):
+            return self.next("suite")
+
+        if re.match(r"All tests successful.", line):
+            return self.next("final")
+
+        if re.match(r"All tests successful, (\d+) tests skipped.", line):
+            return self.next("final")
+
+        if re.match(r"Failed Set", line):
+            return self.next("final")
+
+        return None
+
+
+class TapFinalState(TapState):
+    pass
+
+
+class TapObserver(util.LogLineObserver):
+    """Count passed and failed TAP tests."""
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.states = {
+            "initial": TapInitialState(self),
+            "starting": TapStartingState(self),
+            "suite": TapSuiteState(self),
+            "final": TapFinalState(self),
+        }
+        self.state = self.states["initial"]
+        self.tests = {}
+        self.error = False
+        self.passed = 0
+        self.failed = 0
+
+    def getNextState(self, name):
+        return self.states[name]
+
+    def setResults(self, name, passed, failed):
+        self.passed += passed
+        self.failed += failed
+        self.tests[name] = (passed, failed)
+
+    def setError(self, name):
+        self.error = True
+        self.tests[name] = None
+
+    def outLineReceived(self, line):
+        try:
+            next_state = self.state.consume(line)
+            if next_state:
+                self.state.end()
+                next_state.start(line)
+                self.state = next_state
+        except Exception as e:
+            log.msg("TapObserver exception: " + str(e))
+
+    def getSummary(self):
+        summary = []
+        if self.error:
+            summary.append("ERROR")
+            summary.append("Unable to run tests.")
+        else:
+            if self.failed:
+                summary.append("FAILED")
+            else:
+                summary.append("PASSED")
+            summary.append("passed {0:5}".format(self.passed))
+            summary.append("failed {0:5}".format(self.failed))
+        return "\n".join(summary)
 
 
 class RunTests(steps.WarningCountingShellCommand):
@@ -228,7 +337,7 @@ class RunTests(steps.WarningCountingShellCommand):
 
     def evaluateCommand(self, cmd):
         """Determine if the test failed or succeeded."""
-        if cmd.didFail() or self.tap.failed > 0:
+        if cmd.didFail() or self.tap.failed > 0 or self.tap.error:
             if self.warnOnFailure:
                 return util.WARNINGS
             else:
@@ -238,17 +347,7 @@ class RunTests(steps.WarningCountingShellCommand):
 
     def createSummary(self):
         """Create a summary with number of tests passed and failed."""
-        summary = []
-        summary.append("Test Summary")
-        if self.tap.failed > 0:
-            summary.append("FAILED {0} tests".format(self.tap.failed))
-        else:
-            summary.append("PASSED all tests.")
-        summary.append("")
-        summary.append("{name:<24} {passed}/{failed}".format(name="test", passed="pass", failed="fail"))
-        for test in self.tap.tests:
-            summary.append("{name:<24} {passed}/{failed}".format(**test))
-        self.addCompleteLog('summary', "\n".join(summary))
+        self.addCompleteLog('summary', self.tap.getSummary())
 
 
 class GitStatusObserver(util.LogLineObserver):
