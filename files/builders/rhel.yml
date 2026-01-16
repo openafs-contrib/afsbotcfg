@@ -1,4 +1,22 @@
 ---
+- scheduler: gerrit
+  branch: dev
+  os: rhel9
+  cc: gcc
+  arch: s390x
+  workers:
+    - dummy
+    - rhel9-s390x-1
+  factory:
+    name: UnixBuildFactory
+    args:
+      jobs: 4
+      tests: true
+      docs: false
+      configure: --enable-warnings --enable-checking
+        --enable-kernel-module --with-linux-kernel-packaging
+        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+
 - scheduler: nightly
   branch: dev
   os: rhel9
