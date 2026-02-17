@@ -1,45 +1,6 @@
 ---
 - scheduler: nightly
   branch: dev
-  os: fedora27
-  cc: gcc
-  arch: amd64
-  worker: fedora27-x86_64
-  tags:
-    - deactivated
-  factory:
-    name: UnixBuildFactory
-    args:
-      tests: false
-      docs: false
-      configure: --disable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
-        --enable-supergroups --with-afs-sysname=amd64_linux26
-        --enable-warnings --enable-checking
-    env:
-      CFLAGS: -Wno-error=array-bounds -Wno-error=format-overflow -Wno-error=format-truncation
-        -Wno-error=implicit-function-declaration -Wno-error=restrict
-
-- scheduler: nightly
-  branch: dev
-  os: fedora28
-  cc: gcc
-  arch: amd64
-  worker: fedora28-x86_64
-  tags:
-    - deactivated
-  factory:
-    name: UnixBuildFactory
-    args:
-      tests: false
-      docs: false
-      configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
-        --enable-supergroups --enable-warnings
-    env:
-      CFLAGS: -Wno-error=array-bounds -Wno-error=format-overflow -Wno-error=format-truncation
-        -Wno-error=implicit-function-declaration -Wno-error=restrict
-
-- scheduler: nightly
-  branch: dev
   os: fedora29
   cc: gcc
   arch: amd64
