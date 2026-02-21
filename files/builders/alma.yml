@@ -115,6 +115,7 @@
   arch: amd64
   flavor: disable_static
   workers:
+    - alma9-amd64-1
     - alma9-amd64-2
     - alma9-amd64-3
     - alma9-amd64-4
@@ -149,6 +150,7 @@
   cc: gcc
   arch: amd64
   workers:
+    - alma9-amd64-1
     - alma9-amd64-2
     - alma9-amd64-3
     - alma9-amd64-4
@@ -202,6 +204,7 @@
   arch: amd64
   flavor: dkms_check
   workers:
+    - alma9-amd64-1
     - alma9-amd64-2
     - alma9-amd64-3
     - alma9-amd64-4
@@ -216,6 +219,7 @@
   cc: gcc
   arch: amd64
   workers:
+    - alma9-amd64-1
     - alma9-amd64-2
     - alma9-amd64-3
     - alma9-amd64-4
