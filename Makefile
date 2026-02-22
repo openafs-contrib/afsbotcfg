@@ -125,6 +125,8 @@ pod: .pod
 
 .PHONY: check test
 check test: package .pod
+	$(INFO) "Checking buildbot config"
+	./check-config.py
 	$(INFO) "Running buildbot playbook test"
 	podman run --pod afsbotcfg -ti --rm \
       --volume $(CURDIR):/app/afsbotcfg:ro \
