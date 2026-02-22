@@ -307,7 +307,6 @@
   arch: amd64
   workers:
     - dummy
-    #- fedora40-x86_64
     - fedora40-x86_64-02
   factory:
     name: UnixBuildFactory
@@ -324,7 +323,6 @@
   arch: amd64
   workers:
     - dummy
-    #- fedora40-x86_64
     - fedora40-x86_64-02
   factory:
     name: UnixBuildFactory
@@ -341,7 +339,6 @@
   arch: amd64
   workers:
     - dummy
-    #- fedora40-x86_64
     - fedora40-x86_64-02
   factory:
     name: UnixBuildFactory
@@ -358,7 +355,6 @@
   arch: amd64
   workers:
     - dummy
-    #- fedora40-x86_64
     - fedora40-x86_64-02
   factory:
     name: UnixBuildFactory
@@ -375,7 +371,7 @@
   arch: amd64
   workers:
     - dummy
-    #- fedora41-x86_64
+    - fedora41-x86_64-01
     - fedora41-x86_64-02
   factory:
     name: UnixBuildFactory
@@ -392,7 +388,7 @@
   arch: amd64
   workers:
     - dummy
-    #- fedora41-x86_64
+    - fedora41-x86_64-01
     - fedora41-x86_64-02
   factory:
     name: UnixBuildFactory
@@ -409,7 +405,6 @@
   arch: amd64
   workers:
     - dummy
-    #- fedora41-x86_64
     - fedora41-x86_64-01
     - fedora41-x86_64-02
   factory:
@@ -427,7 +422,6 @@
   arch: amd64
   workers:
     - dummy
-    #- fedora41-x86_64
     - fedora41-x86_64-01
     - fedora41-x86_64-02
   factory:
