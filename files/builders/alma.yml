@@ -108,29 +108,6 @@
         --enable-kernel-module --with-linux-kernel-packaging
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
-- scheduler: nightly
-  branch: dev
-  os: alma9
-  cc: gcc
-  arch: amd64
-  flavor: disable_static
-  workers:
-    - alma9-amd64-1
-    - alma9-amd64-2
-    - alma9-amd64-3
-    - alma9-amd64-4
-  tags:
-    - docs-failing
-  factory:
-    name: UnixBuildFactory
-    args:
-      jobs: 4
-      docs: true
-      tests: true
-      configure: --disable-static --enable-warnings --enable-checking
-        --enable-kernel-module --with-linux-kernel-packaging
-        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
-
 - scheduler: gerrit
   branch: dev
   os: alma9
