@@ -86,6 +86,7 @@
   arch: amd64
   workers:
     - dummy
+    - debian11-amd64-1
     - debian11-amd64-2
   factory:
     name: UnixBuildFactory
@@ -102,6 +103,7 @@
   arch: amd64
   workers:
     - dummy
+    - debian11-amd64-1
     - debian11-amd64-2
   factory:
     name: UnixBuildFactory
@@ -118,6 +120,7 @@
   arch: amd64
   workers:
     - dummy
+    - debian11-amd64-1
     - debian11-amd64-2
   factory:
     name: UnixBuildFactory
@@ -134,6 +137,7 @@
   arch: amd64
   workers:
     - dummy
+    - debian11-amd64-1
     - debian11-amd64-2
   factory:
     name: UnixBuildFactory
