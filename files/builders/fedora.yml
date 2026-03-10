@@ -439,6 +439,7 @@
   arch: amd64
   workers:
     - dummy
+    - fedora42-x86_64
     - fedora42-x86_64-01
   factory:
     name: UnixBuildFactory
