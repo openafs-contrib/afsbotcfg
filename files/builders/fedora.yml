@@ -505,6 +505,7 @@
   arch: amd64
   workers:
     - dummy
+    - fedora43-x86_64
     - fedora43-x86_64-01
     - fedora43-x86_64-02
   factory:
