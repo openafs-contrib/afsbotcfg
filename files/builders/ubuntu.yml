@@ -209,3 +209,33 @@
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
         --with-docbook2pdf=dblatex --with-xslt-processor=xsltproc
+
+- scheduler: nightly
+  branch: dev
+  os: ubuntu2604
+  cc: gcc
+  arch: amd64
+  worker: ubuntu2604-amd64-1
+  factory:
+    name: UnixBuildFactory
+    args:
+      tests: true
+      docs: true
+      configure: --enable-warnings --enable-checking --enable-kernel-module
+        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+        --with-docbook2pdf=dblatex --with-xslt-processor=xsltproc
+
+- scheduler: nightly
+  branch: stable
+  os: ubuntu2604
+  cc: gcc
+  arch: amd64
+  worker: ubuntu2604-amd64-1
+  factory:
+    name: UnixBuildFactory
+    args:
+      tests: true
+      docs: true
+      configure: --enable-warnings --enable-checking --enable-kernel-module
+        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+        --with-docbook2pdf=dblatex --with-xslt-processor=xsltproc
