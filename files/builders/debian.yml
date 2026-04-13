@@ -1,37 +1,5 @@
 ---
 - scheduler: gerrit
-  branch: dev
-  os: debian10
-  cc: gcc
-  arch: amd64
-  workers:
-    - dummy
-    - debian10-amd64-2
-  factory:
-    name: UnixBuildFactory
-    args:
-      tests: true
-      docs: true
-      configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
-        --enable-supergroups --enable-warnings
-
-- scheduler: gerrit
-  branch: stable
-  os: debian10
-  cc: gcc
-  arch: amd64
-  workers:
-    - dummy
-    - debian10-amd64-2
-  factory:
-    name: UnixBuildFactory
-    args:
-      tests: true
-      docs: true
-      configure: --enable-checking --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
-        --enable-supergroups --enable-warnings
-
-- scheduler: gerrit
   branch: oldstable
   os: debian10
   cc: gcc
