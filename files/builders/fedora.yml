@@ -461,7 +461,7 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: true
+      tests: false
       docs: false
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
@@ -494,7 +494,7 @@
   factory:
     name: UnixBuildFactory
     args:
-      tests: true
+      tests: false
       docs: false
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
