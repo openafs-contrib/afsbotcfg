@@ -125,14 +125,15 @@
   cc: gcc
   arch: amd64
   worker: centos79-x86_64
+  flavor: rpm
   factory:
     name: UnixBuildFactory
     args:
       docs: false
-      tests: true
+      tests: false
       jobs: 1
-      configure: --enable-warnings --enable-checking --enable-kernel-module
-                 --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+      configure: --disable-kernel-module
+      target: rpm
 
 - scheduler: nightly
   branch: stable
