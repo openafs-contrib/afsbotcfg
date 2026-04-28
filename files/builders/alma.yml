@@ -18,7 +18,7 @@
         --enable-kernel-module --with-linux-kernel-packaging
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
-- scheduler: gerrit
+- scheduler: nightly
   branch: dev
   os: alma8
   cc: gcc
@@ -29,7 +29,12 @@
     - alma8-amd64-3
     - alma8-amd64-4
   factory:
-    name: ELRpmBuildFactory
+    name: UnixBuildFactory
+    args:
+      tests: false
+      docs: false
+      configure: --disable-kernel-module
+      target: rpm
 
 - scheduler: gerrit
   branch: stable
@@ -108,7 +113,7 @@
         --enable-kernel-module --with-linux-kernel-packaging
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
-- scheduler: gerrit
+- scheduler: nightly
   branch: dev
   os: alma9
   cc: gcc
@@ -119,7 +124,12 @@
     - alma9-amd64-3
     - alma9-amd64-4
   factory:
-    name: ELRpmBuildFactory
+    name: UnixBuildFactory
+    args:
+      tests: false
+      docs: false
+      configure: --disable-kernel-module
+      target: rpm
 
 - scheduler: gerrit
   branch: stable
@@ -161,7 +171,7 @@
         --enable-kernel-module --with-linux-kernel-packaging
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
-- scheduler: gerrit
+- scheduler: nightly
   branch: stable
   os: alma9
   cc: gcc
@@ -172,7 +182,12 @@
     - alma9-amd64-3
     - alma9-amd64-4
   factory:
-    name: ELRpmBuildFactory
+    name: UnixBuildFactory
+    args:
+      tests: false
+      docs: false
+      configure: --disable-kernel-module
+      target: rpm
 
 - scheduler: nightly
   branch: dev
