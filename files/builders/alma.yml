@@ -233,9 +233,9 @@
   cc: gcc
   arch: amd64
   workers:
-    - dummy
     - alma10-amd64-1
     - alma10-amd64-2
+    - alma10-amd64-3
   tags:
     - lwp-warn
   factory:
@@ -258,9 +258,9 @@
   tags:
     - lwp-warn
   workers:
-    - dummy
     - alma10-amd64-1
     - alma10-amd64-2
+    - alma10-amd64-3
   factory:
     name: UnixBuildFactory
     args:
@@ -279,9 +279,9 @@
   cc: gcc
   arch: amd64
   workers:
-    - dummy
     - alma10-amd64-1
     - alma10-amd64-2
+    - alma10-amd64-3
   factory:
     name: UnixBuildFactory
     args:
@@ -300,9 +300,9 @@
   cc: gcc
   arch: amd64
   workers:
-    - dummy
     - alma10-amd64-1
     - alma10-amd64-2
+    - alma10-amd64-3
   factory:
     name: UnixBuildFactory
     args:
