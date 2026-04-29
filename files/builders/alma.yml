@@ -24,6 +24,8 @@
   cc: gcc
   arch: amd64
   flavor: rpm
+  tags:
+    - package
   workers:
     - alma8-amd64-2
     - alma8-amd64-3
@@ -119,6 +121,8 @@
   cc: gcc
   arch: amd64
   flavor: rpm
+  tags:
+    - package
   workers:
     - alma9-amd64-2
     - alma9-amd64-3
@@ -177,6 +181,8 @@
   cc: gcc
   arch: amd64
   flavor: rpm
+  tags:
+    - package
   workers:
     - alma9-amd64-2
     - alma9-amd64-3

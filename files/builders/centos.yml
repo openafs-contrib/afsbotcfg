@@ -126,6 +126,8 @@
   arch: amd64
   worker: centos79-x86_64
   flavor: rpm
+  tags:
+    - package
   factory:
     name: UnixBuildFactory
     args:
