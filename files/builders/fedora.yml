@@ -448,3 +448,69 @@
       docs: false
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+
+
+#- scheduler: gerrit
+#  branch: dev
+#  os: fedora44
+#  cc: gcc
+#  arch: amd64
+#  workers:
+#    - fedora44-x86_64-01
+#  factory:
+#    name: UnixBuildFactory
+#    args:
+#      tests: true
+#      docs: false
+#      shuffle: true
+#      configure: --enable-warnings --enable-checking --enable-kernel-module
+#        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+#
+- scheduler: nightly
+  branch: dev
+  os: fedora44
+  cc: gcc
+  arch: amd64
+  workers:
+    - fedora44-x86_64-01
+  factory:
+    name: UnixBuildFactory
+    args:
+      tests: true
+      docs: false
+      shuffle: true
+      configure: --enable-warnings --enable-checking --enable-kernel-module
+        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+    env:
+      # TODO: Remove -Wno-error after the warnings are fixed.
+      CFLAGS: -Wno-error=unused-but-set-variable
+
+#- scheduler: gerrit
+#  branch: stable
+#  os: fedora44
+#  cc: gcc
+#  arch: amd64
+#  workers:
+#    - fedora44-x86_64-01
+#  factory:
+#    name: UnixBuildFactory
+#    args:
+#      tests: true
+#      docs: false
+#      configure: --enable-warnings --enable-checking --enable-kernel-module
+#        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
+#
+#- scheduler: nightly
+#  branch: stable
+#  os: fedora44
+#  cc: gcc
+#  arch: amd64
+#  workers:
+#    - fedora44-x86_64-01
+#  factory:
+#    name: UnixBuildFactory
+#    args:
+#      tests: true
+#      docs: false
+#      configure: --enable-warnings --enable-checking --enable-kernel-module
+#        --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
