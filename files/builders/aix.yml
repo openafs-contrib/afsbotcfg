@@ -5,8 +5,6 @@
   cc: xlc
   arch: rs
   worker: aix61-rs
-  tags:
-    - tests-failing
   factory:
     name: UnixBuildFactory
     args:
@@ -23,7 +21,6 @@
   arch: rs
   worker: aix61-rs
   tags:
-    - tests-failing
     - git-status-failing
   factory:
     name: UnixBuildFactory
@@ -40,8 +37,6 @@
   cc: xlc
   arch: rs
   worker: aix61-rs
-  tags:
-    - tests-failing
   factory:
     name: UnixBuildFactory
     args:
@@ -59,7 +54,6 @@
   worker: aix73-rs
   tags:
     - checking-failing
-    - tests-failing
   factory:
     name: UnixBuildFactory
     args:
@@ -80,7 +74,6 @@
   worker: aix73-rs
   tags:
     - checking-failing
-    - tests-failing
   factory:
     name: UnixBuildFactory
     args:
@@ -102,7 +95,6 @@
   tags:
     - deactivated
     - checking-failing
-    - tests-failing
   factory:
     name: UnixBuildFactory
     args:
@@ -123,7 +115,6 @@
   worker: aix73-rs
   tags:
     - deactivated
-    - tests-failing
   factory:
     name: UnixBuildFactory
     args:
