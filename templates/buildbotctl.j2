@@ -1,0 +1,152 @@
+#!/bin/bash
+#
+# buildbotctl - Buildbot control
+#
+# This is a helper script to start, stop, restart, and check the status of the
+# buildbot master.
+#
+
+set -e
+
+BUILDBOT="/home/buildbot/.local/bin/buildbot"
+BASEDIR="/home/buildbot/master/openafs"
+PIDFILE="/tmp/buildbot_master.pid"
+MAXROTATE=10
+
+usage() {
+    echo "usage: buildbotctl start|stop|status|checkconfig|reload|restart" >&2
+    exit 1
+}
+
+# Exit with a message.
+die() {
+    echo "$@" >&2
+    exit 1
+}
+
+# Ensure only one buildbotctl instance runs at a time.
+lock() {
+    exec 99>/tmp/buildbotctl.lock || die "Failed to create buildbotctl lock file."
+    flock -n 99 || die "buildbotctl is already running."
+}
+
+# Get the buildbot master pid when the buildbot is running.
+# Sanity check the pid value in case pid file is stale.
+getpid() {
+    if [ -f $PIDFILE ]; then
+        local pid="$(cat $PIDFILE)"
+        if [ -f /proc/$pid/cmdline ]; then
+            if grep -q buildbot /proc/$pid/cmdline; then
+                echo "$pid"
+            fi
+        fi
+    fi
+}
+
+# Rotate the master log file.
+rotatelog() {
+    local log=${BASEDIR}/twisted.log
+    if [ -f "${log}" ]; then
+        rm -f ${log}.${MAXROTATE}
+        seq $((MAXROTATE - 1)) -1 1 | while read i; do
+            if [ -f ${log}.$i ]; then
+                mv -n ${log}.$i ${log}.$((i + 1))
+            fi
+        done
+        mv -n ${log} ${log}.1
+    fi
+}
+
+# Start the buildbot master if it is not running.
+# An environment variable is used to write a pid file
+# during the create command only.
+start() {
+    # The buildbot start command is non-idempotent, so only run it when it appears
+    # the buildbot is stopped.
+    local option=$1
+    local pid=$(getpid)
+
+    if [ ! -z "$pid" ]; then
+        if [ "x$option" != "x--quiet" ]; then
+            echo "buildbot master is already running (pid $pid)"
+        fi
+    else
+        echo "Upgrading buildbot database"
+        $BUILDBOT upgrade-master $BASEDIR
+        echo "Starting buildbot ..."
+        BUILDBOT_PIDFILE=$PIDFILE $BUILDBOT start --start_timeout=60 $BASEDIR
+    fi
+}
+
+# Stop the buildbot master.
+# First run a clean shutdown to stop any new builds and wait for the current builds
+# to complete, then force a shutdown after a timeout.
+stop() {
+    echo "Stopping buildbot ..."
+    timeout 10m $BUILDBOT stop --clean $BASEDIR
+    $BUILDBOT stop $BASEDIR
+    rm -f $PIDFILE
+}
+
+# Print the buildbot master status.
+status() {
+    local pid=$(getpid)
+    if [ -z "$pid" ]; then
+        echo "buildbot master is stopped"
+    else
+        echo "buildbot master is running (pid $pid)"
+    fi
+}
+
+# Check configuration.
+checkconfig() {
+    $BUILDBOT checkconfig $BASEDIR
+}
+
+# Reload the buildbot master configuration.
+reload() {
+    local pid=$(getpid)
+    if [ -z "$pid" ]; then
+        die "buildbot master is not running"
+    else
+        if $BUILDBOT checkconfig $BASEDIR; then
+            $BUILDBOT sighup $BASEDIR
+        fi
+    fi
+}
+
+if [ "x$1" = "x" ]; then
+    usage
+fi
+case "$1" in
+start)
+    lock
+    start $2
+    ;;
+stop)
+    lock
+    stop
+    ;;
+status)
+    status
+    ;;
+checkconfig)
+    checkconfig
+    ;;
+reload)
+    lock
+    reload
+    ;;
+restart)
+    lock
+    stop
+    sleep 10
+    rotatelog
+    start
+    status
+    ;;
+*)
+    echo "bad command" >&2
+    usage
+    ;;
+esac
