@@ -233,8 +233,6 @@
   cc: gcc
   arch: amd64
   flavor: nokrb5
-  tags:
-    - deactivated
   workers:
     - dummy
     - debian13-amd64-01
