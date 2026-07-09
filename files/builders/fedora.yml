@@ -396,9 +396,6 @@
       shuffle: true
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
-    env:
-      # TODO: Remove -Wno-error after the warnings are fixed.
-      CFLAGS: -Wno-error=unused-but-set-variable
 
 - scheduler: nightly
   branch: dev
@@ -415,9 +412,6 @@
       shuffle: true
       configure: --enable-warnings --enable-checking --enable-kernel-module
         --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
-    env:
-      # TODO: Remove -Wno-error after the warnings are fixed.
-      CFLAGS: -Wno-error=unused-but-set-variable
 
 #- scheduler: gerrit
 #  branch: stable
