@@ -38,6 +38,19 @@
       arch: x86
       variant: checked
 
+- scheduler: gerrit
+  branch: dev
+  os: wins2019
+  cc: msvc
+  arch: amd64
+  flavor: checked
+  worker: wins2019-amd64
+  factory:
+    name: WindowsBuildFactory
+    args:
+      arch: amd64
+      variant: checked
+
 - scheduler: nightly
   branch: dev
   os: wins2019
