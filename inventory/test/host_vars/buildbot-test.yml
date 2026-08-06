@@ -29,6 +29,7 @@ afsbotcfg_project:
   www_port: 8011
   pb_port: 9989
   email_from: "buildbot@openafs.MIT.EDU"
+  nightly_email_to: "mmeffie@sinenomine.net"
   gitbaseurl: "https://gerrit.openafs.org"
   repo: "https://gerrit.openafs.org/openafs.git"
   start_delay: 10

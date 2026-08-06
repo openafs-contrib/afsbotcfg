@@ -17,6 +17,7 @@ from buildbot.plugins import schedulers
 from buildbot.plugins import util
 from buildbot.plugins import worker
 from buildbot.reporters.generators.worker import WorkerMissingGenerator
+from buildbot.reporters.generators.build import BuildStatusGenerator
 
 import afsbotcfg.factory
 import afsbotcfg.gerrit
@@ -85,6 +86,21 @@ BuildmasterConfig = {
             ],
         ),
 {% endif %}
+        reporters.MailNotifier(
+            fromaddr='{{ afsbotcfg_project.email_from }}',
+            sendToInterestedUsers=False,
+            extraRecipients=['{{ afsbotcfg_project.nightly_email_to }}'],
+            generators=[BuildStatusGenerator(
+                mode=('failing',),
+                builders=[
+{%- for builder in afsbotcfg_builders %}
+{%- if builder.scheduler == 'nightly' %}
+                '{{ builder_name(builder) }}',
+{%- endif %}
+{%- endfor %}
+                ]
+            )]
+        ),
         reporters.MailNotifier(
             fromaddr='{{ afsbotcfg_project.email_from }}',
             generators=[WorkerMissingGenerator(workers='all')],
