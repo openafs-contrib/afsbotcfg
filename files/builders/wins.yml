@@ -44,6 +44,8 @@
   cc: msvc
   arch: amd64
   flavor: checked
+  tags:
+    - deactivated
   worker: wins2019-amd64
   factory:
     name: WindowsBuildFactory
