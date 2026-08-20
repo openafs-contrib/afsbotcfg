@@ -79,6 +79,19 @@
       arch: x86
       variant: free
 
+- scheduler: gerrit
+  branch: dev
+  os: windows
+  cc: vs2005
+  arch: amd64
+  flavor: checked
+  worker: win-vs2005-amd64
+  factory:
+    name: WindowsBuildFactory
+    args:
+      arch: amd64
+      variant: checked
+
 - scheduler: nightly
   branch: dev
   os: windows
