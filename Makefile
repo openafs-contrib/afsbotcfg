@@ -140,9 +140,9 @@ check test: package .pod
 
 .PHONY: clean
 clean:
-	-podman pod kill afsbotcfg
-	-podman pod rm afsbotcfg
-	-podman volume rm afsbotcfg
+	podman pod kill afsbotcfg 2>/dev/null || :
+	podman pod rm afsbotcfg 2>/dev/null || :
+	podman volume rm afsbotcfg 2>/dev/null || :
 	rm -rf .pod
 
 .PHONY: reallyclean
