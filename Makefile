@@ -74,6 +74,15 @@ encrypt:
         $(REGISTRY)openafs-contrib/afsbotcfg-ansible:latest \
 	    ansible-vault encrypt --vault-password-file=/root/vault $(FILE)
 
+.PHONY: decrypt
+decrypt:
+	$(INFO) "Dcrypting '$(FILE)'"
+	@podman run -ti --rm \
+        --volume $(CURDIR):/app/afsbotcfg \
+        --secret $(AFSBOTCFG_SECRET_NAME),type=mount,target=/root/vault \
+        $(REGISTRY)openafs-contrib/afsbotcfg-ansible:latest \
+	    ansible-vault view --vault-password-file=/root/vault $(FILE)
+
 .PHONY: lint
 lint:
 	$(INFO) "Running lint checks"
