@@ -10,8 +10,7 @@
     args:
       docs: false
       tests: true
-      configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik
-        --enable-supergroups
+      configure: --enable-debug --enable-debug-kernel --enable-warnings --with-ctf-tools --with-krb5 --enable-kernel-module --enable-supergroups
       make: gmake
 
 - scheduler: gerrit
