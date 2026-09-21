@@ -28,7 +28,7 @@ import afsbotcfg.worker
 import {{ afsbotcfg_passwords | d('passwords') }} as passwords
 
 # Workaround "Maximum PB reference count exceeded." errors.
-sys.setrecursionlimit(10000)
+sys.setrecursionlimit(20000)
 
 BuildmasterConfig = {
     'title': '{{ afsbotcfg_project.title }}',
