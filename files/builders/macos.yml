@@ -4,6 +4,8 @@
   os: macos14
   cc: xcode
   arch: arm64
+  tags:
+    - deactivated
   workers:
     - dummy
     - macos14-arm64
@@ -47,6 +49,7 @@
     - macos14-arm64
   tags:
     - tests-failing
+    - deactivated
   factory:
     name: UnixBuildFactory
     args:
