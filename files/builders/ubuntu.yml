@@ -156,6 +156,8 @@
   cc: gcc
   arch: amd64
   worker: ubuntu2404-amd64-2
+  tags:
+    - deactivated
   factory:
     name: UnixBuildFactory
     args:
@@ -171,6 +173,8 @@
   cc: gcc
   arch: amd64
   worker: ubuntu2404-amd64-2
+  tags:
+    - deactivated
   factory:
     name: UnixBuildFactory
     args:
