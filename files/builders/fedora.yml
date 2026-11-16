@@ -421,6 +421,8 @@
   workers:
     - dummy
     - fedora45-x86_64-01
+    - fedora45-x86_64-02
+    - fedora45-x86_64-03
   factory:
     name: UnixBuildFactory
     args:
