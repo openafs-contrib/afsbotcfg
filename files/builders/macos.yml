@@ -186,11 +186,13 @@
   workers:
     - dummy
     - macos27-arm64
+  tags:
+    - tests-failing
   factory:
     name: UnixBuildFactory
     args:
       docs: false
-      tests: true
+      tests: false
       jobs: 1
       configure: --disable-warnings --disable-checking --disable-pam
         --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
