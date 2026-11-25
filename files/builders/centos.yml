@@ -124,24 +124,6 @@
       configure: --enable-kernel-module --enable-pthreaded-bos --enable-pthreaded-ubik --enable-supergroups
 
 - scheduler: nightly
-  branch: dev
-  os: centos79
-  cc: gcc
-  arch: amd64
-  worker: centos79-x86_64
-  flavor: rpm
-  tags:
-    - package
-  factory:
-    name: UnixBuildFactory
-    args:
-      docs: false
-      tests: false
-      jobs: 1
-      configure: --disable-kernel-module
-      target: rpm
-
-- scheduler: nightly
   branch: stable
   os: centos79
   cc: gcc
